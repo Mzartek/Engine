@@ -1,20 +1,22 @@
-#include "include/Engine/ShaderLoader.hpp"
+#include "include/Engine/ShaderObject.hpp"
 
-engine::ShaderLoader::ShaderLoader(void)
+engine::ShaderObject::ShaderObject(void)
 {
   _id = 0;
 }
 
-engine::ShaderLoader::~ShaderLoader(void)
+engine::ShaderObject::~ShaderObject(void)
 {
+  if(glIsShader(_id))
+    glDeleteShader(_id);
 }
 
-GLuint engine::ShaderLoader::getId(void)
+GLuint engine::ShaderObject::getId(void)
 {
   return _id;
 }
 
-int engine::ShaderLoader::loadShader(const char* filename, GLenum type)
+int engine::ShaderObject::loadShader(const char* filename, GLenum type)
 {
   char *content, *log;
   GLsizei logsize;
@@ -37,11 +39,7 @@ int engine::ShaderLoader::loadShader(const char* filename, GLenum type)
       glGetShaderiv(_id, GL_INFO_LOG_LENGTH, &logsize);
         
       log = new char[logsize + 1];
-      if(log == NULL)
-        {
-	  std::cerr << "Error in the allocation for a shader log"  << std::endl;
-	  exit(1);
-        }
+      assert(log != NULL);
 
       log[logsize] = '\0';
         
@@ -57,8 +55,8 @@ int engine::ShaderLoader::loadShader(const char* filename, GLenum type)
   return 1;
 }
 
-void engine::ShaderLoader::deleteShader(GLuint id)
+void engine::ShaderObject::deleteShader(void)
 {
-  if(glIsShader(id))
-    glDeleteShader(id);
+  if(glIsShader(_id))
+    glDeleteShader(_id);
 }

@@ -1,20 +1,20 @@
-#ifndef SHADER_LOADER
-#define SHADER_LOADER
+#ifndef SHADER_OBJECT
+#define SHADER_OBJECT
 
 #include "GL.hpp"
 
 namespace engine
 {
-  class ShaderLoader
+  class ShaderObject
   {
   private:
     GLuint _id;
   public:
-    ShaderLoader(void);
-    ~ShaderLoader(void);
+    ShaderObject(void);
+    ~ShaderObject(void);
     GLuint getId(void);
     int loadShader(const char* filename, GLenum type);
-    static void deleteShader(GLuint id);
+    void deleteShader(void);
   };
 }
 

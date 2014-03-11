@@ -2,7 +2,7 @@
 #define SHADER_PROGRAM
 
 #include "GL.hpp"
-#include "ShaderLoader.hpp"
+#include "ShaderObject.hpp"
 
 namespace engine
 {
@@ -15,8 +15,8 @@ namespace engine
     ~ShaderProgram(void);
     GLuint getId(void);
     void reset(void);
-    void attachShader(ShaderLoader shader);
-    void detachShader(ShaderLoader shader);
+    void attachShader(ShaderObject *shader);
+    void detachShader(ShaderObject *shader);
     int link(void);
     void use(void);
   };

@@ -9,6 +9,8 @@ bool keyState[256];
 engine::FreeCam cam;
 engine::Window window;
 engine::Object cube;
+engine::ShaderObject *test1;
+engine::ShaderObject *test2;
 engine::ShaderProgram *program;
 
 void display(void)
@@ -20,7 +22,6 @@ void display(void)
   	    cam.getTarget()._x, cam.getTarget()._y, cam.getTarget()._z,
   	    0, 1, 0);
 
-  program->use();
   cube.display();
 }
 
@@ -65,8 +66,6 @@ void init(void)
 
 void initGL(void)
 {
-  engine::ShaderLoader test1;
-  engine::ShaderLoader test2;
   unsigned id;
   GLfloat vertex[]={0, 0, 0,
 		    0, 0, 0,//
@@ -96,13 +95,16 @@ void initGL(void)
   
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_TEXTURE_2D);
-  
-  test1.loadShader("minimal.vert", GL_VERTEX_SHADER);
-  test2.loadShader("minimal.frag", GL_FRAGMENT_SHADER);
+
+  test1 = new engine::ShaderObject();
+  test2 = new engine::ShaderObject();
   program = new engine::ShaderProgram();
+  test1->loadShader("minimal.vert", GL_VERTEX_SHADER);
+  test2->loadShader("minimal.frag", GL_FRAGMENT_SHADER);
   program->attachShader(test1);
   program->attachShader(test2);
   program->link();
+  program->use();
 }
 
 int main(int argc, char **argv)
@@ -121,5 +123,7 @@ int main(int argc, char **argv)
   window.mainLoop();
 
   delete program;
+  delete test1;
+  delete test2;
   return 0;
 }

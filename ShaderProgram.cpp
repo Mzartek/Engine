@@ -31,14 +31,14 @@ void engine::ShaderProgram::reset(void)
     }
 }
 
-void engine::ShaderProgram::attachShader(ShaderLoader shader)
+void engine::ShaderProgram::attachShader(ShaderObject *shader)
 {
-  glAttachShader(_id, shader.getId());
+  glAttachShader(_id, shader->getId());
 }
 
-void engine::ShaderProgram::detachShader(ShaderLoader shader)
+void engine::ShaderProgram::detachShader(ShaderObject *shader)
 {
-  glDetachShader(_id, shader.getId());
+  glDetachShader(_id, shader->getId());
 }
 
 int engine::ShaderProgram::link(void)
@@ -55,11 +55,7 @@ int engine::ShaderProgram::link(void)
       glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logsize);
         
       log = new char[logsize + 1];
-      if(log == NULL)
-        {
-	  std::cerr << "Error in the allocation for a program log"  << std::endl;
-	  exit(1);
-        }
+      assert(log != NULL);
 
       log[logsize] = '\0';
         

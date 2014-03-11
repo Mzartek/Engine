@@ -70,6 +70,11 @@ char* engine::readText(const char* filename)
   char* content = NULL;
   unsigned long size;
 
+  if(file == NULL)
+    {
+      std::cerr << "Error while opening file: " << filename << std::endl;
+      exit(1);
+    }
   //On obtient la taille du fichier
   file.seekg(0, std::ifstream::end);
   size = file.tellg();
@@ -77,11 +82,7 @@ char* engine::readText(const char* filename)
 
   //On remplit content
   content = new char[size+1];
-  if(content == NULL)
-    {
-      std::cerr << "Error in the allocation for file: " << filename << std::endl;
-      exit(1);
-    }
+  assert(content != NULL);
   file.read(content, size);
   content[size] = '\0';
   
