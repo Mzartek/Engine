@@ -1,4 +1,4 @@
-#include "include/Engine/Camera.hpp"
+#include <Engine/Camera.hpp>
 
 engine::Camera::Camera(void)
 {
@@ -7,31 +7,41 @@ engine::Camera::Camera(void)
   _pcamera._z = 0;
   _atheta = _aphi = 0;
   _speed = 1;
+  _matrixProgram = NULL;
+  _viewMatrixLocation = -1;
 }
 
-engine::Camera::Camera(double x, double y, double z)
+engine::Camera::Camera(float x, float y, float z)
 { 
   _pcamera._x = x;
   _pcamera._y = y;
   _pcamera._z = z;
   _atheta = _aphi = 0;
   _speed = 1;
+  _matrixProgram = NULL;
+  _viewMatrixLocation = -1;
 }
 
 engine::Camera::~Camera(void)
 {
 }
 
-void engine::Camera::setPosition(double const &x, double const &y, double const &z)
+void engine::Camera::setPosition(float const &x, float const &y, float const &z)
 {
   _pcamera._x = x;
   _pcamera._y = y;
   _pcamera._z = z;
 }
 
-void engine::Camera::setSpeed(double const &v)
+void engine::Camera::setSpeed(float const &v)
 {
   _speed = v;
+}
+
+void engine::Camera::setViewMatrixLocation(ShaderProgram *program, char const *name)
+{
+  _matrixProgram = program;
+  _viewMatrixLocation = glGetUniformLocation(_matrixProgram->getId(), name);
 }
 
 void engine::Camera::mouseMove(int const &xrel, int const &yrel)
@@ -48,7 +58,7 @@ void engine::Camera::mouseMove(int const &xrel, int const &yrel)
   else if (_aphi < -89)
     _aphi = -89;
   
-  double r_temp = cos(_aphi*M_PI/180);
+  float r_temp = cos(_aphi*M_PI/180);
   _vforward._y = sin(_aphi*M_PI/180);
   _vforward._z = r_temp*cos(_atheta*M_PI/180);
   _vforward._x = r_temp*sin(_atheta*M_PI/180);
@@ -63,17 +73,26 @@ void engine::Camera::genTarget(void)
   _ptarget = _pcamera + _vforward;
 }
 
-engine::Vecteur<double> engine::Camera::getCamera(void) const
+engine::Vecteur<float> engine::Camera::getCamera(void) const
 {
   return _pcamera;
 }
 
-engine::Vecteur<double> engine::Camera::getTarget(void) const
+engine::Vecteur<float> engine::Camera::getTarget(void) const
 {
   return _ptarget;
 }
 
-engine::Vecteur<double> engine::Camera::getForward(void) const
+engine::Vecteur<float> engine::Camera::getForward(void) const
 {
   return _vforward;
+}
+
+void engine::Camera::position(void)
+{
+  _viewMatrix = glm::lookAt(glm::vec3(_pcamera._x, _pcamera._y, _pcamera._z),
+			    glm::vec3(_ptarget._x, _ptarget._y, _ptarget._z),
+			    glm::vec3(0.0, 1.0, 0.0));
+  _matrixProgram->use();
+  glUniformMatrix4fv(_viewMatrixLocation, 1, GL_FALSE, &_viewMatrix[0][0]);
 }

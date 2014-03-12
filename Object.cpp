@@ -1,4 +1,4 @@
-#include "include/Engine/Object.hpp"
+#include <Engine/Object.hpp>
 
 engine::Object::Object(void)
 {
@@ -10,11 +10,11 @@ engine::Object::Object(void)
 engine::Object::~Object(void)
 {
   if(glIsBuffer(_idObject))
-	glDeleteBuffers(1, &_idObject);
+    glDeleteBuffers(1, &_idObject);
   if(glIsBuffer(_idElementObject))
-	glDeleteBuffers(1, &_idElementObject);
+    glDeleteBuffers(1, &_idElementObject);
   if(glIsTexture(_idTextureObject))
-	glDeleteTextures(1, &_idTextureObject);
+    glDeleteTextures(1, &_idTextureObject);
 }
 
 void engine::Object::setIdObject(GLuint const &id)
@@ -36,7 +36,7 @@ void engine::Object::setIdTextureObject(GLuint const &id)
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 void engine::Object::display(void) const
-{
+{ 
   glBindBuffer(GL_ARRAY_BUFFER, _idObject);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idElementObject);
   glBindTexture(GL_TEXTURE_2D, _idTextureObject);

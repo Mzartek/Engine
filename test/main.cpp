@@ -2,6 +2,7 @@
 #include <Engine/Object.hpp>
 #include <Engine/FreeCam.hpp>
 #include <Engine/ShaderProgram.hpp>
+#include <Engine/GLcontext.hpp>
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -11,35 +12,28 @@
 bool keyState[256];
 engine::FreeCam cam;
 engine::Window window;
-engine::Object cube;
+engine::GLcontext context;
+engine::Object face;
 engine::ShaderObject *matrix;
 engine::ShaderObject *test;
 engine::ShaderProgram *program;
-glm::mat4 projectionMatrix;
-glm::mat4 viewMatrix;
 glm::mat4 modelMatrix;
 
 
 void display(void)
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  static GLint modelMatrixLocation = glGetUniformLocation(program->getId(), "modelMatrix");
   
-  viewMatrix = glm::lookAt(glm::vec3((float)cam.getCamera()._x, (float)cam.getCamera()._y, (float)cam.getCamera()._z),
-  			   glm::vec3((float)cam.getTarget()._x, (float)cam.getTarget()._y, (float)cam.getTarget()._z),
-  			   glm::vec3(0.0f, 1.0f, 0.0f));
-  modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  cam.position();
+  
+  modelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(10.0, 0.0, 0.0));
+  modelMatrix = glm::rotate(modelMatrix, 48.0f, glm::vec3(0.0, 1.0, 0.0));
   program->use();
-  
-  GLint projectionMatrixLocation = glGetUniformLocation(matrix->getId(), "projectionMatrix");
-  GLint viewMatrixLocation = glGetUniformLocation(matrix->getId(), "viewMatrix");
-  GLint modelMatrixLocation = glGetUniformLocation(matrix->getId(), "modelMatrix");
-  
-  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-  glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
   glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]);
 
-  cube.display();
+  face.display();
   
   glUseProgram(0);
 }
@@ -52,8 +46,7 @@ void idle(void)
 
 void reshape(int w, int h)
 {
-  glViewport(0, 0, w, h);
-  projectionMatrix = glm::perspective(90.0f, (float)w / (float)h, 0.1f, 1200.0f);
+  context.adjust(w, h, 90.0, 0.1, 1200.0);
 }
 
 void keyboard(unsigned char key, bool state)
@@ -97,19 +90,6 @@ void initGL(void)
 		    0, 0, -1
   };
   GLuint index[]={0, 1, 2, 3};
-  
-  engine::initBufferObject(GL_ARRAY_BUFFER, sizeof vertex, &id, vertex);
-  cube.setIdObject(id);
-  engine::initBufferObject(GL_ELEMENT_ARRAY_BUFFER, sizeof index, &id, index);
-  cube.setIdElementObject(id, sizeof vertex/sizeof *vertex);
-  engine::loadTexBMP("./resources/bleu.bmp", &id);
-  cube.setIdTextureObject(id);
-  
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glShadeModel(GL_SMOOTH);
-  
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_TEXTURE_2D);
 
   matrix = new engine::ShaderObject();
   test = new engine::ShaderObject();
@@ -119,6 +99,21 @@ void initGL(void)
   program->attachShader(matrix);
   program->attachShader(test);
   program->link();
+  context.setProjectionMatrixLocation(program, "projectionMatrix");
+  cam.setViewMatrixLocation(program, "viewMatrix");
+  
+  engine::initBufferObject(GL_ARRAY_BUFFER, sizeof vertex, &id, vertex);
+  face.setIdObject(id);
+  engine::initBufferObject(GL_ELEMENT_ARRAY_BUFFER, sizeof index, &id, index);
+  face.setIdElementObject(id, sizeof vertex/sizeof *vertex);
+  engine::loadTexBMP("./resources/bleu.bmp", &id);
+  face.setIdTextureObject(id);
+  
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glShadeModel(GL_SMOOTH);
+  
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_TEXTURE_2D);
 }
 
 int main(int argc, char **argv)

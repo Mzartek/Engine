@@ -1,4 +1,4 @@
-#include "include/Engine/GL.hpp"
+#include <Engine/GL.hpp>
 
 void engine::loadTexBMP(char const *path, GLuint *texture)
 {

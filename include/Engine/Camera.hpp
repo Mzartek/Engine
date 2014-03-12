@@ -1,7 +1,12 @@
 #ifndef CAMERA
 #define CAMERA
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <cmath>
+#include "GL.hpp"
+#include "ShaderProgram.hpp"
 #include "Vecteur.hpp"
 
 namespace engine
@@ -9,24 +14,29 @@ namespace engine
   class Camera
   {
   protected:
-    Vecteur<double> _pcamera;
-    Vecteur<double> _ptarget;
-    Vecteur<double> _vforward;
-    Vecteur<double> _vleft;
-    double _atheta;
-    double _aphi;
-    double _speed;
+    Vecteur<float> _pcamera;
+    Vecteur<float> _ptarget;
+    Vecteur<float> _vforward;
+    Vecteur<float> _vleft;
+    float _atheta;
+    float _aphi;
+    float _speed;
+    ShaderProgram *_matrixProgram;
+    GLint _viewMatrixLocation;
+    glm::mat4 _viewMatrix;
   public:
     Camera(void);
-    Camera(double x, double y, double z);
+    Camera(float x, float y, float z);
     ~Camera(void);
-    void setPosition(double const &x, double const &y, double const &z);
-    void setSpeed(double const &v);
+    void setPosition(float const &x, float const &y, float const &z);
+    void setSpeed(float const &v);
+    void setViewMatrixLocation(ShaderProgram *program, char const *name);
     void mouseMove(int const &xrel, int const &yrel);
     void genTarget(void);
-    Vecteur<double> getCamera(void) const;
-    Vecteur<double> getTarget(void) const;
-    Vecteur<double> getForward(void) const;
+    Vecteur<float> getCamera(void) const;
+    Vecteur<float> getTarget(void) const;
+    Vecteur<float> getForward(void) const;
+    void position(void);
     virtual void keyboardMove(bool const &f, bool const &b, bool const &l, bool const &r) = 0;
   };
 }
