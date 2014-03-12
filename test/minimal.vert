@@ -1,14 +1,8 @@
-// minimal vertex shader
-// www.lighthouse3d.com
-
-
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 
 void main()
-{	
-
-	// the following three lines provide the same result
-
-//	gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
-//	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-	gl_Position = ftransform();
+{
+     gl_Position = projectionMatrix * viewMatrix * modelMatrix * gl_Vertex;
 }
