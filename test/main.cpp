@@ -35,7 +35,7 @@ void idle(void)
 
 void reshape(int w, int h)
 {
-  context.adjust(w, h, 90.0, 0.1, 1200.0);
+  context.adjust(w, h, 70.0, 0.1, 1200.0);
 }
 
 void keyboard(unsigned char key, bool state)
@@ -64,16 +64,16 @@ void init(void)
 
 void initGL(void)
 {
-  GLfloat vertex[]={0, 0, 0,
+  GLfloat vertex[]={-5, -5, 0,
 		    0, 0, 0,//
 		    0, 0, -1,
-		    0, 10, 0,
+		    -5, 5, 0,
 		    0, 1, 0,//
 		    0, 0, -1,
-		    10, 10, 0,
+		    5, 5, 0,
 		    1, 1, 0,//
 		    0, 0, -1,
-		    10, 0, 0,
+		    5, -5, 0,
 		    1, 0, 0,//
 		    0, 0, -1
   };
@@ -96,6 +96,8 @@ void initGL(void)
   face.createObject(vertex, sizeof vertex,
 		    index, sizeof index,
 		    "./resources/bleu.bmp");
+  face.matTranslate(5, 5, 20);
+  face.matRotate(75, 0, 0, 1);
   
   glClearColor(0.0, 0.0, 0.0, 1.0);
   

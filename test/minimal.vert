@@ -4,5 +4,5 @@ uniform mat4 modelMatrix;
 
 void main()
 {
-     gl_Position = projectionMatrix * viewMatrix * modelMatrix * gl_Vertex;
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * gl_Vertex;
 }

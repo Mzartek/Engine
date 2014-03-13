@@ -8,7 +8,7 @@ LIB= -lGL -lGLU -lGLEW -lSDL2 -lSDL2_image
 else
 LIB= -I/c/MinGW/tiers/include -L/c/MinGW/tiers/lib -lopengl32 -lglu32 -lglew32 -lmingw32 -lSDL2main
 endif
-FLAGS= -O3 -march=native -Wall -Werror -Wfatal-errors -lEngine $(LIB)
+FLAGS= -Wall -Werror -Wfatal-errors -lEngine $(LIB)
 SRC= main.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 

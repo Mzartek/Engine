@@ -8,7 +8,7 @@ LIB= -Iinclude -fPIC -lGL -lGLU -lGLEW -lSDL2 -lSDL2_image
 else
 LIB= -Iinclude -I/c/MinGW/tiers/include -L/c/MinGW/tiers/lib -lopengl32 -lglu32 -lglew32 -lSDL2 -lSDL2_image
 endif
-FLAGS= -O3 -Wall -Werror -Wfatal-errors $(LIB)
+FLAGS= -Wall -Werror -Wfatal-errors $(LIB)
 SRC= GL.cpp Object.cpp Window.cpp Camera.cpp FreeCam.cpp PlayerCam.cpp ShaderObject.cpp ShaderProgram.cpp GLcontext.cpp Model.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 IMPORT= -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
@@ -27,6 +27,7 @@ clean:
 	rm -f $(OBJ)
 ifeq ($(SYSTEM), Linux)
 	rm -f *~
+	rm -f include/Engine/*~
 	rm -f *#
 	rm -f $(DIR)lib$(LIBNAME).so
 else
