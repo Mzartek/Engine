@@ -12,7 +12,7 @@ namespace engine
   class GLcontext
   {
   private:
-    ShaderProgram *_matrixProgram;
+    ShaderProgram *_program;
     GLint _projectionMatrixLocation;
     glm::mat4 _projectionMatrix;
   public:

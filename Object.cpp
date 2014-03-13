@@ -33,6 +33,43 @@ void engine::Object::setIdTextureObject(GLuint const &id)
   _idTextureObject = id;
 }
 
+void engine::Object::setEmission(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
+{
+  _mat_emission[0] = x;
+  _mat_emission[1] = y;
+  _mat_emission[2] = z;
+  _mat_emission[3] = w;
+}
+
+void engine::Object::setAmbiant(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
+{
+  _mat_ambiant[0] = x;
+  _mat_ambiant[1] = y;
+  _mat_ambiant[2] = z;
+  _mat_ambiant[3] = w;
+}
+
+void engine::Object::setDiffuse(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
+{
+  _mat_diffuse[0] = x;
+  _mat_diffuse[1] = y;
+  _mat_diffuse[2] = z;
+  _mat_diffuse[3] = w;
+}
+
+void engine::Object::setSpecular(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
+{
+  _mat_specular[0] = x;
+  _mat_specular[1] = y;
+  _mat_specular[2] = z;
+  _mat_specular[3] = w;
+}
+
+void engine::Object::setShininess(GLfloat const &x)
+{
+  _mat_shininess[0] = x;
+}
+
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 void engine::Object::display(void) const

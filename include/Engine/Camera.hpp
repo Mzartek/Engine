@@ -21,7 +21,7 @@ namespace engine
     float _atheta;
     float _aphi;
     float _speed;
-    ShaderProgram *_matrixProgram;
+    ShaderProgram *_program;
     GLint _viewMatrixLocation;
     glm::mat4 _viewMatrix;
   public:

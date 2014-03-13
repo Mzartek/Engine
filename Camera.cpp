@@ -7,7 +7,7 @@ engine::Camera::Camera(void)
   _pcamera._z = 0;
   _atheta = _aphi = 0;
   _speed = 1;
-  _matrixProgram = NULL;
+  _program = NULL;
   _viewMatrixLocation = -1;
 }
 
@@ -18,7 +18,7 @@ engine::Camera::Camera(float x, float y, float z)
   _pcamera._z = z;
   _atheta = _aphi = 0;
   _speed = 1;
-  _matrixProgram = NULL;
+  _program = NULL;
   _viewMatrixLocation = -1;
 }
 
@@ -40,8 +40,8 @@ void engine::Camera::setSpeed(float const &v)
 
 void engine::Camera::setViewMatrixLocation(ShaderProgram *program, char const *name)
 {
-  _matrixProgram = program;
-  _viewMatrixLocation = glGetUniformLocation(_matrixProgram->getId(), name);
+  _program = program;
+  _viewMatrixLocation = glGetUniformLocation(_program->getId(), name);
 }
 
 void engine::Camera::mouseMove(int const &xrel, int const &yrel)
@@ -93,6 +93,6 @@ void engine::Camera::position(void)
   _viewMatrix = glm::lookAt(glm::vec3(_pcamera._x, _pcamera._y, _pcamera._z),
 			    glm::vec3(_ptarget._x, _ptarget._y, _ptarget._z),
 			    glm::vec3(0.0, 1.0, 0.0));
-  _matrixProgram->use();
+  _program->use();
   glUniformMatrix4fv(_viewMatrixLocation, 1, GL_FALSE, &_viewMatrix[0][0]);
 }

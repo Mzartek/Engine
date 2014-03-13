@@ -1,11 +1,8 @@
 #include <Engine/Window.hpp>
-#include <Engine/Object.hpp>
+#include <Engine/Model.hpp>
 #include <Engine/FreeCam.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GLcontext.hpp>
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #define ESC 41
 
@@ -13,25 +10,17 @@ bool keyState[256];
 engine::FreeCam cam;
 engine::Window window;
 engine::GLcontext context;
-engine::Object face;
-engine::ShaderObject *matrix;
-engine::ShaderObject *test;
+engine::Model face;
+engine::ShaderObject *vertexShader;
+engine::ShaderObject *fragmentShader;
 engine::ShaderProgram *program;
-glm::mat4 modelMatrix;
 
 
 void display(void)
 {
-  static GLint modelMatrixLocation = glGetUniformLocation(program->getId(), "modelMatrix");
-  
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   cam.position();
-  
-  modelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(10.0, 0.0, 0.0));
-  modelMatrix = glm::rotate(modelMatrix, 48.0f, glm::vec3(0.0, 1.0, 0.0));
-  program->use();
-  glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]);
 
   face.display();
   
@@ -75,7 +64,6 @@ void init(void)
 
 void initGL(void)
 {
-  unsigned id;
   GLfloat vertex[]={0, 0, 0,
 		    0, 0, 0,//
 		    0, 0, -1,
@@ -91,26 +79,25 @@ void initGL(void)
   };
   GLuint index[]={0, 1, 2, 3};
 
-  matrix = new engine::ShaderObject();
-  test = new engine::ShaderObject();
+  vertexShader = new engine::ShaderObject();
+  fragmentShader = new engine::ShaderObject();
   program = new engine::ShaderProgram();
-  matrix->loadShader("minimal.vert", GL_VERTEX_SHADER);
-  test->loadShader("minimal.frag", GL_FRAGMENT_SHADER);
-  program->attachShader(matrix);
-  program->attachShader(test);
+  
+  vertexShader->loadShader("minimal.vert", GL_VERTEX_SHADER);
+  fragmentShader->loadShader("minimal.frag", GL_FRAGMENT_SHADER);
+  program->attachShader(vertexShader);
+  program->attachShader(fragmentShader);
   program->link();
+  
   context.setProjectionMatrixLocation(program, "projectionMatrix");
   cam.setViewMatrixLocation(program, "viewMatrix");
-  
-  engine::initBufferObject(GL_ARRAY_BUFFER, sizeof vertex, &id, vertex);
-  face.setIdObject(id);
-  engine::initBufferObject(GL_ELEMENT_ARRAY_BUFFER, sizeof index, &id, index);
-  face.setIdElementObject(id, sizeof vertex/sizeof *vertex);
-  engine::loadTexBMP("./resources/bleu.bmp", &id);
-  face.setIdTextureObject(id);
+  face.setModelMatrixLocation(program, "modelMatrix");
+
+  face.createObject(vertex, sizeof vertex,
+		    index, sizeof index,
+		    "./resources/bleu.bmp");
   
   glClearColor(0.0, 0.0, 0.0, 1.0);
-  glShadeModel(GL_SMOOTH);
   
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_TEXTURE_2D);
@@ -132,7 +119,7 @@ int main(int argc, char **argv)
   window.mainLoop();
 
   delete program;
-  delete matrix;
-  delete test;
+  delete vertexShader;
+  delete fragmentShader;
   return 0;
 }

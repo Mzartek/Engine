@@ -54,7 +54,7 @@ void engine::loadTexPNG_RGBA(char const *path, GLuint *texture)
   gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 }
 
-void engine::initBufferObject(GLuint type, int size, GLuint *id, GLvoid *data)
+void engine::initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data)
 {
   glGenBuffers(1, id);
 
@@ -64,7 +64,7 @@ void engine::initBufferObject(GLuint type, int size, GLuint *id, GLvoid *data)
   glBindBuffer(type, 0);
 }
 
-char* engine::readText(const char* filename)
+char* engine::readText(char const *filename)
 {
   std::ifstream file(filename, std::ifstream::in);
   char* content = NULL;
