@@ -31,7 +31,6 @@ int engine::ShaderObject::loadShader(const char* filename, GLenum type)
   
   content = readText(filename);
 
-  std::cout << content << std::endl;
   glShaderSource(_id, 1, (const char**)&content, NULL);
   glCompileShader(_id);
   glGetShaderiv(_id, GL_COMPILE_STATUS, &status);

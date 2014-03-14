@@ -66,7 +66,7 @@ void engine::initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data
 
 char* engine::readText(char const *filename)
 {
-  std::ifstream file(filename, std::ifstream::in);
+  std::ifstream file(filename, std::ifstream::in | std::ifstream::binary);
   char* content = NULL;
   unsigned long size;
 
@@ -85,6 +85,8 @@ char* engine::readText(char const *filename)
   assert(content != NULL);
   file.read(content, size);
   content[size] = '\0';
+  std::cout << size << " char:" << std::endl;
+  std::cout << content << std::endl;
   
   return content;
 }
