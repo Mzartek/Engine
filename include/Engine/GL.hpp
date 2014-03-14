@@ -12,9 +12,7 @@
 
 namespace engine
 {
-  extern void loadTexBMP(char const *path, GLuint *texture);
-  extern void loadTexPNG_RGB(char const *path, GLuint *texture);
-  extern void loadTexPNG_RGBA(char const *path, GLuint *texture);
+  extern void loadTex(char const *path, GLuint *texture);
   extern void initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data);
   extern char* readText(char const *filename);
 }

@@ -1,6 +1,6 @@
-uniform sampler2D color_texture;
+sampler2D colorTexture;
 
 void main(void)
 {
-	gl_FragColor = texture2D(color_texture, gl_TexCoord[0].st);
+	gl_FragColor = texture2D(colorTexture, gl_TexCoord[0]);
 }

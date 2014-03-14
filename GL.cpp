@@ -1,24 +1,19 @@
 #include <Engine/GL.hpp>
 
-void engine::loadTexBMP(char const *path, GLuint *texture)
-{
-  SDL_Surface *image = IMG_Load(path);
-  if(image==NULL)
-    {
-      std::cerr << "Error while loading image" << std::endl;
-      exit(1);
-    }
+enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
 
-  glGenTextures(1, texture);
-  glBindTexture(GL_TEXTURE_2D, *texture);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, image->w, image->h, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+pixelFormat testFormat(unsigned f)
+{
+  if(f==386930691)
+    return RGB;
+  else if(f==390076419)
+    return BGR;
+  else if(f==376840196)
+    return RGBA;
+  return UNKNOWN;
 }
 
-void engine::loadTexPNG_RGB(char const *path, GLuint *texture)
+void engine::loadTex(char const *path, GLuint *texture)
 {
   SDL_Surface *image = IMG_Load(path);
   if(image==NULL)
@@ -33,25 +28,21 @@ void engine::loadTexPNG_RGB(char const *path, GLuint *texture)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, image->w, image->h, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
-}
-
-void engine::loadTexPNG_RGBA(char const *path, GLuint *texture)
-{
-  SDL_Surface *image = IMG_Load(path);
-  if(image==NULL)
+  switch(testFormat(image->format->format))
     {
-      std::cerr << "Error while loading image" << std::endl;
-      exit(1);
+    case RGB:
+      gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, image->w, image->h, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+      break;
+    case BGR:
+      gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, image->w, image->h, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+      break;
+    case RGBA:
+      gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
+      break;
+    default:
+      std::cerr << "Format " << image->format->format << " unknown" << std::endl;
+      break;
     }
-
-  glGenTextures(1, texture);
-  glBindTexture(GL_TEXTURE_2D, *texture);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 }
 
 void engine::initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data)
@@ -85,8 +76,6 @@ char* engine::readText(char const *filename)
   assert(content != NULL);
   file.read(content, size);
   content[size] = '\0';
-  std::cout << size << " char:" << std::endl;
-  std::cout << content << std::endl;
   
   return content;
 }

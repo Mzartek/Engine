@@ -31,7 +31,7 @@ unsigned engine::Model::createObject(GLfloat const *vertexArray, GLuint const &s
   newone->setIdObject(id);
   engine::initBufferObject(GL_ELEMENT_ARRAY_BUFFER, sizeElementArray, &id, (void *)elementArray);
   newone->setIdElementObject(id, sizeElementArray/sizeof(GLuint));
-  engine::loadTexBMP(pathTexture, &id);
+  engine::loadTex(pathTexture, &id);
   newone->setIdTextureObject(id);
   
   _tObject.push_back(newone);
