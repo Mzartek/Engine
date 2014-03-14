@@ -73,7 +73,7 @@ void engine::Object::setShininess(GLfloat const &x)
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 void engine::Object::display(void) const
-{ 
+{
   glBindBuffer(GL_ARRAY_BUFFER, _idObject);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idElementObject);
   glBindTexture(GL_TEXTURE_2D, _idTextureObject);
