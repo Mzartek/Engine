@@ -2,22 +2,21 @@
 #define SHADER_PROGRAM
 
 #include "GL.hpp"
-#include "ShaderObject.hpp"
 
 namespace engine
 {
   class ShaderProgram
   {
   private:
-    GLuint _id;
+    GLuint _idProgram;
+    GLuint _idVertexShader;
+    GLuint _idFragmentShader;
+    GLuint loadShader(const char* filename, GLenum type);
   public:
     ShaderProgram(void);
     ~ShaderProgram(void);
     GLuint getId(void);
-    void reset(void);
-    void attachShader(ShaderObject *shader);
-    void detachShader(ShaderObject *shader);
-    int link(void);
+    int loadProgram(const char* vs, const char* fs);
     void use(void);
   };
 }

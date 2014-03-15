@@ -11,8 +11,6 @@ engine::FreeCam cam;
 engine::Window window;
 engine::GLcontext context;
 engine::Model face;
-engine::ShaderObject *vertexShader;
-engine::ShaderObject *fragmentShader;
 engine::ShaderProgram *program;
 
 
@@ -22,7 +20,6 @@ void display(void)
 
   cam.position();
 
-  glColor3f(0.0, 1.0, 0.0);
   face.display();
   
   glUseProgram(0);
@@ -80,15 +77,8 @@ void initGL(void)
   };
   GLuint index[]={0, 1, 2, 3};
 
-  vertexShader = new engine::ShaderObject();
-  fragmentShader = new engine::ShaderObject();
   program = new engine::ShaderProgram();
-  
-  vertexShader->loadShader("minimal.vert", GL_VERTEX_SHADER);
-  fragmentShader->loadShader("minimal.frag", GL_FRAGMENT_SHADER);
-  program->attachShader(vertexShader);
-  program->attachShader(fragmentShader);
-  program->link();
+  program->loadProgram("minimal.vert", "minimal.frag");
   
   context.setProjectionMatrixLocation(program, "projectionMatrix");
   cam.setViewMatrixLocation(program, "viewMatrix");
@@ -121,7 +111,5 @@ int main(int argc, char **argv)
   window.mainLoop();
 
   delete program;
-  delete vertexShader;
-  delete fragmentShader;
   return 0;
 }
