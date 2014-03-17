@@ -6,6 +6,7 @@ SYSTEM= $(shell uname)
 ifeq ($(SYSTEM), Linux)
 LIB= -Iinclude -fPIC -lGL -lGLU -lGLEW -lSDL2 -lSDL2_image
 else
+BIN= bin/
 LIB= -Iinclude -I/c/MinGW/tiers/include -L/c/MinGW/tiers/lib -lopengl32 -lglu32 -lglew32 -lSDL2 -lSDL2_image
 endif
 FLAGS= -Wall -Werror -Wfatal-errors $(LIB)
@@ -17,7 +18,7 @@ all:	$(OBJ)
 ifeq ($(SYSTEM), Linux)
 	$(CC) -shared -o $(DIR)lib$(LIBNAME).so $^ $(FLAGS)
 else
-	$(CC) -shared -o $(DIR)$(LIBNAME).dll $^ $(FLAGS) $(IMPORT)
+	$(CC) -shared -o $(BIN)$(LIBNAME).dll $^ $(FLAGS) $(IMPORT)
 endif
 
 obj/%.o:	%.cpp
@@ -31,5 +32,5 @@ ifeq ($(SYSTEM), Linux)
 	rm -f *#
 	rm -f $(DIR)lib$(LIBNAME).so
 else
-	rm -f $(DIR)$(LIBNAME).dll $(DIR)lib$(LIBNAME).a
+	rm -f $(BIN)$(LIBNAME).dll $(DIR)lib$(LIBNAME).a
 endif

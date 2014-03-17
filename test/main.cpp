@@ -63,19 +63,19 @@ void init(void)
 void initGL(void)
 {
   GLfloat vertex[]={-5, -5, 0,
-		    0, 0, 0,//
+		    0.25, 0.25,//
 		    0, 0, -1,
 		    -5, 5, 0,
-		    0, 1, 0,//
+		    0.25, 0.75,//
 		    0, 0, -1,
 		    5, 5, 0,
-		    1, 1, 0,//
+		    0.75, 0.75,//
 		    0, 0, -1,
 		    5, -5, 0,
-		    1, 0, 0,//
+		    0.75, 0.25,//
 		    0, 0, -1
   };
-  GLuint index[]={0, 1, 2, 3};
+  GLuint index[]={0, 1, 2, 0, 2, 3};
 
   program = new engine::ShaderProgram();
   program->loadProgram("minimal.vert", "minimal.frag");
@@ -86,7 +86,7 @@ void initGL(void)
 
   face.createObject(vertex, sizeof vertex,
 		    index, sizeof index,
-		    "./resources/bleu.bmp");
+		    "./resources/roi.png");
   face.matTranslate(5, 5, -20);
   face.matRotate(75, 0, 0, 1);
   

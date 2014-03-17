@@ -33,14 +33,6 @@ void engine::Object::setIdTextureObject(GLuint const &id)
   _idTextureObject = id;
 }
 
-void engine::Object::setEmission(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
-{
-  _mat_emission[0] = x;
-  _mat_emission[1] = y;
-  _mat_emission[2] = z;
-  _mat_emission[3] = w;
-}
-
 void engine::Object::setAmbiant(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
 {
   _mat_ambiant[0] = x;
@@ -82,10 +74,10 @@ void engine::Object::display(void) const
   glEnableVertexAttribArray(8); // GL_TEXTURE_COORD_ARRAY
   glEnableVertexAttribArray(2); // GL_NORMAL_ARRAY
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9*sizeof(GLfloat), BUFFER_OFFSET(0));
-  glVertexAttribPointer(8, 2, GL_FLOAT, GL_FALSE, 9*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9*sizeof(GLfloat), BUFFER_OFFSET(6*sizeof(GLfloat)));
-  glDrawElements(GL_QUADS, _numElement, GL_UNSIGNED_INT, 0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
+  glVertexAttribPointer(8, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
+  glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(8);
