@@ -7,17 +7,17 @@
 #include <cmath>
 #include "GL.hpp"
 #include "ShaderProgram.hpp"
-#include "Vecteur.hpp"
+#include "Vector3D.hpp"
 
 namespace engine
 {
   class Camera
   {
   protected:
-    Vecteur<float> _pcamera;
-    Vecteur<float> _ptarget;
-    Vecteur<float> _vforward;
-    Vecteur<float> _vleft;
+    Vector3D<float> _pcamera;
+    Vector3D<float> _ptarget;
+    Vector3D<float> _vforward;
+    Vector3D<float> _vleft;
     float _atheta;
     float _aphi;
     float _speed;
@@ -33,9 +33,9 @@ namespace engine
     void setViewMatrixLocation(ShaderProgram *program, char const *name);
     void mouseMove(int const &xrel, int const &yrel);
     void genTarget(void);
-    Vecteur<float> getCamera(void) const;
-    Vecteur<float> getTarget(void) const;
-    Vecteur<float> getForward(void) const;
+    Vector3D<float> getCamera(void) const;
+    Vector3D<float> getTarget(void) const;
+    Vector3D<float> getForward(void) const;
     void position(void);
     virtual void keyboardMove(bool const &f, bool const &b, bool const &l, bool const &r) = 0;
   };

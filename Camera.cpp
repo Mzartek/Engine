@@ -73,17 +73,17 @@ void engine::Camera::genTarget(void)
   _ptarget = _pcamera + _vforward;
 }
 
-engine::Vecteur<float> engine::Camera::getCamera(void) const
+engine::Vector3D<float> engine::Camera::getCamera(void) const
 {
   return _pcamera;
 }
 
-engine::Vecteur<float> engine::Camera::getTarget(void) const
+engine::Vector3D<float> engine::Camera::getTarget(void) const
 {
   return _ptarget;
 }
 
-engine::Vecteur<float> engine::Camera::getForward(void) const
+engine::Vector3D<float> engine::Camera::getForward(void) const
 {
   return _vforward;
 }

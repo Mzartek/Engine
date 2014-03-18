@@ -11,6 +11,7 @@ engine::FreeCam cam;
 engine::Window window;
 engine::GLcontext context;
 engine::Model face;
+engine::Model firstObj;
 engine::ShaderProgram *program;
 
 
@@ -19,8 +20,10 @@ void display(void)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   cam.position();
-
-  face.display();
+  
+  firstObj.display();
+  
+  // face.display();
   
   glUseProgram(0);
 }
@@ -56,8 +59,8 @@ void mouseMove(int xrel, int yrel)
 
 void init(void)
 {
-  cam.setPosition(0, 0, 0);
-  cam.setSpeed(1);
+  cam.setPosition(20, 0, 0);
+  cam.setSpeed(0.25);
 }
 
 void initGL(void)
@@ -87,13 +90,16 @@ void initGL(void)
   context.setProjectionMatrixLocation(program, "projectionMatrix");
   cam.setViewMatrixLocation(program, "viewMatrix");
   face.setModelMatrixLocation(program, "modelMatrix");
+  firstObj.setModelMatrixLocation(program, "modelMatrix");
 
   face.createObject(vertex, sizeof vertex,
 		    index, sizeof index,
 		    "./resources/roi.png",
 		    mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
-  face.matTranslate(5, 5, -20);
+  face.matTranslate(5, 5, -60);
   face.matRotate(75, 0, 0, 1);
+
+  firstObj.loadObj("resources/L200-OBJ/L200-OBJ.obj");
   
   glClearColor(0.0, 0.0, 0.0, 1.0);
   

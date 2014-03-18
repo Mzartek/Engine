@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <string>
 #include "GL.hpp"
 #include "Object.hpp"
 #include "ShaderProgram.hpp"
@@ -27,6 +28,7 @@ namespace engine
 			  GLuint const *elementArray, GLuint const &sizeElementArray,
 			  char const *pathTexture,
 			  GLfloat const *ambiant, GLfloat const *diffuse, GLfloat const *specular, GLfloat const *shininess);
+    void loadObj(char const *name);
     void matIdentity(void);
     void matTranslate(GLfloat const &x, GLfloat const &y, GLfloat const &z);
     void matRotate(GLfloat const &angle, GLfloat const &x, GLfloat const &y, GLfloat const &z);
