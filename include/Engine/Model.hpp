@@ -25,7 +25,8 @@ namespace engine
     void setModelMatrixLocation(ShaderProgram *program, char const *name);
     unsigned createObject(GLfloat const *vertexArray, GLuint const &sizeVertexArray,
 			  GLuint const *elementArray, GLuint const &sizeElementArray,
-			  char const *pathTexture);
+			  char const *pathTexture,
+			  GLfloat const *ambiant, GLfloat const *diffuse, GLfloat const *specular, GLfloat const *shininess);
     void matIdentity(void);
     void matTranslate(GLfloat const &x, GLfloat const &y, GLfloat const &z);
     void matRotate(GLfloat const &angle, GLfloat const &x, GLfloat const &y, GLfloat const &z);

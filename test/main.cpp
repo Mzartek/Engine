@@ -76,6 +76,10 @@ void initGL(void)
 		    0, 0, -1
   };
   GLuint index[]={0, 1, 2, 0, 2, 3};
+  GLfloat mat_ambiant[] = {0.2, 0.2, 0.2, 0.0};
+  GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 0.0};
+  GLfloat mat_specular[] = {1.0, 1.0, 1.0, 0.0};
+  GLfloat mat_shininess[] = {2.0};
 
   program = new engine::ShaderProgram();
   program->loadProgram("minimal.vert", "minimal.frag");
@@ -86,7 +90,8 @@ void initGL(void)
 
   face.createObject(vertex, sizeof vertex,
 		    index, sizeof index,
-		    "./resources/roi.png");
+		    "./resources/roi.png",
+		    mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
   face.matTranslate(5, 5, -20);
   face.matRotate(75, 0, 0, 1);
   
