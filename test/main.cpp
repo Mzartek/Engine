@@ -99,7 +99,7 @@ void initGL(void)
   face.matTranslate(5, 5, -60);
   face.matRotate(75, 0, 0, 1);
 
-  firstObj.loadObj("resources/L200-OBJ/L200-OBJ.obj");
+  firstObj.loadObj("resources/LamboOBJ.obj");
   
   glClearColor(0.0, 0.0, 0.0, 1.0);
   
