@@ -59,7 +59,6 @@ void mouseMove(int xrel, int yrel)
 
 void init(void)
 {
-  cam.setPosition(20, 0, 0);
   cam.setSpeed(0.25);
 }
 
@@ -96,10 +95,10 @@ void initGL(void)
 		    index, sizeof index,
 		    "./resources/roi.png",
 		    mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
-  face.matTranslate(5, 5, -60);
-  face.matRotate(75, 0, 0, 1);
+  // face.matTranslate(5, 5, -60);
+  // face.matRotate(75, 0, 0, 1);
 
-  firstObj.loadObj("resources/LamboOBJ.obj");
+  firstObj.loadObj("resources/L200-OBJ/L200-OBJ.obj");
   
   glClearColor(0.0, 0.0, 0.0, 1.0);
   

@@ -136,20 +136,19 @@ void engine::Model::loadObj(char const *name)
 	    first = false;
 	  else
 	    {
-	      createObject(&array[0], index.size()*sizeof(GLfloat),
+	      createObject(&array[0], array.size()*sizeof(GLfloat),
 	      		   &index[0], index.size()*sizeof(GLuint),
 	      		   "resources/bleu.bmp",
 	      		   mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
-	      std::cout << vt[vt.size()-2] << " " << vt[vt.size()-1] << std::endl;
 	      numIndex=0;
 	      array.clear();
 	      index.clear();
 	    }
 	} 
     }
-  createObject(&array[0], index.size()*sizeof(GLfloat),
+  createObject(&array[0], array.size()*sizeof(GLfloat),
   	       &index[0], index.size()*sizeof(GLuint),
-  	       "resources/feu.jpg",
+  	       "resources/bleu.bmp",
   	       mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
 }
 
