@@ -1,0 +1,92 @@
+newmtl acmat_0
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd R-77.png
+newmtl acmat_1
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd R-74.png
+newmtl acmat_2
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd Default.png
+newmtl acmat_3
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd Reheat.png
+newmtl acmat_4
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd Engine.png
+newmtl acmat_5
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd Gear.png
+newmtl acmat_6
+Kd 0.192 0.192 0.192
+Ka 0.192 0.192 0.192
+Ks 0.141 0.141 0.137
+Ns 29
+Tr 0
+newmtl acmat_7
+Kd 0 0 0
+Ka 0.2 0.2 0.2
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+newmtl acmat_8
+Kd 1 1 0
+Ka 1 1 0
+Ks 1 1 1
+Ns 128
+Tr 0.902
+newmtl acmat_9
+Kd 1 1 1
+Ka 0.2 0.2 0.2
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+newmtl acmat_10
+Kd 0.47 0.76 0.82
+Ka 0 0 0
+Ks 0 0 0
+Ns 60
+Tr 0
+newmtl acmat_11
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd Reflection.png
+newmtl acmat_12
+Kd 1 1 1
+Ka 1 1 1
+Ks 0.5 0.5 0.5
+Ns 64
+Tr 0
+map_Kd Pilot.png
+newmtl acmat_13
+Kd 1 1 1
+Ka 0.2 0.2 0.2
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0.902
