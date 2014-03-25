@@ -18,7 +18,7 @@ void engine::loadTex(const std::string path, GLuint *texture)
   SDL_Surface *image = IMG_Load(&path[0]);
   if(image==NULL)
     {
-      std::cerr << "Error while loading image" << std::endl;
+      std::cerr << "Error while loading image: " << path << std::endl;
       exit(1);
     }
 

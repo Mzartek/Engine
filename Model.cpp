@@ -15,10 +15,10 @@ engine::Model::~Model(void)
     delete _tObject[i];
 }
 
-void engine::Model::setModelMatrixLocation(ShaderProgram *program, const std::string name)
+void engine::Model::setShaderProgram(ShaderProgram *program)
 {
   _program = program;
-  _modelMatrixLocation = glGetUniformLocation(_program->getId(), &name[0]);
+  _modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
 }
 
 unsigned engine::Model::createObject(const GLfloat *vertexArray, const GLuint &sizeVertexArray,
@@ -39,6 +39,7 @@ unsigned engine::Model::createObject(const GLfloat *vertexArray, const GLuint &s
   newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
   newone->setSpecular(specular[0], specular[1], specular[2], specular[3]);
   newone->setShininess(shininess[0]);
+  newone->setShaderProgram(_program);
   
   _tObject.push_back(newone);
   return _index++;
@@ -56,7 +57,7 @@ void engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLflo
 
 void engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  _modelMatrix = glm::rotate(_modelMatrix, angle, glm::vec3(x, y, z));
+  _modelMatrix = glm::rotate(_modelMatrix, angle*((GLfloat)M_PI/180), glm::vec3(x, y, z));
 }
 
 void engine::Model::matScale(const GLfloat &x)

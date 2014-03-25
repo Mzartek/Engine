@@ -33,7 +33,12 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
   material tmp;
   GLfloat num;
   bool first = true;
+  int i;
 
+  tmp.ambiant[0]=0.2; tmp.ambiant[1]=0.2; tmp.ambiant[2]=0.2; tmp.ambiant[3]=1.0;
+  tmp.diffuse[0]=0.8; tmp.diffuse[1]=0.8; tmp.diffuse[2]=0.8; tmp.diffuse[3]=1.0;
+  tmp.specular[0]=1.0; tmp.specular[1]=1.0; tmp.specular[2]=1.0; tmp.specular[3]=1.0;
+  tmp.shininess[0]=0.0;
   mtlfile.open(&(path + name)[0], std::ifstream::in | std::ifstream::binary);
   if(mtlfile == NULL)
     {
@@ -43,6 +48,8 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
   while(!mtlfile.eof())
     {
       mtlfile >> str;
+      if(str[0]=='#')
+	for(i=mtlfile.get() ; i!='\n' ; i=mtlfile.get());
       if(str == "Kd")
 	{
 	  mtlfile >> num;
@@ -99,6 +106,10 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
 	    {
 	      mat.push_back(tmp);
 	      tmp.name = str;
+	      tmp.ambiant[0]=0.2; tmp.ambiant[1]=0.2; tmp.ambiant[2]=0.2; tmp.ambiant[3]=1.0;
+	      tmp.diffuse[0]=0.8; tmp.diffuse[1]=0.8; tmp.diffuse[2]=0.8; tmp.diffuse[3]=1.0;
+	      tmp.specular[0]=1.0; tmp.specular[1]=1.0; tmp.specular[2]=1.0; tmp.specular[3]=1.0;
+	      tmp.shininess[0]=0.0;
 	    }
 	}
     }
@@ -114,11 +125,9 @@ void engine::OBJModel::loadObj(const std::string name)
   std::vector<GLfloat> vn;
   std::vector<GLfloat> vt;
   GLfloat tmp[3];
-  GLulong num[3];
-  GLuint trianglePoint, numIndex = 0;
-  int matindex;
+  GLulong num[3], trianglePoint, matindex, numIndex = 0;
   char *strtmp;
-  bool first = true;
+  bool first = true, takestr = true;
   
   std::vector<GLfloat> array;
   std::vector<GLuint> index;
@@ -130,19 +139,19 @@ void engine::OBJModel::loadObj(const std::string name)
       return;
     }
   
-  while(!objfile.eof())
+  while(objfile.good())
     {
-      objfile >> str;
-      
+      if(takestr)
+	objfile >> str;
+      else
+	takestr = true;
       if(str[0]=='#')
 	for(int i=objfile.get() ; i!='\n' ; i=objfile.get());
-      
       else if(str == "mtllib")
 	{
 	  objfile >> str;
 	  mat = loadMtl(findPath(name), &str[0]);
-	}
-      
+	}      
       else if(str == "v")
 	{
 	  objfile >> tmp[0];
@@ -151,8 +160,7 @@ void engine::OBJModel::loadObj(const std::string name)
 	  v.push_back(tmp[0]);
 	  v.push_back(tmp[1]);
 	  v.push_back(tmp[2]);
-	}
-      
+	}      
       else if(str == "vn")
 	{
 	  objfile >> tmp[0];
@@ -161,21 +169,19 @@ void engine::OBJModel::loadObj(const std::string name)
 	  vn.push_back(tmp[0]);
 	  vn.push_back(tmp[1]);
 	  vn.push_back(tmp[2]);
-	}
-      
+	}      
       else if(str == "vt")
 	{
 	  objfile >> tmp[0];
 	  objfile >> tmp[1];
 	  vt.push_back(tmp[0]);
 	  vt.push_back(tmp[1]);
-	}
-      
+	}      
       else if(str == "f")
 	{
-	  while(1)
+	  objfile >> str;
+	  while(isdigit(str[0]) && objfile.good())
 	    {
-	      objfile >> str;
 	      strtmp = &str[0];
 	      num[0] = (strtoul(&strtmp[0], &strtmp, 0)-1) * 3;
 	      num[1] = (strtoul(&strtmp[1], &strtmp, 0)-1) * 2;
@@ -183,8 +189,7 @@ void engine::OBJModel::loadObj(const std::string name)
 	      array.push_back(v[num[0]]); array.push_back(v[num[0]+1]); array.push_back(v[num[0]+2]);
 	      array.push_back(vt[num[1]]); array.push_back(vt[num[1]+1]);
 	      array.push_back(vn[num[2]]); array.push_back(vn[num[2]+1]); array.push_back(vn[num[2]+2]);
-	      if(objfile.get()=='\n')
-		break;
+	      objfile >> str;
 	    }
 	  trianglePoint = numIndex;
 	  index.push_back(numIndex++);
@@ -196,8 +201,8 @@ void engine::OBJModel::loadObj(const std::string name)
 	      index.push_back(numIndex-1);
 	      index.push_back(numIndex);
 	    }
-	}
-      
+	  takestr=false;
+	}      
       else if(str == "usemtl")
 	{
 	  objfile >> str;

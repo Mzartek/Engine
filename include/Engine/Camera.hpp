@@ -1,11 +1,6 @@
 #ifndef CAMERA
 #define CAMERA
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <cmath>
-#include "GL.hpp"
 #include "ShaderProgram.hpp"
 #include "Vector3D.hpp"
 
@@ -28,9 +23,9 @@ namespace engine
     Camera(void);
     Camera(float x, float y, float z);
     ~Camera(void);
+    void setShaderProgram(ShaderProgram *program);
     void setPosition(const float &x, const float &y, const float &z);
     void setSpeed(const float &v);
-    void setViewMatrixLocation(ShaderProgram *program, const std::string name);
     void mouseMove(const int &xrel, const int &yrel);
     void genTarget(void);
     Vector3D<float> getCamera(void) const;

@@ -18,7 +18,7 @@ namespace engine
   public:
     GLcontext(void);
     ~GLcontext(void);
-    void setProjectionMatrixLocation(ShaderProgram *program, const std::string name);
+    void setShaderProgram(ShaderProgram *program);
     void adjust(const int &w, const int &h, const float &fov, const float &near, const float &far);
   };
 }

@@ -1,13 +1,7 @@
 #ifndef MODEL
 #define MODEL
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <vector>
-#include "GL.hpp"
 #include "Object.hpp"
-#include "ShaderProgram.hpp"
 
 namespace engine
 {
@@ -22,7 +16,7 @@ namespace engine
   public:
     Model();
     ~Model();
-    void setModelMatrixLocation(ShaderProgram *program, const std::string name);
+    void setShaderProgram(ShaderProgram *program);
     unsigned createObject(const GLfloat *vertexArray, const GLuint &sizeVertexArray,
 			  const GLuint *elementArray, const GLuint &sizeElementArray,
 			  const std::string pathTexture,

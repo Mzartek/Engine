@@ -2,6 +2,7 @@
 #define OBJECT
 
 #include "GL.hpp"
+#include "ShaderProgram.hpp"
 
 namespace engine
 {
@@ -12,13 +13,19 @@ namespace engine
     GLuint _idObject;
     GLuint _idElementObject;
     GLuint _idTextureObject;
-    GLfloat _mat_ambiant[4];
-    GLfloat _mat_diffuse[4];
-    GLfloat _mat_specular[4];
-    GLfloat _mat_shininess[1];
+    GLfloat _matAmbiant[4];
+    GLfloat _matDiffuse[4];
+    GLfloat _matSpecular[4];
+    GLfloat _matShininess[1];
+    ShaderProgram *_program;
+    GLint _matAmbiantLocation;
+    GLint _matDiffuseLocation;
+    GLint _matSpecularLocation;
+    GLint _matShininessLocation;
   public:
     Object(void);
     ~Object(void);
+    void setShaderProgram(ShaderProgram *program);
     void setIdObject(const GLuint &id);
     void setIdElementObject(const GLuint &id, const GLuint &num);
     void setIdTextureObject(const GLuint &id);

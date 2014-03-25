@@ -17,6 +17,15 @@ engine::Object::~Object(void)
     glDeleteTextures(1, &_idTextureObject);
 }
 
+void engine::Object::setShaderProgram(ShaderProgram *program)
+{
+  _program = program;
+  _matAmbiantLocation = glGetUniformLocation(_program->getId(), "matAmbiant");
+  _matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
+  _matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
+  _matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
+}
+
 void engine::Object::setIdObject(const GLuint &id)
 {
   _idObject = id;
@@ -35,37 +44,43 @@ void engine::Object::setIdTextureObject(const GLuint &id)
 
 void engine::Object::setAmbiant(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
 {
-  _mat_ambiant[0] = x;
-  _mat_ambiant[1] = y;
-  _mat_ambiant[2] = z;
-  _mat_ambiant[3] = w;
+  _matAmbiant[0] = x;
+  _matAmbiant[1] = y;
+  _matAmbiant[2] = z;
+  _matAmbiant[3] = w;
 }
 
 void engine::Object::setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
 {
-  _mat_diffuse[0] = x;
-  _mat_diffuse[1] = y;
-  _mat_diffuse[2] = z;
-  _mat_diffuse[3] = w;
+  _matDiffuse[0] = x;
+  _matDiffuse[1] = y;
+  _matDiffuse[2] = z;
+  _matDiffuse[3] = w;
 }
 
 void engine::Object::setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
 {
-  _mat_specular[0] = x;
-  _mat_specular[1] = y;
-  _mat_specular[2] = z;
-  _mat_specular[3] = w;
+  _matSpecular[0] = x;
+  _matSpecular[1] = y;
+  _matSpecular[2] = z;
+  _matSpecular[3] = w;
 }
 
 void engine::Object::setShininess(const GLfloat &x)
 {
-  _mat_shininess[0] = x;
+  _matShininess[0] = x;
 }
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 void engine::Object::display(void) const
 {
+  _program->use();
+  glUniform4fv(_matAmbiantLocation,  1, _matAmbiant);
+  glUniform4fv(_matDiffuseLocation,  1, _matDiffuse);
+  glUniform4fv(_matSpecularLocation,  1, _matSpecular);
+  glUniform1fv(_matShininessLocation, 1, _matShininess);
+  
   glBindBuffer(GL_ARRAY_BUFFER, _idObject);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idElementObject);
   glBindTexture(GL_TEXTURE_2D, _idTextureObject);

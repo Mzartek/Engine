@@ -22,7 +22,7 @@ void display(void)
   cam.position();
   
   firstObj.display();
-  
+
   face.display();
   
   glUseProgram(0);
@@ -68,44 +68,37 @@ void initGL(void)
 		    0.25, 0.25,//
 		    0, 0, -1,
 		    -5, 5, 0,
-		    0.25, 0.75,//
+		    0.25, 1.75,//
 		    0, 0, -1,
 		    5, 5, 0,
-		    0.75, 0.75,//
+		    1.75, 1.75,//
 		    0, 0, -1,
 		    5, -5, 0,
-		    0.75, 0.25,//
+		    1.75, 0.25,//
 		    0, 0, -1
   };
   GLuint index[]={0, 1, 2, 3, 2, 0};
-  GLfloat mat_ambiant[] = {0.2, 0.2, 0.2, 0.0};
-  GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 0.0};
-  GLfloat mat_specular[] = {1.0, 1.0, 1.0, 0.0};
+  GLfloat mat_ambiant[] = {0.2, 0.2, 0.2, 1.0};
+  GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 1.0};
+  GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat mat_shininess[] = {2.0};
 
   program = new engine::ShaderProgram();
   program->loadProgram("minimal.vert", "minimal.frag");
   
-  context.setProjectionMatrixLocation(program, "projectionMatrix");
-  cam.setViewMatrixLocation(program, "viewMatrix");
-  face.setModelMatrixLocation(program, "modelMatrix");
-  firstObj.setModelMatrixLocation(program, "modelMatrix");
+  context.setShaderProgram(program);
+  cam.setShaderProgram(program);
+  face.setShaderProgram(program);
+  firstObj.setShaderProgram(program);
 
   face.createObject(vertex, sizeof vertex,
 		    index, sizeof index,
 		    "./resources/roi.png",
 		    mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
-  // face.matTranslate(5, 5, -60);
-  // face.matRotate(75, 0, 0, 1);
 
-  firstObj.loadObj("resources/L200-OBJ/L200-OBJ.obj");
+  firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
   firstObj.matTranslate(10, 10, 10);
-  
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  firstObj.matRotate(-90, 1, 0, 0);
 }
 
 int main(int argc, char **argv)
