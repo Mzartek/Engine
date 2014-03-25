@@ -26,25 +26,25 @@ engine::Camera::~Camera(void)
 {
 }
 
-void engine::Camera::setPosition(float const &x, float const &y, float const &z)
+void engine::Camera::setPosition(const float &x, const float &y, const float &z)
 {
   _pcamera._x = x;
   _pcamera._y = y;
   _pcamera._z = z;
 }
 
-void engine::Camera::setSpeed(float const &v)
+void engine::Camera::setSpeed(const float &v)
 {
   _speed = v;
 }
 
-void engine::Camera::setViewMatrixLocation(ShaderProgram *program, char const *name)
+void engine::Camera::setViewMatrixLocation(ShaderProgram *program, const std::string name)
 {
   _program = program;
-  _viewMatrixLocation = glGetUniformLocation(_program->getId(), name);
+  _viewMatrixLocation = glGetUniformLocation(_program->getId(), &name[0]);
 }
 
-void engine::Camera::mouseMove(int const &xrel, int const &yrel)
+void engine::Camera::mouseMove(const int &xrel, const int &yrel)
 {
   _atheta -= xrel;
   _aphi -= yrel;

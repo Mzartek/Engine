@@ -17,23 +17,23 @@ engine::Object::~Object(void)
     glDeleteTextures(1, &_idTextureObject);
 }
 
-void engine::Object::setIdObject(GLuint const &id)
+void engine::Object::setIdObject(const GLuint &id)
 {
   _idObject = id;
 }
 
-void engine::Object::setIdElementObject(GLuint const &id, GLuint const &num)
+void engine::Object::setIdElementObject(const GLuint &id, const GLuint &num)
 {
   _idElementObject = id;
   _numElement = num;
 }
 
-void engine::Object::setIdTextureObject(GLuint const &id)
+void engine::Object::setIdTextureObject(const GLuint &id)
 {
   _idTextureObject = id;
 }
 
-void engine::Object::setAmbiant(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
+void engine::Object::setAmbiant(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
 {
   _mat_ambiant[0] = x;
   _mat_ambiant[1] = y;
@@ -41,7 +41,7 @@ void engine::Object::setAmbiant(GLfloat const &x, GLfloat const &y, GLfloat cons
   _mat_ambiant[3] = w;
 }
 
-void engine::Object::setDiffuse(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
+void engine::Object::setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
 {
   _mat_diffuse[0] = x;
   _mat_diffuse[1] = y;
@@ -49,7 +49,7 @@ void engine::Object::setDiffuse(GLfloat const &x, GLfloat const &y, GLfloat cons
   _mat_diffuse[3] = w;
 }
 
-void engine::Object::setSpecular(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w)
+void engine::Object::setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
 {
   _mat_specular[0] = x;
   _mat_specular[1] = y;
@@ -57,7 +57,7 @@ void engine::Object::setSpecular(GLfloat const &x, GLfloat const &y, GLfloat con
   _mat_specular[3] = w;
 }
 
-void engine::Object::setShininess(GLfloat const &x)
+void engine::Object::setShininess(const GLfloat &x)
 {
   _mat_shininess[0] = x;
 }

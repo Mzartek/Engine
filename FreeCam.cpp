@@ -1,6 +1,6 @@
 #include <Engine/FreeCam.hpp>
 
-void engine::FreeCam::keyboardMove(bool const &f, bool const &b, bool const &l, bool const &r)
+void engine::FreeCam::keyboardMove(const bool &f, const bool &b, const bool &l, const bool &r)
 {
   if(f)
     _pcamera += _vforward * _speed;

@@ -1,6 +1,31 @@
 #include <Engine/ShaderProgram.hpp>
 
-GLuint engine::ShaderProgram::loadShader(const char* filename, GLenum type)
+char *engine::ShaderProgram::readText(const std::string filename)
+{
+  std::ifstream file(&filename[0], std::ifstream::in | std::ifstream::binary);
+  char *content;
+  unsigned long size;
+
+  if(file == NULL)
+    {
+      std::cerr << "Error while opening file: " << filename << std::endl;
+      exit(1);
+    }
+  //On obtient la taille du fichier
+  file.seekg(0, std::ifstream::end);
+  size = file.tellg();
+  file.seekg(0, std::ifstream::beg);
+
+  //On remplit content
+  content = new char[size+1];
+  assert(content != NULL);
+  file.read(content, size);
+  content[size] = '\0';
+  
+  return content;
+}
+
+GLuint engine::ShaderProgram::loadShader(const std::string filename, GLenum type)
 {
   GLuint id;
   char *content, *log;
@@ -16,7 +41,7 @@ GLuint engine::ShaderProgram::loadShader(const char* filename, GLenum type)
   
   content = readText(filename);
 
-  glShaderSource(id, 1, (const char**)&content, NULL);
+  glShaderSource(id, 1, (const char **)&content, NULL);
   glCompileShader(id);
   glGetShaderiv(id, GL_COMPILE_STATUS, &status);
   if(status != GL_TRUE)
@@ -60,7 +85,7 @@ GLuint engine::ShaderProgram::getId(void)
   return _idProgram;
 }
 
-int engine::ShaderProgram::loadProgram(const char *vs, const char *fs)
+int engine::ShaderProgram::loadProgram(const std::string vs, const std::string fs)
 {
   char *log;
   GLsizei logsize;

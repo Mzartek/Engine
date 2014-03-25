@@ -5,7 +5,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
-#include <string>
 #include "GL.hpp"
 #include "Object.hpp"
 #include "ShaderProgram.hpp"
@@ -23,16 +22,15 @@ namespace engine
   public:
     Model();
     ~Model();
-    void setModelMatrixLocation(ShaderProgram *program, char const *name);
-    unsigned createObject(GLfloat const *vertexArray, GLuint const &sizeVertexArray,
-			  GLuint const *elementArray, GLuint const &sizeElementArray,
-			  char const *pathTexture,
-			  GLfloat const *ambiant, GLfloat const *diffuse, GLfloat const *specular, GLfloat const *shininess);
-    void loadObj(char const *name);
+    void setModelMatrixLocation(ShaderProgram *program, const std::string name);
+    unsigned createObject(const GLfloat *vertexArray, const GLuint &sizeVertexArray,
+			  const GLuint *elementArray, const GLuint &sizeElementArray,
+			  const std::string pathTexture,
+			  const GLfloat *ambiant, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess);
     void matIdentity(void);
-    void matTranslate(GLfloat const &x, GLfloat const &y, GLfloat const &z);
-    void matRotate(GLfloat const &angle, GLfloat const &x, GLfloat const &y, GLfloat const &z);
-    void matScale(GLfloat const &x);
+    void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+    void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
+    void matScale(const GLfloat &x);
     void display(void);
   };
 }

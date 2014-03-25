@@ -13,7 +13,7 @@ engine::Window::~Window(void)
 {
 }
 
-void engine::Window::initWindow(char const *title, int const &w, int const &h)
+void engine::Window::initWindow(const std::string title, int const &w, int const &h)
 {
   _exit = false;
   _Width = w;
@@ -30,7 +30,7 @@ void engine::Window::initWindow(char const *title, int const &w, int const &h)
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   SDL_GL_SetSwapInterval(1);
   
-  _idWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _Width, _Height, SDL_WINDOW_OPENGL);
+  _idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _Width, _Height, SDL_WINDOW_OPENGL);
   
   if(!_idWindow)
     {

@@ -11,12 +11,13 @@ namespace engine
     GLuint _idProgram;
     GLuint _idVertexShader;
     GLuint _idFragmentShader;
-    GLuint loadShader(const char* filename, GLenum type);
+    char *readText(const std::string filename);
+    GLuint loadShader(const std::string filename, GLenum type);
   public:
     ShaderProgram(void);
     ~ShaderProgram(void);
     GLuint getId(void);
-    int loadProgram(const char* vs, const char* fs);
+    int loadProgram(const std::string vs, const std::string fs);
     void use(void);
   };
 }

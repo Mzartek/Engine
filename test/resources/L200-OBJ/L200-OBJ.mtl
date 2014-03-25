@@ -5,3 +5,5 @@ Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.00 0.00 0.00
+Ns 10
+map_Kd truck_color-blue.jpg

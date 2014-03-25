@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <cassert>
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -12,9 +13,8 @@
 
 namespace engine
 {
-  extern void loadTex(char const *path, GLuint *texture);
+  extern void loadTex(const std::string path, GLuint *texture);
   extern void initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data);
-  extern char* readText(char const *filename);
 }
 
 #endif

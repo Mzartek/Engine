@@ -28,16 +28,16 @@ namespace engine
     Camera(void);
     Camera(float x, float y, float z);
     ~Camera(void);
-    void setPosition(float const &x, float const &y, float const &z);
-    void setSpeed(float const &v);
-    void setViewMatrixLocation(ShaderProgram *program, char const *name);
-    void mouseMove(int const &xrel, int const &yrel);
+    void setPosition(const float &x, const float &y, const float &z);
+    void setSpeed(const float &v);
+    void setViewMatrixLocation(ShaderProgram *program, const std::string name);
+    void mouseMove(const int &xrel, const int &yrel);
     void genTarget(void);
     Vector3D<float> getCamera(void) const;
     Vector3D<float> getTarget(void) const;
     Vector3D<float> getForward(void) const;
     void position(void);
-    virtual void keyboardMove(bool const &f, bool const &b, bool const &l, bool const &r) = 0;
+    virtual void keyboardMove(const bool &f, const bool &b, const bool &l, const bool &r) = 0;
   };
 }
 

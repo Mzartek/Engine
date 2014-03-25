@@ -1,7 +1,7 @@
 # HAVRANEK Kevin
 # 12310320
 CC= g++
-NAME= test
+NAME= sample
 SYSTEM= $(shell uname)
 ifeq ($(SYSTEM), Linux)
 LIB= -lGL -lGLU -lGLEW -lSDL2 -lSDL2_image

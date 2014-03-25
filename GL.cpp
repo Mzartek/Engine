@@ -13,9 +13,9 @@ pixelFormat testFormat(unsigned f)
   return UNKNOWN;
 }
 
-void engine::loadTex(char const *path, GLuint *texture)
+void engine::loadTex(const std::string path, GLuint *texture)
 {
-  SDL_Surface *image = IMG_Load(path);
+  SDL_Surface *image = IMG_Load(&path[0]);
   if(image==NULL)
     {
       std::cerr << "Error while loading image" << std::endl;
@@ -43,6 +43,7 @@ void engine::loadTex(char const *path, GLuint *texture)
       std::cerr << "Format " << image->format->format << " unknown" << std::endl;
       break;
     }
+  delete image;
 }
 
 void engine::initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data)
@@ -53,29 +54,4 @@ void engine::initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data
   glBufferData(type, size, data, GL_STATIC_DRAW);
   
   glBindBuffer(type, 0);
-}
-
-char* engine::readText(char const *filename)
-{
-  std::ifstream file(filename, std::ifstream::in | std::ifstream::binary);
-  char* content = NULL;
-  unsigned long size;
-
-  if(file == NULL)
-    {
-      std::cerr << "Error while opening file: " << filename << std::endl;
-      exit(1);
-    }
-  //On obtient la taille du fichier
-  file.seekg(0, std::ifstream::end);
-  size = file.tellg();
-  file.seekg(0, std::ifstream::beg);
-
-  //On remplit content
-  content = new char[size+1];
-  assert(content != NULL);
-  file.read(content, size);
-  content[size] = '\0';
-  
-  return content;
 }

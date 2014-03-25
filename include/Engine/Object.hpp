@@ -19,13 +19,13 @@ namespace engine
   public:
     Object(void);
     ~Object(void);
-    void setIdObject(GLuint const &id);
-    void setIdElementObject(GLuint const &id, GLuint const &num);
-    void setIdTextureObject(GLuint const &id);
-    void setAmbiant(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w);
-    void setDiffuse(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w);
-    void setSpecular(GLfloat const &x, GLfloat const &y, GLfloat const &z, GLfloat const &w);
-    void setShininess(GLfloat const &x);
+    void setIdObject(const GLuint &id);
+    void setIdElementObject(const GLuint &id, const GLuint &num);
+    void setIdTextureObject(const GLuint &id);
+    void setAmbiant(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
+    void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
+    void setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
+    void setShininess(const GLfloat &x);
     void display(void) const;
   };
 }

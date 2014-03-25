@@ -21,7 +21,7 @@ namespace engine
   public:
     Window(void);
     ~Window(void);
-    void initWindow(char const *title, int const &w, int const &h);
+    void initWindow(const std::string title, int const &w, int const &h);
     void setDisplayFunc(void (*f) (void));
     void setIdleFunc(void (*f) (void));
     void setReshapeFunc(void (*f) (int, int));

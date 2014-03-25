@@ -1,5 +1,5 @@
 #include <Engine/Window.hpp>
-#include <Engine/Model.hpp>
+#include <Engine/OBJModel.hpp>
 #include <Engine/FreeCam.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GLcontext.hpp>
@@ -11,7 +11,7 @@ engine::FreeCam cam;
 engine::Window window;
 engine::GLcontext context;
 engine::Model face;
-engine::Model firstObj;
+engine::OBJModel firstObj;
 engine::ShaderProgram *program;
 
 
@@ -23,7 +23,7 @@ void display(void)
   
   firstObj.display();
   
-  // face.display();
+  face.display();
   
   glUseProgram(0);
 }
@@ -77,7 +77,7 @@ void initGL(void)
 		    0.75, 0.25,//
 		    0, 0, -1
   };
-  GLuint index[]={0, 1, 2, 0, 2, 3};
+  GLuint index[]={0, 1, 2, 3, 2, 0};
   GLfloat mat_ambiant[] = {0.2, 0.2, 0.2, 0.0};
   GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 0.0};
   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 0.0};
@@ -99,6 +99,7 @@ void initGL(void)
   // face.matRotate(75, 0, 0, 1);
 
   firstObj.loadObj("resources/L200-OBJ/L200-OBJ.obj");
+  firstObj.matTranslate(10, 10, 10);
   
   glClearColor(0.0, 0.0, 0.0, 1.0);
   

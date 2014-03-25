@@ -8,7 +8,7 @@ namespace engine
   class FreeCam : public Camera
   {
   public:
-    void keyboardMove(bool const &f, bool const &b, bool const &l, bool const &r);
+    void keyboardMove(const bool &f, const bool &b, const bool &l, const bool &r);
   };
 }
 
