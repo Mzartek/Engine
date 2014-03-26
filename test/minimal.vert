@@ -7,11 +7,11 @@ uniform vec4 matSpecular;
 uniform float matShininess;
 
 in vec4 vertexArray;
-in vec4 textureArray;
+in vec2 textureArray;
 in vec4 normalArray;
 
 varying out vec4 color;
-varying out vec4 texCoord;
+varying out vec2 texCoord;
 
 void main(void)
 {

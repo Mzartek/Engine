@@ -39,6 +39,7 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
   tmp.diffuse[0]=0.8; tmp.diffuse[1]=0.8; tmp.diffuse[2]=0.8; tmp.diffuse[3]=1.0;
   tmp.specular[0]=1.0; tmp.specular[1]=1.0; tmp.specular[2]=1.0; tmp.specular[3]=1.0;
   tmp.shininess[0]=0.0;
+  tmp.texture = path + "none.png";
   mtlfile.open(&(path + name)[0], std::ifstream::in | std::ifstream::binary);
   if(mtlfile == NULL)
     {
@@ -110,6 +111,7 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
 	      tmp.diffuse[0]=0.8; tmp.diffuse[1]=0.8; tmp.diffuse[2]=0.8; tmp.diffuse[3]=1.0;
 	      tmp.specular[0]=1.0; tmp.specular[1]=1.0; tmp.specular[2]=1.0; tmp.specular[3]=1.0;
 	      tmp.shininess[0]=0.0;
+	      tmp.texture = path + "none.png";
 	    }
 	}
     }
