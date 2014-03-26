@@ -1,3 +1,7 @@
+attribute vec4 vertexArray;
+attribute vec4 textureArray;
+attribute vec4 normalArray;
+
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
@@ -9,7 +13,7 @@ uniform float matShininess;
 
 void main(void)
 {
-	gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * gl_Vertex;
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vertexArray;
+	gl_TexCoord[0] = textureArray;
 	gl_FrontColor = matDiffuse;
 }

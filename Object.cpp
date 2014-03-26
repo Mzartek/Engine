@@ -24,6 +24,10 @@ void engine::Object::setShaderProgram(ShaderProgram *program)
   _matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
   _matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
   _matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
+  
+  _vertexAttribLocation = glGetAttribLocation(_program->getId(), "vertexArray");
+  _textureAttribLocation = glGetAttribLocation(_program->getId(), "textureArray");
+  _normalAttribLocation = glGetAttribLocation(_program->getId(), "normalArray");
 }
 
 void engine::Object::setIdObject(const GLuint &id)
@@ -85,18 +89,18 @@ void engine::Object::display(void) const
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idElementObject);
   glBindTexture(GL_TEXTURE_2D, _idTextureObject);
   
-  glEnableVertexAttribArray(0); // GL_VERTEX_ARRAY
-  glEnableVertexAttribArray(8); // GL_TEXTURE_COORD_ARRAY
-  glEnableVertexAttribArray(2); // GL_NORMAL_ARRAY
+  glEnableVertexAttribArray(_vertexAttribLocation); // GL_VERTEX_ARRAY
+  glEnableVertexAttribArray(_textureAttribLocation); // GL_TEXTURE_COORD_ARRAY
+  glEnableVertexAttribArray(_normalAttribLocation); // GL_NORMAL_ARRAY
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
-  glVertexAttribPointer(8, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
+  glVertexAttribPointer(_vertexAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
+  glVertexAttribPointer(_textureAttribLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
+  glVertexAttribPointer(_normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
   glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
-  glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(8);
-  glDisableVertexAttribArray(2);
+  glDisableVertexAttribArray(_vertexAttribLocation);
+  glDisableVertexAttribArray(_textureAttribLocation);
+  glDisableVertexAttribArray(_normalAttribLocation);
   
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
