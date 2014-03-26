@@ -121,7 +121,7 @@ int main(int argc, char **argv)
   window.setMouseMoveFunc(mouseMove);
   
   initGL();
-  
+
   window.mainLoop();
 
   delete program;
