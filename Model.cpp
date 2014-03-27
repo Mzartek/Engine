@@ -5,7 +5,7 @@ engine::Model::Model(void)
   _index = 0;
   _program = NULL;
   _modelMatrixLocation = -1;
-  _modelMatrix = glm::mat4(1.0);
+  matIdentity();
 }
 
 engine::Model::~Model(void)
@@ -47,22 +47,22 @@ unsigned engine::Model::createObject(const GLfloat *vertexArray, const GLuint &s
 
 void engine::Model::matIdentity(void)
 {
-  _modelMatrix = glm::mat4(1.0);
+  matrixLoadIdentity(_modelMatrix);
 }
 
 void engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  _modelMatrix = glm::translate(_modelMatrix, glm::vec3(x, y, z));
+  matrixTranslate(_modelMatrix, x, y, z);
 }
 
 void engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  _modelMatrix = glm::rotate(_modelMatrix, angle*((GLfloat)M_PI/180), glm::vec3(x, y, z));
+  matrixRotate(_modelMatrix, angle*((GLfloat)M_PI/180), x, y, z);
 }
 
-void engine::Model::matScale(const GLfloat &x)
+void engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  _modelMatrix = glm::scale(_modelMatrix, glm::vec3(x));
+  matrixScale(_modelMatrix, x, y, z);
 }
   
 void engine::Model::display(void)
@@ -70,7 +70,7 @@ void engine::Model::display(void)
   unsigned i;
   
   _program->use();
-  glUniformMatrix4fv(_modelMatrixLocation, 1, GL_FALSE, &_modelMatrix[0][0]);
+  glUniformMatrix4fv(_modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
   
   for(i=0 ; i<_tObject.size(); i++)
     _tObject[i]->display();

@@ -1,6 +1,7 @@
 #ifndef CAMERA
 #define CAMERA
 
+#include "matrix.h"
 #include "ShaderProgram.hpp"
 #include "Vector3D.hpp"
 
@@ -18,7 +19,7 @@ namespace engine
     float _speed;
     ShaderProgram *_program;
     GLint _viewMatrixLocation;
-    glm::mat4 _viewMatrix;
+    GLfloat _viewMatrix[16];
   public:
     Camera(void);
     Camera(float x, float y, float z);

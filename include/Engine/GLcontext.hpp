@@ -1,11 +1,9 @@
 #ifndef GL_CONTEXT
 #define GL_CONTEXT
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include "GL.hpp"
 #include "ShaderProgram.hpp"
+#include "matrix.h"
 
 namespace engine
 {
@@ -14,7 +12,7 @@ namespace engine
   private:
     ShaderProgram *_program;
     GLint _projectionMatrixLocation;
-    glm::mat4 _projectionMatrix;
+    GLfloat _projectionMatrix[16];
   public:
     GLcontext(void);
     ~GLcontext(void);

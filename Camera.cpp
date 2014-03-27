@@ -90,9 +90,12 @@ engine::Vector3D<float> engine::Camera::getForward(void) const
 
 void engine::Camera::position(void)
 {
-  _viewMatrix = glm::lookAt(glm::vec3(_pcamera._x, _pcamera._y, _pcamera._z),
-			    glm::vec3(_ptarget._x, _ptarget._y, _ptarget._z),
-			    glm::vec3(0.0, 1.0, 0.0));
+  GLfloat camera[] = {_pcamera._x, _pcamera._y, _pcamera._z};
+  GLfloat target[] = {_ptarget._x, _ptarget._y, _ptarget._z};
+  GLfloat head[] = {0.0, 1.0, 0.0};
+  matrixLoadIdentity(_viewMatrix);
+  matrixLookAt(_viewMatrix, camera, target, head);
+      
   _program->use();
-  glUniformMatrix4fv(_viewMatrixLocation, 1, GL_FALSE, &_viewMatrix[0][0]);
+  glUniformMatrix4fv(_viewMatrixLocation, 1, GL_FALSE, _viewMatrix);
 }

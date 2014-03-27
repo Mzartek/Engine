@@ -1,6 +1,7 @@
 #ifndef MODEL
 #define MODEL
 
+#include "matrix.h"
 #include "Object.hpp"
 
 namespace engine
@@ -12,7 +13,7 @@ namespace engine
     unsigned _index;
     ShaderProgram *_program;
     GLint _modelMatrixLocation;
-    glm::mat4 _modelMatrix;
+    GLfloat _modelMatrix[16];
   public:
     Model();
     ~Model();
@@ -24,7 +25,7 @@ namespace engine
     void matIdentity(void);
     void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
-    void matScale(const GLfloat &x);
+    void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void display(void);
   };
 }

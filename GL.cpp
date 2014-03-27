@@ -31,18 +31,19 @@ void engine::loadTex(const std::string path, GLuint *texture)
   switch(testFormat(image->format->format))
     {
     case RGB:
-      gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, image->w, image->h, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
       break;
     case BGR:
-      gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, image->w, image->h, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
       break;
     case RGBA:
-      gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
       break;
     default:
       std::cerr << "Format " << image->format->format << " unknown" << std::endl;
       break;
     }
+  glGenerateMipmap(GL_TEXTURE_2D);
   delete image;
 }
 
