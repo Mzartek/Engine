@@ -127,7 +127,7 @@ void engine::OBJModel::loadObj(const std::string name)
   std::vector<GLfloat> vn;
   std::vector<GLfloat> vt;
   GLfloat tmp[3];
-  GLulong num[3], trianglePoint, matindex, numIndex = 0;
+  GLulong num[3], trianglePoint, matindex = 0, numIndex = 0;
   char *strtmp;
   bool first = true, takestr = true;
   

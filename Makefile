@@ -7,7 +7,7 @@ ifeq ($(SYSTEM), Linux)
 LIB= -Iinclude -fPIC
 else
 BIN= bin/
-LIB= -Iinclude
+LIB= -Iinclude -I/c/MinGW/tiers/include -L/c/MinGW/tiers/lib -lopengl32 -lglu32 -lglew32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lm
 endif
 FLAGS= -O3 -Wall -Werror -Wfatal-errors $(LIB)
 SRC= GL.cpp Object.cpp Window.cpp Camera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp GLcontext.cpp Model.cpp OBJModel.cpp matrix.cpp
