@@ -9,7 +9,7 @@ else
 BIN= bin/
 LIB= -Iinclude
 endif
-FLAGS= -Wall -Werror -Wfatal-errors $(LIB)
+FLAGS= -O3 -Wall -Werror -Wfatal-errors $(LIB)
 SRC= GL.cpp Object.cpp Window.cpp Camera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp GLcontext.cpp Model.cpp OBJModel.cpp matrix.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 IMPORT= -Wl,--out-implib,$(DIR)lib$(LIBNAME).a

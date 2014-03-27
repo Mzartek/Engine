@@ -5,7 +5,7 @@ std::string engine::OBJModel::findPath(const std::string name)
   unsigned size, i;
   std::string path;
 
-  for(i=0 ; name[i]!='\0' ; i++)
+  for(size=i=0 ; name[i]!='\0' ; i++)
     if(name[i]=='/')
       size=i+1;
 
