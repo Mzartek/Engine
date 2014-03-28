@@ -16,6 +16,6 @@ varying out vec2 texCoord;
 void main(void)
 {
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vertexArray;
-	texCoord = textureArray;
+	texCoord = vec2(textureArray.x, 1 - textureArray.y);
 	color = matDiffuse;
 }

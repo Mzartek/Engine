@@ -32,7 +32,6 @@ void display(void)
 void idle(void)
 {
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  cam.genTarget();
 }
 
 void reshape(int w, int h)
@@ -61,7 +60,6 @@ void keyboard(unsigned char key, bool state)
 void mouseMove(int xrel, int yrel)
 {
   cam.mouseMove(xrel, yrel);
-  cam.genTarget();
 }
 
 void init(void)
@@ -72,16 +70,16 @@ void init(void)
 void initGL(void)
 {
   GLfloat vertex[]={-5, -5, 0,
-		    0.25, 0.75,//
-		    0, 0, -1,
-		    -5, 5, 0,
 		    0.25, 0.25,//
 		    0, 0, -1,
+		    -5, 5, 0,
+		    0.25, 0.75,//
+		    0, 0, -1,
 		    5, 5, 0,
-		    0.75, 0.25,//
+		    0.75, 0.75,//
 		    0, 0, -1,
 		    5, -5, 0,
-		    0.75, 0.75,//
+		    0.75, 0.25,//
 		    0, 0, -1
   };
   GLuint index[]={0, 1, 2, 0, 2, 3};
@@ -100,11 +98,10 @@ void initGL(void)
 
   face.createObject(vertex, sizeof vertex,
 		    index, sizeof index,
-		    "./resources/roi.png",
+		    "./resources/cav.png",
 		    mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
 
   firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
-  // firstObj.loadObj("resources/test.obj");
   firstObj.matTranslate(10, 10, 10);
   firstObj.matRotate(-90, 1, 0, 0);
   firstObj.matScale(2, 2, 2);

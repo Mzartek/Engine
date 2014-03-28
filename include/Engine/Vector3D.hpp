@@ -10,9 +10,6 @@ namespace engine
     T _x;
     T _y;
     T _z;
-    T *_px;
-    T *_py;
-    T *_pz;
     Vector3D(void);
     Vector3D(const T &x, const T &y, const T &z);
     ~Vector3D(void);

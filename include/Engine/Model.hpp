@@ -3,6 +3,7 @@
 
 #include "matrix.h"
 #include "Object.hpp"
+#include "Vector3D.hpp"
 
 namespace engine
 {
@@ -26,6 +27,7 @@ namespace engine
     void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+    Vector3D<GLfloat> getPosition(void);
     void display(void);
   };
 }

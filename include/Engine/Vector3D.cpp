@@ -1,23 +1,17 @@
 template <typename T>
 engine::Vector3D<T>::Vector3D(void)
 {
-  _x=0;
-  _y=0;
-  _z=0;
-  _px=&_x;
-  _py=&_y;
-  _pz=&_z;
+  _x = 0;
+  _y = 0;
+  _z = 0;
 }
 
 template <typename T>
 engine::Vector3D<T>::Vector3D(const T &x, const T &y, const T &z)
 {
-  _x=x;
-  _y=y;
-  _z=z;
-  _px=&_x;
-  _py=&_y;
-  _pz=&_z;
+  _x = x;
+  _y = y;
+  _z = z;
 }
 
 template <typename T>
