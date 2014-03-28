@@ -182,7 +182,7 @@ void engine::OBJModel::loadObj(const std::string name)
       else if(str == "f")
 	{
 	  objfile >> str;
-	  while(isdigit(str[0]) && objfile.good())
+	  while(isdigit(str[0]))
 	    {
 	      strtmp = &str[0];
 	      num[0] = (strtoul(&strtmp[0], &strtmp, 0)-1) * 3;
@@ -191,6 +191,8 @@ void engine::OBJModel::loadObj(const std::string name)
 	      array.push_back(v[num[0]]); array.push_back(v[num[0]+1]); array.push_back(v[num[0]+2]);
 	      array.push_back(vt[num[1]]); array.push_back(vt[num[1]+1]);
 	      array.push_back(vn[num[2]]); array.push_back(vn[num[2]+1]); array.push_back(vn[num[2]+2]);
+	      if(objfile.eof())
+		break;
 	      objfile >> str;
 	    }
 	  trianglePoint = numIndex;

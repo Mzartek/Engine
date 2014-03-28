@@ -84,7 +84,7 @@ void initGL(void)
 		    0.75, 0.75,//
 		    0, 0, -1
   };
-  GLuint index[]={0, 1, 2, 3, 2, 0};
+  GLuint index[]={0, 1, 2, 0, 2, 3};
   GLfloat mat_ambiant[] = {0.2, 0.2, 0.2, 1.0};
   GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 1.0};
   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
@@ -104,6 +104,7 @@ void initGL(void)
 		    mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
 
   firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
+  // firstObj.loadObj("resources/test.obj");
   firstObj.matTranslate(10, 10, 10);
   firstObj.matRotate(-90, 1, 0, 0);
   firstObj.matScale(2, 2, 2);
