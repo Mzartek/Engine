@@ -2,9 +2,18 @@
 
 engine::Object::Object(void)
 {
+  unsigned i;
   _idObject = 0;
   _idElementObject = 0;
   _idTextureObject = 0;
+  for(i=0 ; i<4 ; i++)
+    {
+      _matAmbient[i]=1.0;
+      _matDiffuse[i]=1.0;
+      _matSpecular[i]=1.0;
+    }
+  _matShininess[0]=1.0;
+  _program = NULL;
 }
 
 engine::Object::~Object(void)
@@ -20,7 +29,7 @@ engine::Object::~Object(void)
 void engine::Object::setShaderProgram(ShaderProgram *program)
 {
   _program = program;
-  _matAmbiantLocation = glGetUniformLocation(_program->getId(), "matAmbiant");
+  _matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
   _matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
   _matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
   _matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
@@ -46,12 +55,12 @@ void engine::Object::setIdTextureObject(const GLuint &id)
   _idTextureObject = id;
 }
 
-void engine::Object::setAmbiant(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
+void engine::Object::setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
 {
-  _matAmbiant[0] = x;
-  _matAmbiant[1] = y;
-  _matAmbiant[2] = z;
-  _matAmbiant[3] = w;
+  _matAmbient[0] = x;
+  _matAmbient[1] = y;
+  _matAmbient[2] = z;
+  _matAmbient[3] = w;
 }
 
 void engine::Object::setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
@@ -80,7 +89,7 @@ void engine::Object::setShininess(const GLfloat &x)
 void engine::Object::display(void) const
 {
   _program->use();
-  glUniform4fv(_matAmbiantLocation,  1, _matAmbiant);
+  glUniform4fv(_matAmbientLocation,  1, _matAmbient);
   glUniform4fv(_matDiffuseLocation,  1, _matDiffuse);
   glUniform4fv(_matSpecularLocation,  1, _matSpecular);
   glUniform1fv(_matShininessLocation, 1, _matShininess);
@@ -105,6 +114,7 @@ void engine::Object::display(void) const
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   glBindTexture(GL_TEXTURE_2D, 0);
+  glUseProgram(0);
 }
 
 #undef BUFFER_OFFSET

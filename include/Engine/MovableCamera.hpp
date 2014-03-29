@@ -7,11 +7,12 @@ namespace engine
 {
   class MovableCamera : public Camera
   {
+  private:
+    float _atheta;
+    float _aphi;
   protected:
     Vector3D<float> _vforward;
     Vector3D<float> _vleft;
-    float _atheta;
-    float _aphi;
     float _speed;
   public:
     MovableCamera(void);

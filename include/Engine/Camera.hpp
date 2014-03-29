@@ -9,12 +9,13 @@ namespace engine
 {
   class Camera
   {
-  protected:
-    Vector3D<float> _pcamera;
-    Vector3D<float> _ptarget;
+  private:
     ShaderProgram *_program;
     GLint _viewMatrixLocation;
     GLfloat _viewMatrix[16];
+  protected:
+    Vector3D<GLfloat> _pcamera;
+    Vector3D<GLfloat> _ptarget;
   public:
     Camera(void);
     Camera(const float &x, const float &y, const float &z);

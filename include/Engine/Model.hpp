@@ -22,7 +22,7 @@ namespace engine
     unsigned createObject(const GLfloat *vertexArray, const GLuint &sizeVertexArray,
 			  const GLuint *elementArray, const GLuint &sizeElementArray,
 			  const std::string pathTexture,
-			  const GLfloat *ambiant, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess);
+			  const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess);
     void matIdentity(void);
     void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);

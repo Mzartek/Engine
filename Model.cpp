@@ -24,7 +24,7 @@ void engine::Model::setShaderProgram(ShaderProgram *program)
 unsigned engine::Model::createObject(const GLfloat *vertexArray, const GLuint &sizeVertexArray,
 				     const GLuint *elementArray, const GLuint &sizeElementArray,
 				     const std::string pathTexture,
-				     const GLfloat *ambiant, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess)
+				     const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess)
 {
   unsigned id;
   Object *newone = new Object();
@@ -35,7 +35,7 @@ unsigned engine::Model::createObject(const GLfloat *vertexArray, const GLuint &s
   newone->setIdElementObject(id, sizeElementArray/sizeof(GLuint));
   engine::loadTex(pathTexture, &id);
   newone->setIdTextureObject(id);
-  newone->setAmbiant(ambiant[0], ambiant[1], ambiant[2], ambiant[3]);
+  newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
   newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
   newone->setSpecular(specular[0], specular[1], specular[2], specular[3]);
   newone->setShininess(shininess[0]);
@@ -83,4 +83,5 @@ void engine::Model::display(void)
   
   for(i=0 ; i<_tObject.size(); i++)
     _tObject[i]->display();
+  glUseProgram(0);
 }

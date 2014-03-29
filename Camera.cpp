@@ -62,4 +62,5 @@ void engine::Camera::position(void)
       
   _program->use();
   glUniformMatrix4fv(_viewMatrixLocation, 1, GL_FALSE, _viewMatrix);
+  glUseProgram(0);
 }

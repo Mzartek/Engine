@@ -3,14 +3,16 @@
 #include <Engine/FreeCam.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GLcontext.hpp>
+#include <Engine/Light.hpp>
 
 #define ESC 41
 #define MAJ 225
 
 bool keyState[256];
-engine::FreeCam cam;
 engine::Window window;
 engine::GLcontext context;
+engine::FreeCam cam;
+engine::Light firstLight;
 engine::Model face;
 engine::OBJModel firstObj;
 engine::ShaderProgram *program;
@@ -21,6 +23,7 @@ void display(void)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   cam.position();
+  firstLight.position();
   
   firstObj.display();
 
@@ -31,7 +34,11 @@ void display(void)
 
 void idle(void)
 {
+  // static engine::Vector3D<float> lightPosition;
+  
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+  // lightPosition = cam.getPositionCamera();
+  // firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
 }
 
 void reshape(int w, int h)
@@ -83,23 +90,31 @@ void initGL(void)
 		    0, 0, -1
   };
   GLuint index[]={0, 1, 2, 0, 2, 3};
-  GLfloat mat_ambiant[] = {0.2, 0.2, 0.2, 1.0};
+  GLfloat mat_ambient[] = {0.2, 0.2, 0.2, 1.0};
   GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 1.0};
   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat mat_shininess[] = {2.0};
 
   program = new engine::ShaderProgram();
-  program->loadProgram("minimal.vert", "minimal.frag");
+  program->loadProgram("../shader/minimal.vert", "../shader/minimal.frag");
   
   context.setShaderProgram(program);
   cam.setShaderProgram(program);
+  firstLight.setShaderProgram(program);
   face.setShaderProgram(program);
   firstObj.setShaderProgram(program);
 
+  firstLight.setPosition(-5, 10, 0);
+  firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
+  firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
+  firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
+  
   face.createObject(vertex, sizeof vertex,
 		    index, sizeof index,
 		    "./resources/cav.png",
-		    mat_ambiant, mat_diffuse, mat_specular, mat_shininess);
+		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
+  face.matTranslate(0, 10, 5);
+  face.matRotate(90, 0, 1, 0);
 
   firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
   firstObj.matTranslate(10, 10, 10);
