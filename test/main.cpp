@@ -107,7 +107,7 @@ void initGL(void)
   firstObj.setShaderProgram(program);
 
   // firstLight.setPosition(0, 15, 0);
-  firstLight.setCone(45);
+  firstLight.setCone(25);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
