@@ -10,7 +10,6 @@ struct material
 
 struct light
 {
-	vec3 position;
 	vec3 spotDirection;
 	float spotCutOff;
 	vec4 ambient;

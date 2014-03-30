@@ -6,7 +6,6 @@ engine::Camera::Camera(void)
   _pcamera._y = 0;
   _pcamera._z = 0;
   _program = NULL;
-  _viewMatrixLocation = -1;
 }
 
 engine::Camera::Camera(const float &x, const float &y, const float &z)
@@ -15,7 +14,6 @@ engine::Camera::Camera(const float &x, const float &y, const float &z)
   _pcamera._y = y;
   _pcamera._z = z;
   _program = NULL;
-  _viewMatrixLocation = -1;
 }
 
 engine::Camera::~Camera(void)
@@ -26,6 +24,7 @@ void engine::Camera::setShaderProgram(ShaderProgram *program)
 {
   _program = program;
   _viewMatrixLocation = glGetUniformLocation(_program->getId(), "viewMatrix");
+  _camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
 }
 
 void engine::Camera::setPositionCamera(const float &x, const float &y, const float &z)
@@ -62,5 +61,6 @@ void engine::Camera::position(void)
       
   _program->use();
   glUniformMatrix4fv(_viewMatrixLocation, 1, GL_FALSE, _viewMatrix);
+  glUniform3fv(_camPositionLocation, 1, camera);
   glUseProgram(0);
 }

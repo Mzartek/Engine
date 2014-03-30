@@ -12,6 +12,7 @@ namespace engine
   private:
     ShaderProgram *_program;
     GLint _viewMatrixLocation;
+    GLint _camPositionLocation;
     GLfloat _viewMatrix[16];
   protected:
     Vector3D<GLfloat> _pcamera;

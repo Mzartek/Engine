@@ -10,7 +10,6 @@ struct material
 
 struct light
 {
-	vec3 position;
 	vec3 spotDirection;
 	float spotCutOff;
 	vec4 ambient;
@@ -30,7 +29,7 @@ uniform vec4 matAmbient, matDiffuse, matSpecular;
 uniform float matShininess;
 
 //Light
-uniform vec3 lightPosition, lightSpotDirection;
+uniform vec3 camPosition, lightPosition, lightSpotDirection;
 uniform float lightSpotCutOff;
 uniform vec4 lightAmbient, lightDiffuse, lightSpecular;
 
@@ -51,23 +50,21 @@ void materialInit(void)
 void lightInit(void)
 {
 	mat3 normalMatrix = transpose(inverse(modelMatrix));
+	vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
 
-	outLight.position = lightPosition;
 	outLight.spotDirection = lightSpotDirection;
 	outLight.spotCutOff = lightSpotCutOff;
 	outLight.ambient = lightAmbient;
 	outLight.diffuse = lightDiffuse;
 	outLight.specular = lightSpecular;
 	
-	vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
 	normal = vec3(normalMatrix * normalArray);
-	lightDir = vec3(lightPosition - vVertex);
-	eyeVec = -vVertex;
+	lightDir = lightPosition - vVertex;
+	eyeVec = camPosition - vVertex;
 }
 
 void main(void)
-{
-	
+{	
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexArray, 1.0);
 
 	outTexCoord = vec2(textureArray.x, 1 - textureArray.y);
