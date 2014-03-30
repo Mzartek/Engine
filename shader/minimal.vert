@@ -59,7 +59,7 @@ void lightInit(void)
 	outLight.diffuse = lightDiffuse;
 	outLight.specular = lightSpecular;
 	
-	vec3 vVertex = vec3(modelMatrix * vec4(vertexArray.x, vertexArray.y, vertexArray.z, 1.0));
+	vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
 	normal = vec3(normalMatrix * normalArray);
 	lightDir = vec3(lightPosition - vVertex);
 	eyeVec = -vVertex;
@@ -68,7 +68,7 @@ void lightInit(void)
 void main(void)
 {
 	
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexArray.x, vertexArray.y, vertexArray.z, 1.0);
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexArray, 1.0);
 
 	outTexCoord = vec2(textureArray.x, 1 - textureArray.y);
 
