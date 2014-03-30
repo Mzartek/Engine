@@ -10,15 +10,15 @@ namespace engine
   {
   protected:
     GLfloat _lightPosition[3];
-    GLfloat _spotDirection[3];
-    GLfloat _spotCone[1];
+    GLfloat _lightSpotDirection[3];
+    GLfloat _lightSpotCutOff[1];
     GLfloat _lightAmbient[4];
     GLfloat _lightDiffuse[4];
     GLfloat _lightSpecular[4];
     ShaderProgram *_program;
     GLint _lightPositionLocation;
-    GLint _spotDirectionLocation;
-    GLint _spotConeLocation;
+    GLint _lightSpotDirectionLocation;
+    GLint _lightSpotCutOffLocation;
     GLint _lightAmbientLocation;
     GLint _lightDiffuseLocation;
     GLint _lightSpecularLocation;

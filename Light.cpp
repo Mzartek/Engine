@@ -12,10 +12,10 @@ engine::Light::Light(void)
       _lightDiffuse[i]=1.0;
       _lightSpecular[i]=1.0;
     }
-  _spotDirection[0] = 1.0;
-  _spotDirection[1] = 0;
-  _spotDirection[2] = 0;
-  _spotCone[0] = 180;
+  _lightSpotDirection[0] = 1.0;
+  _lightSpotDirection[1] = 0;
+  _lightSpotDirection[2] = 0;
+  _lightSpotCutOff[0] = 180;
   _program = NULL;
 }
 
@@ -31,10 +31,10 @@ engine::Light::Light(const float &x, const float &y, const float &z)
       _lightDiffuse[i]=1.0;
       _lightSpecular[i]=1.0;
     }
-  _spotDirection[0] = 1.0;
-  _spotDirection[1] = 0;
-  _spotDirection[2] = 0;
-  _spotCone[0] = 180;
+  _lightSpotDirection[0] = 1.0;
+  _lightSpotDirection[1] = 0;
+  _lightSpotDirection[2] = 0;
+  _lightSpotCutOff[0] = 180;
   _program = NULL;
 }
 
@@ -46,8 +46,8 @@ void engine::Light::setShaderProgram(ShaderProgram *program)
 {
   _program = program;
   _lightPositionLocation = glGetUniformLocation(_program->getId(), "lightPosition");
-  _spotDirectionLocation = glGetUniformLocation(_program->getId(), "spotDirection");
-  _spotConeLocation = glGetUniformLocation(_program->getId(), "spotCone");
+  _lightSpotDirectionLocation = glGetUniformLocation(_program->getId(), "lightSpotDirection");
+  _lightSpotCutOffLocation = glGetUniformLocation(_program->getId(), "lightSpotCutOff");
   _lightAmbientLocation = glGetUniformLocation(_program->getId(), "lightAmbient");
   _lightDiffuseLocation = glGetUniformLocation(_program->getId(), "lightDiffuse");
   _lightSpecularLocation = glGetUniformLocation(_program->getId(), "lightSpecular");
@@ -62,14 +62,14 @@ void engine::Light::setPosition(const float &x, const float &y, const float &z)
 
 void engine::Light::setDirection(const float &x, const float &y, const float &z)
 {
-  _spotDirection[0] = x;
-  _spotDirection[1] = y;
-  _spotDirection[2] = z;
+  _lightSpotDirection[0] = x;
+  _lightSpotDirection[1] = y;
+  _lightSpotDirection[2] = z;
 }
 
 void engine::Light::setCone(const float &x)
 {
-  _spotCone[0] = x;
+  _lightSpotCutOff[0] = x;
 }
 
 void engine::Light::setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
@@ -109,8 +109,8 @@ void engine::Light::position(void)
 {
   _program->use();
   glUniform3fv(_lightPositionLocation,  1, _lightPosition);
-  glUniform3fv(_spotDirectionLocation,  1, _spotDirection);
-  glUniform1fv(_spotConeLocation,  1, _spotCone);
+  glUniform3fv(_lightSpotDirectionLocation,  1, _lightSpotDirection);
+  glUniform1fv(_lightSpotCutOffLocation,  1, _lightSpotCutOff);
   glUniform4fv(_lightAmbientLocation,  1, _lightAmbient);
   glUniform4fv(_lightDiffuseLocation,  1, _lightDiffuse);
   glUniform4fv(_lightSpecularLocation,  1, _lightSpecular);

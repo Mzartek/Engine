@@ -34,11 +34,11 @@ void display(void)
 
 void idle(void)
 {
-  // static engine::Vector3D<float> lightPosition;
+  static engine::Vector3D<float> lightPosition;
   
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  // lightPosition = cam.getPositionCamera();
-  // firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
+  lightPosition = cam.getPositionCamera();
+  firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
 }
 
 void reshape(int w, int h)
@@ -104,7 +104,7 @@ void initGL(void)
   face.setShaderProgram(program);
   firstObj.setShaderProgram(program);
 
-  firstLight.setPosition(-5, 10, 0);
+  // firstLight.setPosition(-5, 15, 0);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
@@ -113,7 +113,7 @@ void initGL(void)
 		    index, sizeof index,
 		    "./resources/cav.png",
 		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-  face.matTranslate(0, 10, 5);
+  face.matTranslate(0, 0, -5);
   face.matRotate(90, 0, 1, 0);
 
   firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
