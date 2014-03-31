@@ -34,15 +34,15 @@ void display(void)
 
 void idle(void)
 {
-  // static engine::Vector3D<float> lightPosition, lightDirection;
+  static engine::Vector3D<float> lightPosition, lightDirection;
 
   // firstObj.matRotate(1, 0, 0, 1);
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
   
-  // lightPosition = cam.getPositionCamera();
-  // lightDirection = cam.getForward();
-  // firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
-  // firstLight.setDirection(lightDirection._x, lightDirection._y, lightDirection._z);
+  lightPosition = cam.getPositionCamera();
+  lightDirection = cam.getForward();
+  firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
+  firstLight.setDirection(lightDirection._x, lightDirection._y, lightDirection._z);
 }
 
 void reshape(int w, int h)
@@ -98,7 +98,7 @@ void initGL(void)
   GLfloat mat_ambient[] = {0.2, 0.2, 0.2, 1.0};
   GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 1.0};
   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
-  GLfloat mat_shininess[] = {2.0};
+  GLfloat mat_shininess[] = {20.0};
 
   program = new engine::ShaderProgram();
   program->loadProgram("../shader/minimal.vert", "../shader/minimal.frag");
@@ -120,9 +120,9 @@ void initGL(void)
   firstObj.matRotate(-90, 1, 0, 0);
   firstObj.matScale(2, 2, 2);
 
-  firstLight.setPosition(15, 20, 15);
-  firstLight.setDirection(0, -1, 0);
-  firstLight.setCone(90);
+  // firstLight.setPosition(15, 20, 15);
+  // firstLight.setDirection(0, -1, 0);
+  firstLight.setCone(20);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
