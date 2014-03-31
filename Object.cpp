@@ -3,9 +3,10 @@
 engine::Object::Object(void)
 {
   unsigned i;
-  _idObject = 0;
-  _idElementObject = 0;
-  _idTextureObject = 0;
+  _idVAO = 0;
+  _idVBO[0] = 0;
+  _idVBO[1] = 0;
+  _idTexture = 0;
   for(i=0 ; i<4 ; i++)
     {
       _matAmbient[i]=1.0;
@@ -18,41 +19,19 @@ engine::Object::Object(void)
 
 engine::Object::~Object(void)
 {
-  if(glIsBuffer(_idObject))
-    glDeleteBuffers(1, &_idObject);
-  if(glIsBuffer(_idElementObject))
-    glDeleteBuffers(1, &_idElementObject);
-  if(glIsTexture(_idTextureObject))
-    glDeleteTextures(1, &_idTextureObject);
+  if(glIsVertexArray(_idVAO))
+    glDeleteVertexArrays(1, &_idVAO);
+  if(glIsBuffer(_idVBO[0]))
+    glDeleteBuffers(1, &_idVBO[0]);
+  if(glIsBuffer(_idVBO[1]))
+    glDeleteBuffers(1, &_idVBO[1]);
+  if(glIsTexture(_idTexture))
+    glDeleteTextures(1, &_idTexture);
 }
 
-void engine::Object::setShaderProgram(ShaderProgram *program)
+void engine::Object::setTexture(const GLuint &id)
 {
-  _program = program;
-  _matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
-  _matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
-  _matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
-  _matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
-  
-  _vertexAttribLocation = glGetAttribLocation(_program->getId(), "vertexArray");
-  _textureAttribLocation = glGetAttribLocation(_program->getId(), "textureArray");
-  _normalAttribLocation = glGetAttribLocation(_program->getId(), "normalArray");
-}
-
-void engine::Object::setIdObject(const GLuint &id)
-{
-  _idObject = id;
-}
-
-void engine::Object::setIdElementObject(const GLuint &id, const GLuint &num)
-{
-  _idElementObject = id;
-  _numElement = num;
-}
-
-void engine::Object::setIdTextureObject(const GLuint &id)
-{
-  _idTextureObject = id;
+  _idTexture = id;
 }
 
 void engine::Object::setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
@@ -86,6 +65,47 @@ void engine::Object::setShininess(const GLfloat &x)
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
+void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
+			  const GLuint &sizeIndexArray, const GLuint *indexArray,
+			  ShaderProgram *program)
+{
+  _numElement = sizeIndexArray/sizeof(GLuint);
+  
+  _program = program;
+  _matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
+  _matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
+  _matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
+  _matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
+  _vertexAttribLocation = glGetAttribLocation(_program->getId(), "vertexArray");
+  _textureAttribLocation = glGetAttribLocation(_program->getId(), "textureArray");
+  _normalAttribLocation = glGetAttribLocation(_program->getId(), "normalArray");
+  
+  glGenVertexArrays(1, &_idVAO);
+  glBindVertexArray(_idVAO);
+  
+  glGenBuffers(1, &_idVBO[0]);
+  glBindBuffer(GL_ARRAY_BUFFER, _idVBO[0]);
+  glBufferData(GL_ARRAY_BUFFER, sizeVertexArray, vertexArray, GL_STATIC_DRAW);
+  
+  glGenBuffers(1, &_idVBO[1]);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idVBO[1]);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeIndexArray, indexArray, GL_STATIC_DRAW);
+  
+  glEnableVertexAttribArray(_vertexAttribLocation);
+  glEnableVertexAttribArray(_textureAttribLocation);
+  glEnableVertexAttribArray(_normalAttribLocation);
+  
+  glVertexAttribPointer(_vertexAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
+  glVertexAttribPointer(_textureAttribLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
+  glVertexAttribPointer(_normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glBindVertexArray(0);
+}
+
+#undef BUFFER_OFFSET
+
 void engine::Object::display(void) const
 {
   _program->use();
@@ -94,27 +114,13 @@ void engine::Object::display(void) const
   glUniform4fv(_matSpecularLocation,  1, _matSpecular);
   glUniform1fv(_matShininessLocation, 1, _matShininess);
   
-  glBindBuffer(GL_ARRAY_BUFFER, _idObject);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idElementObject);
-  glBindTexture(GL_TEXTURE_2D, _idTextureObject);
-  
-  glEnableVertexAttribArray(_vertexAttribLocation); // GL_VERTEX_ARRAY
-  glEnableVertexAttribArray(_textureAttribLocation); // GL_TEXTURE_COORD_ARRAY
-  glEnableVertexAttribArray(_normalAttribLocation); // GL_NORMAL_ARRAY
+  glBindVertexArray(_idVAO);
+  glBindTexture(GL_TEXTURE_2D, _idTexture);
 
-  glVertexAttribPointer(_vertexAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
-  glVertexAttribPointer(_textureAttribLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
-  glVertexAttribPointer(_normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
   glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
-  glDisableVertexAttribArray(_vertexAttribLocation);
-  glDisableVertexAttribArray(_textureAttribLocation);
-  glDisableVertexAttribArray(_normalAttribLocation);
-  
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   glBindTexture(GL_TEXTURE_2D, 0);
+  glBindVertexArray(0);
+  
   glUseProgram(0);
 }
-
-#undef BUFFER_OFFSET

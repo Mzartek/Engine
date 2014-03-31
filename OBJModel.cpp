@@ -217,8 +217,8 @@ void engine::OBJModel::loadObj(const std::string name)
 	    }
 	  else
 	    {
-	      createObject(&array[0], array.size()*sizeof(GLfloat),
-	      		   &index[0], index.size()*sizeof(GLuint),
+	      createObject(array.size()*sizeof(GLfloat), &array[0],
+	      		   index.size()*sizeof(GLuint), &index[0], 
 	      		   mat[matindex].texture,
 	      		   mat[matindex].ambiant, mat[matindex].diffuse, mat[matindex].specular, mat[matindex].shininess);
 	      numIndex=0;
@@ -228,8 +228,8 @@ void engine::OBJModel::loadObj(const std::string name)
 	    }
 	} 
     }
-  createObject(&array[0], array.size()*sizeof(GLfloat),
-	       &index[0], index.size()*sizeof(GLuint),
+  createObject(array.size()*sizeof(GLfloat), &array[0],
+	       index.size()*sizeof(GLuint), &index[0], 
 	       mat[matindex].texture,
 	       mat[matindex].ambiant, mat[matindex].diffuse, mat[matindex].specular, mat[matindex].shininess);
 }

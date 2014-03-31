@@ -37,7 +37,8 @@ void main(void)
 
 	L = normalize(lightDir);
 	N = normalize(normal);
-	lambertTerm = max(dot(L,N), 0.0);
+	
+	lambertTerm = dot(L,N);
 	if(lambertTerm > 0.0)
 	{
 		D = normalize(outLight.spotDirection);

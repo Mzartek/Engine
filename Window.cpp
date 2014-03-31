@@ -40,7 +40,7 @@ void engine::Window::initWindow(const std::string title, int const &w, int const
     }
   
   _idGLContext = SDL_GL_CreateContext(_idWindow);
-  
+
   if(glewInit())
     {
       std::cerr << "Error init GLEW" << std::endl;

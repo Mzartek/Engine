@@ -18,8 +18,7 @@
 
 namespace engine
 {
-  extern void loadTex(const std::string path, GLuint *texture);
-  extern void initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data);
+  extern GLuint loadTex(const std::string path);
 }
 
 #endif

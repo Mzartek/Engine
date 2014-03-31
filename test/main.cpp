@@ -24,7 +24,7 @@ void display(void)
 
   cam.position();
   firstLight.position();
-  
+
   firstObj.display();
 
   face.display();
@@ -34,13 +34,15 @@ void display(void)
 
 void idle(void)
 {
-  static engine::Vector3D<float> lightPosition, lightDirection;
-  
+  // static engine::Vector3D<float> lightPosition, lightDirection;
+
+  // firstObj.matRotate(1, 0, 0, 1);
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  lightPosition = cam.getPositionCamera();
-  lightDirection = cam.getForward();
-  firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
-  firstLight.setDirection(lightDirection._x, lightDirection._y, lightDirection._z);
+  
+  // lightPosition = cam.getPositionCamera();
+  // lightDirection = cam.getForward();
+  // firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
+  // firstLight.setDirection(lightDirection._x, lightDirection._y, lightDirection._z);
 }
 
 void reshape(int w, int h)
@@ -73,21 +75,22 @@ void mouseMove(int xrel, int yrel)
 
 void init(void)
 {
+  cam.setPositionCamera(0, 1, 0);
   cam.setSpeed(0.25);
 }
 
 void initGL(void)
 {
-  GLfloat vertex[]={-5, -5, 0,
+  GLfloat vertex[]={-100, -100, 0,
 		    0.25, 0.25,//
 		    0, 0, -1,
-		    -5, 5, 0,
+		    -100, 100, 0,
 		    0.25, 0.75,//
 		    0, 0, -1,
-		    5, 5, 0,
+		    100, 100, 0,
 		    0.75, 0.75,//
 		    0, 0, -1,
-		    5, -5, 0,
+		    100, -100, 0,
 		    0.75, 0.25,//
 		    0, 0, -1
   };
@@ -102,27 +105,27 @@ void initGL(void)
   
   context.setShaderProgram(program);
   cam.setShaderProgram(program);
-  firstLight.setShaderProgram(program);
   face.setShaderProgram(program);
   firstObj.setShaderProgram(program);
+  firstLight.setShaderProgram(program);
 
-  // firstLight.setPosition(0, 15, 0);
-  firstLight.setCone(25);
+  face.createObject(sizeof vertex, vertex,
+  		    sizeof index, index,
+  		    "./resources/none.png",
+  		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
+  face.matRotate(90, 1, 0, 0);
+
+  firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
+  firstObj.matTranslate(15, 10, 15);
+  firstObj.matRotate(-90, 1, 0, 0);
+  firstObj.matScale(2, 2, 2);
+
+  firstLight.setPosition(15, 20, 15);
+  firstLight.setDirection(0, -1, 0);
+  firstLight.setCone(90);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
-  
-  face.createObject(vertex, sizeof vertex,
-		    index, sizeof index,
-		    "./resources/cav.png",
-		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-  face.matTranslate(0, 0, -10);
-  face.matScale(4.0, 4.0, 4.0);
-
-  firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
-  firstObj.matTranslate(10, 10, 10);
-  firstObj.matRotate(-90, 1, 0, 0);
-  firstObj.matScale(2, 2, 2);
 }
 
 int main(int argc, char **argv)

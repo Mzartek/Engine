@@ -9,10 +9,10 @@ namespace engine
   class Object
   {
   private:
+    GLuint _idVAO;
+    GLuint _idVBO[2];
+    GLuint _idTexture;
     GLuint _numElement;
-    GLuint _idObject;
-    GLuint _idElementObject;
-    GLuint _idTextureObject;
     GLfloat _matAmbient[4];
     GLfloat _matDiffuse[4];
     GLfloat _matSpecular[4];
@@ -28,14 +28,14 @@ namespace engine
   public:
     Object(void);
     ~Object(void);
-    void setShaderProgram(ShaderProgram *program);
-    void setIdObject(const GLuint &id);
-    void setIdElementObject(const GLuint &id, const GLuint &num);
-    void setIdTextureObject(const GLuint &id);
+    void setTexture(const GLuint &id);
     void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setShininess(const GLfloat &x);
+    void load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
+	      const GLuint &sizeIndexArray, const GLuint *indexArray,
+	      ShaderProgram *program);
     void display(void) const;
   };
 }

@@ -13,8 +13,9 @@ pixelFormat testFormat(unsigned f)
   return UNKNOWN;
 }
 
-void engine::loadTex(const std::string path, GLuint *texture)
+GLuint engine::loadTex(const std::string path)
 {
+  GLuint texture;
   SDL_Surface *image = IMG_Load(&path[0]);
   if(image==NULL)
     {
@@ -22,8 +23,8 @@ void engine::loadTex(const std::string path, GLuint *texture)
       exit(1);
     }
 
-  glGenTextures(1, texture);
-  glBindTexture(GL_TEXTURE_2D, *texture);
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -44,15 +45,7 @@ void engine::loadTex(const std::string path, GLuint *texture)
       break;
     }
   glGenerateMipmap(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, 0);
   delete image;
-}
-
-void engine::initBufferObject(GLuint type, GLuint size, GLuint *id, GLvoid *data)
-{
-  glGenBuffers(1, id);
-
-  glBindBuffer(type, *id);
-  glBufferData(type, size, data, GL_STATIC_DRAW);
-  
-  glBindBuffer(type, 0);
+  return texture;
 }
