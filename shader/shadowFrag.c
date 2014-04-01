@@ -1,6 +1,7 @@
-#version 330 core
+#version 330
 
-varying out float fragmentDepth;
+//Final Out
+out float fragmentDepth;
  
 void main()
 {

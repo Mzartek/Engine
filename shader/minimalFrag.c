@@ -1,4 +1,4 @@
-//version 330
+#version 330
 
 struct material
 {
@@ -17,15 +17,17 @@ struct light
   vec4 specular;
 };
 
+// Texture
 uniform sampler2D colorTexture;
 
+// In
 in vec2 outTexCoord;
 in material outMat;
 in light outLight;
 in vec3 normal, lightDir, eyeVec;
 
 //Final out
-varying out vec4 fragColor;
+out vec4 fragColor;
 
 void main(void)
 {

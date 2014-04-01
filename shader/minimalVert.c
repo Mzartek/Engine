@@ -1,4 +1,4 @@
-//version 330
+#version 330
 
 struct material
 {
@@ -20,10 +20,6 @@ struct light
 //Matrix
 uniform mat4 projectionMatrix, viewMatrix, modelMatrix;
 
-//Attribute
-in vec3 vertexArray, normalArray;
-in vec2 textureArray;
-
 //Material
 uniform vec4 matAmbient, matDiffuse, matSpecular;
 uniform float matShininess;
@@ -33,11 +29,16 @@ uniform vec3 camPosition, lightPosition, lightSpotDirection;
 uniform float lightSpotCutOff;
 uniform vec4 lightAmbient, lightDiffuse, lightSpecular;
 
+//Attribute
+layout(location = 0) in vec3 vertexArray;
+layout(location = 1) in vec2 textureArray;
+layout(location = 2) in vec3 normalArray;
+
 //Out
-varying out vec2 outTexCoord;
-varying out material outMat;
-varying out light outLight;
-varying out vec3 normal, lightDir, eyeVec;
+out vec2 outTexCoord;
+out material outMat;
+out light outLight;
+out vec3 normal, lightDir, eyeVec;
 
 void materialInit(void)
 {
@@ -49,7 +50,7 @@ void materialInit(void)
 
 void lightInit(void)
 {
-  mat3 normalMatrix = transpose(inverse(modelMatrix));
+  mat3 normalMatrix = mat3(transpose(inverse(modelMatrix)));
   vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
 
   outLight.spotDirection = lightSpotDirection;

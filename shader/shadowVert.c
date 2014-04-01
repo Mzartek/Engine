@@ -1,6 +1,10 @@
+#version 330
+
+// Matrix
 uniform mat4 depthProjectionMatrix, depthViewMatrix, depthModelMatrix;
 
-in vec3 vertexArray;
+//Attribute
+layout(location = 0) in vec3 vertexArray;
  
 void main()
 {

@@ -18,13 +18,11 @@ namespace engine
     GLfloat _matShininess[1];
     GLuint _numElement;
     ShaderProgram *_program;
+    GLint _textureLocation;
     GLint _matAmbientLocation;
     GLint _matDiffuseLocation;
     GLint _matSpecularLocation;
     GLint _matShininessLocation;
-    GLint _vertexAttribLocation;
-    GLint _textureAttribLocation;
-    GLint _normalAttribLocation;
   public:
     Object(void);
     ~Object(void);

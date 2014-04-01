@@ -72,13 +72,12 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
   _numElement = sizeIndexArray/sizeof(GLuint);
   
   _program = program;
+  _textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
   _matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
   _matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
   _matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
   _matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
-  _vertexAttribLocation = glGetAttribLocation(_program->getId(), "vertexArray");
-  _textureAttribLocation = glGetAttribLocation(_program->getId(), "textureArray");
-  _normalAttribLocation = glGetAttribLocation(_program->getId(), "normalArray");
+  
 
   // Vertex Array et Vertex Buffer Object
   glGenVertexArrays(1, &_idVAO);
@@ -92,13 +91,13 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idVBO[1]);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeIndexArray, indexArray, GL_STATIC_DRAW);
   
-  glEnableVertexAttribArray(_vertexAttribLocation);
-  glEnableVertexAttribArray(_textureAttribLocation);
-  glEnableVertexAttribArray(_normalAttribLocation);
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
   
-  glVertexAttribPointer(_vertexAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
-  glVertexAttribPointer(_textureAttribLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
-  glVertexAttribPointer(_normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
@@ -109,13 +108,17 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
 void engine::Object::display(void) const
 {
   _program->use();
+  
+  glBindVertexArray(_idVAO);
+
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, _idTexture);
+  glUniform1i(_textureLocation, 0);
+  
   glUniform4fv(_matAmbientLocation,  1, _matAmbient);
   glUniform4fv(_matDiffuseLocation,  1, _matDiffuse);
   glUniform4fv(_matSpecularLocation,  1, _matSpecular);
   glUniform1fv(_matShininessLocation, 1, _matShininess);
-  
-  glBindVertexArray(_idVAO);
-  glBindTexture(GL_TEXTURE_2D, _idTexture);
 
   glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
