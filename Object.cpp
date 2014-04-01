@@ -79,7 +79,8 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
   _vertexAttribLocation = glGetAttribLocation(_program->getId(), "vertexArray");
   _textureAttribLocation = glGetAttribLocation(_program->getId(), "textureArray");
   _normalAttribLocation = glGetAttribLocation(_program->getId(), "normalArray");
-  
+
+  // Vertex Array et Vertex Buffer Object
   glGenVertexArrays(1, &_idVAO);
   glBindVertexArray(_idVAO);
   
@@ -100,7 +101,6 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
   glVertexAttribPointer(_normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-
   glBindVertexArray(0);
 }
 
@@ -120,6 +120,7 @@ void engine::Object::display(void) const
   glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
   glBindTexture(GL_TEXTURE_2D, 0);
+  
   glBindVertexArray(0);
   
   glUseProgram(0);

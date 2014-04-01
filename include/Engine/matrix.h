@@ -14,6 +14,7 @@ extern "C" {
   void MultiplyMatrices4by4OpenGL_FLOAT(float *result, float *matrix1, float *matrix2);
 
   void matrixLoadIdentity(float *matrix);
+  void matrixOrtho(float *matrix, float left, float right, float bottom, float top, float nearVal, float farVal);
   void matrixPerspective(float *matrix, float fovyInDegrees, float aspectRatio, float znear, float zfar);
   void matrixLookAt(float *matrix, float *eyePosition3D, float *center3D, float *upVector3D);
   void matrixTranslate(float *matrix, float x, float y, float z);

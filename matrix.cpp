@@ -7,16 +7,16 @@ void matrixPerspectiveBis(float *matrix, float left, float right, float bottom, 
   temp2 = right - left;
   temp3 = top - bottom;
   temp4 = zfar - znear;
-  matrix[0] = temp / temp2;
-  matrix[1] = 0.0;
-  matrix[2] = 0.0;
-  matrix[3] = 0.0;
-  matrix[4] = 0.0;
-  matrix[5] = temp / temp3;
-  matrix[6] = 0.0;
-  matrix[7] = 0.0;
-  matrix[8] = (right + left) / temp2;
-  matrix[9] = (top + bottom) / temp3;
+  matrix[ 0] = temp / temp2;
+  matrix[ 1] = 0.0;
+  matrix[ 2] = 0.0;
+  matrix[ 3] = 0.0;
+  matrix[ 4] = 0.0;
+  matrix[ 5] = temp / temp3;
+  matrix[ 6] = 0.0;
+  matrix[ 7] = 0.0;
+  matrix[ 8] = (right + left) / temp2;
+  matrix[ 9] = (top + bottom) / temp3;
   matrix[10] = (-zfar - znear) / temp4;
   matrix[11] = -1.0;
   matrix[12] = 0.0;
@@ -68,14 +68,39 @@ void MultiplyMatrices4by4OpenGL_FLOAT(float *result, float *matrix1, float *matr
 
 void matrixLoadIdentity(float *matrix)
 {
-  unsigned i;
-  for(i=0 ; i<16 ; i++)
-    {
-      if(i==0 || i==5 || i==10 || i==15)
-	matrix[i]=1;
-      else
-	matrix[i]=0;
-    }
+  matrix[ 0]=1; matrix[ 4]=0; matrix[ 8]=0; matrix[12]=0; 
+  matrix[ 1]=0; matrix[ 5]=1; matrix[ 9]=0; matrix[13]=0; 
+  matrix[ 2]=0; matrix[ 6]=0; matrix[10]=1; matrix[14]=0; 
+  matrix[ 3]=0; matrix[ 7]=0; matrix[11]=0; matrix[15]=1; 
+}
+
+void matrixOrtho(float *matrix, float left, float right, float bottom, float top, float nearVal, float farVal)
+{
+  float tx, ty, tz;
+  
+  tx = -((right+left)/(right-left));
+  ty = -((top+bottom)/(top-bottom));
+  tz = -((farVal+nearVal)/(farVal-nearVal));
+  
+  matrix[ 0]=2/(right-left);
+  matrix[ 1]=0;
+  matrix[ 2]=0;
+  matrix[ 3]=0;
+
+  matrix[ 4]=0;
+  matrix[ 5]=2/(top-bottom);
+  matrix[ 6]=0;
+  matrix[ 7]=0;
+  
+  matrix[ 8]=0;
+  matrix[ 9]=0;
+  matrix[10]=-2/(farVal-nearVal);
+  matrix[11]=0;
+
+  matrix[12]=tx;
+  matrix[13]=ty;
+  matrix[14]=tz;
+  matrix[15]=1;
 }
 
 void matrixPerspective(float *matrix, float fovyInDegrees, float aspectRatio, float znear, float zfar)
@@ -101,22 +126,22 @@ void matrixLookAt(float *matrix, float *eyePosition3D, float *center3D, float *u
    
    ComputeNormalOfPlane(up, side, forward);
    
-   matrix2[0] = side[0];
-   matrix2[4] = side[1];
-   matrix2[8] = side[2];
+   matrix2[ 0] = side[0];
+   matrix2[ 4] = side[1];
+   matrix2[ 8] = side[2];
    matrix2[12] = 0.0;
    
-   matrix2[1] = up[0];
-   matrix2[5] = up[1];
-   matrix2[9] = up[2];
+   matrix2[ 1] = up[0];
+   matrix2[ 5] = up[1];
+   matrix2[ 9] = up[2];
    matrix2[13] = 0.0;
    
-   matrix2[2] = -forward[0];
-   matrix2[6] = -forward[1];
+   matrix2[ 2] = -forward[0];
+   matrix2[ 6] = -forward[1];
    matrix2[10] = -forward[2];
    matrix2[14] = 0.0;
    
-   matrix2[3] = matrix2[7] = matrix2[11] = 0.0;
+   matrix2[ 3] = matrix2[7] = matrix2[11] = 0.0;
    matrix2[15] = 1.0;
    
    MultiplyMatrices4by4OpenGL_FLOAT(resultMatrix, matrix, matrix2);
@@ -127,10 +152,10 @@ void matrixLookAt(float *matrix, float *eyePosition3D, float *center3D, float *u
 
 void matrixTranslate(float *matrix, float x, float y, float z)
 {
-  matrix[12]=matrix[0]*x+matrix[4]*y+matrix[8]*z+matrix[12];
-  matrix[13]=matrix[1]*x+matrix[5]*y+matrix[9]*z+matrix[13];
-  matrix[14]=matrix[2]*x+matrix[6]*y+matrix[10]*z+matrix[14];
-  matrix[15]=matrix[3]*x+matrix[7]*y+matrix[11]*z+matrix[15];
+  matrix[12]=matrix[ 0]*x+matrix[ 4]*y+matrix[ 8]*z+matrix[12];
+  matrix[13]=matrix[ 1]*x+matrix[ 5]*y+matrix[ 9]*z+matrix[13];
+  matrix[14]=matrix[ 2]*x+matrix[ 6]*y+matrix[10]*z+matrix[14];
+  matrix[15]=matrix[ 3]*x+matrix[ 7]*y+matrix[11]*z+matrix[15];
 }
 
 void matrixRotate(float *matrix, float angleInRadians, float x, float y, float z)
@@ -144,16 +169,16 @@ void matrixRotate(float *matrix, float angleInRadians, float x, float y, float z
   A_OneMinusCosAngle=x*OneMinusCosAngle;
   C_OneMinusCosAngle=z*OneMinusCosAngle;
 	
-  m[0]=matrix[0];
-  m[1]=matrix[1];
-  m[2]=matrix[2];
-  m[3]=matrix[3];
-  m[4]=matrix[4];
-  m[5]=matrix[5];
-  m[6]=matrix[6];
-  m[7]=matrix[7];
-  m[8]=matrix[8];
-  m[9]=matrix[9];
+  m[ 0]=matrix[ 0];
+  m[ 1]=matrix[ 1];
+  m[ 2]=matrix[ 2];
+  m[ 3]=matrix[ 3];
+  m[ 4]=matrix[ 4];
+  m[ 5]=matrix[ 5];
+  m[ 6]=matrix[ 6];
+  m[ 7]=matrix[ 7];
+  m[ 8]=matrix[ 8];
+  m[ 9]=matrix[ 9];
   m[10]=matrix[10];
   m[11]=matrix[11];
   m[12]=matrix[12];
@@ -203,19 +228,19 @@ void matrixRotate(float *matrix, float angleInRadians, float x, float y, float z
 
 void matrixScale(float *matrix, float x, float y, float z)
 {
-  matrix[0]*=x;
-  matrix[4]*=y;
-  matrix[8]*=z;
+  matrix[ 0]*=x;
+  matrix[ 4]*=y;
+  matrix[ 8]*=z;
 	
-  matrix[1]*=x;
-  matrix[5]*=y;
-  matrix[9]*=z;
+  matrix[ 1]*=x;
+  matrix[ 5]*=y;
+  matrix[ 9]*=z;
 
-  matrix[2]*=x;
-  matrix[6]*=y;
+  matrix[ 2]*=x;
+  matrix[ 6]*=y;
   matrix[10]*=z;
 
-  matrix[3]*=x;
-  matrix[7]*=y;
+  matrix[ 3]*=x;
+  matrix[ 7]*=y;
   matrix[11]*=z;
 }

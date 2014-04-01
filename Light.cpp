@@ -16,7 +16,10 @@ engine::Light::Light(void)
   _lightSpotDirection[1] = 0;
   _lightSpotDirection[2] = 0;
   _lightSpotCutOff[0] = 180;
+  _idFBO = 0;
+  _idDepthTexture = 0;
   _program = NULL;
+  _shadowProgram = NULL;
 }
 
 engine::Light::Light(const float &x, const float &y, const float &z)
@@ -35,14 +38,21 @@ engine::Light::Light(const float &x, const float &y, const float &z)
   _lightSpotDirection[1] = 0;
   _lightSpotDirection[2] = 0;
   _lightSpotCutOff[0] = 180;
+  _idFBO = 0;
+  _idDepthTexture = 0;
   _program = NULL;
+  _shadowProgram = NULL;
 }
 
 engine::Light::~Light(void)
 {
+  if(glIsFramebuffer(_idFBO))
+    glDeleteFramebuffers(1, &_idFBO);
+  if(glIsTexture(_idDepthTexture))
+    glDeleteTextures(1, &_idDepthTexture);
 }
 
-void engine::Light::setShaderProgram(ShaderProgram *program)
+void engine::Light::config(ShaderProgram *program, ShaderProgram *shadowProgram)
 {
   _program = program;
   _lightPositionLocation = glGetUniformLocation(_program->getId(), "lightPosition");
@@ -51,6 +61,31 @@ void engine::Light::setShaderProgram(ShaderProgram *program)
   _lightAmbientLocation = glGetUniformLocation(_program->getId(), "lightAmbient");
   _lightDiffuseLocation = glGetUniformLocation(_program->getId(), "lightDiffuse");
   _lightSpecularLocation = glGetUniformLocation(_program->getId(), "lightSpecular");
+
+  _shadowProgram = shadowProgram;
+  
+  // Depth Texture for Shadow Mapping
+  glGenTextures(1, &_idDepthTexture);
+  glBindTexture(GL_TEXTURE_2D, _idDepthTexture);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  // Frame Buffer Object
+  glGenFramebuffers(1, &_idFBO);
+  glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
+  glDrawBuffer(GL_NONE);
+
+  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    std::cout << "Framebuffer not complete" << std::endl;
+
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  
 }
 
 void engine::Light::setPosition(const float &x, const float &y, const float &z)

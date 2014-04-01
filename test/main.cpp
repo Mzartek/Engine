@@ -16,6 +16,7 @@ engine::Light firstLight;
 engine::Model face;
 engine::OBJModel firstObj;
 engine::ShaderProgram *program;
+engine::ShaderProgram *shadowProgram;
 
 
 void display(void)
@@ -101,17 +102,20 @@ void initGL(void)
   GLfloat mat_shininess[] = {20.0};
 
   program = new engine::ShaderProgram();
-  program->loadProgram("../shader/minimal.vert", "../shader/minimal.frag");
+  program->loadProgram("../shader/minimalVert.c", "../shader/minimalFrag.c");
+  shadowProgram = new engine::ShaderProgram();
+  shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
   context.setShaderProgram(program);
   cam.setShaderProgram(program);
   face.setShaderProgram(program);
   firstObj.setShaderProgram(program);
-  firstLight.setShaderProgram(program);
+  firstLight.config(program, shadowProgram);
+  firstLight.config(program, shadowProgram);
 
   face.createObject(sizeof vertex, vertex,
   		    sizeof index, index,
-  		    "./resources/none.png",
+  		    "./resources/bleu.jpg",
   		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
   face.matRotate(90, 1, 0, 0);
 
@@ -122,7 +126,7 @@ void initGL(void)
 
   // firstLight.setPosition(15, 20, 15);
   // firstLight.setDirection(0, -1, 0);
-  firstLight.setCone(20);
+  firstLight.setCone(90);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);

@@ -12,11 +12,11 @@ namespace engine
     GLuint _idVAO;
     GLuint _idVBO[2];
     GLuint _idTexture;
-    GLuint _numElement;
     GLfloat _matAmbient[4];
     GLfloat _matDiffuse[4];
     GLfloat _matSpecular[4];
     GLfloat _matShininess[1];
+    GLuint _numElement;
     ShaderProgram *_program;
     GLint _matAmbientLocation;
     GLint _matDiffuseLocation;
