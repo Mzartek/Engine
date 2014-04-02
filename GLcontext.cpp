@@ -29,4 +29,5 @@ void engine::GLcontext::adjust(const int &w, const int &h, const float &fov, con
   matrixPerspective(_projectionMatrix, fov, (float)w / h, near, far);
   _program->use();
   glUniformMatrix4fv(_projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
+  glUseProgram(0);
 }

@@ -10,7 +10,7 @@ BIN= bin/
 LIB= -Iinclude -I/c/MinGW/tiers/include -L/c/MinGW/tiers/lib -lopengl32 -lglu32 -lglew32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lm
 endif
 FLAGS= -O3 -Wall -Werror -Wfatal-errors $(LIB)
-SRC= GL.cpp Object.cpp Window.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp GLcontext.cpp Model.cpp OBJModel.cpp Light.cpp matrix.cpp
+SRC= matrix.cpp GL.cpp Object.cpp Window.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp GLcontext.cpp Model.cpp OBJModel.cpp Light.cpp ShadowMap.cpp 
 OBJ= $(SRC:%.cpp=obj/%.o)
 IMPORT= -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
 

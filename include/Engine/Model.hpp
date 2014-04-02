@@ -10,10 +10,11 @@ namespace engine
   class Model
   {
   private:
+    friend class ShadowMap;
     std::vector<Object *> _tObject;
+    GLfloat _modelMatrix[16];
     ShaderProgram *_program;
     GLint _modelMatrixLocation;
-    GLfloat _modelMatrix[16];
   public:
     Model();
     ~Model();

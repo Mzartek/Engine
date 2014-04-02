@@ -11,8 +11,8 @@ namespace engine
   {
   private:
     ShaderProgram *_program;
-    GLint _projectionMatrixLocation;
     GLfloat _projectionMatrix[16];
+    GLint _projectionMatrixLocation;
   public:
     GLcontext(void);
     ~GLcontext(void);

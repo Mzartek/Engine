@@ -72,8 +72,8 @@ void engine::Model::display(void)
 {
   unsigned i;
   
-  _program->use();
   glUniformMatrix4fv(_modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
+  _program->use();
   
   for(i=0 ; i<_tObject.size(); i++)
     _tObject[i]->display();

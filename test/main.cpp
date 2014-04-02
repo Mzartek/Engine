@@ -110,8 +110,7 @@ void initGL(void)
   cam.setShaderProgram(program);
   face.setShaderProgram(program);
   firstObj.setShaderProgram(program);
-  firstLight.config(program, shadowProgram);
-  firstLight.config(program, shadowProgram);
+  firstLight.setShaderProgram(program);
 
   face.createObject(sizeof vertex, vertex,
   		    sizeof index, index,
@@ -126,7 +125,7 @@ void initGL(void)
 
   // firstLight.setPosition(15, 20, 15);
   // firstLight.setDirection(0, -1, 0);
-  firstLight.setCone(90);
+  firstLight.setCone(180);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
@@ -148,5 +147,6 @@ int main(int argc, char **argv)
   window.mainLoop();
 
   delete program;
+  delete shadowProgram;
   return 0;
 }

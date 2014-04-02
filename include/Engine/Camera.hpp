@@ -10,10 +10,10 @@ namespace engine
   class Camera
   {
   private:
+    GLfloat _viewMatrix[16];
     ShaderProgram *_program;
     GLint _viewMatrixLocation;
     GLint _camPositionLocation;
-    GLfloat _viewMatrix[16];
   protected:
     Vector3D<GLfloat> _pcamera;
     Vector3D<GLfloat> _ptarget;
