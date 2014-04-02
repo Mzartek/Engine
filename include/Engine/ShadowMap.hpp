@@ -3,8 +3,7 @@
 
 #include "matrix.h"
 #include "GL.hpp"
-#include "Model.hpp"
-#include "Light.hpp"
+#include "ShaderProgram.hpp"
 
 namespace engine
 {
@@ -17,14 +16,17 @@ namespace engine
     GLuint _idDepthTexture;
     GLfloat _projectionMatrix[16];
     ShaderProgram *_program;
-    GLint _projectionMatrixLocation;
-    GLint _viewMatrixLocation;
-    GLint _modelMatrixLocation;
+    GLint projectionMatrixLocation;
   public:
+    GLint viewMatrixLocation;
+    GLint modelMatrixLocation;
     ShadowMap(void);
     ~ShadowMap(void);
     void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
-    void drawIn(Light *theLight, Model *theModel);
+    GLuint getIdFBO(void);
+    GLuint getIdDepthTexture(void);
+    GLuint getProgramId(void);
+    void clear(void);
   };
 }
 

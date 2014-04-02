@@ -16,9 +16,8 @@ namespace engine
   public:
     ShaderProgram(void);
     ~ShaderProgram(void);
-    GLuint getId(void);
     int loadProgram(const std::string vs, const std::string fs);
-    void use(void);
+    GLuint getId(void);
   };
 }
 

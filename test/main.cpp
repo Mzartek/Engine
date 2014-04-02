@@ -1,23 +1,26 @@
 #include <Engine/Window.hpp>
-#include <Engine/OBJModel.hpp>
-#include <Engine/FreeCam.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GLcontext.hpp>
+#include <Engine/ShadowMap.hpp>
+#include <Engine/FreeCam.hpp>
 #include <Engine/Light.hpp>
+#include <Engine/OBJModel.hpp>
 
 #define ESC 41
 #define MAJ 225
 
 bool keyState[256];
 engine::Window window;
+
+engine::ShaderProgram *program;
+engine::ShaderProgram *shadowProgram;
 engine::GLcontext context;
+engine::ShadowMap shadow;
+
 engine::FreeCam cam;
 engine::Light firstLight;
 engine::Model face;
 engine::OBJModel firstObj;
-engine::ShaderProgram *program;
-engine::ShaderProgram *shadowProgram;
-
 
 void display(void)
 {
@@ -26,8 +29,10 @@ void display(void)
   cam.position();
   firstLight.position();
 
+  firstObj.displayShadow();
+  face.displayShadow();
+  
   firstObj.display();
-
   face.display();
   
   glUseProgram(0);
@@ -35,15 +40,14 @@ void display(void)
 
 void idle(void)
 {
-  static engine::Vector3D<float> lightPosition, lightDirection;
+  // static engine::Vector3D<float> lightPosition, lightDirection;
 
-  // firstObj.matRotate(1, 0, 0, 1);
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
   
-  lightPosition = cam.getPositionCamera();
-  lightDirection = cam.getForward();
-  firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
-  firstLight.setDirection(lightDirection._x, lightDirection._y, lightDirection._z);
+  // lightPosition = cam.getPositionCamera();
+  // lightDirection = cam.getForward();
+  // firstLight.setPosition(lightPosition._x, lightPosition._y, lightPosition._z);
+  // firstLight.setDirection(lightDirection._x, lightDirection._y, lightDirection._z);
 }
 
 void reshape(int w, int h)
@@ -107,11 +111,24 @@ void initGL(void)
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
   context.setShaderProgram(program);
-  cam.setShaderProgram(program);
-  face.setShaderProgram(program);
-  firstObj.setShaderProgram(program);
-  firstLight.setShaderProgram(program);
+  shadow.config(1024, 1024, shadowProgram);
+  
+  cam.setGLcontext(&context);
+  firstLight.setGLcontext(&context);
+  face.setGLcontext(&context);
+  firstObj.setGLcontext(&context);
 
+  firstLight.setShadowMap(&shadow);
+  face.setShadowMap(&shadow);
+  firstObj.setShadowMap(&shadow);
+
+  firstLight.setPosition(0, 1, 0);
+  firstLight.setDirection(1, 1, 1);
+  firstLight.setCone(40);
+  firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
+  firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
+  firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
+  
   face.createObject(sizeof vertex, vertex,
   		    sizeof index, index,
   		    "./resources/bleu.jpg",
@@ -122,13 +139,6 @@ void initGL(void)
   firstObj.matTranslate(15, 10, 15);
   firstObj.matRotate(-90, 1, 0, 0);
   firstObj.matScale(2, 2, 2);
-
-  // firstLight.setPosition(15, 20, 15);
-  // firstLight.setDirection(0, -1, 0);
-  firstLight.setCone(180);
-  firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
-  firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
-  firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
 }
 
 int main(int argc, char **argv)

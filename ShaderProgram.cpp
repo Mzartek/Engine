@@ -80,11 +80,6 @@ engine::ShaderProgram::~ShaderProgram(void)
     glDeleteShader(_idFragmentShader);
 }
 
-GLuint engine::ShaderProgram::getId(void)
-{
-  return _idProgram;
-}
-
 int engine::ShaderProgram::loadProgram(const std::string vs, const std::string fs)
 {
   char *log;
@@ -133,7 +128,7 @@ int engine::ShaderProgram::loadProgram(const std::string vs, const std::string f
   return 1;
 }
 
-void engine::ShaderProgram::use(void)
+GLuint engine::ShaderProgram::getId(void)
 {
-  glUseProgram(_idProgram);
+  return _idProgram;
 }

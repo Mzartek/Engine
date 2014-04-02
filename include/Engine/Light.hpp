@@ -1,7 +1,8 @@
 #ifndef LIGHT
 #define LIGHT
 
-#include "ShaderProgram.hpp"
+#include "GLcontext.hpp"
+#include "ShadowMap.hpp"
 #include "Vector3D.hpp"
 
 namespace engine
@@ -9,26 +10,21 @@ namespace engine
   class Light
   {
   protected:
-    friend class ShadowMap;
+    GLcontext *_context;
+    ShadowMap *_shadow;
+    GLfloat _viewMatrix[16];
     GLfloat _lightPosition[3];
     GLfloat _lightSpotDirection[3];
     GLfloat _lightSpotCutOff[1];
     GLfloat _lightAmbient[4];
     GLfloat _lightDiffuse[4];
     GLfloat _lightSpecular[4];
-    GLfloat _viewMatrix[16];
-    ShaderProgram *_program;
-    GLint _lightPositionLocation;
-    GLint _lightSpotDirectionLocation;
-    GLint _lightSpotCutOffLocation;
-    GLint _lightAmbientLocation;
-    GLint _lightDiffuseLocation;
-    GLint _lightSpecularLocation;
   public:
     Light(void);
     Light(const float &x, const float &y, const float &z);
     ~Light(void);
-    void setShaderProgram(ShaderProgram *program);
+    void setGLcontext(GLcontext *context);
+    void setShadowMap(ShadowMap *shadow);
     void setPosition(const float &x, const float &y, const float &z);
     void setDirection(const float &x, const float &y, const float &z);
     void setCone(const float &x);

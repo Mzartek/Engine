@@ -19,6 +19,7 @@ struct light
 
 // Texture
 uniform sampler2D colorTexture;
+uniform sampler2D shadowTexture;
 
 // In
 in vec2 outTexCoord;
@@ -58,6 +59,6 @@ void main(void)
       final_color += outLight.diffuse * outMat.diffuse * lambertTerm * spot;
       final_color += outLight.specular * outMat.specular * specular * spot;
     }
-
-  fragColor = texture(colorTexture, outTexCoord) * final_color;
+  /* fragColor = texture(colorTexture, outTexCoord) * final_color; */
+  fragColor = texture(shadowTexture, outTexCoord);
 }

@@ -14,7 +14,8 @@ engine::Object::Object(void)
       _matSpecular[i]=1.0;
     }
   _matShininess[0]=1.0;
-  _program = NULL;
+  _context = NULL;
+  _shadow = NULL;
 }
 
 engine::Object::~Object(void)
@@ -27,6 +28,16 @@ engine::Object::~Object(void)
     glDeleteBuffers(1, &_idVBO[1]);
   if(glIsTexture(_idTexture))
     glDeleteTextures(1, &_idTexture);
+}
+
+void engine::Object::setGLcontext(GLcontext *context)
+{
+  _context = context;
+}
+
+void engine::Object::setShadowMap(ShadowMap *shadow)
+{
+  _shadow = shadow;
 }
 
 void engine::Object::setTexture(const GLuint &id)
@@ -66,19 +77,10 @@ void engine::Object::setShininess(const GLfloat &x)
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
-			  const GLuint &sizeIndexArray, const GLuint *indexArray,
-			  ShaderProgram *program)
+			  const GLuint &sizeIndexArray, const GLuint *indexArray)
 {
   _numElement = sizeIndexArray/sizeof(GLuint);
   
-  _program = program;
-  _textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-  _matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
-  _matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
-  _matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
-  _matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
-  
-
   // Vertex Array et Vertex Buffer Object
   glGenVertexArrays(1, &_idVAO);
   glBindVertexArray(_idVAO);
@@ -107,24 +109,53 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
 
 void engine::Object::display(void) const
 {
-  _program->use();
+  glUseProgram(_context->getProgramId());
   
   glBindVertexArray(_idVAO);
 
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, _idTexture);
-  glUniform1i(_textureLocation, 0);
+  glUniform1i(_context->textureLocation, 0);
+  if(_shadow != NULL)
+    {
+      glActiveTexture(GL_TEXTURE1);
+      glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
+      glUniform1i(_context->shadowTextureLocation, 1);
+    }
   
-  glUniform4fv(_matAmbientLocation,  1, _matAmbient);
-  glUniform4fv(_matDiffuseLocation,  1, _matDiffuse);
-  glUniform4fv(_matSpecularLocation,  1, _matSpecular);
-  glUniform1fv(_matShininessLocation, 1, _matShininess);
+  glUniform4fv(_context->matAmbientLocation,  1, _matAmbient);
+  glUniform4fv(_context->matDiffuseLocation,  1, _matDiffuse);
+  glUniform4fv(_context->matSpecularLocation,  1, _matSpecular);
+  glUniform1fv(_context->matShininessLocation, 1, _matShininess);
 
   glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
+  glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, 0);
+  if(_shadow != NULL)
+    {
+      glActiveTexture(GL_TEXTURE1);
+      glBindTexture(GL_TEXTURE_2D, 0);
+    }
   
   glBindVertexArray(0);
   
   glUseProgram(0);
+}
+
+void engine::Object::displayShadow(void) const
+{  
+  glBindFramebuffer(GL_FRAMEBUFFER, _shadow->getIdFBO());
+  
+  glUseProgram(_shadow->getProgramId());
+  
+  glBindVertexArray(_idVAO);
+  
+  glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+  
+  glBindVertexArray(0);
+  
+  glUseProgram(0);
+  
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

@@ -21,11 +21,14 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   _height = height;
   
   _program = program;
-  _projectionMatrixLocation = glGetUniformLocation(_program->getId(), "depthProjectionMatrix");
-  _viewMatrixLocation = glGetUniformLocation(_program->getId(), "depthViewMatrix");
-  _modelMatrixLocation = glGetUniformLocation(_program->getId(), "depthModelMatrix");
+  projectionMatrixLocation = glGetUniformLocation(_program->getId(), "depthProjectionMatrix");
+  viewMatrixLocation = glGetUniformLocation(_program->getId(), "depthViewMatrix");
+  modelMatrixLocation = glGetUniformLocation(_program->getId(), "depthModelMatrix");
   
   // Depth Texture for Shadow Mapping
+  if(glIsTexture(_idDepthTexture))
+    glDeleteTextures(1, &_idDepthTexture);
+  
   glGenTextures(1, &_idDepthTexture);
   glBindTexture(GL_TEXTURE_2D, _idDepthTexture);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -36,38 +39,46 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   glBindTexture(GL_TEXTURE_2D, 0);
 
   // Frame Buffer Object
+  if(glIsFramebuffer(_idFBO))
+    glDeleteFramebuffers(1, &_idFBO);
+  
   glGenFramebuffers(1, &_idFBO);
   glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
+  glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _idDepthTexture, 0);
   glDrawBuffer(GL_NONE);
 
   if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     std::cout << "Framebuffer not complete" << std::endl;
 
+  glViewport(0, 0, _width, _height);
+  
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-  matrixOrtho(_projectionMatrix, -10, 10, -10, 10, -10, 1200);
-  _program->use();
-  glUniformMatrix4fv(_projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
+  matrixOrtho(_projectionMatrix, -10, 10, -10, 10, 0, 1200);
+  glUseProgram(_program->getId());
+  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
   glUseProgram(0);
 }
 
-void engine::ShadowMap::drawIn(Light *theLight, Model *theModel)
+GLuint engine::ShadowMap::getIdFBO(void)
 {
-  glClearColor(1.0, 1.0, 1.0, 1.0);
-  glViewport(0, 0, _width, _height);
+  return _idFBO;
+}
 
-  _program->use();
-  glUniformMatrix4fv(_viewMatrixLocation, 1, GL_FALSE, theLight->_viewMatrix);
-  glUniformMatrix4fv(_modelMatrixLocation, 1, GL_FALSE, theModel->_modelMatrix);
-  
+GLuint engine::ShadowMap::getIdDepthTexture(void)
+{
+  return _idDepthTexture;
+}
+
+GLuint engine::ShadowMap::getProgramId(void)
+{
+  return _program->getId();
+}
+
+void engine::ShadowMap::clear(void)
+{
   glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
-
-  theModel->display();
-  
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glUseProgram(0);
 }

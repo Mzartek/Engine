@@ -2,9 +2,9 @@
 
 engine::Model::Model(void)
 {
-  _program = NULL;
-  _modelMatrixLocation = -1;
   matIdentity();
+  _context = NULL;
+  _shadow = NULL;
 }
 
 engine::Model::~Model(void)
@@ -14,10 +14,14 @@ engine::Model::~Model(void)
     delete _tObject[i];
 }
 
-void engine::Model::setShaderProgram(ShaderProgram *program)
+void engine::Model::setGLcontext(GLcontext *context)
 {
-  _program = program;
-  _modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
+  _context = context;
+}
+
+void engine::Model::setShadowMap(ShadowMap *shadow)
+{
+  _shadow = shadow;
 }
 
 void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
@@ -27,14 +31,15 @@ void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *v
 {
   Object *newone = new Object();
 
-  newone->load(sizeVertexArray, vertexArray,
-	       sizeIndexArray, indexArray,
-	       _program);
+  newone->setGLcontext(_context);
+  newone->setShadowMap(_shadow);
   newone->setTexture(engine::loadTex(pathTexture));
   newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
   newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
   newone->setSpecular(specular[0], specular[1], specular[2], specular[3]);
   newone->setShininess(shininess[0]);
+  newone->load(sizeVertexArray, vertexArray,
+	       sizeIndexArray, indexArray);
   
   _tObject.push_back(newone);
 }
@@ -59,7 +64,7 @@ void engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &
   matrixScale(_modelMatrix, x, y, z);
 }
 
-engine::Vector3D<GLfloat> engine::Model::getPosition(void)
+engine::Vector3D<GLfloat> engine::Model::getPosition(void) const
 {
   engine::Vector3D<GLfloat> tmp;
   tmp._x = _modelMatrix[12];
@@ -68,14 +73,26 @@ engine::Vector3D<GLfloat> engine::Model::getPosition(void)
   return tmp;
 }
   
-void engine::Model::display(void)
+void engine::Model::display(void) const
 {
   unsigned i;
   
-  glUniformMatrix4fv(_modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
-  _program->use();
+  glUseProgram(_context->getProgramId());
+  glUniformMatrix4fv(_context->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
+  glUseProgram(0);
   
   for(i=0 ; i<_tObject.size(); i++)
     _tObject[i]->display();
+}
+
+void engine::Model::displayShadow(void) const
+{
+  unsigned i;
+  
+  glUseProgram(_shadow->getProgramId());
+  glUniformMatrix4fv(_shadow->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
   glUseProgram(0);
+  
+  for(i=0 ; i<_tObject.size(); i++)
+    _tObject[i]->displayShadow();
 }

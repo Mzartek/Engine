@@ -16,7 +16,8 @@ engine::Light::Light(void)
   _lightSpotDirection[1] = 0;
   _lightSpotDirection[2] = 0;
   _lightSpotCutOff[0] = 180;
-  _program = NULL;
+  _context = NULL;
+  _shadow = NULL;
 }
 
 engine::Light::Light(const float &x, const float &y, const float &z)
@@ -35,22 +36,22 @@ engine::Light::Light(const float &x, const float &y, const float &z)
   _lightSpotDirection[1] = 0;
   _lightSpotDirection[2] = 0;
   _lightSpotCutOff[0] = 180;
-  _program = NULL;
+  _context = NULL;
+  _shadow = NULL;
 }
 
 engine::Light::~Light(void)
 {
 }
 
-void engine::Light::setShaderProgram(ShaderProgram *program)
+void engine::Light::setGLcontext(GLcontext *context)
 {
-  _program = program;
-  _lightPositionLocation = glGetUniformLocation(_program->getId(), "lightPosition");
-  _lightSpotDirectionLocation = glGetUniformLocation(_program->getId(), "lightSpotDirection");
-  _lightSpotCutOffLocation = glGetUniformLocation(_program->getId(), "lightSpotCutOff");
-  _lightAmbientLocation = glGetUniformLocation(_program->getId(), "lightAmbient");
-  _lightDiffuseLocation = glGetUniformLocation(_program->getId(), "lightDiffuse");
-  _lightSpecularLocation = glGetUniformLocation(_program->getId(), "lightSpecular");
+  _context = context;
+}
+
+void engine::Light::setShadowMap(ShadowMap *shadow)
+{
+  _shadow = shadow;
 }
 
 void engine::Light::setPosition(const float &x, const float &y, const float &z)
@@ -107,12 +108,26 @@ engine::Vector3D<float> engine::Light::getPosition(void)
 
 void engine::Light::position(void)
 {
-  _program->use();
-  glUniform3fv(_lightPositionLocation,  1, _lightPosition);
-  glUniform3fv(_lightSpotDirectionLocation,  1, _lightSpotDirection);
-  glUniform1fv(_lightSpotCutOffLocation,  1, _lightSpotCutOff);
-  glUniform4fv(_lightAmbientLocation,  1, _lightAmbient);
-  glUniform4fv(_lightDiffuseLocation,  1, _lightDiffuse);
-  glUniform4fv(_lightSpecularLocation,  1, _lightSpecular);
+  GLfloat target[] = {_lightPosition[0] + _lightSpotDirection[0],
+		      _lightPosition[1] + _lightSpotDirection[1],
+		      _lightPosition[2] + _lightSpotDirection[2]};
+  GLfloat head[] = {0.0, 1.0, 0.0};
+  matrixLoadIdentity(_viewMatrix);
+  matrixLookAt(_viewMatrix, _lightPosition, target, head);
+  
+  glUseProgram(_context->getProgramId());
+  glUniform3fv(_context->lightPositionLocation,  1, _lightPosition);
+  glUniform3fv(_context->lightSpotDirectionLocation,  1, _lightSpotDirection);
+  glUniform1fv(_context->lightSpotCutOffLocation,  1, _lightSpotCutOff);
+  glUniform4fv(_context->lightAmbientLocation,  1, _lightAmbient);
+  glUniform4fv(_context->lightDiffuseLocation,  1, _lightDiffuse);
+  glUniform4fv(_context->lightSpecularLocation,  1, _lightSpecular);
   glUseProgram(0);
+
+  if(_shadow != NULL)
+    {
+      glUseProgram(_shadow->getProgramId());
+      glUniformMatrix4fv(_shadow->viewMatrixLocation, 1, GL_FALSE, _viewMatrix);
+      glUseProgram(0);
+    }
 }
