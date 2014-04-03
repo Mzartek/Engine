@@ -32,7 +32,7 @@ out vec4 fragColor;
 
 void main(void)
 {
-  vec4 final_color;
+  vec4 texel0, texel1, final_color;
   vec3 L, N, D, E, R;
   float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle, lambertTerm, spot, specular;
 
@@ -59,6 +59,8 @@ void main(void)
       final_color += outLight.diffuse * outMat.diffuse * lambertTerm * spot;
       final_color += outLight.specular * outMat.specular * specular * spot;
     }
-  /* fragColor = texture(colorTexture, outTexCoord) * final_color; */
+  /* texel0 = texture(colorTexture, outTexCoord); */
+  /* texel1 = texture(shadowTexture, outTexCoord); */
   fragColor = texture(shadowTexture, outTexCoord);
+  /* fragColor = mix(texel0, texel1, texel0.a) * final_color; */
 }

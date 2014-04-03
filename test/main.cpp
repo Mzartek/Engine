@@ -25,6 +25,7 @@ engine::OBJModel firstObj;
 void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  shadow.clear();
 
   cam.position();
   firstLight.position();
@@ -43,6 +44,7 @@ void idle(void)
   // static engine::Vector3D<float> lightPosition, lightDirection;
 
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+  firstObj.matRotate(1, 0, 0, 1);
   
   // lightPosition = cam.getPositionCamera();
   // lightDirection = cam.getForward();

@@ -55,7 +55,7 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-  matrixOrtho(_projectionMatrix, -10, 10, -10, 10, 0, 1200);
+  matrixOrtho(_projectionMatrix, -20, 20, -20, 20, 0, 1200);
   glUseProgram(_program->getId());
   glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
   glUseProgram(0);
@@ -79,6 +79,6 @@ GLuint engine::ShadowMap::getProgramId(void)
 void engine::ShadowMap::clear(void)
 {
   glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_DEPTH_BUFFER_BIT);
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
