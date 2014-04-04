@@ -9,8 +9,8 @@ namespace engine
   {
   private:
     bool _exit;
-    int _Width;
-    int _Height;
+    unsigned _width;
+    unsigned _height;
     SDL_Window *_idWindow;
     SDL_GLContext _idGLContext;
     void (*_display) (void);
@@ -27,6 +27,8 @@ namespace engine
     void setReshapeFunc(void (*f) (int, int));
     void setKeyboardFunc(void (*f) (unsigned char, bool));
     void setMouseMoveFunc(void (*f) (int, int));
+    unsigned int getWidth(void);
+    unsigned int getHeight(void);
     void mainLoop(void);
     void stop(void);
   };

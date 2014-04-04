@@ -16,8 +16,8 @@ engine::Window::~Window(void)
 void engine::Window::initWindow(const std::string title, int const &w, int const &h)
 {
   _exit = false;
-  _Width = w;
-  _Height = h;
+  _width = w;
+  _height = h;
   
   if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -30,7 +30,7 @@ void engine::Window::initWindow(const std::string title, int const &w, int const
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   SDL_GL_SetSwapInterval(1);
   
-  _idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _Width, _Height, SDL_WINDOW_OPENGL);
+  _idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, SDL_WINDOW_OPENGL);
   
   if(!_idWindow)
     {
@@ -76,12 +76,22 @@ void engine::Window::setMouseMoveFunc(void (*f) (int, int))
   _mouseMove = f;
 }
 
+unsigned int engine::Window::getWidth(void)
+{
+  return _width;
+}
+
+unsigned int engine::Window::getHeight(void)
+{
+  return _height;
+}
+
 void engine::Window::mainLoop(void)
 {
   SDL_Event event;
   SDL_SetRelativeMouseMode(SDL_TRUE);
   if(_reshape)
-    _reshape(_Width, _Height);
+    _reshape(_width, _height);
   while(!_exit)
     {
       while(SDL_PollEvent(&event))

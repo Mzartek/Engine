@@ -28,7 +28,6 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   // Depth Texture for Shadow Mapping
   if(glIsTexture(_idDepthTexture))
     glDeleteTextures(1, &_idDepthTexture);
-  
   glGenTextures(1, &_idDepthTexture);
   glBindTexture(GL_TEXTURE_2D, _idDepthTexture);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -41,7 +40,6 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   // Frame Buffer Object
   if(glIsFramebuffer(_idFBO))
     glDeleteFramebuffers(1, &_idFBO);
-  
   glGenFramebuffers(1, &_idFBO);
   glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -55,7 +53,8 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-  matrixOrtho(_projectionMatrix, -20, 20, -20, 20, 0, 1200);
+  // matrixOrtho(_projectionMatrix, -10, 10, -10, 10, 0, 1200);
+  matrixPerspective(_projectionMatrix, 120, (float)_width / _height, -10, 1200.0);
   glUseProgram(_program->getId());
   glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
   glUseProgram(0);

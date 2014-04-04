@@ -42,6 +42,8 @@ void engine::Object::setShadowMap(ShadowMap *shadow)
 
 void engine::Object::setTexture(const GLuint &id)
 {
+  if(glIsTexture(_idTexture))
+    glDeleteTextures(1, &_idTexture);
   _idTexture = id;
 }
 
@@ -82,13 +84,19 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
   _numElement = sizeIndexArray/sizeof(GLuint);
   
   // Vertex Array et Vertex Buffer Object
+  if(glIsVertexArray(_idVAO))
+    glDeleteVertexArrays(1, &_idVAO);
   glGenVertexArrays(1, &_idVAO);
   glBindVertexArray(_idVAO);
   
+  if(glIsBuffer(_idVBO[0]))
+    glDeleteBuffers(1, &_idVBO[0]);
   glGenBuffers(1, &_idVBO[0]);
   glBindBuffer(GL_ARRAY_BUFFER, _idVBO[0]);
   glBufferData(GL_ARRAY_BUFFER, sizeVertexArray, vertexArray, GL_STATIC_DRAW);
   
+  if(glIsBuffer(_idVBO[1]))
+    glDeleteBuffers(1, &_idVBO[1]);
   glGenBuffers(1, &_idVBO[1]);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idVBO[1]);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeIndexArray, indexArray, GL_STATIC_DRAW);
