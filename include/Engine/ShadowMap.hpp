@@ -3,6 +3,7 @@
 
 #include "matrix.h"
 #include "GL.hpp"
+#include "GLcontext.hpp"
 #include "ShaderProgram.hpp"
 
 namespace engine
@@ -10,6 +11,7 @@ namespace engine
   class ShadowMap
   {
   private:
+    GLcontext *_context;
     GLuint _width;
     GLuint _height;
     GLuint _idFBO;
@@ -22,7 +24,7 @@ namespace engine
     GLint modelMatrixLocation;
     ShadowMap(void);
     ~ShadowMap(void);
-    void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
+    void config(const GLuint &width, const GLuint &height, const GLfloat &fov, ShaderProgram *program, GLcontext *context);
     GLuint getIdFBO(void);
     GLuint getIdDepthTexture(void);
     GLuint getProgramId(void);

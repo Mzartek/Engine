@@ -112,10 +112,18 @@ void engine::Light::position(void)
 		      _lightPosition[1] + _lightSpotDirection[1],
 		      _lightPosition[2] + _lightSpotDirection[2]};
   GLfloat head[] = {0.0, 1.0, 0.0};
+
+  if(_context == NULL)
+    {
+      std::cerr << "You need to set the GLcontext before" << std::endl;
+      return;
+    }
+  
   matrixLoadIdentity(_viewMatrix);
   matrixLookAt(_viewMatrix, _lightPosition, target, head);
   
   glUseProgram(_context->getProgramId());
+  glUniformMatrix4fv(_context->depthViewMatrixLocation, 1, GL_FALSE, _viewMatrix);
   glUniform3fv(_context->lightPositionLocation,  1, _lightPosition);
   glUniform3fv(_context->lightSpotDirectionLocation,  1, _lightSpotDirection);
   glUniform1fv(_context->lightSpotCutOffLocation,  1, _lightSpotCutOff);

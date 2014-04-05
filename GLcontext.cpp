@@ -2,6 +2,7 @@
 
 engine::GLcontext::GLcontext(void)
 {
+  matrixLoadBias(_biasMatrix);
   _program = NULL;
 }
 
@@ -12,9 +13,16 @@ engine::GLcontext::~GLcontext(void)
 void engine::GLcontext::setShaderProgram(ShaderProgram *program)
 {
   _program = program;
+
+  glUseProgram(_program->getId());
+  glUniformMatrix4fv(glGetUniformLocation(_program->getId(), "biasMatrix"), 1, GL_FALSE, _biasMatrix);
+  glUseProgram(0);
+  
   projectionMatrixLocation = glGetUniformLocation(_program->getId(), "projectionMatrix");
   viewMatrixLocation = glGetUniformLocation(_program->getId(), "viewMatrix");
   modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
+  depthProjectionMatrixLocation = glGetUniformLocation(_program->getId(), "depthProjectionMatrix");
+  depthViewMatrixLocation = glGetUniformLocation(_program->getId(), "depthViewMatrix");
   matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
   matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
   matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");

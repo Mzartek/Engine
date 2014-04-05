@@ -4,6 +4,7 @@ engine::ShadowMap::ShadowMap(void)
 {
   _idFBO = 0;
   _idDepthTexture = 0;
+  _context = NULL;
   _program = NULL;
 }
 
@@ -15,12 +16,15 @@ engine::ShadowMap::~ShadowMap(void)
     glDeleteTextures(1, &_idDepthTexture);
 }
 
-void engine::ShadowMap::config(const GLuint &width, const GLuint &height, ShaderProgram *program)
+void engine::ShadowMap::config(const GLuint &width, const GLuint &height, const GLfloat &fov, ShaderProgram *program, GLcontext *context)
 {
   _width = width;
   _height = height;
+  matrixPerspective(_projectionMatrix, fov, (float)_width / _height, -10, 1200.0);
   
   _program = program;
+  _context = context;
+  
   projectionMatrixLocation = glGetUniformLocation(_program->getId(), "depthProjectionMatrix");
   viewMatrixLocation = glGetUniformLocation(_program->getId(), "depthViewMatrix");
   modelMatrixLocation = glGetUniformLocation(_program->getId(), "depthModelMatrix");
@@ -52,11 +56,13 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   glViewport(0, 0, _width, _height);
   
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-  // matrixOrtho(_projectionMatrix, -10, 10, -10, 10, 0, 1200);
-  matrixPerspective(_projectionMatrix, 120, (float)_width / _height, -10, 1200.0);
+  
   glUseProgram(_program->getId());
   glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
+  glUseProgram(0);
+
+  glUseProgram(_context->getProgramId());
+  glUniformMatrix4fv(_context->depthProjectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
   glUseProgram(0);
 }
 

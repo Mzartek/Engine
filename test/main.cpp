@@ -113,7 +113,7 @@ void initGL(void)
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
   context.setShaderProgram(program);
-  shadow.config(window.getWidth(), window.getHeight(), shadowProgram);
+  shadow.config(window.getWidth(), window.getHeight(), 90, shadowProgram, &context);
   
   cam.setGLcontext(&context);
   firstLight.setGLcontext(&context);
@@ -124,9 +124,9 @@ void initGL(void)
   face.setShadowMap(&shadow);
   firstObj.setShadowMap(&shadow);
 
-  firstLight.setPosition(15, 1, 15);
-  firstLight.setDirection(0, 1, 0);
-  firstLight.setCone(40);
+  firstLight.setPosition(0, 20, 0);
+  firstLight.setDirection(1, -1, 1);
+  firstLight.setCone(45);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);

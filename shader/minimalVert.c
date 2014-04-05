@@ -18,14 +18,19 @@ struct light
 };
 
 //Matrix
+uniform mat4 biasMatrix;
 uniform mat4 projectionMatrix, viewMatrix, modelMatrix;
+uniform mat4 depthProjectionMatrix, depthViewMatrix;
 
 //Material
 uniform vec4 matAmbient, matDiffuse, matSpecular;
 uniform float matShininess;
 
+//Camera
+uniform vec3 camPosition;
+
 //Light
-uniform vec3 camPosition, lightPosition, lightSpotDirection;
+uniform vec3 lightPosition, lightSpotDirection;
 uniform float lightSpotCutOff;
 uniform vec4 lightAmbient, lightDiffuse, lightSpecular;
 
@@ -36,6 +41,7 @@ layout(location = 2) in vec3 normalArray;
 
 //Out
 out vec2 outTexCoord;
+out vec4 outShadowCoord;
 out material outMat;
 out light outLight;
 out vec3 normal, lightDir, eyeVec;
@@ -65,10 +71,14 @@ void lightInit(void)
 }
 
 void main(void)
-{	
-  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexArray, 1.0);
+{
+  mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
+  mat4 depthBiasMVP = biasMatrix * (depthProjectionMatrix * depthViewMatrix * modelMatrix);
+  
+  gl_Position =  MVP * vec4(vertexArray, 1.0);
 
   outTexCoord = vec2(textureArray.x, 1 - textureArray.y);
+  outShadowCoord = depthBiasMVP * vec4(vertexArray, 1.0);
 
   materialInit();
 

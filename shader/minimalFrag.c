@@ -19,10 +19,11 @@ struct light
 
 // Texture
 uniform sampler2D colorTexture;
-uniform sampler2D shadowTexture;
+uniform sampler2DShadow shadowMap;
 
 // In
 in vec2 outTexCoord;
+in vec4 outShadowCoord;
 in material outMat;
 in light outLight;
 in vec3 normal, lightDir, eyeVec;
@@ -32,9 +33,9 @@ out vec4 fragColor;
 
 void main(void)
 {
-  vec4 texel0, texel1, final_color;
+  vec4 final_color;
   vec3 L, N, D, E, R;
-  float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle, lambertTerm, spot, specular;
+  float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle, lambertTerm, spot, specular, visibility;
 
   final_color = outLight.ambient * outMat.ambient;
 
@@ -59,10 +60,10 @@ void main(void)
       final_color += outLight.diffuse * outMat.diffuse * lambertTerm * spot;
       final_color += outLight.specular * outMat.specular * specular * spot;
     }
-  fragColor = texture(shadowTexture, outTexCoord);
-  /* fragColor = texture(colorTexture, outTexCoord) * final_color; */
   
-  /* texel0 = texture(colorTexture, outTexCoord); */
-  /* texel1 = texture(shadowTexture, outTexCoord); */
-  /* fragColor = mix(texel0, texel1, texel0.a) * final_color; */
+  /* if(textureProj(shadowMap, outShadowCoord.xyw).z  <  (outShadowCoord.z-bias)/outShadowCoord.w) */
+  /*   visibility = 0.5; */
+  visibility = texture(shadowMap, vec3(outShadowCoord.xy, (outShadowCoord.z)/outShadowCoord.w));
+  
+  fragColor = texture(colorTexture, outTexCoord) * final_color * visibility;
 }

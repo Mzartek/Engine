@@ -117,6 +117,12 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
 
 void engine::Object::display(void) const
 {
+  if(_context == NULL)
+    {
+      std::cerr << "You need to set the GLcontext before" << std::endl;
+      return;
+    }
+  
   glUseProgram(_context->getProgramId());
   
   glBindVertexArray(_idVAO);
@@ -153,6 +159,12 @@ void engine::Object::display(void) const
 
 void engine::Object::displayShadow(void) const
 {  
+  if(_shadow == NULL)
+    {
+      std::cerr << "You need to set the ShadowMap before" << std::endl;
+      return;
+    }
+  
   glBindFramebuffer(GL_FRAMEBUFFER, _shadow->getIdFBO());
   
   glUseProgram(_shadow->getProgramId());

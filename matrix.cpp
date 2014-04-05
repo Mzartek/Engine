@@ -74,6 +74,14 @@ void matrixLoadIdentity(float *matrix)
   matrix[ 3]=0; matrix[ 7]=0; matrix[11]=0; matrix[15]=1; 
 }
 
+void matrixLoadBias(float *matrix)
+{
+  matrix[ 0]=0.5; matrix[ 4]=0.0; matrix[ 8]=0.0; matrix[12]=0.0; 
+  matrix[ 1]=0.0; matrix[ 5]=0.5; matrix[ 9]=0.0; matrix[13]=0.0; 
+  matrix[ 2]=0.0; matrix[ 6]=0.0; matrix[10]=0.5; matrix[14]=0.0; 
+  matrix[ 3]=0.5; matrix[ 7]=0.5; matrix[11]=0.5; matrix[15]=1.0; 
+}
+
 void matrixOrtho(float *matrix, float left, float right, float bottom, float top, float nearVal, float farVal)
 {
   float tx, ty, tz;

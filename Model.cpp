@@ -77,6 +77,12 @@ void engine::Model::display(void) const
 {
   unsigned i;
   
+  if(_context == NULL)
+    {
+      std::cerr << "You need to set the GLcontext before" << std::endl;
+      return;
+    }
+  
   glUseProgram(_context->getProgramId());
   glUniformMatrix4fv(_context->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
   glUseProgram(0);
@@ -88,6 +94,12 @@ void engine::Model::display(void) const
 void engine::Model::displayShadow(void) const
 {
   unsigned i;
+  
+  if(_shadow == NULL)
+    {
+      std::cerr << "You need to set the ShadowMap before" << std::endl;
+      return;
+    }
   
   glUseProgram(_shadow->getProgramId());
   glUniformMatrix4fv(_shadow->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);

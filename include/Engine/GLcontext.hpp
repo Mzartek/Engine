@@ -9,12 +9,15 @@ namespace engine
 {
   class GLcontext
   {
+    GLfloat _biasMatrix[16];
     GLfloat _projectionMatrix[16];
     ShaderProgram *_program;
     GLint projectionMatrixLocation;
   public:
     GLint viewMatrixLocation;
     GLint modelMatrixLocation;
+    GLint depthProjectionMatrixLocation;
+    GLint depthViewMatrixLocation;
     GLint matAmbientLocation;
     GLint matDiffuseLocation;
     GLint matSpecularLocation;
