@@ -35,7 +35,8 @@ void main(void)
 {
   vec4 final_color;
   vec3 L, N, D, E, R;
-  float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle, lambertTerm, spot, specular, visibility;
+  float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle, lambertTerm, spot, specular;
+  float test;
 
   final_color = outLight.ambient * outMat.ambient;
 
@@ -61,9 +62,9 @@ void main(void)
       final_color += outLight.specular * outMat.specular * specular * spot;
     }
   
-  /* if(textureProj(shadowMap, outShadowCoord.xyw).z  <  (outShadowCoord.z-bias)/outShadowCoord.w) */
-  /*   visibility = 0.5; */
-  visibility = texture(shadowMap, vec3(outShadowCoord.xy, (outShadowCoord.z)/outShadowCoord.w));
+  test = 1.0;
+  if(textureProj(shadowMap, outShadowCoord)  <  (outShadowCoord.z)/outShadowCoord.w)
+    test = 0.5;
   
-  fragColor = texture(colorTexture, outTexCoord) * final_color * visibility;
+  fragColor = texture(colorTexture, outTexCoord) * test;
 }
