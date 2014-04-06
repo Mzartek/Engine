@@ -118,11 +118,14 @@ void engine::Light::position(void)
       std::cerr << "You need to set the GLcontext before" << std::endl;
       return;
     }
-  
+
+  // matrixOrtho(_projectionMatrix, -10, 10, -10, 10, 1, 1200);
+  matrixPerspective(_projectionMatrix, _lightSpotCutOff[0] * 2, (float)_context->getWidth() / _context->getHeight(), _context->getNear(), _context->getFar());
   matrixLoadIdentity(_viewMatrix);
   matrixLookAt(_viewMatrix, _lightPosition, target, head);
   
   glUseProgram(_context->getProgramId());
+  glUniformMatrix4fv(_context->depthProjectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
   glUniformMatrix4fv(_context->depthViewMatrixLocation, 1, GL_FALSE, _viewMatrix);
   glUniform3fv(_context->lightPositionLocation,  1, _lightPosition);
   glUniform3fv(_context->lightSpotDirectionLocation,  1, _lightSpotDirection);
@@ -135,6 +138,7 @@ void engine::Light::position(void)
   if(_shadow != NULL)
     {
       glUseProgram(_shadow->getProgramId());
+      glUniformMatrix4fv(_shadow->projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
       glUniformMatrix4fv(_shadow->viewMatrixLocation, 1, GL_FALSE, _viewMatrix);
       glUseProgram(0);
     }

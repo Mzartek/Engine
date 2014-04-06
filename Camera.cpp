@@ -47,15 +47,18 @@ engine::Vector3D<float> engine::Camera::getPositionTarget(void) const
   return _ptarget;
 }
 
-void engine::Camera::position(void)
+void engine::Camera::position(const GLfloat &fov)
 {
   GLfloat camera[] = {_pcamera._x, _pcamera._y, _pcamera._z};
   GLfloat target[] = {_ptarget._x, _ptarget._y, _ptarget._z};
   GLfloat head[] = {0.0, 1.0, 0.0};
+  
+  matrixPerspective(_projectionMatrix, fov, (float)_context->getWidth() / _context->getHeight(), _context->getNear(), _context->getFar());
   matrixLoadIdentity(_viewMatrix);
   matrixLookAt(_viewMatrix, camera, target, head);
       
   glUseProgram(_context->getProgramId());
+  glUniformMatrix4fv(_context->projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
   glUniformMatrix4fv(_context->viewMatrixLocation, 1, GL_FALSE, _viewMatrix);
   glUniform3fv(_context->camPositionLocation, 1, camera);
   glUseProgram(0);

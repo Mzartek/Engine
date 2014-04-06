@@ -10,8 +10,12 @@ engine::GLcontext::~GLcontext(void)
 {
 }
 
-void engine::GLcontext::setShaderProgram(ShaderProgram *program)
+void engine::GLcontext::config(const GLuint &width, const GLuint &height, const GLfloat &near, const GLfloat &far, ShaderProgram *program)
 {
+  _width = width;
+  _height = height;
+  _near = near;
+  _far = far;
   _program = program;
 
   glUseProgram(_program->getId());
@@ -35,7 +39,15 @@ void engine::GLcontext::setShaderProgram(ShaderProgram *program)
   lightDiffuseLocation = glGetUniformLocation(_program->getId(), "lightDiffuse");
   lightSpecularLocation = glGetUniformLocation(_program->getId(), "lightSpecular");
   textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-  shadowTextureLocation = glGetUniformLocation(_program->getId(), "shadowTexture");
+  shadowTextureLocation = glGetUniformLocation(_program->getId(), "shadowMap");
+  
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glViewport(0, 0, _width, _height);
 }
 
 GLuint engine::GLcontext::getProgramId(void)
@@ -43,18 +55,29 @@ GLuint engine::GLcontext::getProgramId(void)
   return _program->getId();
 }
 
-void engine::GLcontext::adjust(const int &w, const int &h, const float &fov, const float &near, const float &far)
+GLuint engine::GLcontext::getWidth(void)
 {
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  
+  return _width;
+}
+
+GLuint engine::GLcontext::getHeight(void)
+{
+  return _height;
+}
+
+GLfloat engine::GLcontext::getNear(void)
+{
+  return _near;
+}
+
+GLfloat engine::GLcontext::getFar(void)
+{
+  return _far;
+}
+
+void engine::GLcontext::clear(void)
+{
   glClearColor(0.0, 0.0, 0.0, 1.0);
-  glViewport(0, 0, w, h);
-  
-  matrixPerspective(_projectionMatrix, fov, (float)w / h, near, far);
-  glUseProgram(_program->getId());
-  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
-  glUseProgram(0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glViewport(0, 0, _width, _height);
 }

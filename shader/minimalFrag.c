@@ -61,10 +61,6 @@ void main(void)
       final_color += outLight.diffuse * outMat.diffuse * lambertTerm * spot;
       final_color += outLight.specular * outMat.specular * specular * spot;
     }
-  
-  test = 1.0;
-  if(textureProj(shadowMap, outShadowCoord)  <  (outShadowCoord.z)/outShadowCoord.w)
-    test = 0.5;
-  
-  fragColor = texture(colorTexture, outTexCoord) * test;
+
+  fragColor = texture(colorTexture, outTexCoord) * textureProj(shadowMap, outShadowCoord);
 }

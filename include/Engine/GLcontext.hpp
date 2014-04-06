@@ -9,11 +9,14 @@ namespace engine
 {
   class GLcontext
   {
-    GLfloat _biasMatrix[16];
-    GLfloat _projectionMatrix[16];
+    GLuint _width;
+    GLuint _height;
+    GLfloat _near;
+    GLfloat _far;
     ShaderProgram *_program;
-    GLint projectionMatrixLocation;
+    GLfloat _biasMatrix[16];
   public:
+    GLint projectionMatrixLocation;
     GLint viewMatrixLocation;
     GLint modelMatrixLocation;
     GLint depthProjectionMatrixLocation;
@@ -33,9 +36,13 @@ namespace engine
     GLint shadowTextureLocation;
     GLcontext(void);
     ~GLcontext(void);
-    void setShaderProgram(ShaderProgram *program);
+    void config(const GLuint &width, const GLuint &height, const GLfloat &near, const GLfloat &far, ShaderProgram *program);
     GLuint getProgramId(void);
-    void adjust(const int &w, const int &h, const float &fov, const float &near, const float &far);
+    GLuint getWidth(void);
+    GLuint getHeight(void);
+    GLfloat getNear(void);
+    GLfloat getFar(void);
+    void clear(void);
   };
 }
 

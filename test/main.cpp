@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include <Engine/Window.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GLcontext.hpp>
@@ -24,15 +26,14 @@ engine::OBJModel firstObj;
 
 void display(void)
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  shadow.clear();
-
-  cam.position();
+  cam.position(90);
   firstLight.position();
-
+  
+  shadow.clear();
   firstObj.displayShadow();
   face.displayShadow();
-  
+
+  context.clear();
   firstObj.display();
   face.display();
   
@@ -54,7 +55,7 @@ void idle(void)
 
 void reshape(int w, int h)
 {
-  context.adjust(w, h, 90.0, 0.1, 1200.0);
+  context.config(w, h, 0.1, 1200.0, program);
 }
 
 void keyboard(unsigned char key, bool state)
@@ -108,12 +109,12 @@ void initGL(void)
   GLfloat mat_shininess[] = {20.0};
 
   program = new engine::ShaderProgram();
-  program->loadProgram("../shader/minimalVert.c", "../shader/minimalFrag.c");
   shadowProgram = new engine::ShaderProgram();
+  program->loadProgram("../shader/minimalVert.c", "../shader/minimalFrag.c");
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
-  context.setShaderProgram(program);
-  shadow.config(window.getWidth(), window.getHeight(), 90, shadowProgram, &context);
+  context.config(window.getWidth(), window.getHeight(), 0.1, 1200.0, program);
+  shadow.config(2048, 2048, shadowProgram);
   
   cam.setGLcontext(&context);
   firstLight.setGLcontext(&context);
@@ -124,7 +125,7 @@ void initGL(void)
   face.setShadowMap(&shadow);
   firstObj.setShadowMap(&shadow);
 
-  firstLight.setPosition(0, 20, 0);
+  firstLight.setPosition(-10, 30, -10);
   firstLight.setDirection(1, -1, 1);
   firstLight.setCone(45);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
@@ -147,7 +148,10 @@ int main(int argc, char **argv)
 {
   init();
   
-  window.initWindow("GLSL", 800, 600);
+  if(argc < 3)
+    window.initWindow("Demo", 800, 600);
+  else
+    window.initWindow("Demo", atoi(argv[1]), atoi(argv[2]));
   window.setDisplayFunc(display);
   window.setIdleFunc(idle);
   window.setReshapeFunc(reshape);

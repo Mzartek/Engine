@@ -11,6 +11,7 @@ namespace engine
   {
   private:
     GLcontext *_context;
+    GLfloat _projectionMatrix[16];
     GLfloat _viewMatrix[16];
   protected:
     Vector3D<GLfloat> _pcamera;
@@ -24,7 +25,7 @@ namespace engine
     void setPositionTarget(const float &x, const float &y, const float &z);
     Vector3D<float> getPositionCamera(void) const;
     Vector3D<float> getPositionTarget(void) const;
-    void position(void);
+    void position(const GLfloat &fov);
   };
 }
 
