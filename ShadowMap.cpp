@@ -45,6 +45,7 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 
   glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _idDepthTexture, 0);
   glDrawBuffer(GL_NONE);
+  glReadBuffer(GL_NONE);
 
   if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     std::cout << "Framebuffer not complete" << std::endl;

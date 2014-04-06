@@ -56,28 +56,26 @@ void materialInit(void)
 
 void lightInit(void)
 {
-  mat3 normalMatrix = mat3(transpose(inverse(modelMatrix)));
-  vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
-
   outLight.spotDirection = lightSpotDirection;
   outLight.spotCutOff = lightSpotCutOff;
   outLight.ambient = lightAmbient;
   outLight.diffuse = lightDiffuse;
   outLight.specular = lightSpecular;
-	
-  normal = vec3(normalMatrix * normalArray);
-  lightDir = lightPosition - vVertex;
-  eyeVec = camPosition - vVertex;
 }
 
 void main(void)
 {
-  mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
+  mat3 normalMatrix = mat3(transpose(inverse(modelMatrix)));
+  vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
   mat4 depthBiasMVP = biasMatrix * (depthProjectionMatrix * depthViewMatrix * modelMatrix);
   
-  gl_Position =  MVP * vec4(vertexArray, 1.0);
+  normal = vec3(normalMatrix * normalArray);
+  lightDir = lightPosition - vVertex;
+  eyeVec = camPosition - vVertex;
+  
+  gl_Position =  projectionMatrix * viewMatrix * modelMatrix * vec4(vertexArray, 1.0);
 
-  outTexCoord = vec2(textureArray.x, 1 - textureArray.y);
+  outTexCoord = vec2(textureArray.x, 1.0 - textureArray.y);
   outShadowCoord = depthBiasMVP * vec4(vertexArray, 1.0);
 
   materialInit();

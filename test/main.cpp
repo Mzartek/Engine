@@ -31,7 +31,7 @@ void display(void)
   
   shadow.clear();
   firstObj.displayShadow();
-  face.displayShadow();
+  // face.displayShadow();
 
   context.clear();
   firstObj.display();
@@ -45,7 +45,7 @@ void idle(void)
   // static engine::Vector3D<float> lightPosition, lightDirection;
 
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  firstObj.matRotate(1, 0, 0, 1);
+  firstObj.matRotate(0.1, 0, 0, 1);
   
   // lightPosition = cam.getPositionCamera();
   // lightDirection = cam.getForward();
@@ -114,7 +114,7 @@ void initGL(void)
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
   context.config(window.getWidth(), window.getHeight(), 0.1, 1200.0, program);
-  shadow.config(2048, 2048, shadowProgram);
+  shadow.config(1024, 1024, shadowProgram);
   
   cam.setGLcontext(&context);
   firstLight.setGLcontext(&context);
