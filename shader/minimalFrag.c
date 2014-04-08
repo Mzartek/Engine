@@ -36,18 +36,16 @@ void main(void)
   vec4 final_color;
   vec3 L, N, D, E, R;
   float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle;
-  float lambertTerm, spot, specular;
+  float cosTheta, spot, specular;
 
   final_color = outLight.ambient * outMat.ambient;
-
-  if(textureProj(shadowMap, outShadowCoord) >= (outShadowCoord.z-0.005)/outShadowCoord.w)
+  if(textureProj(shadowMap, outShadowCoord) > (outShadowCoord.z-0.005)/outShadowCoord.w)
     {
       L = normalize(lightDir);
       N = normalize(normal);
 	
-      lambertTerm = dot(L,N);
-
-      if(lambertTerm > 0.0)
+      cosTheta = dot(L,N);
+      if(cosTheta > 0.0)
 	{
 	  D = normalize(outLight.spotDirection);
 	  E = normalize(eyeVec);
@@ -60,8 +58,8 @@ void main(void)
 	  spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
 
 	  specular = pow(max(dot(R, E), 0.0), outMat.shininess);
-		
-	  final_color += outLight.diffuse * outMat.diffuse * lambertTerm * spot;
+      
+	  final_color += outLight.diffuse * outMat.diffuse * cosTheta * spot;
 	  final_color += outLight.specular * outMat.specular * specular * spot;
 	}
     }
