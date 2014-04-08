@@ -148,7 +148,7 @@ void engine::OBJModel::loadObj(const std::string name)
       else
 	takestr = true;
       if(str[0]=='#')
-	for(int i=objfile.get() ; i!='\n' ; i=objfile.get());
+	for(int i=objfile.get() ; i!='\n' && objfile.good() ; i=objfile.get());
       else if(str == "mtllib")
 	{
 	  objfile >> str;

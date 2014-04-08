@@ -120,7 +120,7 @@ void engine::Light::position(void)
     }
 
   // matrixOrtho(_projectionMatrix, -10, 10, -10, 10, 1, 1200);
-  matrixPerspective(_projectionMatrix, _lightSpotCutOff[0] * 2, (float)_context->getWidth() / _context->getHeight(), _context->getNear(), _context->getFar());
+  matrixPerspective(_projectionMatrix, _lightSpotCutOff[0] * 2, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
   matrixLoadIdentity(_viewMatrix);
   matrixLookAt(_viewMatrix, _lightPosition, target, head);
   

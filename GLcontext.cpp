@@ -1,5 +1,10 @@
 #include <Engine/GLcontext.hpp>
 
+GLuint engine::GLcontext::width = 0;
+GLuint engine::GLcontext::height = 0;
+GLfloat engine::GLcontext::near = 0;
+GLfloat engine::GLcontext::far = 0;
+
 engine::GLcontext::GLcontext(void)
 {
   matrixLoadBias(_biasMatrix);
@@ -10,12 +15,31 @@ engine::GLcontext::~GLcontext(void)
 {
 }
 
-void engine::GLcontext::config(const GLuint &width, const GLuint &height, const GLfloat &near, const GLfloat &far, ShaderProgram *program)
+void engine::GLcontext::config(const GLuint &w, const GLuint &h, const GLfloat &n, const GLfloat &f)
 {
-  _width = width;
-  _height = height;
-  _near = near;
-  _far = far;
+  width = w;
+  height = h;
+  near = n;
+  far = f;
+  
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glViewport(0, 0, width, height);
+}
+
+void engine::GLcontext::clear(void)
+{
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glViewport(0, 0, width, height);
+}
+
+void engine::GLcontext::setShaderProgram(ShaderProgram *program)
+{
   _program = program;
 
   glUseProgram(_program->getId());
@@ -41,43 +65,12 @@ void engine::GLcontext::config(const GLuint &width, const GLuint &height, const 
   textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
   shadowTextureLocation = glGetUniformLocation(_program->getId(), "shadowMap");
   
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glViewport(0, 0, _width, _height);
+  std::cout << glGetAttribLocation(_program->getId(), "vertexArray") << std::endl;
+  std::cout << glGetAttribLocation(_program->getId(), "textureArray") << std::endl;
+  std::cout << glGetAttribLocation(_program->getId(), "normalArray") << std::endl;
 }
 
 GLuint engine::GLcontext::getProgramId(void)
 {
   return _program->getId();
-}
-
-GLuint engine::GLcontext::getWidth(void)
-{
-  return _width;
-}
-
-GLuint engine::GLcontext::getHeight(void)
-{
-  return _height;
-}
-
-GLfloat engine::GLcontext::getNear(void)
-{
-  return _near;
-}
-
-GLfloat engine::GLcontext::getFar(void)
-{
-  return _far;
-}
-
-void engine::GLcontext::clear(void)
-{
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glViewport(0, 0, _width, _height);
 }

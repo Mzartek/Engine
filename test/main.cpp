@@ -15,27 +15,30 @@ bool keyState[256];
 engine::Window window;
 
 engine::ShaderProgram *program;
+engine::ShaderProgram *nolight;
 engine::ShaderProgram *shadowProgram;
-engine::GLcontext context;
+engine::GLcontext context1;
+engine::GLcontext context2;
 engine::ShadowMap shadow;
 
 engine::FreeCam cam;
 engine::Light firstLight;
 engine::Model face;
-engine::OBJModel firstObj;
+engine::OBJModel helicopter;
+engine::OBJModel bulb;
 
 void display(void)
 {
-  cam.position(90);
   firstLight.position();
-  
   shadow.clear();
-  firstObj.displayShadow();
   face.displayShadow();
+  helicopter.displayShadow();
 
-  context.clear();
-  firstObj.display();
+  cam.position(90);
+  engine::GLcontext::clear();
   face.display();
+  helicopter.display();
+  bulb.display();
   
   glUseProgram(0);
 }
@@ -45,7 +48,7 @@ void idle(void)
   // static engine::Vector3D<float> lightPosition, lightDirection;
 
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  firstObj.matRotate(0.1, 0, 0, 1);
+  helicopter.matRotate(0.1, 0, 0, 1);
   
   // lightPosition = cam.getPositionCamera();
   // lightDirection = cam.getForward();
@@ -55,7 +58,7 @@ void idle(void)
 
 void reshape(int w, int h)
 {
-  context.config(w, h, 0.1, 1200.0, program);
+  engine::GLcontext::config(w, h, 0.1, 1200.0);
 }
 
 void keyboard(unsigned char key, bool state)
@@ -109,21 +112,27 @@ void initGL(void)
   GLfloat mat_shininess[] = {20.0};
 
   program = new engine::ShaderProgram();
+  nolight = new engine::ShaderProgram();
   shadowProgram = new engine::ShaderProgram();
-  program->loadProgram("../shader/minimalVert.c", "../shader/minimalFrag.c");
+  program->loadProgram("../shader/lightVert.c", "../shader/lightFrag.c");
+  nolight->loadProgram("../shader/noLightVert.c", "../shader/noLightFrag.c");
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
-  context.config(window.getWidth(), window.getHeight(), 0.1, 4096, program);
+  engine::GLcontext::config(window.getWidth(), window.getHeight(), 0.1, 1200);
   shadow.config(1024, 1024, shadowProgram);
+
+  context1.setShaderProgram(program);
+  context2.setShaderProgram(nolight);
   
-  cam.setGLcontext(&context);
-  firstLight.setGLcontext(&context);
-  face.setGLcontext(&context);
-  firstObj.setGLcontext(&context);
+  cam.setGLcontext(&context1);
+  firstLight.setGLcontext(&context1);
+  face.setGLcontext(&context1);
+  helicopter.setGLcontext(&context1);
+  bulb.setGLcontext(&context2);
 
   firstLight.setShadowMap(&shadow);
   face.setShadowMap(&shadow);
-  firstObj.setShadowMap(&shadow);
+  helicopter.setShadowMap(&shadow);
 
   firstLight.setPosition(0, 20, 0);
   firstLight.setDirection(1, -1, 1);
@@ -138,10 +147,14 @@ void initGL(void)
   		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
   face.matRotate(90, 1, 0, 0);
 
-  firstObj.loadObj("resources/UH-60 Blackhawk/uh60.obj");
-  firstObj.matTranslate(15, 10, 15);
-  firstObj.matRotate(-90, 1, 0, 0);
-  firstObj.matScale(2, 2, 2);
+  helicopter.loadObj("resources/UH-60_Blackhawk/uh60.obj");
+  helicopter.matTranslate(15, 10, 15);
+  helicopter.matRotate(-90, 1, 0, 0);
+  helicopter.matScale(2, 2, 2);
+
+  bulb.loadObj("resources/light_bulb/light_bulb.obj");
+  bulb.matTranslate(10, 5, 10);
+  bulb.matScale(0.05, 0.05, 0.05);
 }
 
 int main(int argc, char **argv)
@@ -163,6 +176,7 @@ int main(int argc, char **argv)
   window.mainLoop();
 
   delete program;
+  delete nolight;
   delete shadowProgram;
   return 0;
 }

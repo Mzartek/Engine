@@ -67,7 +67,7 @@ void main(void)
 {
   mat3 normalMatrix = mat3(transpose(inverse(modelMatrix)));
   vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
-  mat4 depthBiasMVP = biasMatrix * (depthProjectionMatrix * depthViewMatrix * modelMatrix);
+  mat4 depthBiasMVP = biasMatrix * depthProjectionMatrix * depthViewMatrix * modelMatrix;
   
   normal = vec3(normalMatrix * normalArray);
   lightDir = lightPosition - vVertex;

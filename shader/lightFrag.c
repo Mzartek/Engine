@@ -35,11 +35,13 @@ void main(void)
 {
   vec4 final_color;
   vec3 L, N, D, E, R;
+  float x, y;
   float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle;
   float cosTheta, spot, specular;
 
   final_color = outLight.ambient * outMat.ambient;
-  if(textureProj(shadowMap, outShadowCoord) > (outShadowCoord.z-0.005)/outShadowCoord.w)
+  
+  if(textureProj(shadowMap, outShadowCoord) >= (outShadowCoord.z-0.005)/outShadowCoord.w)
     {
       L = normalize(lightDir);
       N = normalize(normal);

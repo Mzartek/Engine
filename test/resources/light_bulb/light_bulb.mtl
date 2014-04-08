@@ -1,0 +1,17 @@
+# Created with Anim8or 0.96 beta
+# Object "object01":
+
+newmtl bulb
+Ka 0.787 0.787 0.787
+Kd 0.787 0.787 0.787
+Ks 1 1 1
+d 1.0
+Ns 752.6
+
+newmtl bottom
+Ka 0.787 0.787 0.787
+Kd 0.787 0.787 0.787
+Ks 1 1 1
+d 1.0
+Ns 451.5
+
