@@ -51,20 +51,21 @@ void engine::Camera::position(const GLfloat &fov)
 {
   GLfloat camera[] = {_pcamera._x, _pcamera._y, _pcamera._z};
   GLfloat target[] = {_ptarget._x, _ptarget._y, _ptarget._z};
-  // GLfloat target[] = {0, 0, -10};
-  // GLfloat camera[] = {target[0] - 0, target[1]+1, target[2]-0.5f};
   GLfloat head[] = {0, 1.0, 0.0};
-  GLfloat camMatrix[16];
+  GLfloat projection[16], view[16];
 
-  // (void)fov;
-  // matrixOrtho(_projectionMatrix, -100, 100, -100, 100, -100, 100);
-  matrixPerspective(_projectionMatrix, fov, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
-  matrixLoadIdentity(_viewMatrix);
-  matrixLookAt(_viewMatrix, camera, target, head);
+  if(_context == NULL)
+    {
+      std::cerr << "You need to set the GLcontext before" << std::endl;
+      return;
+    }
 
-  MultiplyMatrices4by4OpenGL_FLOAT(camMatrix, _projectionMatrix, _viewMatrix);
+  matrixPerspective(projection, fov, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
+  matrixLoadIdentity(view);
+  matrixLookAt(view, camera, target, head);
+  MultiplyMatrices4by4OpenGL_FLOAT(_context->VP, projection, view);
+
   glUseProgram(_context->getProgramId());
-  glUniformMatrix4fv(_context->camMatrixLocation, 1, GL_FALSE, camMatrix);
   glUniform3fv(_context->camPositionLocation, 1, camera);
   glUseProgram(0);
 }

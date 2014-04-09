@@ -12,13 +12,14 @@ namespace engine
   private:
     ShaderProgram *_program;
   public:
-    GLfloat _biasMatrix[16];
+    GLfloat VP[16];
+    GLfloat depthVP[16];
     static GLuint width;
     static GLuint height;
     static GLfloat near;
     static GLfloat far;
-    GLint camMatrixLocation;
-    GLint biasLightMatrixLocation;
+    GLint MVPLocation;
+    GLint depthMVPLocation;
     GLint modelMatrixLocation;
     GLint matAmbientLocation;
     GLint matDiffuseLocation;

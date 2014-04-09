@@ -76,15 +76,27 @@ engine::Vector3D<GLfloat> engine::Model::getPosition(void) const
 void engine::Model::display(void) const
 {
   unsigned i;
+  GLfloat tmp[16];
   
   if(_context == NULL)
     {
       std::cerr << "You need to set the GLcontext before" << std::endl;
       return;
     }
-  
+
   glUseProgram(_context->getProgramId());
+
+  MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->VP, _modelMatrix);
+  glUniformMatrix4fv(_context->MVPLocation, 1, GL_FALSE, tmp);
+
+  if(_shadow !=NULL)
+    {
+      MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->depthVP, _modelMatrix);
+      glUniformMatrix4fv(_context->depthMVPLocation, 1, GL_FALSE, tmp);
+    }
+  
   glUniformMatrix4fv(_context->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
+  
   glUseProgram(0);
   
   for(i=0 ; i<_tObject.size(); i++)
@@ -94,15 +106,19 @@ void engine::Model::display(void) const
 void engine::Model::displayShadow(void) const
 {
   unsigned i;
+  GLfloat tmp[16];
   
   if(_shadow == NULL)
     {
       std::cerr << "You need to set the ShadowMap before" << std::endl;
       return;
     }
-  
+      
   glUseProgram(_shadow->getProgramId());
-  glUniformMatrix4fv(_shadow->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
+  
+  MultiplyMatrices4by4OpenGL_FLOAT(tmp, _shadow->VP, _modelMatrix);
+  glUniformMatrix4fv(_shadow->MVPLocation, 1, GL_FALSE, tmp);
+  
   glUseProgram(0);
   
   for(i=0 ; i<_tObject.size(); i++)

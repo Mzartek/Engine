@@ -7,7 +7,6 @@ GLfloat engine::GLcontext::far = 0;
 
 engine::GLcontext::GLcontext(void)
 {
-  matrixLoadBias(_biasMatrix);
   _program = NULL;
 }
 
@@ -42,8 +41,8 @@ void engine::GLcontext::setShaderProgram(ShaderProgram *program)
 {
   _program = program;
   
-  camMatrixLocation = glGetUniformLocation(_program->getId(), "camMatrix");
-  biasLightMatrixLocation = glGetUniformLocation(_program->getId(), "biasLightMatrix");
+  MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
+  depthMVPLocation = glGetUniformLocation(_program->getId(), "depthMVP");
   modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
   matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
   matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");

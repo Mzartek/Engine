@@ -1,33 +1,9 @@
 #include <Engine/matrix.h>
 
-void matrixPerspectiveBis(float *matrix, float left, float right, float bottom, float top, float znear, float zfar)
-{
-  float temp, temp2, temp3, temp4;
-  temp = 2.0 * znear;
-  temp2 = right - left;
-  temp3 = top - bottom;
-  temp4 = zfar - znear;
-  matrix[ 0] = temp / temp2;
-  matrix[ 1] = 0.0;
-  matrix[ 2] = 0.0;
-  matrix[ 3] = 0.0;
-  matrix[ 4] = 0.0;
-  matrix[ 5] = temp / temp3;
-  matrix[ 6] = 0.0;
-  matrix[ 7] = 0.0;
-  matrix[ 8] = (right + left) / temp2;
-  matrix[ 9] = (top + bottom) / temp3;
-  matrix[10] = (-zfar - znear) / temp4;
-  matrix[11] = -1.0;
-  matrix[12] = 0.0;
-  matrix[13] = 0.0;
-  matrix[14] = (-temp * zfar) / temp4;
-  matrix[15] = 0.0;
-}
-
 void NormalizeVector(float *pvector)
 {
   float normalizingConstant;
+  
   normalizingConstant=1.0/sqrtf(pvector[0]*pvector[0]+pvector[1]*pvector[1]+pvector[2]*pvector[2]);
   pvector[0]*=normalizingConstant;
   pvector[1]*=normalizingConstant;
@@ -41,27 +17,31 @@ void ComputeNormalOfPlane(float *normal, const float *pvector1, const float *pve
   normal[2]=(pvector1[0]*pvector2[1])-(pvector1[1]*pvector2[0]);
 }
 
-void MultiplyMatrices4by4OpenGL_FLOAT(float *result, float *matrix1, float *matrix2)
+void MultiplyMatrices4by4OpenGL_FLOAT(float *result, const float *matrix1, const float *matrix2)
 {
-  result[ 0]=matrix1[ 0]*matrix2[ 0]+matrix1[ 4]*matrix2[ 1]+matrix1[ 8]*matrix2[ 2]+matrix1[12]*matrix2[ 3];
-  result[ 4]=matrix1[ 0]*matrix2[ 4]+matrix1[ 4]*matrix2[ 5]+matrix1[ 8]*matrix2[ 6]+matrix1[12]*matrix2[ 7];
-  result[ 8]=matrix1[ 0]*matrix2[ 8]+matrix1[ 4]*matrix2[ 9]+matrix1[ 8]*matrix2[10]+matrix1[12]*matrix2[11];
-  result[12]=matrix1[ 0]*matrix2[12]+matrix1[ 4]*matrix2[13]+matrix1[ 8]*matrix2[14]+matrix1[12]*matrix2[15];
+  float tmp[16];
+  
+  tmp[ 0]=matrix1[ 0]*matrix2[ 0]+matrix1[ 4]*matrix2[ 1]+matrix1[ 8]*matrix2[ 2]+matrix1[12]*matrix2[ 3];
+  tmp[ 4]=matrix1[ 0]*matrix2[ 4]+matrix1[ 4]*matrix2[ 5]+matrix1[ 8]*matrix2[ 6]+matrix1[12]*matrix2[ 7];
+  tmp[ 8]=matrix1[ 0]*matrix2[ 8]+matrix1[ 4]*matrix2[ 9]+matrix1[ 8]*matrix2[10]+matrix1[12]*matrix2[11];
+  tmp[12]=matrix1[ 0]*matrix2[12]+matrix1[ 4]*matrix2[13]+matrix1[ 8]*matrix2[14]+matrix1[12]*matrix2[15];
 
-  result[ 1]=matrix1[ 1]*matrix2[ 0]+matrix1[ 5]*matrix2[ 1]+matrix1[ 9]*matrix2[ 2]+matrix1[13]*matrix2[ 3];
-  result[ 5]=matrix1[ 1]*matrix2[ 4]+matrix1[ 5]*matrix2[ 5]+matrix1[ 9]*matrix2[ 6]+matrix1[13]*matrix2[ 7];
-  result[ 9]=matrix1[ 1]*matrix2[ 8]+matrix1[ 5]*matrix2[ 9]+matrix1[ 9]*matrix2[10]+matrix1[13]*matrix2[11];
-  result[13]=matrix1[ 1]*matrix2[12]+matrix1[ 5]*matrix2[13]+matrix1[ 9]*matrix2[14]+matrix1[13]*matrix2[15];
+  tmp[ 1]=matrix1[ 1]*matrix2[ 0]+matrix1[ 5]*matrix2[ 1]+matrix1[ 9]*matrix2[ 2]+matrix1[13]*matrix2[ 3];
+  tmp[ 5]=matrix1[ 1]*matrix2[ 4]+matrix1[ 5]*matrix2[ 5]+matrix1[ 9]*matrix2[ 6]+matrix1[13]*matrix2[ 7];
+  tmp[ 9]=matrix1[ 1]*matrix2[ 8]+matrix1[ 5]*matrix2[ 9]+matrix1[ 9]*matrix2[10]+matrix1[13]*matrix2[11];
+  tmp[13]=matrix1[ 1]*matrix2[12]+matrix1[ 5]*matrix2[13]+matrix1[ 9]*matrix2[14]+matrix1[13]*matrix2[15];
 
-  result[ 2]=matrix1[ 2]*matrix2[ 0]+matrix1[ 6]*matrix2[ 1]+matrix1[10]*matrix2[ 2]+matrix1[14]*matrix2[ 3];
-  result[ 6]=matrix1[ 2]*matrix2[ 4]+matrix1[ 6]*matrix2[ 5]+matrix1[10]*matrix2[ 6]+matrix1[14]*matrix2[ 7];
-  result[10]=matrix1[ 2]*matrix2[ 8]+matrix1[ 6]*matrix2[ 9]+matrix1[10]*matrix2[10]+matrix1[14]*matrix2[11];
-  result[14]=matrix1[ 2]*matrix2[12]+matrix1[ 6]*matrix2[13]+matrix1[10]*matrix2[14]+matrix1[14]*matrix2[15];
+  tmp[ 2]=matrix1[ 2]*matrix2[ 0]+matrix1[ 6]*matrix2[ 1]+matrix1[10]*matrix2[ 2]+matrix1[14]*matrix2[ 3];
+  tmp[ 6]=matrix1[ 2]*matrix2[ 4]+matrix1[ 6]*matrix2[ 5]+matrix1[10]*matrix2[ 6]+matrix1[14]*matrix2[ 7];
+  tmp[10]=matrix1[ 2]*matrix2[ 8]+matrix1[ 6]*matrix2[ 9]+matrix1[10]*matrix2[10]+matrix1[14]*matrix2[11];
+  tmp[14]=matrix1[ 2]*matrix2[12]+matrix1[ 6]*matrix2[13]+matrix1[10]*matrix2[14]+matrix1[14]*matrix2[15];
 
-  result[ 3]=matrix1[ 3]*matrix2[ 0]+matrix1[ 7]*matrix2[ 1]+matrix1[11]*matrix2[ 2]+matrix1[15]*matrix2[ 3];
-  result[ 7]=matrix1[ 3]*matrix2[ 4]+matrix1[ 7]*matrix2[ 5]+matrix1[11]*matrix2[ 6]+matrix1[15]*matrix2[ 7];
-  result[11]=matrix1[ 3]*matrix2[ 8]+matrix1[ 7]*matrix2[ 9]+matrix1[11]*matrix2[10]+matrix1[15]*matrix2[11];
-  result[15]=matrix1[ 3]*matrix2[12]+matrix1[ 7]*matrix2[13]+matrix1[11]*matrix2[14]+matrix1[15]*matrix2[15];
+  tmp[ 3]=matrix1[ 3]*matrix2[ 0]+matrix1[ 7]*matrix2[ 1]+matrix1[11]*matrix2[ 2]+matrix1[15]*matrix2[ 3];
+  tmp[ 7]=matrix1[ 3]*matrix2[ 4]+matrix1[ 7]*matrix2[ 5]+matrix1[11]*matrix2[ 6]+matrix1[15]*matrix2[ 7];
+  tmp[11]=matrix1[ 3]*matrix2[ 8]+matrix1[ 7]*matrix2[ 9]+matrix1[11]*matrix2[10]+matrix1[15]*matrix2[11];
+  tmp[15]=matrix1[ 3]*matrix2[12]+matrix1[ 7]*matrix2[13]+matrix1[11]*matrix2[14]+matrix1[15]*matrix2[15];
+
+  memcpy(result, tmp, 16 * sizeof(float));
 }
 
 //---------------------
@@ -113,10 +93,30 @@ void matrixOrtho(float *matrix, float left, float right, float bottom, float top
 
 void matrixPerspective(float *matrix, float fovyInDegrees, float aspectRatio, float znear, float zfar)
 {
-  float ymax, xmax;
-  ymax = znear * tanf(fovyInDegrees * M_PI / 360.0);
-  xmax = ymax * aspectRatio;
-  matrixPerspectiveBis(matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
+  float tmp, f;
+  
+  tmp = M_PI * (fovyInDegrees/2) / 180;
+  f = cosf(tmp)/sinf(tmp);
+  
+  matrix[ 0]=f/aspectRatio;
+  matrix[ 1]=0;
+  matrix[ 2]=0;
+  matrix[ 3]=0;
+
+  matrix[ 4]=0;
+  matrix[ 5]=f;
+  matrix[ 6]=0;
+  matrix[ 7]=0;
+  
+  matrix[ 8]=0;
+  matrix[ 9]=0;
+  matrix[10]=(zfar+znear)/(znear-zfar);
+  matrix[11]=-1;
+
+  matrix[12]=0;
+  matrix[13]=0;
+  matrix[14]=(2*zfar*znear)/(znear-zfar);
+  matrix[15]=0;
 }
 
 void matrixLookAt(float *matrix, float *eyePosition3D, float *center3D, float *upVector3D)
@@ -171,6 +171,7 @@ void matrixRotate(float *matrix, float angleInRadians, float x, float y, float z
   float m[16], rotate[16];
   float OneMinusCosAngle, CosAngle, SinAngle;
   float A_OneMinusCosAngle, C_OneMinusCosAngle;
+  
   CosAngle=cosf(angleInRadians);
   OneMinusCosAngle=1.0-CosAngle;
   SinAngle=sinf(angleInRadians);

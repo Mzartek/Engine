@@ -9,7 +9,6 @@ namespace engine
 {
   class Model
   {
-    friend class ShadowMap;
   private:
     std::vector<Object *> _tObject;
     GLcontext *_context;

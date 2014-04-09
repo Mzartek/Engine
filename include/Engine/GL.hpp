@@ -9,6 +9,7 @@
 #include <cassert>
 #include <cctype>
 #include <cmath>
+#include <cstring>
 
 #include <GL/glew.h>
 #include <GL/gl.h>

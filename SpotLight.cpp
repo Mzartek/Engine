@@ -21,8 +21,7 @@ void engine::SpotLight::position(void)
 		      _lightPosition[1] + _lightDirection[1],
 		      _lightPosition[2] + _lightDirection[2]};
   GLfloat head[] = {0.0, 1.0, 0.0};
-  GLfloat lightMatrix[16];
-  GLfloat biasLightMatrix[16];
+  GLfloat bias[16], projection[16], view[16];
 
   if(_context == NULL)
     {
@@ -30,21 +29,20 @@ void engine::SpotLight::position(void)
       return;
     }
 
-  matrixPerspective(_projectionMatrix, _lightSpotCutOff[0] * 2, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
-  matrixLoadIdentity(_viewMatrix);
-  matrixLookAt(_viewMatrix, position, target, head);
-
-  MultiplyMatrices4by4OpenGL_FLOAT(lightMatrix, _projectionMatrix, _viewMatrix);
   if(_shadow != NULL)
     {
-      glUseProgram(_shadow->getProgramId());
-      glUniformMatrix4fv(_shadow->lightMatrixLocation, 1, GL_FALSE, lightMatrix);
-      glUseProgram(0);
+      matrixPerspective(projection, _lightSpotCutOff[0] * 2, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
+      matrixLoadIdentity(view);
+      matrixLookAt(view, position, target, head);
+      
+      MultiplyMatrices4by4OpenGL_FLOAT(_context->depthVP, projection, view);
+      memcpy(_shadow->VP, _context->depthVP, 16 * sizeof(GLfloat));
+
+      matrixLoadBias(bias);
+      MultiplyMatrices4by4OpenGL_FLOAT(_context->depthVP, bias, _context->depthVP);
     }
-  
-  MultiplyMatrices4by4OpenGL_FLOAT(biasLightMatrix, _context->_biasMatrix, lightMatrix);
+
   glUseProgram(_context->getProgramId());
-  glUniformMatrix4fv(_context->biasLightMatrixLocation, 1, GL_FALSE, lightMatrix);
   glUniform3fv(_context->lightPositionLocation,  1, _lightPosition);
   glUniform3fv(_context->lightDirectionLocation,  1, _lightDirection);
   glUniform1fv(_context->lightSpotCutOffLocation,  1, _lightSpotCutOff);

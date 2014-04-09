@@ -11,8 +11,6 @@ namespace engine
   {
   private:
     GLcontext *_context;
-    GLfloat _projectionMatrix[16];
-    GLfloat _viewMatrix[16];
   protected:
     Vector3D<GLfloat> _pcamera;
     Vector3D<GLfloat> _ptarget;

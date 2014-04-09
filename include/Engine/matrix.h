@@ -8,10 +8,9 @@
 extern "C" {
 #endif
 
-  void matrixPerspectiveBis(float *matrix, float left, float right, float bottom, float top, float znear, float zfar);
   void NormalizeVector(float *pvector);
   void ComputeNormalOfPlane(float *normal, const float *pvector1, const float *pvector2);
-  void MultiplyMatrices4by4OpenGL_FLOAT(float *result, float *matrix1, float *matrix2);
+  void MultiplyMatrices4by4OpenGL_FLOAT(float *result, const float *matrix1, const float *matrix2);
 
   void matrixLoadIdentity(float *matrix);
   void matrixLoadBias(float *matrix);

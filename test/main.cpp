@@ -15,30 +15,27 @@ bool keyState[256];
 engine::Window window;
 
 engine::ShaderProgram *program;
-engine::ShaderProgram *nolight;
 engine::ShaderProgram *shadowProgram;
-engine::GLcontext context1;
-engine::GLcontext context2;
+engine::GLcontext context;
 engine::ShadowMap shadow;
 
 engine::FreeCam cam;
 engine::DirLight firstLight;
 engine::Model face;
 engine::OBJModel helicopter;
-engine::OBJModel bulb;
 
 void display(void)
 {
   firstLight.position();
+  cam.position(90);
+  
   shadow.clear();
   face.displayShadow();
   helicopter.displayShadow();
 
-  cam.position(90);
   engine::GLcontext::clear();
   face.display();
   helicopter.display();
-  bulb.display();
   
   glUseProgram(0);
 }
@@ -109,31 +106,25 @@ void initGL(void)
   GLfloat mat_shininess[] = {20.0};
 
   program = new engine::ShaderProgram();
-  nolight = new engine::ShaderProgram();
   shadowProgram = new engine::ShaderProgram();
   program->loadProgram("../shader/demoVert.c", "../shader/demoFrag.c");
-  nolight->loadProgram("../shader/noLightVert.c", "../shader/noLightFrag.c");
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
   engine::GLcontext::config(window.getWidth(), window.getHeight(), 0.1, 1200);
   shadow.config(1024, 1024, shadowProgram);
 
-  context1.setShaderProgram(program);
-  context2.setShaderProgram(nolight);
+  context.setShaderProgram(program);
   
-  cam.setGLcontext(&context1);
-  firstLight.setGLcontext(&context1);
-  face.setGLcontext(&context1);
-  helicopter.setGLcontext(&context1);
-  bulb.setGLcontext(&context2);
+  cam.setGLcontext(&context);
+  firstLight.setGLcontext(&context);
+  face.setGLcontext(&context);
+  helicopter.setGLcontext(&context);
 
   firstLight.setShadowMap(&shadow);
   face.setShadowMap(&shadow);
   helicopter.setShadowMap(&shadow);
 
-  // firstLight.setPosition(0, 20, 0);
-  // firstLight.setCone(45);
-  firstLight.setDirection(0, -1, 0.5);
+  firstLight.setDirection(0, -1, 1);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
@@ -148,10 +139,6 @@ void initGL(void)
   helicopter.matTranslate(15, 10, 15);
   helicopter.matRotate(-90, 1, 0, 0);
   helicopter.matScale(2, 2, 2);
-
-  bulb.loadObj("resources/light_bulb/light_bulb.obj");
-  bulb.matTranslate(10, 5, 10);
-  bulb.matScale(0.05, 0.05, 0.05);
 }
 
 int main(int argc, char **argv)
@@ -173,7 +160,6 @@ int main(int argc, char **argv)
   window.mainLoop();
 
   delete program;
-  delete nolight;
   delete shadowProgram;
   return 0;
 }

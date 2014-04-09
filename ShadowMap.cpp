@@ -21,8 +21,7 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   _height = height;
   
   _program = program;
-  lightMatrixLocation = glGetUniformLocation(_program->getId(), "lightMatrix");
-  modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
+  MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
   
   // Depth Texture for Shadow Mapping
   if(glIsTexture(_idDepthTexture))

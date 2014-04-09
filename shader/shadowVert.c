@@ -1,12 +1,12 @@
 #version 330
 
 // Matrix
-uniform mat4 lightMatrix, modelMatrix;
+uniform mat4 MVP;
 
 //Attribute
 layout(location = 0) in vec3 vertexArray;
  
 void main()
 {
-  gl_Position = lightMatrix * modelMatrix * vec4(vertexArray, 1.0);
+  gl_Position = MVP * vec4(vertexArray, 1.0);
 }

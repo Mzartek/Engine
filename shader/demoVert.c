@@ -16,7 +16,7 @@ struct light
 };
 
 //Matrix
-uniform mat4 camMatrix, biasLightMatrix, modelMatrix;
+uniform mat4 MVP, depthMVP, modelMatrix;
 
 //Material
 uniform vec4 matAmbient, matDiffuse, matSpecular;
@@ -65,10 +65,10 @@ void main(void)
   rayDir = lightDirection;
   eyeVec = camPosition - vVertex;
   
-  gl_Position =  camMatrix * modelMatrix * vec4(vertexArray, 1.0);
+  gl_Position =  MVP * vec4(vertexArray, 1.0);
+  outShadowCoord = depthMVP * vec4(vertexArray, 1.0);
 
   outTexCoord = vec2(textureArray.x, 1.0 - textureArray.y);
-  outShadowCoord = biasLightMatrix * modelMatrix * vec4(vertexArray, 1.0);
 
   materialInit();
 

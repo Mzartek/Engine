@@ -17,7 +17,7 @@ struct light
 
 // Texture
 uniform sampler2D colorTexture;
-uniform sampler2D shadowMap;
+uniform sampler2DShadow shadowMap;
 
 // In
 in vec2 outTexCoord;
@@ -37,7 +37,7 @@ void main(void)
   float cosTheta, spot, specular;
 
   final_color = outLight.ambient * outMat.ambient;
-  if(texture(shadowMap, outShadowCoord.xy ).z  >=  outShadowCoord.z-0.005)
+  if(textureProj(shadowMap, outShadowCoord) >= outShadowCoord.z-0.005)
     {
       L = normalize(rayDir);
       N = normalize(normal);

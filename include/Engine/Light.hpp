@@ -12,8 +12,6 @@ namespace engine
   protected:
     GLcontext *_context;
     ShadowMap *_shadow;
-    GLfloat _projectionMatrix[16];
-    GLfloat _viewMatrix[16];
     GLfloat _lightPosition[3];
     GLfloat _lightDirection[3];
     GLfloat _lightAmbient[4];
