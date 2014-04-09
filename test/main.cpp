@@ -5,7 +5,7 @@
 #include <Engine/GLcontext.hpp>
 #include <Engine/ShadowMap.hpp>
 #include <Engine/FreeCam.hpp>
-#include <Engine/Light.hpp>
+#include <Engine/DirLight.hpp>
 #include <Engine/OBJModel.hpp>
 
 #define ESC 41
@@ -22,7 +22,7 @@ engine::GLcontext context2;
 engine::ShadowMap shadow;
 
 engine::FreeCam cam;
-engine::Light firstLight;
+engine::DirLight firstLight;
 engine::Model face;
 engine::OBJModel helicopter;
 engine::OBJModel bulb;
@@ -116,7 +116,7 @@ void initGL(void)
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
   
   engine::GLcontext::config(window.getWidth(), window.getHeight(), 0.1, 1200);
-  shadow.config(4096, 4096, shadowProgram);
+  shadow.config(1024, 1024, shadowProgram);
 
   context1.setShaderProgram(program);
   context2.setShaderProgram(nolight);

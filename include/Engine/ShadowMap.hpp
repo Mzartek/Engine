@@ -17,8 +17,7 @@ namespace engine
     GLuint _idDepthTexture;
     ShaderProgram *_program;
   public:
-    GLint projectionMatrixLocation;
-    GLint viewMatrixLocation;
+    GLint lightMatrixLocation;
     GLint modelMatrixLocation;
     ShadowMap(void);
     ~ShadowMap(void);

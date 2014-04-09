@@ -15,7 +15,6 @@ engine::Light::Light(void)
   _lightDirection[0] = 1.0;
   _lightDirection[1] = 0;
   _lightDirection[2] = 0;
-  _lightSpotCutOff[0] = 180;
   _context = NULL;
   _shadow = NULL;
 }
@@ -35,7 +34,6 @@ engine::Light::Light(const float &x, const float &y, const float &z)
   _lightDirection[0] = 1.0;
   _lightDirection[1] = 0;
   _lightDirection[2] = 0;
-  _lightSpotCutOff[0] = 180;
   _context = NULL;
   _shadow = NULL;
 }
@@ -66,11 +64,6 @@ void engine::Light::setDirection(const float &x, const float &y, const float &z)
   _lightDirection[0] = x;
   _lightDirection[1] = y;
   _lightDirection[2] = z;
-}
-
-void engine::Light::setCone(const float &x)
-{
-  _lightSpotCutOff[0] = x;
 }
 
 void engine::Light::setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
@@ -104,43 +97,4 @@ engine::Vector3D<float> engine::Light::getPosition(void)
   tmp._y = _lightPosition[1];
   tmp._z = _lightPosition[2];
   return tmp;
-}
-
-void engine::Light::position(void)
-{
-  GLfloat position[] = {_lightPosition[0]-_lightDirection[0],
-			_lightPosition[1]-_lightDirection[1],
-			_lightPosition[2]-_lightDirection[2]};
-  GLfloat target[] = {_lightPosition[0], _lightPosition[1], _lightPosition[2]};
-  GLfloat head[] = {0.0, 1.0, 0.0};
-
-  if(_context == NULL)
-    {
-      std::cerr << "You need to set the GLcontext before" << std::endl;
-      return;
-    }
-
-  matrixOrtho(_projectionMatrix, -100, 100, -100, 100, -100, 100);
-  // matrixPerspective(_projectionMatrix, _lightSpotCutOff[0] * 2, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
-  matrixLoadIdentity(_viewMatrix);
-  matrixLookAt(_viewMatrix, position, target, head);
-  
-  glUseProgram(_context->getProgramId());
-  glUniformMatrix4fv(_context->depthProjectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
-  glUniformMatrix4fv(_context->depthViewMatrixLocation, 1, GL_FALSE, _viewMatrix);
-  glUniform3fv(_context->lightPositionLocation,  1, _lightPosition);
-  glUniform3fv(_context->lightDirectionLocation,  1, _lightDirection);
-  glUniform1fv(_context->lightSpotCutOffLocation,  1, _lightSpotCutOff);
-  glUniform4fv(_context->lightAmbientLocation,  1, _lightAmbient);
-  glUniform4fv(_context->lightDiffuseLocation,  1, _lightDiffuse);
-  glUniform4fv(_context->lightSpecularLocation,  1, _lightSpecular);
-  glUseProgram(0);
-
-  if(_shadow != NULL)
-    {
-      glUseProgram(_shadow->getProgramId());
-      glUniformMatrix4fv(_shadow->projectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
-      glUniformMatrix4fv(_shadow->viewMatrixLocation, 1, GL_FALSE, _viewMatrix);
-      glUseProgram(0);
-    }
 }

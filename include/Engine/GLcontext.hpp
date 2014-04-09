@@ -9,18 +9,17 @@ namespace engine
 {
   class GLcontext
   {
+  private:
     ShaderProgram *_program;
-    GLfloat _biasMatrix[16];
   public:
+    GLfloat _biasMatrix[16];
     static GLuint width;
     static GLuint height;
     static GLfloat near;
     static GLfloat far;
-    GLint projectionMatrixLocation;
-    GLint viewMatrixLocation;
+    GLint camMatrixLocation;
+    GLint biasLightMatrixLocation;
     GLint modelMatrixLocation;
-    GLint depthProjectionMatrixLocation;
-    GLint depthViewMatrixLocation;
     GLint matAmbientLocation;
     GLint matDiffuseLocation;
     GLint matSpecularLocation;
