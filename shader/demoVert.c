@@ -10,8 +10,6 @@ struct material
 
 struct light
 {
-  vec3 direction;
-  float spotCutOff;
   vec4 ambient;
   vec4 diffuse;
   vec4 specular;
@@ -30,8 +28,7 @@ uniform float matShininess;
 uniform vec3 camPosition;
 
 //Spot Light
-uniform vec3 lightPosition, lightDirection;
-uniform float lightSpotCutOff;
+uniform vec3 lightDirection;
 uniform vec4 lightAmbient, lightDiffuse, lightSpecular;
 
 //Attribute
@@ -56,8 +53,6 @@ void materialInit(void)
 
 void lightInit(void)
 {
-  outLight.direction = lightDirection;
-  outLight.spotCutOff = lightSpotCutOff;
   outLight.ambient = lightAmbient;
   outLight.diffuse = lightDiffuse;
   outLight.specular = lightSpecular;
@@ -70,7 +65,7 @@ void main(void)
   mat4 depthBiasMVP = biasMatrix * depthProjectionMatrix * depthViewMatrix * modelMatrix;
   
   normal = vec3(normalMatrix * normalArray);
-  rayDir = lightPosition - vVertex;
+  rayDir = lightDirection;
   eyeVec = camPosition - vVertex;
   
   gl_Position =  projectionMatrix * viewMatrix * modelMatrix * vec4(vertexArray, 1.0);

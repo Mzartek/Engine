@@ -27,7 +27,7 @@ namespace engine
     GLint matShininessLocation;
     GLint camPositionLocation;
     GLint lightPositionLocation;
-    GLint lightSpotDirectionLocation;
+    GLint lightDirectionLocation;
     GLint lightSpotCutOffLocation;
     GLint lightAmbientLocation;
     GLint lightDiffuseLocation;

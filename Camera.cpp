@@ -51,8 +51,11 @@ void engine::Camera::position(const GLfloat &fov)
 {
   GLfloat camera[] = {_pcamera._x, _pcamera._y, _pcamera._z};
   GLfloat target[] = {_ptarget._x, _ptarget._y, _ptarget._z};
-  GLfloat head[] = {0.0, 1.0, 0.0};
+  // GLfloat camera[] = {0, 1, -1};
+  // GLfloat target[] = {0, 0, 0};
+  GLfloat head[] = {0, 1.0, 0.0};
   
+  // matrixOrtho(_projectionMatrix, -100, 100, -100, 100, -100, 100);
   matrixPerspective(_projectionMatrix, fov, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
   matrixLoadIdentity(_viewMatrix);
   matrixLookAt(_viewMatrix, camera, target, head);

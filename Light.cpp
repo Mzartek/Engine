@@ -12,9 +12,9 @@ engine::Light::Light(void)
       _lightDiffuse[i]=1.0;
       _lightSpecular[i]=1.0;
     }
-  _lightSpotDirection[0] = 1.0;
-  _lightSpotDirection[1] = 0;
-  _lightSpotDirection[2] = 0;
+  _lightDirection[0] = 1.0;
+  _lightDirection[1] = 0;
+  _lightDirection[2] = 0;
   _lightSpotCutOff[0] = 180;
   _context = NULL;
   _shadow = NULL;
@@ -32,9 +32,9 @@ engine::Light::Light(const float &x, const float &y, const float &z)
       _lightDiffuse[i]=1.0;
       _lightSpecular[i]=1.0;
     }
-  _lightSpotDirection[0] = 1.0;
-  _lightSpotDirection[1] = 0;
-  _lightSpotDirection[2] = 0;
+  _lightDirection[0] = 1.0;
+  _lightDirection[1] = 0;
+  _lightDirection[2] = 0;
   _lightSpotCutOff[0] = 180;
   _context = NULL;
   _shadow = NULL;
@@ -63,9 +63,9 @@ void engine::Light::setPosition(const float &x, const float &y, const float &z)
 
 void engine::Light::setDirection(const float &x, const float &y, const float &z)
 {
-  _lightSpotDirection[0] = x;
-  _lightSpotDirection[1] = y;
-  _lightSpotDirection[2] = z;
+  _lightDirection[0] = x;
+  _lightDirection[1] = y;
+  _lightDirection[2] = z;
 }
 
 void engine::Light::setCone(const float &x)
@@ -108,9 +108,10 @@ engine::Vector3D<float> engine::Light::getPosition(void)
 
 void engine::Light::position(void)
 {
-  GLfloat target[] = {_lightPosition[0] + _lightSpotDirection[0],
-		      _lightPosition[1] + _lightSpotDirection[1],
-		      _lightPosition[2] + _lightSpotDirection[2]};
+  GLfloat position[] = {_lightPosition[0]-_lightDirection[0],
+			_lightPosition[1]-_lightDirection[1],
+			_lightPosition[2]-_lightDirection[2]};
+  GLfloat target[] = {_lightPosition[0], _lightPosition[1], _lightPosition[2]};
   GLfloat head[] = {0.0, 1.0, 0.0};
 
   if(_context == NULL)
@@ -119,16 +120,16 @@ void engine::Light::position(void)
       return;
     }
 
-  // matrixOrtho(_projectionMatrix, -10, 10, -10, 10, 1, 1200);
-  matrixPerspective(_projectionMatrix, _lightSpotCutOff[0] * 2, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
+  matrixOrtho(_projectionMatrix, -100, 100, -100, 100, -100, 100);
+  // matrixPerspective(_projectionMatrix, _lightSpotCutOff[0] * 2, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
   matrixLoadIdentity(_viewMatrix);
-  matrixLookAt(_viewMatrix, _lightPosition, target, head);
+  matrixLookAt(_viewMatrix, position, target, head);
   
   glUseProgram(_context->getProgramId());
   glUniformMatrix4fv(_context->depthProjectionMatrixLocation, 1, GL_FALSE, _projectionMatrix);
   glUniformMatrix4fv(_context->depthViewMatrixLocation, 1, GL_FALSE, _viewMatrix);
   glUniform3fv(_context->lightPositionLocation,  1, _lightPosition);
-  glUniform3fv(_context->lightSpotDirectionLocation,  1, _lightSpotDirection);
+  glUniform3fv(_context->lightDirectionLocation,  1, _lightDirection);
   glUniform1fv(_context->lightSpotCutOffLocation,  1, _lightSpotCutOff);
   glUniform4fv(_context->lightAmbientLocation,  1, _lightAmbient);
   glUniform4fv(_context->lightDiffuseLocation,  1, _lightDiffuse);

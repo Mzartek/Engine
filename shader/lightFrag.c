@@ -10,7 +10,7 @@ struct material
 
 struct light
 {
-  vec3 spotDirection;
+  vec3 direction;
   float spotCutOff;
   vec4 ambient;
   vec4 diffuse;
@@ -26,7 +26,7 @@ in vec2 outTexCoord;
 in vec4 outShadowCoord;
 in material outMat;
 in light outLight;
-in vec3 normal, lightDir, eyeVec;
+in vec3 normal, rayDir, eyeVec;
 
 //Final out
 out vec4 fragColor;
@@ -43,13 +43,13 @@ void main(void)
   
   if(textureProj(shadowMap, outShadowCoord) >= (outShadowCoord.z-0.005)/outShadowCoord.w)
     {
-      L = normalize(lightDir);
+      L = normalize(rayDir);
       N = normalize(normal);
 	
       cosTheta = dot(L,N);
       if(cosTheta > 0.0)
 	{
-	  D = normalize(outLight.spotDirection);
+	  D = normalize(outLight.direction);
 	  E = normalize(eyeVec);
 	  R = reflect(-L, N);
 		

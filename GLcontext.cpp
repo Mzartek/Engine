@@ -57,7 +57,7 @@ void engine::GLcontext::setShaderProgram(ShaderProgram *program)
   matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
   camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
   lightPositionLocation = glGetUniformLocation(_program->getId(), "lightPosition");
-  lightSpotDirectionLocation = glGetUniformLocation(_program->getId(), "lightSpotDirection");
+  lightDirectionLocation = glGetUniformLocation(_program->getId(), "lightDirection");
   lightSpotCutOffLocation = glGetUniformLocation(_program->getId(), "lightSpotCutOff");
   lightAmbientLocation = glGetUniformLocation(_program->getId(), "lightAmbient");
   lightDiffuseLocation = glGetUniformLocation(_program->getId(), "lightDiffuse");
@@ -65,9 +65,9 @@ void engine::GLcontext::setShaderProgram(ShaderProgram *program)
   textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
   shadowTextureLocation = glGetUniformLocation(_program->getId(), "shadowMap");
   
-  std::cout << glGetAttribLocation(_program->getId(), "vertexArray") << std::endl;
-  std::cout << glGetAttribLocation(_program->getId(), "textureArray") << std::endl;
-  std::cout << glGetAttribLocation(_program->getId(), "normalArray") << std::endl;
+  // std::cout << glGetAttribLocation(_program->getId(), "vertexArray") << std::endl;
+  // std::cout << glGetAttribLocation(_program->getId(), "textureArray") << std::endl;
+  // std::cout << glGetAttribLocation(_program->getId(), "normalArray") << std::endl;
 }
 
 GLuint engine::GLcontext::getProgramId(void)
