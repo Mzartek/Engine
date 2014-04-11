@@ -34,26 +34,28 @@ void main(void)
   vec4 final_color;
   vec3 L, N, E, R;
   float x, y;
-  float cosTheta, spot, specular;
+  float cosTheta, spot, specular, visibility;
 
   final_color = outLight.ambient * outMat.ambient;
-  if(textureProj(shadowMap, outShadowCoord) >= outShadowCoord.z-0.005)
-    {
-      L = normalize(rayDir);
-      N = normalize(normal);
-	
-      cosTheta = dot(-L,N);
-      if(cosTheta > 0.0)
-	{
-	  E = normalize(eyeVec);
-	  R = reflect(L, N);
-
-	  specular = pow(max(dot(R, E), 0.0), outMat.shininess);
-      
-	  final_color += outLight.diffuse * outMat.diffuse * cosTheta;
-	  final_color += outLight.specular * outMat.specular * specular;
-	}
-    }
   
-  fragColor = texture(colorTexture, outTexCoord) * final_color;
+  L = normalize(rayDir);
+  N = normalize(normal);
+	
+  cosTheta = dot(-L,N);
+  if(cosTheta > 0.0)
+    {
+      E = normalize(eyeVec);
+      R = reflect(L, N);
+
+      specular = pow(max(dot(R, E), 0.0), outMat.shininess);
+      
+      final_color += outLight.diffuse * outMat.diffuse * cosTheta;
+      final_color += outLight.specular * outMat.specular * specular;
+    }
+
+  visibility = 1.0;
+  if(textureProj(shadowMap, outShadowCoord) < outShadowCoord.z-0.005)
+    visibility = 0.5;
+  
+  fragColor = texture(colorTexture, outTexCoord) * final_color * vec4(visibility, visibility, visibility, 1.0);
 }
