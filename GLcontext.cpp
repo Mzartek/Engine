@@ -44,6 +44,7 @@ void engine::GLcontext::setShaderProgram(ShaderProgram *program)
   MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
   depthMVPLocation = glGetUniformLocation(_program->getId(), "depthMVP");
   modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
+  normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
   matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
   matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
   matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");

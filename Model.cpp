@@ -88,14 +88,15 @@ void engine::Model::display(void) const
 
   MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->VP, _modelMatrix);
   glUniformMatrix4fv(_context->MVPLocation, 1, GL_FALSE, tmp);
-
   if(_shadow !=NULL)
     {
       MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->depthVP, _modelMatrix);
       glUniformMatrix4fv(_context->depthMVPLocation, 1, GL_FALSE, tmp);
     }
   
+  matrixNormalFromModel(tmp, _modelMatrix);
   glUniformMatrix4fv(_context->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
+  glUniformMatrix3fv(_context->normalMatrixLocation, 1, GL_FALSE, tmp);
   
   glUseProgram(0);
   

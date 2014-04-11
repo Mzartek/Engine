@@ -14,6 +14,7 @@ extern "C" {
 
   void matrixLoadIdentity(float *matrix);
   void matrixLoadBias(float *matrix);
+  void matrixNormalFromModel(float *result, const float *matrix);
   void matrixOrtho(float *matrix, float left, float right, float bottom, float top, float nearVal, float farVal);
   void matrixPerspective(float *matrix, float fovyInDegrees, float aspectRatio, float znear, float zfar);
   void matrixLookAt(float *matrix, float *eyePosition3D, float *center3D, float *upVector3D);

@@ -17,6 +17,7 @@ struct light
 
 //Matrix
 uniform mat4 MVP, depthMVP, modelMatrix;
+uniform mat3 normalMatrix;
 
 //Material
 uniform vec4 matAmbient, matDiffuse, matSpecular;
@@ -58,7 +59,6 @@ void lightInit(void)
 
 void main(void)
 {
-  mat3 normalMatrix = mat3(transpose(inverse(modelMatrix)));
   vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
   
   normal = vec3(normalMatrix * normalArray);

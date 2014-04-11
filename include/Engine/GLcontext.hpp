@@ -21,6 +21,7 @@ namespace engine
     GLint MVPLocation;
     GLint depthMVPLocation;
     GLint modelMatrixLocation;
+    GLint normalMatrixLocation;
     GLint matAmbientLocation;
     GLint matDiffuseLocation;
     GLint matSpecularLocation;
