@@ -134,7 +134,7 @@ void engine::Object::display(void) const
     {
       glActiveTexture(GL_TEXTURE1);
       glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
-      glUniform1i(_context->shadowTextureLocation, 1);
+      glUniform1i(_context->dirShadowMapLocation, 1);
     }
   
   glUniform4fv(_context->matAmbientLocation,  1, _matAmbient);

@@ -42,22 +42,31 @@ void engine::GLcontext::setShaderProgram(ShaderProgram *program)
   _program = program;
   
   MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
-  depthMVPLocation = glGetUniformLocation(_program->getId(), "depthMVP");
   modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
   normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
+  
   matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
   matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
   matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
   matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
+  
   camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
-  lightPositionLocation = glGetUniformLocation(_program->getId(), "lightPosition");
-  lightDirectionLocation = glGetUniformLocation(_program->getId(), "lightDirection");
-  lightSpotCutOffLocation = glGetUniformLocation(_program->getId(), "lightSpotCutOff");
-  lightAmbientLocation = glGetUniformLocation(_program->getId(), "lightAmbient");
-  lightDiffuseLocation = glGetUniformLocation(_program->getId(), "lightDiffuse");
-  lightSpecularLocation = glGetUniformLocation(_program->getId(), "lightSpecular");
+  
+  dirLightDirectionLocation = glGetUniformLocation(_program->getId(), "dirLightDirection");
+  dirLightAmbientLocation = glGetUniformLocation(_program->getId(), "dirLightAmbient");
+  dirLightDiffuseLocation = glGetUniformLocation(_program->getId(), "dirLightDiffuse");
+  dirLightSpecularLocation = glGetUniformLocation(_program->getId(), "dirLightSpecular");
+  dirShadowMVPLocation = glGetUniformLocation(_program->getId(), "dirShadowMVP");
+  dirShadowMapLocation = glGetUniformLocation(_program->getId(), "dirShadowMap");
+  
+  spotLightPositionLocation = glGetUniformLocation(_program->getId(), "spotLightPosition");
+  spotLightDirectionLocation = glGetUniformLocation(_program->getId(), "spotLightDirection");
+  spotLightSpotCutOffLocation = glGetUniformLocation(_program->getId(), "spotLightCutOff");
+  spotLightAmbientLocation = glGetUniformLocation(_program->getId(), "spotLightAmbient");
+  spotLightDiffuseLocation = glGetUniformLocation(_program->getId(), "spotLightDiffuse");
+  spotLightSpecularLocation = glGetUniformLocation(_program->getId(), "spotLightSpecular");
+  
   textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-  shadowTextureLocation = glGetUniformLocation(_program->getId(), "shadowMap");
 }
 
 GLuint engine::GLcontext::getProgramId(void)

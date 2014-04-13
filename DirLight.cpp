@@ -37,10 +37,9 @@ void engine::DirLight::position(void)
     }
   
   glUseProgram(_context->getProgramId());
-  glUniform3fv(_context->lightPositionLocation,  1, _lightPosition);
-  glUniform3fv(_context->lightDirectionLocation,  1, _lightDirection);
-  glUniform4fv(_context->lightAmbientLocation,  1, _lightAmbient);
-  glUniform4fv(_context->lightDiffuseLocation,  1, _lightDiffuse);
-  glUniform4fv(_context->lightSpecularLocation,  1, _lightSpecular);
+  glUniform3fv(_context->dirLightDirectionLocation,  1, _lightDirection);
+  glUniform4fv(_context->dirLightAmbientLocation,  1, _lightAmbient);
+  glUniform4fv(_context->dirLightDiffuseLocation,  1, _lightDiffuse);
+  glUniform4fv(_context->dirLightSpecularLocation,  1, _lightSpecular);
   glUseProgram(0);
 }

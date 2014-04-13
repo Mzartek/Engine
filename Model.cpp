@@ -91,7 +91,7 @@ void engine::Model::display(void) const
   if(_shadow !=NULL)
     {
       MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->depthVP, _modelMatrix);
-      glUniformMatrix4fv(_context->depthMVPLocation, 1, GL_FALSE, tmp);
+      glUniformMatrix4fv(_context->dirShadowMVPLocation, 1, GL_FALSE, tmp);
     }
   
   matrixNormalFromModel(tmp, _modelMatrix);

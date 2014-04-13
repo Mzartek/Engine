@@ -8,15 +8,16 @@ struct material
   float shininess;
 };
 
-struct light
+struct dirLight
 {
   vec4 ambient;
   vec4 diffuse;
   vec4 specular;
+  vec3 rayDir;
 };
 
 //Matrix
-uniform mat4 MVP, depthMVP, modelMatrix;
+uniform mat4 MVP, modelMatrix;
 uniform mat3 normalMatrix;
 
 //Material
@@ -26,9 +27,15 @@ uniform float matShininess;
 //Camera
 uniform vec3 camPosition;
 
-//Spot Light
-uniform vec3 lightDirection;
-uniform vec4 lightAmbient, lightDiffuse, lightSpecular;
+//dirLight
+uniform vec3 dirLightDirection;
+uniform vec4 dirLightAmbient, dirLightDiffuse, dirLightSpecular;
+uniform mat4 dirShadowMVP;
+
+//spotLight
+uniform vec3 spotLightPosition, spotLightDirection;
+uniform float spotLightCutOff;
+uniform vec4 spotLightAmbient, spotLightDiffuse, spotLightSpecular;
 
 //Attribute
 layout(location = 0) in vec3 vertexArray;
@@ -37,10 +44,10 @@ layout(location = 2) in vec3 normalArray;
 
 //Out
 out vec2 outTexCoord;
-out vec4 outShadowCoord;
 out material outMat;
-out light outLight;
-out vec3 normal, rayDir, eyeVec;
+out dirLight outDirLight;
+out vec4 outDirShadowCoord;
+out vec3 normal, eyeVec;
 
 void materialInit(void)
 {
@@ -50,27 +57,26 @@ void materialInit(void)
   outMat.shininess = matShininess;
 }
 
-void lightInit(void)
+void dirLightInit(void)
 {
-  outLight.ambient = lightAmbient;
-  outLight.diffuse = lightDiffuse;
-  outLight.specular = lightSpecular;
+  outDirLight.rayDir = dirLightDirection;
+  outDirLight.ambient = dirLightAmbient;
+  outDirLight.diffuse = dirLightDiffuse;
+  outDirLight.specular = dirLightSpecular;
+  outDirShadowCoord = dirShadowMVP * vec4(vertexArray, 1.0);
 }
 
 void main(void)
 {
   vec3 vVertex = vec3(modelMatrix * vec4(vertexArray, 1.0));
   
-  normal = vec3(normalMatrix * normalArray);
-  rayDir = lightDirection;
-  eyeVec = camPosition - vVertex;
-  
   gl_Position =  MVP * vec4(vertexArray, 1.0);
-  outShadowCoord = depthMVP * vec4(vertexArray, 1.0);
-
   outTexCoord = vec2(textureArray.x, 1.0 - textureArray.y);
+  
+  normal = vec3(normalMatrix * normalArray);
+  eyeVec = camPosition - vVertex;
 
   materialInit();
 
-  lightInit();
+  dirLightInit();
 }

@@ -18,23 +18,33 @@ namespace engine
     static GLuint height;
     static GLfloat near;
     static GLfloat far;
+    
     GLint MVPLocation;
-    GLint depthMVPLocation;
     GLint modelMatrixLocation;
     GLint normalMatrixLocation;
+    
     GLint matAmbientLocation;
     GLint matDiffuseLocation;
     GLint matSpecularLocation;
     GLint matShininessLocation;
+    
     GLint camPositionLocation;
-    GLint lightPositionLocation;
-    GLint lightDirectionLocation;
-    GLint lightSpotCutOffLocation;
-    GLint lightAmbientLocation;
-    GLint lightDiffuseLocation;
-    GLint lightSpecularLocation;
+
+    GLint dirLightDirectionLocation;
+    GLint dirLightAmbientLocation;
+    GLint dirLightDiffuseLocation;
+    GLint dirLightSpecularLocation;
+    GLint dirShadowMVPLocation;
+    GLint dirShadowMapLocation;
+    
+    GLint spotLightPositionLocation;
+    GLint spotLightDirectionLocation;
+    GLint spotLightSpotCutOffLocation;
+    GLint spotLightAmbientLocation;
+    GLint spotLightDiffuseLocation;
+    GLint spotLightSpecularLocation;
+    
     GLint textureLocation;
-    GLint shadowTextureLocation;
     GLcontext(void);
     ~GLcontext(void);
     static void config(const GLuint &w, const GLuint &h, const GLfloat &n, const GLfloat &f);
