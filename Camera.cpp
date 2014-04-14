@@ -18,11 +18,6 @@ engine::Camera::~Camera(void)
 {
 }
 
-void engine::Camera::setGLcontext(GLcontext *context)
-{
-  _context = context;
-}
-
 void engine::Camera::setPositionCamera(const float &x, const float &y, const float &z)
 {
   _pcamera._x = x;
@@ -37,6 +32,13 @@ void engine::Camera::setPositionTarget(const float &x, const float &y, const flo
   _ptarget._z = z;
 }
 
+void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &near, const GLfloat &far)
+{
+  _width = width;
+  _height = height;
+  matrixPerspective(_projectionMatrix, fov, (float)_width / _height, near, far);
+}
+
 engine::Vector3D<float> engine::Camera::getPositionCamera(void) const
 {
   return _pcamera;
@@ -47,25 +49,29 @@ engine::Vector3D<float> engine::Camera::getPositionTarget(void) const
   return _ptarget;
 }
 
-void engine::Camera::position(const GLfloat &fov)
+GLuint engine::Camera::getWidth(void) const
+{
+  return _width;
+}
+
+GLuint engine::Camera::getHeight(void) const
+{
+  return _height;
+}
+
+GLfloat *engine::Camera::getMatrix(void)
+{
+  return _VP;
+}
+
+void engine::Camera::position(void)
 {
   GLfloat camera[] = {_pcamera._x, _pcamera._y, _pcamera._z};
   GLfloat target[] = {_ptarget._x, _ptarget._y, _ptarget._z};
   GLfloat head[] = {0, 1.0, 0.0};
-  GLfloat projection[16], view[16];
+  GLfloat view[16];
 
-  if(_context == NULL)
-    {
-      std::cerr << "You need to set the GLcontext before" << std::endl;
-      return;
-    }
-
-  matrixPerspective(projection, fov, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
   matrixLoadIdentity(view);
   matrixLookAt(view, camera, target, head);
-  MultiplyMatrices4by4OpenGL_FLOAT(_context->VP, projection, view);
-
-  glUseProgram(_context->getProgramId());
-  glUniform3fv(_context->camPositionLocation, 1, camera);
-  glUseProgram(0);
+  MultiplyMatrices4by4OpenGL_FLOAT(_VP, _projectionMatrix, view);
 }

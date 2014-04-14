@@ -17,7 +17,6 @@ engine::Window window;
 engine::ShaderProgram *program;
 engine::ShaderProgram *shadowProgram;
 engine::GLcontext context;
-engine::ShadowMap shadow;
 
 engine::FreeCam cam;
 engine::DirLight firstLight;
@@ -27,13 +26,13 @@ engine::OBJModel helicopter;
 void display(void)
 {
   firstLight.position();
-  cam.position(90);
+  cam.position();
   
-  shadow.clear();
+  context.shadowClear();
   face.displayShadow();
   helicopter.displayShadow();
 
-  engine::GLcontext::clear();
+  context.newLoop();
   face.display();
   helicopter.display();
   
@@ -52,7 +51,7 @@ void idle(void)
 
 void reshape(int w, int h)
 {
-  engine::GLcontext::config(w, h, 0.1, 1200.0);
+  cam.setPerspective(90.0, w, h, 0.1, 1200.0);
 }
 
 void keyboard(unsigned char key, bool state)
@@ -109,21 +108,15 @@ void initGL(void)
   shadowProgram = new engine::ShaderProgram();
   program->loadProgram("../shader/demoVert.c", "../shader/demoFrag.c");
   shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
-  
-  engine::GLcontext::config(window.getWidth(), window.getHeight(), 0.1, 1200);
-  shadow.config(1024, 1024, shadowProgram);
 
   context.setShaderProgram(program);
+  context.setCamera(&cam);
+  context.setDirLight(LIGHT0, &firstLight);
   
-  cam.setGLcontext(&context);
-  firstLight.setGLcontext(&context);
   face.setGLcontext(&context);
   helicopter.setGLcontext(&context);
 
-  firstLight.setShadowMap(&shadow);
-  face.setShadowMap(&shadow);
-  helicopter.setShadowMap(&shadow);
-
+  firstLight.configShadowMap(1024, 1024, shadowProgram);
   firstLight.setDirection(0, -1, 1);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);

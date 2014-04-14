@@ -90,6 +90,7 @@ void engine::Window::mainLoop(void)
 {
   SDL_Event event;
   SDL_SetRelativeMouseMode(SDL_TRUE);
+  _reshape(_width, _height);
   while(!_exit)
     {
       while(SDL_PollEvent(&event))

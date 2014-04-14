@@ -4,7 +4,6 @@ engine::Model::Model(void)
 {
   matIdentity();
   _context = NULL;
-  _shadow = NULL;
 }
 
 engine::Model::~Model(void)
@@ -19,11 +18,6 @@ void engine::Model::setGLcontext(GLcontext *context)
   _context = context;
 }
 
-void engine::Model::setShadowMap(ShadowMap *shadow)
-{
-  _shadow = shadow;
-}
-
 void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
 				 const GLuint &sizeIndexArray, const GLuint *indexArray,
 				 const std::string pathTexture,
@@ -32,7 +26,6 @@ void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *v
   Object *newone = new Object();
 
   newone->setGLcontext(_context);
-  newone->setShadowMap(_shadow);
   newone->setTexture(engine::loadTex(pathTexture));
   newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
   newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
@@ -76,23 +69,41 @@ engine::Vector3D<GLfloat> engine::Model::getPosition(void) const
 void engine::Model::display(void) const
 {
   unsigned i;
-  GLfloat tmp[16];
+  GLfloat tmp[16], bias[16];
   
   if(_context == NULL)
     {
-      std::cerr << "You need to set the GLcontext before" << std::endl;
+      std::cerr << "You need to set the GLcontext before display a model" << std::endl;
+      return;
+    }
+  if(_context->getCamera()==NULL)
+    {
+      std::cerr <<"You need to set a camera to the GLcontext before display a model" << std::endl;
       return;
     }
 
+  matrixLoadBias(bias);
+  
   glUseProgram(_context->getProgramId());
-
-  MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->VP, _modelMatrix);
+  
+  MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getCamera()->getMatrix(), _modelMatrix);
   glUniformMatrix4fv(_context->MVPLocation, 1, GL_FALSE, tmp);
-  if(_shadow !=NULL)
-    {
-      MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->depthVP, _modelMatrix);
-      glUniformMatrix4fv(_context->dirShadowMVPLocation, 1, GL_FALSE, tmp);
-    }
+    
+  if(_context->getDirLight(LIGHT0)!=NULL)
+    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+      {
+  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getDirLight(LIGHT0)->getMatrix(), _modelMatrix);
+  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, bias, tmp);
+	glUniformMatrix4fv(_context->dirShadowMVPLocation0, 1, GL_FALSE, tmp);
+      }
+  
+  if(_context->getSpotLight(LIGHT0)!=NULL)
+    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
+      {
+  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getSpotLight(LIGHT0)->getMatrix(), _modelMatrix);
+  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, bias, tmp);
+	glUniformMatrix4fv(_context->spotShadowMVPLocation0, 1, GL_FALSE, tmp);
+      }
   
   matrixNormalFromModel(tmp, _modelMatrix);
   glUniformMatrix4fv(_context->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
@@ -109,18 +120,23 @@ void engine::Model::displayShadow(void) const
   unsigned i;
   GLfloat tmp[16];
   
-  if(_shadow == NULL)
-    {
-      std::cerr << "You need to set the ShadowMap before" << std::endl;
-      return;
-    }
-      
-  glUseProgram(_shadow->getProgramId());
+  if(_context->getDirLight(LIGHT0) != NULL)
+    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+      {
+	glUseProgram(_context->getDirLight(LIGHT0)->getShadowMap()->getProgramId());
+	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getDirLight(LIGHT0)->getMatrix(), _modelMatrix);
+	glUniformMatrix4fv(_context->getDirLight(LIGHT0)->getShadowMap()->MVPLocation, 1, GL_FALSE, tmp);
+	glUseProgram(0);
+      }
   
-  MultiplyMatrices4by4OpenGL_FLOAT(tmp, _shadow->VP, _modelMatrix);
-  glUniformMatrix4fv(_shadow->MVPLocation, 1, GL_FALSE, tmp);
-  
-  glUseProgram(0);
+  if(_context->getSpotLight(LIGHT0) != NULL)
+    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
+      {
+	glUseProgram(_context->getSpotLight(LIGHT0)->getShadowMap()->getProgramId());
+	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getSpotLight(LIGHT0)->getMatrix(), _modelMatrix);
+	glUniformMatrix4fv(_context->getSpotLight(LIGHT0)->getShadowMap()->MVPLocation, 1, GL_FALSE, tmp);
+	glUseProgram(0);
+      }
   
   for(i=0 ; i<_tObject.size(); i++)
     _tObject[i]->displayShadow();

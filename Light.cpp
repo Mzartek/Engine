@@ -15,7 +15,6 @@ engine::Light::Light(void)
   _lightDirection[0] = 1.0;
   _lightDirection[1] = 0;
   _lightDirection[2] = 0;
-  _context = NULL;
   _shadow = NULL;
 }
 
@@ -34,22 +33,21 @@ engine::Light::Light(const float &x, const float &y, const float &z)
   _lightDirection[0] = 1.0;
   _lightDirection[1] = 0;
   _lightDirection[2] = 0;
-  _context = NULL;
   _shadow = NULL;
 }
 
 engine::Light::~Light(void)
 {
+  if(_shadow!=NULL)
+    delete _shadow;
 }
 
-void engine::Light::setGLcontext(GLcontext *context)
+void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *program)
 {
-  _context = context;
-}
-
-void engine::Light::setShadowMap(ShadowMap *shadow)
-{
-  _shadow = shadow;
+  if(_shadow!=NULL)
+    delete _shadow;
+  _shadow = new ShadowMap();
+  _shadow->config(width, height, program);
 }
 
 void engine::Light::setPosition(const float &x, const float &y, const float &z)
@@ -90,11 +88,37 @@ void engine::Light::setSpecular(const GLfloat &x, const GLfloat &y, const GLfloa
   _lightSpecular[3] = w;
 }
 
-engine::Vector3D<float> engine::Light::getPosition(void)
+engine::ShadowMap *engine::Light::getShadowMap(void)
 {
-  engine::Vector3D<float> tmp;
-  tmp._x = _lightPosition[0];
-  tmp._y = _lightPosition[1];
-  tmp._z = _lightPosition[2];
-  return tmp;
+  return _shadow;
+}
+
+GLfloat *engine::Light::getPosition(void)
+{
+  return _lightPosition;
+}
+
+GLfloat *engine::Light::getDirection(void)
+{
+  return _lightDirection;
+}
+
+GLfloat *engine::Light::getAmbient(void)
+{
+  return _lightAmbient;
+}
+
+GLfloat *engine::Light::getDiffuse(void)
+{
+  return _lightDiffuse;
+}
+
+GLfloat *engine::Light::getSpecular(void)
+{
+  return _lightSpecular;
+}
+
+GLfloat *engine::Light::getMatrix(void)
+{
+  return _VP;
 }

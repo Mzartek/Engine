@@ -12,13 +12,11 @@ namespace engine
   private:
     std::vector<Object *> _tObject;
     GLcontext *_context;
-    ShadowMap *_shadow;
     GLfloat _modelMatrix[16];
   public:
     Model();
     ~Model();
     void setGLcontext(GLcontext *context);
-    void setShadowMap(ShadowMap *shadow);
     void createObject(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
 		      const GLuint &sizeIndexArray, const GLuint *indexArray,
 		      const std::string pathTexture,

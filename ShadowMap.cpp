@@ -53,17 +53,27 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-GLuint engine::ShadowMap::getIdFBO(void)
+GLuint engine::ShadowMap::getWidth(void) const
+{
+  return _width;
+}
+
+GLuint engine::ShadowMap::getHeight(void) const
+{
+  return _height;
+}
+
+GLuint engine::ShadowMap::getIdFBO(void) const
 {
   return _idFBO;
 }
 
-GLuint engine::ShadowMap::getIdDepthTexture(void)
+GLuint engine::ShadowMap::getIdDepthTexture(void) const
 {
   return _idDepthTexture;
 }
 
-GLuint engine::ShadowMap::getProgramId(void)
+GLuint engine::ShadowMap::getProgramId(void) const
 {
   return _program->getId();
 }

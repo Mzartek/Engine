@@ -9,9 +9,14 @@ engine::SpotLight::~SpotLight(void)
 {
 }
 
-void engine::SpotLight::setCone(const float &x)
+void engine::SpotLight::setSpotCutOff(const float &x)
 {
   _lightSpotCutOff[0] = x;
+}
+
+GLfloat *engine::SpotLight::getSpotCutOff(void)
+{
+  return _lightSpotCutOff;
 }
 
 void engine::SpotLight::position(void)
@@ -21,33 +26,16 @@ void engine::SpotLight::position(void)
 		      _lightPosition[1] + _lightDirection[1],
 		      _lightPosition[2] + _lightDirection[2]};
   GLfloat head[] = {0.0, 1.0, 0.0};
-  GLfloat bias[16], projection[16], view[16];
+  GLfloat projection[16], view[16];
 
-  if(_context == NULL)
+  if(_shadow!=NULL)
     {
-      std::cerr << "You need to set the GLcontext before" << std::endl;
+      std::cerr << "No need to position the light if you don't use shadowMapping" << std::endl;
       return;
     }
-
-  if(_shadow != NULL)
-    {
-      matrixPerspective(projection, _lightSpotCutOff[0] * 2, (float)GLcontext::width / GLcontext::height, GLcontext::near, GLcontext::far);
-      matrixLoadIdentity(view);
-      matrixLookAt(view, position, target, head);
-      
-      MultiplyMatrices4by4OpenGL_FLOAT(_context->depthVP, projection, view);
-      memcpy(_shadow->VP, _context->depthVP, 16 * sizeof(GLfloat));
-
-      matrixLoadBias(bias);
-      MultiplyMatrices4by4OpenGL_FLOAT(_context->depthVP, bias, _context->depthVP);
-    }
-
-  glUseProgram(_context->getProgramId());
-  glUniform3fv(_context->spotLightPositionLocation,  1, _lightPosition);
-  glUniform3fv(_context->spotLightDirectionLocation,  1, _lightDirection);
-  glUniform1fv(_context->spotLightSpotCutOffLocation,  1, _lightSpotCutOff);
-  glUniform4fv(_context->spotLightAmbientLocation,  1, _lightAmbient);
-  glUniform4fv(_context->spotLightDiffuseLocation,  1, _lightDiffuse);
-  glUniform4fv(_context->spotLightSpecularLocation,  1, _lightSpecular);
-  glUseProgram(0);
+    
+  matrixPerspective(projection, _lightSpotCutOff[0] * 2, (float)_shadow->getWidth() / _shadow->getHeight(), 0.1, 1200.0);
+  matrixLoadIdentity(view);
+  matrixLookAt(view, position, target, head);
+  MultiplyMatrices4by4OpenGL_FLOAT(_VP, projection, view);
 }

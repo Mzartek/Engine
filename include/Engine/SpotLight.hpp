@@ -12,7 +12,8 @@ namespace engine
   public:
     SpotLight(void);
     ~SpotLight(void);
-    void setCone(const float &x);
+    void setSpotCutOff(const float &x);
+    GLfloat *getSpotCutOff(void);
     void position(void);
   };
 }

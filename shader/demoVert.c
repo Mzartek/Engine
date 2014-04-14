@@ -10,10 +10,11 @@ struct material
 
 struct dirLight
 {
+  vec3 rayDir;
   vec4 ambient;
   vec4 diffuse;
   vec4 specular;
-  vec3 rayDir;
+  vec4 shadowCoord;
 };
 
 //Matrix
@@ -27,15 +28,16 @@ uniform float matShininess;
 //Camera
 uniform vec3 camPosition;
 
-//dirLight
-uniform vec3 dirLightDirection;
-uniform vec4 dirLightAmbient, dirLightDiffuse, dirLightSpecular;
-uniform mat4 dirShadowMVP;
+//dirLight 0
+uniform vec3 dirLightDirection0;
+uniform vec4 dirLightAmbient0, dirLightDiffuse0, dirLightSpecular0;
+uniform mat4 dirShadowMVP0;
 
-//spotLight
-uniform vec3 spotLightPosition, spotLightDirection;
-uniform float spotLightCutOff;
-uniform vec4 spotLightAmbient, spotLightDiffuse, spotLightSpecular;
+//spotLight 0
+uniform vec3 spotLightPosition0, spotLightDirection0;
+uniform float spotLightCutOff0;
+uniform vec4 spotLightAmbient0, spotLightDiffuse0, spotLightSpecular0;
+uniform mat4 spotShadowMVP0;
 
 //Attribute
 layout(location = 0) in vec3 vertexArray;
@@ -45,8 +47,7 @@ layout(location = 2) in vec3 normalArray;
 //Out
 out vec2 outTexCoord;
 out material outMat;
-out dirLight outDirLight;
-out vec4 outDirShadowCoord;
+out dirLight outDirLight0;
 out vec3 normal, eyeVec;
 
 void materialInit(void)
@@ -57,13 +58,13 @@ void materialInit(void)
   outMat.shininess = matShininess;
 }
 
-void dirLightInit(void)
+void dirLight0Init(void)
 {
-  outDirLight.rayDir = dirLightDirection;
-  outDirLight.ambient = dirLightAmbient;
-  outDirLight.diffuse = dirLightDiffuse;
-  outDirLight.specular = dirLightSpecular;
-  outDirShadowCoord = dirShadowMVP * vec4(vertexArray, 1.0);
+  outDirLight0.rayDir = dirLightDirection0;
+  outDirLight0.ambient = dirLightAmbient0;
+  outDirLight0.diffuse = dirLightDiffuse0;
+  outDirLight0.specular = dirLightSpecular0;
+  outDirLight0.shadowCoord = dirShadowMVP0 * vec4(vertexArray, 1.0);
 }
 
 void main(void)
@@ -78,5 +79,5 @@ void main(void)
 
   materialInit();
 
-  dirLightInit();
+  dirLight0Init();
 }

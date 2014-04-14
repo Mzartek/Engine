@@ -10,21 +10,22 @@ struct material
 
 struct dirLight
 {
+  vec3 rayDir;
   vec4 ambient;
   vec4 diffuse;
   vec4 specular;
-  vec3 rayDir;
+  vec4 shadowCoord;
 };
 
 // Texture
 uniform sampler2D colorTexture;
-uniform sampler2DShadow dirShadowMap;
+uniform sampler2DShadow dirShadowMap0;
+uniform sampler2DShadow spotShadowMap0;
 
 // In
 in vec2 outTexCoord;
 in material outMat;
-in dirLight outDirLight;
-in vec4 outDirShadowCoord;
+in dirLight outDirLight0;
 in vec3 normal, eyeVec;
 
 //Final out
@@ -79,8 +80,8 @@ void main(void)
   vec3 N = normalize(normal);
   float shadow;
 
-  shadow = calcShadow(dirShadowMap, outDirShadowCoord);
-  final_color = calcDirLight(outDirLight, N, shadow);
+  shadow = calcShadow(dirShadowMap0, outDirLight0.shadowCoord);
+  final_color = calcDirLight(outDirLight0, N, shadow);
   
   fragColor = texture(colorTexture, outTexCoord) * final_color;
 }

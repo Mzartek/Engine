@@ -11,7 +11,6 @@ namespace engine
   {
   private:
     GLcontext *_context;
-    ShadowMap *_shadow;
     GLuint _idTexture;
     GLuint _idVAO;
     GLuint _idVBO[2];
@@ -24,7 +23,6 @@ namespace engine
     Object(void);
     ~Object(void);
     void setGLcontext(GLcontext *context);
-    void setShadowMap(ShadowMap *shadow);
     void setTexture(const GLuint &id);
     void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);

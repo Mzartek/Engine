@@ -2,8 +2,13 @@
 #define GL_CONTEXT
 
 #include "GL.hpp"
-#include "ShaderProgram.hpp"
 #include "matrix.h"
+#include "ShaderProgram.hpp"
+#include "Camera.hpp"
+#include "DirLight.hpp"
+#include "SpotLight.hpp"
+
+#define LIGHT0 0
 
 namespace engine
 {
@@ -11,14 +16,10 @@ namespace engine
   {
   private:
     ShaderProgram *_program;
+    Camera *_cam;
+    DirLight *_dlight0;
+    SpotLight *_slight0;
   public:
-    GLfloat VP[16];
-    GLfloat depthVP[16];
-    static GLuint width;
-    static GLuint height;
-    static GLfloat near;
-    static GLfloat far;
-    
     GLint MVPLocation;
     GLint modelMatrixLocation;
     GLint normalMatrixLocation;
@@ -30,27 +31,35 @@ namespace engine
     
     GLint camPositionLocation;
 
-    GLint dirLightDirectionLocation;
-    GLint dirLightAmbientLocation;
-    GLint dirLightDiffuseLocation;
-    GLint dirLightSpecularLocation;
-    GLint dirShadowMVPLocation;
-    GLint dirShadowMapLocation;
+    GLint dirLightDirectionLocation0;
+    GLint dirLightAmbientLocation0;
+    GLint dirLightDiffuseLocation0;
+    GLint dirLightSpecularLocation0;
+    GLint dirShadowMVPLocation0;
+    GLint dirShadowMapLocation0;
     
-    GLint spotLightPositionLocation;
-    GLint spotLightDirectionLocation;
-    GLint spotLightSpotCutOffLocation;
-    GLint spotLightAmbientLocation;
-    GLint spotLightDiffuseLocation;
-    GLint spotLightSpecularLocation;
+    GLint spotLightPositionLocation0;
+    GLint spotLightDirectionLocation0;
+    GLint spotLightSpotCutOffLocation0;
+    GLint spotLightAmbientLocation0;
+    GLint spotLightDiffuseLocation0;
+    GLint spotLightSpecularLocation0;
+    GLint spotShadowMVPLocation0;
+    GLint spotShadowMapLocation0;
     
     GLint textureLocation;
     GLcontext(void);
     ~GLcontext(void);
-    static void config(const GLuint &w, const GLuint &h, const GLfloat &n, const GLfloat &f);
-    static void clear(void);
     void setShaderProgram(ShaderProgram *program);
+    void setCamera(Camera *cam);
+    void setDirLight(const GLuint &lightn, DirLight *light);
+    void setSpotLight(const GLuint &lightn, SpotLight *light);
     GLuint getProgramId(void);
+    Camera *getCamera(void);
+    DirLight *getDirLight(const GLuint &lightn);
+    SpotLight *getSpotLight(const GLuint &lightn);
+    void shadowClear(void);
+    void newLoop(void);
   };
 }
 

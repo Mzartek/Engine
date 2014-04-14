@@ -1,9 +1,8 @@
 #ifndef SHADOW_MAP
 #define SHADOW_MAP
 
-#include "matrix.h"
 #include "GL.hpp"
-#include "GLcontext.hpp"
+#include "matrix.h"
 #include "ShaderProgram.hpp"
 
 namespace engine
@@ -17,14 +16,15 @@ namespace engine
     GLuint _idDepthTexture;
     ShaderProgram *_program;
   public:
-    GLfloat VP[16];
     GLint MVPLocation;
     ShadowMap(void);
     ~ShadowMap(void);
     void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
-    GLuint getIdFBO(void);
-    GLuint getIdDepthTexture(void);
-    GLuint getProgramId(void);
+    GLuint getWidth(void) const;
+    GLuint getHeight(void) const;
+    GLuint getIdFBO(void) const;
+    GLuint getIdDepthTexture(void) const;
+    GLuint getProgramId(void) const;
     void clear(void);
   };
 }

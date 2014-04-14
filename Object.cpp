@@ -15,7 +15,6 @@ engine::Object::Object(void)
     }
   _matShininess[0]=1.0;
   _context = NULL;
-  _shadow = NULL;
 }
 
 engine::Object::~Object(void)
@@ -33,11 +32,6 @@ engine::Object::~Object(void)
 void engine::Object::setGLcontext(GLcontext *context)
 {
   _context = context;
-}
-
-void engine::Object::setShadowMap(ShadowMap *shadow)
-{
-  _shadow = shadow;
 }
 
 void engine::Object::setTexture(const GLuint &id)
@@ -130,12 +124,22 @@ void engine::Object::display(void) const
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, _idTexture);
   glUniform1i(_context->textureLocation, 0);
-  if(_shadow != NULL)
-    {
-      glActiveTexture(GL_TEXTURE1);
-      glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
-      glUniform1i(_context->dirShadowMapLocation, 1);
-    }
+
+  if(_context->getDirLight(LIGHT0)!=NULL)
+    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+      {
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, _context->getDirLight(LIGHT0)->getShadowMap()->getIdDepthTexture());
+	glUniform1i(_context->dirShadowMapLocation0, 1);
+      }
+
+  if(_context->getSpotLight(LIGHT0)!=NULL)
+    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
+      {
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, _context->getSpotLight(LIGHT0)->getShadowMap()->getIdDepthTexture());
+	glUniform1i(_context->spotShadowMapLocation0, 2);
+      }
   
   glUniform4fv(_context->matAmbientLocation,  1, _matAmbient);
   glUniform4fv(_context->matDiffuseLocation,  1, _matDiffuse);
@@ -146,11 +150,10 @@ void engine::Object::display(void) const
   
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, 0);
-  if(_shadow != NULL)
-    {
-      glActiveTexture(GL_TEXTURE1);
-      glBindTexture(GL_TEXTURE_2D, 0);
-    }
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glActiveTexture(GL_TEXTURE2);
+  glBindTexture(GL_TEXTURE_2D, 0);
   
   glBindVertexArray(0);
   
@@ -158,24 +161,28 @@ void engine::Object::display(void) const
 }
 
 void engine::Object::displayShadow(void) const
-{  
-  if(_shadow == NULL)
-    {
-      std::cerr << "You need to set the ShadowMap before" << std::endl;
-      return;
-    }
+{
+  if(_context->getDirLight(LIGHT0)!=NULL)
+    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+      {
+	glBindFramebuffer(GL_FRAMEBUFFER, _context->getDirLight(LIGHT0)->getShadowMap()->getIdFBO());
+	glUseProgram(_context->getDirLight(LIGHT0)->getShadowMap()->getProgramId());
+	glBindVertexArray(_idVAO);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+      }
   
-  glBindFramebuffer(GL_FRAMEBUFFER, _shadow->getIdFBO());
-  
-  glUseProgram(_shadow->getProgramId());
-  
-  glBindVertexArray(_idVAO);
-  
-  glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
-  
-  glBindVertexArray(0);
-  
-  glUseProgram(0);
-  
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  if(_context->getSpotLight(LIGHT0)!=NULL)
+    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
+      {
+	glBindFramebuffer(GL_FRAMEBUFFER, _context->getSpotLight(LIGHT0)->getShadowMap()->getIdFBO());
+	glUseProgram(_context->getSpotLight(LIGHT0)->getShadowMap()->getProgramId());
+	glBindVertexArray(_idVAO);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+      }
 }
