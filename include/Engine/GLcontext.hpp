@@ -8,8 +8,6 @@
 #include "DirLight.hpp"
 #include "SpotLight.hpp"
 
-#define LIGHT0 0
-
 namespace engine
 {
   class GLcontext
@@ -17,8 +15,8 @@ namespace engine
   private:
     ShaderProgram *_program;
     Camera *_cam;
-    DirLight *_dlight0;
-    SpotLight *_slight0;
+    DirLight *_dlight;
+    SpotLight *_slight;
   public:
     GLint MVPLocation;
     GLint modelMatrixLocation;
@@ -31,34 +29,34 @@ namespace engine
     
     GLint camPositionLocation;
 
-    GLint dirLightDirectionLocation0;
-    GLint dirLightAmbientLocation0;
-    GLint dirLightDiffuseLocation0;
-    GLint dirLightSpecularLocation0;
-    GLint dirShadowMVPLocation0;
-    GLint dirShadowMapLocation0;
+    GLint dirLightDirectionLocation;
+    GLint dirLightAmbientLocation;
+    GLint dirLightDiffuseLocation;
+    GLint dirLightSpecularLocation;
+    GLint dirShadowMVPLocation;
+    GLint dirShadowMapLocation;
     
-    GLint spotLightPositionLocation0;
-    GLint spotLightDirectionLocation0;
-    GLint spotLightSpotCutOffLocation0;
-    GLint spotLightAmbientLocation0;
-    GLint spotLightDiffuseLocation0;
-    GLint spotLightSpecularLocation0;
-    GLint spotShadowMVPLocation0;
-    GLint spotShadowMapLocation0;
+    GLint spotLightPositionLocation;
+    GLint spotLightDirectionLocation;
+    GLint spotLightSpotCutOffLocation;
+    GLint spotLightAmbientLocation;
+    GLint spotLightDiffuseLocation;
+    GLint spotLightSpecularLocation;
+    GLint spotShadowMVPLocation;
+    GLint spotShadowMapLocation;
     
     GLint textureLocation;
+    
     GLcontext(void);
     ~GLcontext(void);
     void setShaderProgram(ShaderProgram *program);
     void setCamera(Camera *cam);
-    void setDirLight(const GLuint &lightn, DirLight *light);
-    void setSpotLight(const GLuint &lightn, SpotLight *light);
+    void setDirLight(DirLight *light);
+    void setSpotLight(SpotLight *light);
     GLuint getProgramId(void);
     Camera *getCamera(void);
-    DirLight *getDirLight(const GLuint &lightn);
-    SpotLight *getSpotLight(const GLuint &lightn);
-    void shadowClear(void);
+    DirLight *getDirLight(void) const;
+    SpotLight *getSpotLight(void) const;
     void newLoop(void);
   };
 }

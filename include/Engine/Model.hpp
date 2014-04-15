@@ -3,6 +3,7 @@
 
 #include "matrix.h"
 #include "Object.hpp"
+#include "Light.hpp"
 #include "Vector3D.hpp"
 
 namespace engine
@@ -27,7 +28,7 @@ namespace engine
     void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     Vector3D<GLfloat> getPosition(void) const;
     void display(void) const;
-    void displayShadow(void) const;
+    void displayShadow(Light *l) const;
   };
 }
     

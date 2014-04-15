@@ -17,6 +17,17 @@ struct dirLight
   vec4 shadowCoord;
 };
 
+struct spotLight
+{
+  vec3 spotDirection;
+  float spotCutOff;
+  vec3 rayDir;
+  vec4 ambient;
+  vec4 diffuse;
+  vec4 specular;
+  vec4 shadowCoord;
+};
+
 //Matrix
 uniform mat4 MVP, modelMatrix;
 uniform mat3 normalMatrix;
@@ -29,15 +40,15 @@ uniform float matShininess;
 uniform vec3 camPosition;
 
 //dirLight 0
-uniform vec3 dirLightDirection0;
-uniform vec4 dirLightAmbient0, dirLightDiffuse0, dirLightSpecular0;
-uniform mat4 dirShadowMVP0;
+uniform vec3 dirLightDirection;
+uniform vec4 dirLightAmbient, dirLightDiffuse, dirLightSpecular;
+uniform mat4 dirShadowMVP;
 
 //spotLight 0
-uniform vec3 spotLightPosition0, spotLightDirection0;
-uniform float spotLightCutOff0;
-uniform vec4 spotLightAmbient0, spotLightDiffuse0, spotLightSpecular0;
-uniform mat4 spotShadowMVP0;
+uniform vec3 spotLightPosition, spotLightDirection;
+uniform float spotLightCutOff;
+uniform vec4 spotLightAmbient, spotLightDiffuse, spotLightSpecular;
+uniform mat4 spotShadowMVP;
 
 //Attribute
 layout(location = 0) in vec3 vertexArray;
@@ -47,7 +58,8 @@ layout(location = 2) in vec3 normalArray;
 //Out
 out vec2 outTexCoord;
 out material outMat;
-out dirLight outDirLight0;
+out dirLight outDirLight;
+out spotLight outSpotLight;
 out vec3 normal, eyeVec;
 
 void materialInit(void)
@@ -58,13 +70,24 @@ void materialInit(void)
   outMat.shininess = matShininess;
 }
 
-void dirLight0Init(void)
+void dirLightInit(void)
 {
-  outDirLight0.rayDir = dirLightDirection0;
-  outDirLight0.ambient = dirLightAmbient0;
-  outDirLight0.diffuse = dirLightDiffuse0;
-  outDirLight0.specular = dirLightSpecular0;
-  outDirLight0.shadowCoord = dirShadowMVP0 * vec4(vertexArray, 1.0);
+  outDirLight.rayDir = dirLightDirection;
+  outDirLight.ambient = dirLightAmbient;
+  outDirLight.diffuse = dirLightDiffuse;
+  outDirLight.specular = dirLightSpecular;
+  outDirLight.shadowCoord = dirShadowMVP * vec4(vertexArray, 1.0);
+}
+
+void spotLightInit(vec3 vVertex)
+{
+  outSpotLight.spotDirection = spotLightDirection;
+  outSpotLight.spotCutOff = spotLightCutOff;
+  outSpotLight.rayDir = spotLightPosition - vVertex;
+  outSpotLight.ambient = spotLightAmbient;
+  outSpotLight.diffuse = spotLightDiffuse;
+  outSpotLight.specular = spotLightSpecular;
+  outSpotLight.shadowCoord = spotShadowMVP * vec4(vertexArray, 1.0);
 }
 
 void main(void)
@@ -79,5 +102,6 @@ void main(void)
 
   materialInit();
 
-  dirLight0Init();
+  dirLightInit();
+  spotLightInit(vVertex);
 }

@@ -122,3 +122,13 @@ GLfloat *engine::Light::getMatrix(void)
 {
   return _VP;
 }
+
+void engine::Light::newLoop(void) const
+{
+  if(_shadow==NULL)
+    {
+      std::cerr << "No need a newLoop for the light when you don't use shadowMapping" << std::endl;
+      return;
+    }
+  _shadow->clear();
+}

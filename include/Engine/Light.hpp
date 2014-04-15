@@ -33,6 +33,7 @@ namespace engine
     GLfloat *getSpecular(void);
     virtual void position(void) = 0;
     GLfloat *getMatrix(void);
+    void newLoop(void) const;
   };
 }
 

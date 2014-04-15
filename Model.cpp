@@ -89,20 +89,20 @@ void engine::Model::display(void) const
   MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getCamera()->getMatrix(), _modelMatrix);
   glUniformMatrix4fv(_context->MVPLocation, 1, GL_FALSE, tmp);
     
-  if(_context->getDirLight(LIGHT0)!=NULL)
-    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+  if(_context->getDirLight()!=NULL)
+    if(_context->getDirLight()->getShadowMap() != NULL)
       {
-  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getDirLight(LIGHT0)->getMatrix(), _modelMatrix);
+  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getDirLight()->getMatrix(), _modelMatrix);
   	MultiplyMatrices4by4OpenGL_FLOAT(tmp, bias, tmp);
-	glUniformMatrix4fv(_context->dirShadowMVPLocation0, 1, GL_FALSE, tmp);
+	glUniformMatrix4fv(_context->dirShadowMVPLocation, 1, GL_FALSE, tmp);
       }
   
-  if(_context->getSpotLight(LIGHT0)!=NULL)
-    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
+  if(_context->getSpotLight()!=NULL)
+    if(_context->getSpotLight()->getShadowMap() != NULL)
       {
-  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getSpotLight(LIGHT0)->getMatrix(), _modelMatrix);
+  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getSpotLight()->getMatrix(), _modelMatrix);
   	MultiplyMatrices4by4OpenGL_FLOAT(tmp, bias, tmp);
-	glUniformMatrix4fv(_context->spotShadowMVPLocation0, 1, GL_FALSE, tmp);
+	glUniformMatrix4fv(_context->spotShadowMVPLocation, 1, GL_FALSE, tmp);
       }
   
   matrixNormalFromModel(tmp, _modelMatrix);
@@ -115,29 +115,19 @@ void engine::Model::display(void) const
     _tObject[i]->display();
 }
 
-void engine::Model::displayShadow(void) const
+void engine::Model::displayShadow(Light *l) const
 {
   unsigned i;
   GLfloat tmp[16];
   
-  if(_context->getDirLight(LIGHT0) != NULL)
-    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+  if(l != NULL)
+    if(l->getShadowMap() != NULL)
       {
-	glUseProgram(_context->getDirLight(LIGHT0)->getShadowMap()->getProgramId());
-	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getDirLight(LIGHT0)->getMatrix(), _modelMatrix);
-	glUniformMatrix4fv(_context->getDirLight(LIGHT0)->getShadowMap()->MVPLocation, 1, GL_FALSE, tmp);
+	glUseProgram(l->getShadowMap()->getProgramId());
+	MultiplyMatrices4by4OpenGL_FLOAT(tmp, l->getMatrix(), _modelMatrix);
+	glUniformMatrix4fv(l->getShadowMap()->MVPLocation, 1, GL_FALSE, tmp);
 	glUseProgram(0);
+	for(i=0 ; i<_tObject.size(); i++)
+	  _tObject[i]->displayShadow(l);
       }
-  
-  if(_context->getSpotLight(LIGHT0) != NULL)
-    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
-      {
-	glUseProgram(_context->getSpotLight(LIGHT0)->getShadowMap()->getProgramId());
-	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getSpotLight(LIGHT0)->getMatrix(), _modelMatrix);
-	glUniformMatrix4fv(_context->getSpotLight(LIGHT0)->getShadowMap()->MVPLocation, 1, GL_FALSE, tmp);
-	glUseProgram(0);
-      }
-  
-  for(i=0 ; i<_tObject.size(); i++)
-    _tObject[i]->displayShadow();
 }

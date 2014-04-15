@@ -3,7 +3,7 @@
 
 #include "GL.hpp"
 #include "GLcontext.hpp"
-#include "ShadowMap.hpp"
+#include "Light.hpp"
 
 namespace engine
 {
@@ -31,7 +31,7 @@ namespace engine
     void load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
 	      const GLuint &sizeIndexArray, const GLuint *indexArray);
     void display(void) const;
-    void displayShadow(void) const;
+    void displayShadow(Light *l) const;
   };
 }
 

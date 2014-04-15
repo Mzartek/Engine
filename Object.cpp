@@ -125,20 +125,20 @@ void engine::Object::display(void) const
   glBindTexture(GL_TEXTURE_2D, _idTexture);
   glUniform1i(_context->textureLocation, 0);
 
-  if(_context->getDirLight(LIGHT0)!=NULL)
-    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+  if(_context->getDirLight()!=NULL)
+    if(_context->getDirLight()->getShadowMap() != NULL)
       {
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _context->getDirLight(LIGHT0)->getShadowMap()->getIdDepthTexture());
-	glUniform1i(_context->dirShadowMapLocation0, 1);
+	glBindTexture(GL_TEXTURE_2D, _context->getDirLight()->getShadowMap()->getIdDepthTexture());
+	glUniform1i(_context->dirShadowMapLocation, 1);
       }
 
-  if(_context->getSpotLight(LIGHT0)!=NULL)
-    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
+  if(_context->getSpotLight()!=NULL)
+    if(_context->getSpotLight()->getShadowMap() != NULL)
       {
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, _context->getSpotLight(LIGHT0)->getShadowMap()->getIdDepthTexture());
-	glUniform1i(_context->spotShadowMapLocation0, 2);
+  	glActiveTexture(GL_TEXTURE2);
+  	glBindTexture(GL_TEXTURE_2D, _context->getSpotLight()->getShadowMap()->getIdDepthTexture());
+  	glUniform1i(_context->spotShadowMapLocation, 2);
       }
   
   glUniform4fv(_context->matAmbientLocation,  1, _matAmbient);
@@ -160,29 +160,17 @@ void engine::Object::display(void) const
   glUseProgram(0);
 }
 
-void engine::Object::displayShadow(void) const
-{
-  if(_context->getDirLight(LIGHT0)!=NULL)
-    if(_context->getDirLight(LIGHT0)->getShadowMap() != NULL)
+void engine::Object::displayShadow(Light *l) const
+{ 
+  if(l != NULL)
+    if(l->getShadowMap() != NULL)
       {
-	glBindFramebuffer(GL_FRAMEBUFFER, _context->getDirLight(LIGHT0)->getShadowMap()->getIdFBO());
-	glUseProgram(_context->getDirLight(LIGHT0)->getShadowMap()->getProgramId());
+	glBindFramebuffer(GL_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
+	glUseProgram(l->getShadowMap()->getProgramId());
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-      }
-  
-  if(_context->getSpotLight(LIGHT0)!=NULL)
-    if(_context->getSpotLight(LIGHT0)->getShadowMap() != NULL)
-      {
-	glBindFramebuffer(GL_FRAMEBUFFER, _context->getSpotLight(LIGHT0)->getShadowMap()->getIdFBO());
-	glUseProgram(_context->getSpotLight(LIGHT0)->getShadowMap()->getProgramId());
-	glBindVertexArray(_idVAO);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-	glUseProgram(0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);     
       }
 }

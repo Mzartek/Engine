@@ -4,8 +4,8 @@ engine::GLcontext::GLcontext(void)
 {
   _program = NULL;
   _cam = NULL;
-  _dlight0 = NULL;
-  _slight0 = NULL;
+  _dlight = NULL;
+  _slight = NULL;
 }
 
 engine::GLcontext::~GLcontext(void)
@@ -27,21 +27,21 @@ void engine::GLcontext::setShaderProgram(ShaderProgram *program)
   
   camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
   
-  dirLightDirectionLocation0 = glGetUniformLocation(_program->getId(), "dirLightDirection0");
-  dirLightAmbientLocation0 = glGetUniformLocation(_program->getId(), "dirLightAmbient0");
-  dirLightDiffuseLocation0 = glGetUniformLocation(_program->getId(), "dirLightDiffuse0");
-  dirLightSpecularLocation0 = glGetUniformLocation(_program->getId(), "dirLightSpecular0");
-  dirShadowMVPLocation0 = glGetUniformLocation(_program->getId(), "dirShadowMVP0");
-  dirShadowMapLocation0 = glGetUniformLocation(_program->getId(), "dirShadowMap0");
+  dirLightDirectionLocation = glGetUniformLocation(_program->getId(), "dirLightDirection");
+  dirLightAmbientLocation = glGetUniformLocation(_program->getId(), "dirLightAmbient");
+  dirLightDiffuseLocation = glGetUniformLocation(_program->getId(), "dirLightDiffuse");
+  dirLightSpecularLocation = glGetUniformLocation(_program->getId(), "dirLightSpecular");
+  dirShadowMVPLocation = glGetUniformLocation(_program->getId(), "dirShadowMVP");
+  dirShadowMapLocation = glGetUniformLocation(_program->getId(), "dirShadowMap");
   
-  spotLightPositionLocation0 = glGetUniformLocation(_program->getId(), "spotLightPosition0");
-  spotLightDirectionLocation0 = glGetUniformLocation(_program->getId(), "spotLightDirection0");
-  spotLightSpotCutOffLocation0 = glGetUniformLocation(_program->getId(), "spotLightCutOff0");
-  spotLightAmbientLocation0 = glGetUniformLocation(_program->getId(), "spotLightAmbient0");
-  spotLightDiffuseLocation0 = glGetUniformLocation(_program->getId(), "spotLightDiffuse0");
-  spotLightSpecularLocation0 = glGetUniformLocation(_program->getId(), "spotLightSpecular0");
-  spotShadowMVPLocation0 = glGetUniformLocation(_program->getId(), "spotShadowMVP0");
-  spotShadowMapLocation0 = glGetUniformLocation(_program->getId(), "spotShadowMap0");
+  spotLightPositionLocation = glGetUniformLocation(_program->getId(), "spotLightPosition");
+  spotLightDirectionLocation = glGetUniformLocation(_program->getId(), "spotLightDirection");
+  spotLightSpotCutOffLocation = glGetUniformLocation(_program->getId(), "spotLightCutOff");
+  spotLightAmbientLocation = glGetUniformLocation(_program->getId(), "spotLightAmbient");
+  spotLightDiffuseLocation = glGetUniformLocation(_program->getId(), "spotLightDiffuse");
+  spotLightSpecularLocation = glGetUniformLocation(_program->getId(), "spotLightSpecular");
+  spotShadowMVPLocation = glGetUniformLocation(_program->getId(), "spotShadowMVP");
+  spotShadowMapLocation = glGetUniformLocation(_program->getId(), "spotShadowMap");
   
   textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
 }
@@ -51,30 +51,14 @@ void engine::GLcontext::setCamera(Camera *cam)
   _cam = cam;
 }
 
-void engine::GLcontext::setDirLight(const GLuint &lightn, DirLight *light)
+void engine::GLcontext::setDirLight(DirLight *light)
 {
-  switch(lightn)
-    {
-    case LIGHT0:
-      _dlight0 = light;
-      break;
-      
-    default:
-      std::cerr << "Unknown DirLight to set" << std::endl;
-    }
+  _dlight = light;
 }
 
-void engine::GLcontext::setSpotLight(const GLuint &lightn, SpotLight *light)
+void engine::GLcontext::setSpotLight(SpotLight *light)
 {
-  switch(lightn)
-    {
-    case LIGHT0:
-      _slight0 = light;
-      break;
-      
-    default:
-      std::cerr << "Unknown SpotLight to set" << std::endl;
-    }
+  _slight = light;
 }
 
 GLuint engine::GLcontext::getProgramId(void)
@@ -87,41 +71,14 @@ engine::Camera *engine::GLcontext::getCamera(void)
   return _cam;
 }
 
-engine::DirLight *engine::GLcontext::getDirLight(const GLuint &lightn)
+engine::DirLight *engine::GLcontext::getDirLight(void) const
 {
-  switch(lightn)
-    {
-    case 0:
-      return _dlight0;
-      
-    default:
-      std::cerr << "Unknown DirLight to get" << std::endl;
-    }
-  return NULL;
+  return _dlight;
 }
 
-engine::SpotLight *engine::GLcontext::getSpotLight(const GLuint &lightn)
+engine::SpotLight *engine::GLcontext::getSpotLight(void) const
 {
-  switch(lightn)
-    {
-    case 0:
-      return _slight0;
-      
-    default:
-      std::cerr << "Unknown SpotLight to get" << std::endl;
-    }
-  return NULL;
-}
-
-void engine::GLcontext::shadowClear(void)
-{
-  if(_dlight0!=NULL)
-    if(_dlight0->getShadowMap() != NULL)
-      _dlight0->getShadowMap()->clear();
-  
-  if(_slight0!=NULL)
-    if(_slight0->getShadowMap() != NULL)
-      _slight0->getShadowMap()->clear();
+  return _slight;
 }
 
 void engine::GLcontext::newLoop(void)
@@ -145,22 +102,22 @@ void engine::GLcontext::newLoop(void)
   
   glUniform3fv(camPositionLocation, 1, camera);
   
-  if(_dlight0!=NULL)
+  if(_dlight!=NULL)
     {
-      glUniform3fv(dirLightDirectionLocation0, 1, _dlight0->getDirection());
-      glUniform4fv(dirLightAmbientLocation0, 1, _dlight0->getAmbient());
-      glUniform4fv(dirLightDiffuseLocation0, 1, _dlight0->getDiffuse());
-      glUniform4fv(dirLightSpecularLocation0, 1, _dlight0->getSpecular());
+      glUniform3fv(dirLightDirectionLocation, 1, _dlight->getDirection());
+      glUniform4fv(dirLightAmbientLocation, 1, _dlight->getAmbient());
+      glUniform4fv(dirLightDiffuseLocation, 1, _dlight->getDiffuse());
+      glUniform4fv(dirLightSpecularLocation, 1, _dlight->getSpecular());
     }
 
-  if(_slight0!=NULL)
+  if(_slight!=NULL)
     {
-      glUniform3fv(spotLightPositionLocation0, 1, _slight0->getPosition());
-      glUniform3fv(spotLightDirectionLocation0, 1, _slight0->getDirection());
-      glUniform1fv(spotLightSpotCutOffLocation0, 1, _slight0->getSpotCutOff());
-      glUniform4fv(spotLightAmbientLocation0, 1, _slight0->getAmbient());
-      glUniform4fv(spotLightDiffuseLocation0, 1, _slight0->getDiffuse());
-      glUniform4fv(spotLightSpecularLocation0, 1, _slight0->getSpecular());
+      glUniform3fv(spotLightPositionLocation, 1, _slight->getPosition());
+      glUniform3fv(spotLightDirectionLocation, 1, _slight->getDirection());
+      glUniform1fv(spotLightSpotCutOffLocation, 1, _slight->getSpotCutOff());
+      glUniform4fv(spotLightAmbientLocation, 1, _slight->getAmbient());
+      glUniform4fv(spotLightDiffuseLocation, 1, _slight->getDiffuse());
+      glUniform4fv(spotLightSpecularLocation, 1, _slight->getSpecular());
     }
   
   glUseProgram(0);

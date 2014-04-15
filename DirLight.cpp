@@ -17,10 +17,14 @@ void engine::DirLight::position(void)
   GLfloat head[] = {0.0, 1.0, 0.0};
   GLfloat projection[16], view[16];
   
+  if(_shadow==NULL)
+    {
+      std::cerr << "No need to position the light if you don't use shadowMapping" << std::endl;
+      return;
+    }
+  
   matrixOrtho(projection, -100, 100, -100, 100, -100, 100);
   matrixLoadIdentity(view);
   matrixLookAt(view, position, target, head);
-
-  if(_shadow!=NULL)
-    MultiplyMatrices4by4OpenGL_FLOAT(_VP, projection, view);
+  MultiplyMatrices4by4OpenGL_FLOAT(_VP, projection, view);
 }

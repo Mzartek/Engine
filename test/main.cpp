@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <Engine/Window.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GLcontext.hpp>
@@ -26,17 +24,14 @@ engine::OBJModel helicopter;
 void display(void)
 {
   firstLight.position();
-  cam.position();
-  
-  context.shadowClear();
-  face.displayShadow();
-  helicopter.displayShadow();
+  firstLight.newLoop();
+  face.displayShadow(&firstLight);
+  helicopter.displayShadow(&firstLight);
 
+  cam.position();
   context.newLoop();
   face.display();
   helicopter.display();
-  
-  glUseProgram(0);
 }
 
 void idle(void)
@@ -45,7 +40,9 @@ void idle(void)
 
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
   camPosition = cam.getPositionCamera();
+  
   firstLight.setPosition(camPosition._x, camPosition._y, camPosition._z);
+  
   helicopter.matRotate(0.1, 0, 0, 1);
 }
 
@@ -85,16 +82,16 @@ void init(void)
 
 void initGL(void)
 {
-  GLfloat vertex[]={-100, -100, 0,
+  GLfloat vertex[]={-200, -200, 0,
 		    0, 0,//
 		    0, 0, -1,
-		    -100, 100, 0,
+		    -200, 200, 0,
 		    0, 1,//
 		    0, 0, -1,
-		    100, 100, 0,
+		    200, 200, 0,
 		    1, 1,//
 		    0, 0, -1,
-		    100, -100, 0,
+		    200, -200, 0,
 		    1, 0,//
 		    0, 0, -1
   };
@@ -111,7 +108,7 @@ void initGL(void)
 
   context.setShaderProgram(program);
   context.setCamera(&cam);
-  context.setDirLight(LIGHT0, &firstLight);
+  context.setDirLight(&firstLight);
   
   face.setGLcontext(&context);
   helicopter.setGLcontext(&context);

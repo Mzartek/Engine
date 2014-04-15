@@ -28,7 +28,7 @@ void engine::SpotLight::position(void)
   GLfloat head[] = {0.0, 1.0, 0.0};
   GLfloat projection[16], view[16];
 
-  if(_shadow!=NULL)
+  if(_shadow==NULL)
     {
       std::cerr << "No need to position the light if you don't use shadowMapping" << std::endl;
       return;
