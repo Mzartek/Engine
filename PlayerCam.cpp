@@ -1,5 +1,13 @@
 #include <Engine/PlayerCam.hpp>
 
+engine::PlayerCam::PlayerCam(void)
+{
+}
+
+engine::PlayerCam::~PlayerCam(void)
+{
+}
+
 void engine::PlayerCam::keyboardMove(const bool &f, const bool &b, const bool &l, const bool &r)
 {
   if(f)

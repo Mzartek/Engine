@@ -1,5 +1,13 @@
 #include <Engine/FreeCam.hpp>
 
+engine::FreeCam::FreeCam(void)
+{
+}
+
+engine::FreeCam::~FreeCam(void)
+{
+}
+
 void engine::FreeCam::keyboardMove(const bool &f, const bool &b, const bool &l, const bool &r)
 {
   if(f)

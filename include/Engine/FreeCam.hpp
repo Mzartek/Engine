@@ -8,6 +8,8 @@ namespace engine
   class FreeCam : public MovableCamera
   {
   public:
+    FreeCam(void);
+    ~FreeCam(void);
     void keyboardMove(const bool &f, const bool &b, const bool &l, const bool &r);
   };
 }

@@ -2,7 +2,7 @@
 
 enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
 
-pixelFormat testFormat(unsigned f)
+static pixelFormat testFormat(unsigned f)
 {
   if(f==386930691)
     return RGB;
