@@ -105,8 +105,8 @@ void initGL(void)
 
   program = new engine::ShaderProgram();
   shadowProgram = new engine::ShaderProgram();
-  program->loadProgram("../shader/demoVert.c", "../shader/demoFrag.c");
-  shadowProgram->loadProgram("../shader/shadowVert.c", "../shader/shadowFrag.c");
+  program->loadProgram("shader/demoVert.c", "shader/demoFrag.c");
+  shadowProgram->loadProgram("shader/shadowVert.c", "shader/shadowFrag.c");
 
   context.setShaderProgram(program);
   context.setCamera(&cam);
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
     std::cerr << Mix_GetError() << std::endl;
   song = Mix_LoadMUS("resources/song/song.flac");
   Mix_PlayMusic(song, -1);
-  Mix_VolumeMusic(MIX_MAX_VOLUME/2);
+  Mix_VolumeMusic(MIX_MAX_VOLUME/4);
 
   window.mainLoop();
 
