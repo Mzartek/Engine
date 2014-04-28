@@ -19,7 +19,7 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
   _width = w;
   _height = h;
   
-  if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+  if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
       std::cerr << "Error init SDL: " << SDL_GetError() << std::endl;
       SDL_Quit();

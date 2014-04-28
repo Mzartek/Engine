@@ -5,23 +5,23 @@
 #include <Engine/FreeCam.hpp>
 #include <Engine/DirLight.hpp>
 #include <Engine/OBJModel.hpp>
+#include <SDL2/SDL_mixer.h>
 
 #define ESC 41
 #define MAJ 225
 
 bool keyState[256];
-engine::Window window;
+Mix_Music *song;
 
+engine::Window window;
+engine::Renderer context;
 engine::ShaderProgram *program;
 engine::ShaderProgram *shadowProgram;
-engine::Renderer context;
 
 engine::FreeCam cam;
 engine::DirLight firstLight;
 engine::Model face;
 engine::OBJModel helicopter;
-
-Mix_Music *song;
 
 void display(void)
 {
@@ -148,6 +148,7 @@ int main(int argc, char **argv)
   window.setMouseMoveFunc(mouseMove);
   
   initGL();
+  
   if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
     std::cerr << Mix_GetError() << std::endl;
   song = Mix_LoadMUS("resources/song/song.flac");
@@ -158,7 +159,9 @@ int main(int argc, char **argv)
 
   Mix_FreeMusic(song);
   Mix_CloseAudio();
+  
   delete program;
   delete shadowProgram;
+  
   return 0;
 }
