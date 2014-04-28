@@ -30,8 +30,8 @@ void display(void)
   face.displayShadow(&firstLight);
   helicopter.displayShadow(&firstLight);
 
-  cam.position();
   context.newLoop();
+  cam.position();
   face.display();
   helicopter.display();
 }
@@ -115,7 +115,7 @@ void initGL(void)
   face.setRenderer(&context);
   helicopter.setRenderer(&context);
 
-  firstLight.configShadowMap(1024, 1024, shadowProgram);
+  firstLight.configShadowMap(2048, 2048, shadowProgram);
   firstLight.setDirection(0, -1, 1);
   firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
