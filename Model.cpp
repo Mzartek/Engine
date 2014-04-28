@@ -8,12 +8,12 @@ engine::Model::Model(void)
 
 engine::Model::~Model(void)
 {
-  unsigned i;
+  GLuint i;
   for(i=0 ; i<_tObject.size(); i++)
     delete _tObject[i];
 }
 
-void engine::Model::setGLcontext(GLcontext *context)
+void engine::Model::setRenderer(Renderer *context)
 {
   _context = context;
 }
@@ -25,7 +25,7 @@ void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *v
 {
   Object *newone = new Object();
 
-  newone->setGLcontext(_context);
+  newone->setRenderer(_context);
   newone->setTexture(engine::loadTex(pathTexture));
   newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
   newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
@@ -68,17 +68,17 @@ engine::Vector3D<GLfloat> engine::Model::getPosition(void) const
   
 void engine::Model::display(void) const
 {
-  unsigned i;
+  GLuint i;
   GLfloat tmp[16], bias[16];
   
   if(_context == NULL)
     {
-      std::cerr << "You need to set the GLcontext before display a model" << std::endl;
+      std::cerr << "You need to set the Renderer before display a model" << std::endl;
       return;
     }
   if(_context->getCamera()==NULL)
     {
-      std::cerr <<"You need to set a camera to the GLcontext before display a model" << std::endl;
+      std::cerr <<"You need to set a camera to the Renderer before display a model" << std::endl;
       return;
     }
 
@@ -117,7 +117,7 @@ void engine::Model::display(void) const
 
 void engine::Model::displayShadow(Light *l) const
 {
-  unsigned i;
+  GLuint i;
   GLfloat tmp[16];
   
   if(l != NULL)

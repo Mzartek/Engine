@@ -7,7 +7,7 @@ engine::Camera::Camera(void)
   _pcamera._z = 0;
 }
 
-engine::Camera::Camera(const float &x, const float &y, const float &z)
+engine::Camera::Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
   _pcamera._x = x;
   _pcamera._y = y;
@@ -18,14 +18,14 @@ engine::Camera::~Camera(void)
 {
 }
 
-void engine::Camera::setPositionCamera(const float &x, const float &y, const float &z)
+void engine::Camera::setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
   _pcamera._x = x;
   _pcamera._y = y;
   _pcamera._z = z;
 }
 
-void engine::Camera::setPositionTarget(const float &x, const float &y, const float &z)
+void engine::Camera::setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
   _ptarget._x = x;
   _ptarget._y = y;
@@ -36,15 +36,15 @@ void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, con
 {
   _width = width;
   _height = height;
-  matrixPerspective(_projectionMatrix, fov, (float)_width / _height, near, far);
+  matrixPerspective(_projectionMatrix, fov, (GLfloat)_width / _height, near, far);
 }
 
-engine::Vector3D<float> engine::Camera::getPositionCamera(void) const
+engine::Vector3D<GLfloat> engine::Camera::getPositionCamera(void) const
 {
   return _pcamera;
 }
 
-engine::Vector3D<float> engine::Camera::getPositionTarget(void) const
+engine::Vector3D<GLfloat> engine::Camera::getPositionTarget(void) const
 {
   return _ptarget;
 }

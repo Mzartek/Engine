@@ -8,19 +8,19 @@ namespace engine
   class MovableCamera : public Camera
   {
   private:
-    float _atheta;
-    float _aphi;
+    GLfloat _atheta;
+    GLfloat _aphi;
   protected:
-    Vector3D<float> _vforward;
-    Vector3D<float> _vleft;
-    float _speed;
+    Vector3D<GLfloat> _vforward;
+    Vector3D<GLfloat> _vleft;
+    GLfloat _speed;
   public:
     MovableCamera(void);
     ~MovableCamera(void);
-    void setSpeed(const float &v);
-    void mouseMove(const int &xrel, const int &yrel);
-    Vector3D<float> getForward(void) const;
-    virtual void keyboardMove(const bool &f, const bool &b, const bool &l, const bool &r) = 0;
+    void setSpeed(const GLfloat &v);
+    void mouseMove(const GLint &xrel, const GLint &yrel);
+    Vector3D<GLfloat> getForward(void) const;
+    virtual void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) = 0;
   };
 }
 

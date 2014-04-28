@@ -23,7 +23,7 @@ void engine::DirLight::position(void)
       return;
     }
   
-  matrixOrtho(projection, -100, 100, -100, 100, -100, 100);
+  matrixOrtho(projection, -SIZE, SIZE, -SIZE, SIZE, -SIZE, SIZE);
   matrixLoadIdentity(view);
   matrixLookAt(view, position, target, head);
   MultiplyMatrices4by4OpenGL_FLOAT(_VP, projection, view);

@@ -79,7 +79,7 @@ vec4 calcDirLight(dirLight light, vec3 N, float shadow) // N need to be normaliz
 
       specular = pow(max(dot(R, E), 0.0), outMat.shininess);
       
-      final_color += light.diffuse * outMat.diffuse * shadow;
+      final_color += light.diffuse * outMat.diffuse * cosTheta * shadow * vec4(2.0, 2.0, 2.0, 1.0);
       final_color += light.specular * outMat.specular * specular * shadow;
     }
   

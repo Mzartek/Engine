@@ -18,13 +18,13 @@ namespace engine
     GLfloat _VP[16];
   public:
     Camera(void);
-    Camera(const float &x, const float &y, const float &z);
+    Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     ~Camera(void);
-    void setPositionCamera(const float &x, const float &y, const float &z);
-    void setPositionTarget(const float &x, const float &y, const float &z);
+    void setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+    void setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &near, const GLfloat &far);
-    Vector3D<float> getPositionCamera(void) const;
-    Vector3D<float> getPositionTarget(void) const;
+    Vector3D<GLfloat> getPositionCamera(void) const;
+    Vector3D<GLfloat> getPositionTarget(void) const;
     GLuint getWidth(void) const;
     GLuint getHeight(void) const;
     GLfloat *getMatrix(void);

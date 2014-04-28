@@ -2,7 +2,7 @@
 #define OBJECT
 
 #include "GL.hpp"
-#include "GLcontext.hpp"
+#include "Renderer.hpp"
 #include "Light.hpp"
 
 namespace engine
@@ -10,7 +10,7 @@ namespace engine
   class Object
   {
   private:
-    GLcontext *_context;
+    Renderer *_context;
     GLuint _idTexture;
     GLuint _idVAO;
     GLuint _idVBO[2];
@@ -22,7 +22,7 @@ namespace engine
   public:
     Object(void);
     ~Object(void);
-    void setGLcontext(GLcontext *context);
+    void setRenderer(Renderer *context);
     void setTexture(const GLuint &id);
     void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);

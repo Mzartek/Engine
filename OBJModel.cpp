@@ -2,7 +2,7 @@
 
 std::string engine::OBJModel::findPath(const std::string name)
 {
-  unsigned size, i;
+  GLuint size, i;
   std::string path;
 
   for(size=i=0 ; name[i]!='\0' ; i++)
@@ -14,9 +14,9 @@ std::string engine::OBJModel::findPath(const std::string name)
   return path;
 }
 
-unsigned engine::OBJModel::getMaterial(const std::string name, const std::vector<material> mat)
+GLuint engine::OBJModel::getMaterial(const std::string name, const std::vector<material> mat)
 {
-  unsigned i;
+  GLuint i;
   for(i=0 ; i<mat.size(); i++)
     if(name == mat[i].name)
       return i;
@@ -32,8 +32,8 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
   std::vector<material> mat;
   material tmp;
   GLfloat num;
-  bool first = true;
-  int i;
+  GLboolean first = true;
+  GLint i;
 
   tmp.ambiant[0]=0.2; tmp.ambiant[1]=0.2; tmp.ambiant[2]=0.2; tmp.ambiant[3]=1.0;
   tmp.diffuse[0]=0.8; tmp.diffuse[1]=0.8; tmp.diffuse[2]=0.8; tmp.diffuse[3]=1.0;
@@ -127,9 +127,9 @@ void engine::OBJModel::loadObj(const std::string name)
   std::vector<GLfloat> vn;
   std::vector<GLfloat> vt;
   GLfloat tmp[3];
-  GLulong num[3], trianglePoint, matindex = 0, numIndex = 0;
-  char *strtmp;
-  bool first = true, takestr = true;
+  GLuint num[3], trianglePoint, matindex = 0, numIndex = 0;
+  GLchar *strtmp;
+  GLboolean first = true, takestr = true;
   
   std::vector<GLfloat> array;
   std::vector<GLuint> index;
@@ -148,7 +148,7 @@ void engine::OBJModel::loadObj(const std::string name)
       else
 	takestr = true;
       if(str[0]=='#')
-	for(int i=objfile.get() ; i!='\n' && objfile.good() ; i=objfile.get());
+	for(GLint i=objfile.get() ; i!='\n' && objfile.good() ; i=objfile.get());
       else if(str == "mtllib")
 	{
 	  objfile >> str;

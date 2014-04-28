@@ -17,11 +17,11 @@ namespace engine
     GLfloat _VP[16];
   public:
     Light(void);
-    Light(const float &x, const float &y, const float &z);
+    Light(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     ~Light(void);
     void configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *program);
-    void setPosition(const float &x, const float &y, const float &z);
-    void setDirection(const float &x, const float &y, const float &z);
+    void setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+    void setDirection(const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);

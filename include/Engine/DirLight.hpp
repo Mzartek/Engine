@@ -3,6 +3,8 @@
 
 #include "Light.hpp"
 
+#define SIZE 50
+
 namespace engine
 {
   class DirLight : public Light

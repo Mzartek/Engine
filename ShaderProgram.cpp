@@ -1,10 +1,10 @@
 #include <Engine/ShaderProgram.hpp>
 
-char *engine::ShaderProgram::readText(const std::string filename)
+GLchar *engine::ShaderProgram::readText(const std::string filename)
 {
   std::ifstream file(&filename[0], std::ifstream::in | std::ifstream::binary);
-  char *content;
-  unsigned long size;
+  GLchar *content;
+  GLuint size;
 
   if(file == NULL)
     {
@@ -17,7 +17,7 @@ char *engine::ShaderProgram::readText(const std::string filename)
   file.seekg(0, std::ifstream::beg);
 
   //On remplit content
-  content = new char[size+1];
+  content = new GLchar[size+1];
   assert(content != NULL);
   file.read(content, size);
   content[size] = '\0';
@@ -28,7 +28,7 @@ char *engine::ShaderProgram::readText(const std::string filename)
 GLuint engine::ShaderProgram::loadShader(const std::string filename, GLenum type)
 {
   GLuint id;
-  char *content, *log;
+  GLchar *content, *log;
   GLsizei logsize;
   GLint status;
   
@@ -41,14 +41,14 @@ GLuint engine::ShaderProgram::loadShader(const std::string filename, GLenum type
   
   content = readText(filename);
 
-  glShaderSource(id, 1, (const char **)&content, NULL);
+  glShaderSource(id, 1, (const GLchar **)&content, NULL);
   glCompileShader(id);
   glGetShaderiv(id, GL_COMPILE_STATUS, &status);
   if(status != GL_TRUE)
     {
       glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
         
-      log = new char[logsize + 1];
+      log = new GLchar[logsize + 1];
       assert(log != NULL);
 
       log[logsize] = '\0';
@@ -80,9 +80,9 @@ engine::ShaderProgram::~ShaderProgram(void)
     glDeleteShader(_idFragmentShader);
 }
 
-int engine::ShaderProgram::loadProgram(const std::string vs, const std::string fs)
+GLint engine::ShaderProgram::loadProgram(const std::string vs, const std::string fs)
 {
-  char *log;
+  GLchar *log;
   GLsizei logsize;
   GLint status;
   
@@ -113,7 +113,7 @@ int engine::ShaderProgram::loadProgram(const std::string vs, const std::string f
     {
       glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
         
-      log = new char[logsize + 1];
+      log = new GLchar[logsize + 1];
       assert(log != NULL);
 
       log[logsize] = '\0';

@@ -18,7 +18,7 @@ namespace engine
       std::string texture;
     } material;
     std::string findPath(const std::string name);
-    unsigned getMaterial(const std::string name, const std::vector<material> mat);
+    GLuint getMaterial(const std::string name, const std::vector<material> mat);
     std::vector<material> loadMtl(const std::string path, const std::string name);
   public:
     void loadObj(const std::string name);

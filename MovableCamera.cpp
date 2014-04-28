@@ -10,12 +10,12 @@ engine::MovableCamera::~MovableCamera(void)
 {
 }
 
-void engine::MovableCamera::setSpeed(const float &v)
+void engine::MovableCamera::setSpeed(const GLfloat &v)
 {
   _speed = v;
 }
 
-void engine::MovableCamera::mouseMove(const int &xrel, const int &yrel)
+void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 {
   _atheta -= xrel;
   _aphi -= yrel;
@@ -29,7 +29,7 @@ void engine::MovableCamera::mouseMove(const int &xrel, const int &yrel)
   else if (_aphi < -89)
     _aphi = -89;
   
-  float r_temp = cos(_aphi*M_PI/180);
+  GLfloat r_temp = cos(_aphi*M_PI/180);
   _vforward._y = sin(_aphi*M_PI/180);
   _vforward._z = r_temp*cos(_atheta*M_PI/180);
   _vforward._x = r_temp*sin(_atheta*M_PI/180);
@@ -41,7 +41,7 @@ void engine::MovableCamera::mouseMove(const int &xrel, const int &yrel)
   _ptarget = _pcamera + _vforward;
 }
 
-engine::Vector3D<float> engine::MovableCamera::getForward(void) const
+engine::Vector3D<GLfloat> engine::MovableCamera::getForward(void) const
 {
   return _vforward;
 }

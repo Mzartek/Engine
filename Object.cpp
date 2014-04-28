@@ -2,7 +2,7 @@
 
 engine::Object::Object(void)
 {
-  unsigned i;
+  GLuint i;
   _idVAO = 0;
   _idVBO[0] = 0;
   _idVBO[1] = 0;
@@ -29,7 +29,7 @@ engine::Object::~Object(void)
     glDeleteTextures(1, &_idTexture);
 }
 
-void engine::Object::setGLcontext(GLcontext *context)
+void engine::Object::setRenderer(Renderer *context)
 {
   _context = context;
 }
@@ -70,7 +70,7 @@ void engine::Object::setShininess(const GLfloat &x)
   _matShininess[0] = x;
 }
 
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+#define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
 
 void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLuint &sizeIndexArray, const GLuint *indexArray)
@@ -113,7 +113,7 @@ void engine::Object::display(void) const
 {
   if(_context == NULL)
     {
-      std::cerr << "You need to set the GLcontext before" << std::endl;
+      std::cerr << "You need to set the Renderer before" << std::endl;
       return;
     }
   

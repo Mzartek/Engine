@@ -2,7 +2,7 @@
 
 engine::Light::Light(void)
 {
-  unsigned i;
+  GLuint i;
   _lightPosition[0] = 0;
   _lightPosition[1] = 0;
   _lightPosition[2] = 0;
@@ -18,9 +18,9 @@ engine::Light::Light(void)
   _shadow = NULL;
 }
 
-engine::Light::Light(const float &x, const float &y, const float &z)
+engine::Light::Light(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  unsigned i;
+  GLuint i;
   _lightPosition[0] = x;
   _lightPosition[1] = y;
   _lightPosition[2] = z;
@@ -50,14 +50,14 @@ void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, S
   _shadow->config(width, height, program);
 }
 
-void engine::Light::setPosition(const float &x, const float &y, const float &z)
+void engine::Light::setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
   _lightPosition[0] = x;
   _lightPosition[1] = y;
   _lightPosition[2] = z;
 }
 
-void engine::Light::setDirection(const float &x, const float &y, const float &z)
+void engine::Light::setDirection(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
   _lightDirection[0] = x;
   _lightDirection[1] = y;

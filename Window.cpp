@@ -13,13 +13,13 @@ engine::Window::~Window(void)
 {
 }
 
-void engine::Window::initWindow(const std::string title, int const &w, int const &h)
+void engine::Window::initWindow(const std::string title, GLint const &w, GLint const &h)
 {
   _exit = false;
   _width = w;
   _height = h;
   
-  if(SDL_Init(SDL_INIT_VIDEO) < 0)
+  if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     {
       std::cerr << "Error init SDL: " << SDL_GetError() << std::endl;
       SDL_Quit();
@@ -41,11 +41,13 @@ void engine::Window::initWindow(const std::string title, int const &w, int const
   
   _idGLContext = SDL_GL_CreateContext(_idWindow);
 
+#ifdef WIN
   if(glewInit())
     {
       std::cerr << "Error init GLEW" << std::endl;
       exit(1);
     }
+#endif
   
   std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
   std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
@@ -61,27 +63,27 @@ void engine::Window::setIdleFunc(void (*f) (void))
   _idle = f;
 }
 
-void engine::Window::setReshapeFunc(void (*f) (int, int))
+void engine::Window::setReshapeFunc(void (*f) (GLuint, GLuint))
 {
   _reshape = f;
 }
 
-void engine::Window::setKeyboardFunc(void (*f) (unsigned char, bool))
+void engine::Window::setKeyboardFunc(void (*f) (GLubyte, GLboolean))
 {
   _keyboard = f;
 }
 
-void engine::Window::setMouseMoveFunc(void (*f) (int, int))
+void engine::Window::setMouseMoveFunc(void (*f) (GLint, GLint))
 {
   _mouseMove = f;
 }
 
-unsigned int engine::Window::getWidth(void)
+GLuint engine::Window::getWidth(void)
 {
   return _width;
 }
 
-unsigned int engine::Window::getHeight(void)
+GLuint engine::Window::getHeight(void)
 {
   return _height;
 }
