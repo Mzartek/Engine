@@ -37,6 +37,11 @@ void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *v
   _tObject.push_back(newone);
 }
 
+void engine::Model::sortObject(void)
+{
+  qsort(&_tObject[0], _tObject.size(), sizeof _tObject[0], comparObject);
+}
+
 void engine::Model::matIdentity(void)
 {
   matrixLoadIdentity(_modelMatrix);

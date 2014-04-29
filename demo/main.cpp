@@ -123,11 +123,12 @@ void initGL(void)
   
   face.createObject(sizeof vertex, vertex,
   		    sizeof index, index,
-  		    "./resources/bleu.jpg",
+  		    "./resources/sand.jpg",
   		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
   face.matRotate(90, 1, 0, 0);
 
   helicopter.loadObj("resources/UH-60_Blackhawk/uh60.obj");
+  helicopter.sortObject();
   helicopter.matTranslate(15, 10, 15);
   helicopter.matRotate(-90, 1, 0, 0);
   helicopter.matScale(2, 2, 2);
@@ -151,9 +152,9 @@ int main(int argc, char **argv)
   
   if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
     std::cerr << Mix_GetError() << std::endl;
-  song = Mix_LoadMUS("resources/song/song.flac");
+  song = Mix_LoadMUS("resources/song/song.mp3");
   Mix_PlayMusic(song, -1);
-  Mix_VolumeMusic(MIX_MAX_VOLUME/4);
+  Mix_VolumeMusic(MIX_MAX_VOLUME/2);
 
   window.mainLoop();
 

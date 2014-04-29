@@ -9,6 +9,7 @@ namespace engine
 {
   class Object
   {
+    friend int comparObject(const void *p1, const void *p2);
   private:
     Renderer *_context;
     GLuint _idTexture;
@@ -28,11 +29,16 @@ namespace engine
     void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setShininess(const GLfloat &x);
+    GLfloat getTransparency(void);
     void load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
 	      const GLuint &sizeIndexArray, const GLuint *indexArray);
     void display(void) const;
     void displayShadow(Light *l) const;
   };
+  
+  int comparObject(const void *p1, const void *p2);
+  
 }
+
 
 #endif

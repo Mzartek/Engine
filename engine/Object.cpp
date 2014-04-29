@@ -70,6 +70,11 @@ void engine::Object::setShininess(const GLfloat &x)
   _matShininess[0] = x;
 }
 
+GLfloat engine::Object::getTransparency(void)
+{
+  return _matDiffuse[3];
+}
+
 #define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
 
 void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
@@ -168,9 +173,23 @@ void engine::Object::displayShadow(Light *l) const
 	glBindFramebuffer(GL_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 	glUseProgram(l->getShadowMap()->getProgramId());
 	glBindVertexArray(_idVAO);
+	
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);     
       }
+}
+
+int engine::comparObject(const void *p1, const void *p2)
+{
+  Object **obj1 = (engine::Object **)p1;
+  Object **obj2 = (engine::Object **)p2;
+
+  if((*obj1)->_matDiffuse[3] < (*obj2)->_matDiffuse[3])
+    return 1;
+  if((*obj1)->_matDiffuse[3] > (*obj2)->_matDiffuse[3])
+    return -1;
+  return 0;
 }
