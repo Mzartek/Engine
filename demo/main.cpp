@@ -22,6 +22,7 @@ engine::FreeCam cam;
 engine::DirLight firstLight;
 engine::Model face;
 engine::OBJModel helicopter;
+engine::OBJModel skybox;
 
 void display(void)
 {
@@ -34,6 +35,7 @@ void display(void)
   cam.position();
   face.display();
   helicopter.display();
+  skybox.display();
 }
 
 void idle(void)
@@ -114,6 +116,7 @@ void initGL(void)
   
   face.setRenderer(&context);
   helicopter.setRenderer(&context);
+  skybox.setRenderer(&context);
 
   firstLight.configShadowMap(2048, 2048, shadowProgram);
   firstLight.setDirection(0, -1, 1);
@@ -132,6 +135,8 @@ void initGL(void)
   helicopter.matTranslate(15, 10, 15);
   helicopter.matRotate(-90, 1, 0, 0);
   helicopter.matScale(2, 2, 2);
+
+  skybox.loadObj("resources/Skybox/skybox.obj");
 }
 
 int main(int argc, char **argv)
