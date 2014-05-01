@@ -41,11 +41,17 @@ void engine::SkyBox::load(std::string posx, std::string negx,
   image[3] = IMG_Load(&negy[0]);
   image[4] = IMG_Load(&posz[0]);
   image[5] = IMG_Load(&negz[0]);
-
+  
+  glActiveTexture(GL_TEXTURE0);
   if(glIsTexture(_idTexture))
     glDeleteTextures(1, &_idTexture);
   glGenTextures(1, &_idTexture);
   glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
+  
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
  
   for(i=0 ; i<6 ; i++)
     {
@@ -71,11 +77,6 @@ void engine::SkyBox::load(std::string posx, std::string negx,
 	}
       delete image[i];
     }
-  
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   
   glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
@@ -119,7 +120,8 @@ void engine::SkyBox::load(std::string posx, std::string negx,
   glEnableVertexAttribArray(0);
   
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), BUFFER_OFFSET(0));
-  
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
   _cam = cam;
@@ -138,7 +140,7 @@ void engine::SkyBox::display(void)
       return;
     }
   
-  // glDepthMask(GL_FALSE);
+  glDepthMask(GL_FALSE);
   glUseProgram(_program->getId());
   
   glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, _cam->getMatrix());
@@ -156,5 +158,5 @@ void engine::SkyBox::display(void)
   glBindVertexArray(0);
   
   glUseProgram(0);
-  // glDepthMask(GL_TRUE);
+  glDepthMask(GL_TRUE);
 }

@@ -4,8 +4,9 @@ uniform samplerCube cubeMap;
 
 in vec3 outTexCoord;
 
+out vec4 fragColor;
+
 void main(void)
 {
-  gl_FragColor = texture(cubeMap, outTexCoord);
-  /* gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0); */
+  fragColor = texture(cubeMap, outTexCoord);
 }

@@ -40,6 +40,8 @@ in dirLight outDirLight;
 in spotLight outSpotLight;
 in vec3 normal, eyeVec;
 
+out vec4 fragColor;
+
 float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
 {
   return textureProj(tex, vec4(coord.x + (offSet.x * (1.0/texSize.x)), coord.y + (offSet.y * (1.0/texSize.y)), coord.z-0.005, coord.w));
@@ -95,7 +97,7 @@ void main(void)
   /* shadow = calcShadow(spotShadowMap, outSpotLight.shadowCoord); */
   /* final_color = calcSpotLight(outSpotLight, N, shadow); */
   
-  gl_FragColor = texture(colorTexture, outTexCoord) * final_color;
+  fragColor = texture(colorTexture, outTexCoord) * final_color;
 }
 
 /* vec4 calcSpotLight(spotLight light, vec3 N, float shadow) */

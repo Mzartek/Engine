@@ -21,17 +21,17 @@ engine::ShaderProgram *shadowProgram;
 engine::ShaderProgram *skyboxProgram;
 
 engine::FreeCam cam;
-engine::DirLight firstLight;
+engine::DirLight sun;
 engine::Model face;
 engine::OBJModel helicopter;
 engine::SkyBox sky;
 
 void display(void)
 {
-  firstLight.position();
-  firstLight.newLoop();
-  face.displayShadow(&firstLight);
-  helicopter.displayShadow(&firstLight);
+  sun.position();
+  sun.newLoop();
+  face.displayShadow(&sun);
+  helicopter.displayShadow(&sun);
 
   cam.position();
   renderer.newLoop();
@@ -47,7 +47,7 @@ void idle(void)
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
   camPosition = cam.getPositionCamera();
   
-  firstLight.setPosition(camPosition._x, camPosition._y, camPosition._z);
+  sun.setPosition(camPosition._x, camPosition._y, camPosition._z);
   
   helicopter.matRotate(0.1, 0, 0, 1);
 }
@@ -116,7 +116,7 @@ void initGL(void)
 
   renderer.setShaderProgram(mainProgram);
   renderer.setCamera(&cam);
-  renderer.setDirLight(&firstLight);
+  renderer.setDirLight(&sun);
 
   sky.load("resources/sand.jpg", "resources/sand.jpg",
 	   "resources/sand.jpg", "resources/sand.jpg",
@@ -137,11 +137,11 @@ void initGL(void)
   helicopter.matTranslate(15, 10, 15);
   helicopter.matRotate(-90, 1, 0, 0);
 
-  firstLight.configShadowMap(2048, 2048, shadowProgram);
-  firstLight.setDirection(0, -1, 1);
-  firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
-  firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
-  firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
+  sun.configShadowMap(2048, 2048, shadowProgram);
+  sun.setDirection(0, -1, 1);
+  sun.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
+  sun.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
+  sun.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
 }
 
 int main(int argc, char **argv)
