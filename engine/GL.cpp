@@ -1,8 +1,6 @@
 #include <Engine/GL.hpp>
 
-enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
-
-static pixelFormat testFormat(unsigned f)
+engine::pixelFormat engine::testFormat(unsigned f)
 {
   if(f==386930691)
     return RGB;

@@ -5,6 +5,7 @@
 #include <Engine/FreeCam.hpp>
 #include <Engine/DirLight.hpp>
 #include <Engine/OBJModel.hpp>
+#include <Engine/SkyBox.hpp>
 #include <SDL2/SDL_mixer.h>
 
 #define ESC 41
@@ -14,15 +15,16 @@ bool keyState[256];
 Mix_Music *song;
 
 engine::Window window;
-engine::Renderer context;
-engine::ShaderProgram *program;
+engine::Renderer renderer;
+engine::ShaderProgram *mainProgram;
 engine::ShaderProgram *shadowProgram;
+engine::ShaderProgram *skyboxProgram;
 
 engine::FreeCam cam;
 engine::DirLight firstLight;
 engine::Model face;
 engine::OBJModel helicopter;
-engine::OBJModel skybox;
+engine::SkyBox sky;
 
 void display(void)
 {
@@ -31,11 +33,11 @@ void display(void)
   face.displayShadow(&firstLight);
   helicopter.displayShadow(&firstLight);
 
-  context.newLoop();
   cam.position();
+  renderer.newLoop();
+  sky.display();
   face.display();
   helicopter.display();
-  skybox.display();
 }
 
 void idle(void)
@@ -52,7 +54,7 @@ void idle(void)
 
 void reshape(GLuint w, GLuint h)
 {
-  cam.setPerspective(90.0, w, h, 0.1, 1200.0);
+  cam.setPerspective(90.0, w, h, 0.1, 1500.0);
 }
 
 void keyboard(GLubyte key, GLboolean state)
@@ -105,24 +107,23 @@ void initGL(void)
   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat mat_shininess[] = {20.0};
 
-  program = new engine::ShaderProgram();
+  mainProgram = new engine::ShaderProgram();
   shadowProgram = new engine::ShaderProgram();
-  program->loadProgram("shader/demoVert.c", "shader/demoFrag.c");
+  skyboxProgram = new engine::ShaderProgram();
+  mainProgram->loadProgram("shader/demoVert.c", "shader/demoFrag.c");
   shadowProgram->loadProgram("shader/shadowVert.c", "shader/shadowFrag.c");
+  skyboxProgram->loadProgram("shader/skyboxVert.c", "shader/skyboxFrag.c");
 
-  context.setShaderProgram(program);
-  context.setCamera(&cam);
-  context.setDirLight(&firstLight);
-  
-  face.setRenderer(&context);
-  helicopter.setRenderer(&context);
-  skybox.setRenderer(&context);
+  renderer.setShaderProgram(mainProgram);
+  renderer.setCamera(&cam);
+  renderer.setDirLight(&firstLight);
 
-  firstLight.configShadowMap(2048, 2048, shadowProgram);
-  firstLight.setDirection(0, -1, 1);
-  firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
-  firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
-  firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
+  sky.load("resources/sand.jpg", "resources/sand.jpg",
+	   "resources/sand.jpg", "resources/sand.jpg",
+	   "resources/sand.jpg", "resources/sand.jpg", 
+  	   100, &cam, skyboxProgram);
+  face.setRenderer(&renderer);
+  helicopter.setRenderer(&renderer);
   
   face.createObject(sizeof vertex, vertex,
   		    sizeof index, index,
@@ -132,11 +133,15 @@ void initGL(void)
 
   helicopter.loadObj("resources/UH-60_Blackhawk/uh60.obj");
   helicopter.sortObject();
+  helicopter.matScale(2, 2, 2);
   helicopter.matTranslate(15, 10, 15);
   helicopter.matRotate(-90, 1, 0, 0);
-  helicopter.matScale(2, 2, 2);
 
-  skybox.loadObj("resources/Skybox/skybox.obj");
+  firstLight.configShadowMap(2048, 2048, shadowProgram);
+  firstLight.setDirection(0, -1, 1);
+  firstLight.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
+  firstLight.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
+  firstLight.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
 }
 
 int main(int argc, char **argv)
@@ -166,8 +171,9 @@ int main(int argc, char **argv)
   Mix_FreeMusic(song);
   Mix_CloseAudio();
   
-  delete program;
+  delete mainProgram;
   delete shadowProgram;
+  delete skyboxProgram;
   
   return 0;
 }

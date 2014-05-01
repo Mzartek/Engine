@@ -11,7 +11,7 @@
 #include <cmath>
 #include <cstring>
 
-#ifdef WIN
+#ifdef WIN32
 #include <GL/glew.h>
 #else
 #define GL_GLEXT_PROTOTYPES
@@ -22,6 +22,8 @@
 
 namespace engine
 {
+  enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
+  extern pixelFormat testFormat(unsigned f);
   extern GLuint loadTex(const std::string path);
 }
 
