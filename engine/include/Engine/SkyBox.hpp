@@ -2,7 +2,6 @@
 #define SKYBOX
 
 #include "ShaderProgram.hpp"
-#include "Camera.hpp"
 
 namespace engine
 {
