@@ -2,10 +2,20 @@
 
 engine::DirLight::DirLight(void)
 {
+  _dim[0] = 100;
+  _dim[1] = 100;
+  _dim[2] = 100;
 }
 
 engine::DirLight::~DirLight(void)
 {
+}
+
+void engine::DirLight::setDimension(GLfloat x, GLfloat y, GLfloat z)
+{
+  _dim[0] = x;
+  _dim[1] = y;
+  _dim[2] = z;
 }
 
 void engine::DirLight::position(void)
@@ -23,7 +33,7 @@ void engine::DirLight::position(void)
       return;
     }
   
-  matrixOrtho(projection, -SIZE, SIZE, -SIZE, SIZE, -SIZE, SIZE);
+  matrixOrtho(projection, -_dim[0], _dim[0], -_dim[1], _dim[1], -_dim[2], _dim[2]);
   matrixLoadIdentity(view);
   matrixLookAt(view, position, target, head);
   MultiplyMatrices4by4OpenGL_FLOAT(_VP, projection, view);

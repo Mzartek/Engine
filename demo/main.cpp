@@ -35,19 +35,14 @@ void display(void)
 
   cam.position();
   renderer.newLoop();
-  sky.display();
+  sky.display(90, 0, 1, 0);
   face.display();
   helicopter.display();
 }
 
 void idle(void)
 {
-  static engine::Vector3D<float> camPosition;
-
   cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  camPosition = cam.getPositionCamera();
-  
-  sun.setPosition(camPosition._x, camPosition._y, camPosition._z);
   
   helicopter.matRotate(0.1, 0, 0, 1);
 }
@@ -118,9 +113,9 @@ void initGL(void)
   renderer.setCamera(&cam);
   renderer.setDirLight(&sun);
 
-  sky.load("resources/sand.jpg", "resources/sand.jpg",
-	   "resources/sand.jpg", "resources/sand.jpg",
-	   "resources/sand.jpg", "resources/sand.jpg", 
+  sky.load("resources/Skybox/posX.jpg", "resources/Skybox/negX.jpg",
+	   "resources/Skybox/posY.jpg", "resources/Skybox/negY.jpg",
+	   "resources/Skybox/posZ.jpg", "resources/Skybox/negZ.jpg",
   	   100, &cam, skyboxProgram);
   face.setRenderer(&renderer);
   helicopter.setRenderer(&renderer);
@@ -138,7 +133,9 @@ void initGL(void)
   helicopter.matRotate(-90, 1, 0, 0);
 
   sun.configShadowMap(2048, 2048, shadowProgram);
-  sun.setDirection(0, -1, 1);
+  sun.setPosition(0, 0, 0);
+  sun.setDirection(-1, -2, 1);
+  sun.setDimension(100, 100, 50);
   sun.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
   sun.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   sun.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);

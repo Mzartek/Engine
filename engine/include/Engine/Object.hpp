@@ -14,7 +14,8 @@ namespace engine
     Renderer *_context;
     GLuint _idTexture;
     GLuint _idVAO;
-    GLuint _idVBO[2];
+    GLuint _idVBO;
+    GLuint _idIBO;
     GLfloat _matAmbient[4];
     GLfloat _matDiffuse[4];
     GLfloat _matSpecular[4];

@@ -2,11 +2,11 @@
 
 engine::SkyBox::SkyBox()
 {
-  _program = NULL;
   _idTexture = 0;
   _idVAO = 0;
-  _idVBO[0] = 0;
-  _idVBO[1] = 0;
+  _idVBO = 0;
+  _idIBO = 0;
+  _program = NULL;
 }
 
 engine::SkyBox::~SkyBox()
@@ -15,10 +15,10 @@ engine::SkyBox::~SkyBox()
     glDeleteTextures(1, &_idTexture);
   if(glIsVertexArray(_idVAO))
     glDeleteVertexArrays(1, &_idVAO);
-  if(glIsBuffer(_idVBO[0]))
-    glDeleteBuffers(1, &_idVBO[0]);
-  if(glIsBuffer(_idVBO[1]))
-    glDeleteBuffers(1, &_idVBO[1]);
+  if(glIsBuffer(_idVBO))
+    glDeleteBuffers(1, &_idVBO);
+  if(glIsBuffer(_idIBO))
+    glDeleteBuffers(1, &_idIBO);
 }
 
 #define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
@@ -42,22 +42,26 @@ void engine::SkyBox::load(std::string posx, std::string negx,
   image[4] = IMG_Load(&posz[0]);
   image[5] = IMG_Load(&negz[0]);
   
-  glActiveTexture(GL_TEXTURE0);
   if(glIsTexture(_idTexture))
     glDeleteTextures(1, &_idTexture);
   glGenTextures(1, &_idTexture);
   glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
   
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
- 
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  
   for(i=0 ; i<6 ; i++)
     {
       if(image[i]==NULL)
 	{
 	  std::cerr << "Error while loading image" << std::endl;
+	  exit(1);
+	}
+      if(image[i]->w != image[i]->h)
+	{
+	  std::cout << "Image need to be a scare"<< std::endl;
 	  exit(1);
 	}
       switch(testFormat(image[i]->format->format))
@@ -105,16 +109,16 @@ void engine::SkyBox::load(std::string posx, std::string negx,
   glGenVertexArrays(1, &_idVAO);
   glBindVertexArray(_idVAO);
   
-  if(glIsBuffer(_idVBO[0]))
-    glDeleteBuffers(1, &_idVBO[0]);
-  glGenBuffers(1, &_idVBO[0]);
-  glBindBuffer(GL_ARRAY_BUFFER, _idVBO[0]);
+  if(glIsBuffer(_idVBO))
+    glDeleteBuffers(1, &_idVBO);
+  glGenBuffers(1, &_idVBO);
+  glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof vertexArray, vertexArray, GL_STATIC_DRAW);
   
-  if(glIsBuffer(_idVBO[1]))
-    glDeleteBuffers(1, &_idVBO[1]);
-  glGenBuffers(1, &_idVBO[1]);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idVBO[1]);
+  if(glIsBuffer(_idIBO))
+    glDeleteBuffers(1, &_idIBO);
+  glGenBuffers(1, &_idIBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idIBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof indexArray, indexArray, GL_STATIC_DRAW);
   
   glEnableVertexAttribArray(0);
@@ -132,18 +136,24 @@ void engine::SkyBox::load(std::string posx, std::string negx,
 
 #undef BUFFER_OFFSET
 
-void engine::SkyBox::display(void)
+void engine::SkyBox::display(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 {
+  GLfloat pos[16];
   if(_program == NULL)
     {
       std::cerr << "You need to load a SkyBox before" << std::endl;
       return;
     }
+
+  matrixLoadIdentity(pos);
+  matrixTranslate(pos, _cam->getPositionCamera()._x, _cam->getPositionCamera()._y, _cam->getPositionCamera()._z);
+  matrixRotate(pos, angle*((GLfloat)M_PI/180), x, y, z);
+  MultiplyMatrices4by4OpenGL_FLOAT(pos, _cam->getMatrix(), pos);
   
   glDepthMask(GL_FALSE);
   glUseProgram(_program->getId());
   
-  glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, _cam->getMatrix());
+  glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, pos);
   
   glBindVertexArray(_idVAO);
 

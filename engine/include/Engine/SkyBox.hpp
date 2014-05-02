@@ -2,6 +2,7 @@
 #define SKYBOX
 
 #include "ShaderProgram.hpp"
+#include "Camera.hpp"
 
 namespace engine
 {
@@ -10,7 +11,8 @@ namespace engine
   private:
     GLuint _idTexture;
     GLuint _idVAO;
-    GLuint _idVBO[2];
+    GLuint _idVBO;
+    GLuint _idIBO;
     GLuint _numElement;
     Camera *_cam;
     ShaderProgram *_program;
@@ -23,7 +25,7 @@ namespace engine
 	      std::string posy, std::string negy,
 	      std::string posz, std::string negz,
 	      GLfloat dim, Camera *cam, ShaderProgram *program);
-    void display(void);
+    void display(GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
   };
 }
 
