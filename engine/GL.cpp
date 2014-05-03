@@ -44,6 +44,7 @@ GLuint engine::loadTex(const std::string path)
     }
   glGenerateMipmap(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, 0);
-  delete image;
+  SDL_FreeSurface(image);
+  
   return texture;
 }

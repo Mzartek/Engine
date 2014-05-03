@@ -11,7 +11,7 @@ namespace engine
     GLuint _idProgram;
     GLuint _idVertexShader;
     GLuint _idFragmentShader;
-    GLchar *readText(const std::string filename);
+    GLbyte *readText(const std::string filename);
     GLuint loadShader(const std::string filename, GLenum type);
   public:
     ShaderProgram(void);

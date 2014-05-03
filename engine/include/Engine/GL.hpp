@@ -11,7 +11,7 @@
 #include <cmath>
 #include <cstring>
 
-#ifdef WIN32
+#ifdef WIN
 #include <GL/glew.h>
 #else
 #define GL_GLEXT_PROTOTYPES

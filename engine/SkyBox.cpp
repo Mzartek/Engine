@@ -74,7 +74,7 @@ void engine::SkyBox::load(std::string posx, std::string negx,
 	  std::cerr << "Format " << image[i]->format->format << " unknown" << std::endl;
 	  break;
 	}
-      delete image[i];
+      SDL_FreeSurface(image[i]);
     }
   
   glBindTexture(GL_TEXTURE_CUBE_MAP, 0);

@@ -1,9 +1,9 @@
 #include <Engine/ShaderProgram.hpp>
 
-GLchar *engine::ShaderProgram::readText(const std::string filename)
+GLbyte *engine::ShaderProgram::readText(const std::string filename)
 {
   std::ifstream file(&filename[0], std::ifstream::in | std::ifstream::binary);
-  GLchar *content;
+  GLbyte *content;
   GLuint size;
 
   if(file == NULL)
@@ -17,9 +17,9 @@ GLchar *engine::ShaderProgram::readText(const std::string filename)
   file.seekg(0, std::ifstream::beg);
 
   //On remplit content
-  content = new GLchar[size+1];
+  content = new GLbyte[size+1];
   assert(content != NULL);
-  file.read(content, size);
+  file.read((char *)content, size);
   content[size] = '\0';
   
   return content;
@@ -28,7 +28,7 @@ GLchar *engine::ShaderProgram::readText(const std::string filename)
 GLuint engine::ShaderProgram::loadShader(const std::string filename, GLenum type)
 {
   GLuint id;
-  GLchar *content, *log;
+  GLbyte *content, *log;
   GLsizei logsize;
   GLint status;
   
@@ -41,19 +41,19 @@ GLuint engine::ShaderProgram::loadShader(const std::string filename, GLenum type
   
   content = readText(filename);
 
-  glShaderSource(id, 1, (const GLchar **)&content, NULL);
+  glShaderSource(id, 1, (const char **)&content, NULL);
   glCompileShader(id);
   glGetShaderiv(id, GL_COMPILE_STATUS, &status);
   if(status != GL_TRUE)
     {
       glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
         
-      log = new GLchar[logsize + 1];
+      log = new GLbyte[logsize + 1];
       assert(log != NULL);
 
       log[logsize] = '\0';
         
-      glGetShaderInfoLog(id, logsize, &logsize, log);
+      glGetShaderInfoLog(id, logsize, &logsize, (char *)log);
       std::cerr << "Error while compiling shader: " << filename << std::endl << log << std::endl;
         
       glDeleteShader(id);
@@ -82,7 +82,7 @@ engine::ShaderProgram::~ShaderProgram(void)
 
 GLint engine::ShaderProgram::loadProgram(const std::string vs, const std::string fs)
 {
-  GLchar *log;
+  GLbyte *log;
   GLsizei logsize;
   GLint status;
   
@@ -113,12 +113,12 @@ GLint engine::ShaderProgram::loadProgram(const std::string vs, const std::string
     {
       glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
         
-      log = new GLchar[logsize + 1];
+      log = new GLbyte[logsize + 1];
       assert(log != NULL);
 
       log[logsize] = '\0';
         
-      glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
+      glGetProgramInfoLog(_idProgram, logsize, &logsize, (char *)log);
       std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
         
       delete log;
