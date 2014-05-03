@@ -35,7 +35,7 @@ void display(void)
 
   cam.position();
   renderer.newLoop();
-  sky.display(90, 0, 1, 0);
+  sky.display();
   face.display();
   helicopter.display();
 }
@@ -97,8 +97,8 @@ void initGL(void)
 		    0, 0, -1
   };
   GLuint index[]={0, 1, 2, 0, 2, 3};
-  GLfloat mat_ambient[] = {0.2, 0.2, 0.2, 1.0};
-  GLfloat mat_diffuse[] = {0.7, 0.7, 0.7, 1.0};
+  GLfloat mat_ambient[] = {0.5, 0.5, 0.5, 1.0};
+  GLfloat mat_diffuse[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat mat_shininess[] = {20.0};
 
@@ -113,32 +113,33 @@ void initGL(void)
   renderer.setCamera(&cam);
   renderer.setDirLight(&sun);
 
-  sky.load("resources/Skybox/posX.jpg", "resources/Skybox/negX.jpg",
-	   "resources/Skybox/posY.jpg", "resources/Skybox/negY.jpg",
-	   "resources/Skybox/posZ.jpg", "resources/Skybox/negZ.jpg",
+  sun.configShadowMap(2048, 2048, shadowProgram);
+  sun.setPosition(15, 10, 15);
+  sun.setDirection(1, -1, 0);
+  sun.setDimension(50, 50, 50);
+  sun.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
+  sun.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
+  sun.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
+
+  sky.load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
+	   "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
+	   "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
   	   100, &cam, skyboxProgram);
-  face.setRenderer(&renderer);
-  helicopter.setRenderer(&renderer);
+  sky.rotate(0, 0, 0, 0);
   
+  face.setRenderer(&renderer);
   face.createObject(sizeof vertex, vertex,
   		    sizeof index, index,
   		    "./resources/sand.jpg",
   		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
   face.matRotate(90, 1, 0, 0);
 
+  helicopter.setRenderer(&renderer);
   helicopter.loadObj("resources/UH-60_Blackhawk/uh60.obj");
   helicopter.sortObject();
   helicopter.matScale(2, 2, 2);
   helicopter.matTranslate(15, 10, 15);
   helicopter.matRotate(-90, 1, 0, 0);
-
-  sun.configShadowMap(2048, 2048, shadowProgram);
-  sun.setPosition(0, 0, 0);
-  sun.setDirection(-1, -2, 1);
-  sun.setDimension(100, 100, 50);
-  sun.setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
-  sun.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
-  sun.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
 }
 
 int main(int argc, char **argv)

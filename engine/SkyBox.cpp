@@ -59,11 +59,6 @@ void engine::SkyBox::load(std::string posx, std::string negx,
 	  std::cerr << "Error while loading image" << std::endl;
 	  exit(1);
 	}
-      if(image[i]->w != image[i]->h)
-	{
-	  std::cout << "Image need to be a scare"<< std::endl;
-	  exit(1);
-	}
       switch(testFormat(image[i]->format->format))
 	{
 	case RGB:
@@ -136,7 +131,15 @@ void engine::SkyBox::load(std::string posx, std::string negx,
 
 #undef BUFFER_OFFSET
 
-void engine::SkyBox::display(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
+void engine::SkyBox::rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
+{
+  _angle = angle;
+  _x = x;
+  _y = y;
+  _z = z;
+}
+
+void engine::SkyBox::display(void)
 {
   GLfloat pos[16];
   if(_program == NULL)
@@ -147,7 +150,7 @@ void engine::SkyBox::display(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 
   matrixLoadIdentity(pos);
   matrixTranslate(pos, _cam->getPositionCamera()._x, _cam->getPositionCamera()._y, _cam->getPositionCamera()._z);
-  matrixRotate(pos, angle*((GLfloat)M_PI/180), x, y, z);
+  matrixRotate(pos, _angle*((GLfloat)M_PI/180), _x, _y, _z);
   MultiplyMatrices4by4OpenGL_FLOAT(pos, _cam->getMatrix(), pos);
   
   glDepthMask(GL_FALSE);
