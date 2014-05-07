@@ -150,7 +150,7 @@ void engine::SkyBox::display(void)
 
   matrixLoadIdentity(pos);
   matrixTranslate(pos, _cam->getPositionCamera()._x, _cam->getPositionCamera()._y, _cam->getPositionCamera()._z);
-  matrixRotate(pos, _angle*((GLfloat)M_PI/180), _x, _y, _z);
+  matrixRotate(pos, _angle, _x, _y, _z);
   MultiplyMatrices4by4OpenGL_FLOAT(pos, _cam->getMatrix(), pos);
   
   glDepthMask(GL_FALSE);

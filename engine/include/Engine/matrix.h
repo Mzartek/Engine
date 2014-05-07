@@ -19,7 +19,7 @@ extern "C" {
   void matrixPerspective(float *matrix, float fovyInDegrees, float aspectRatio, float znear, float zfar);
   void matrixLookAt(float *matrix, float *eyePosition3D, float *center3D, float *upVector3D);
   void matrixTranslate(float *matrix, float x, float y, float z);
-  void matrixRotate(float *matrix, float angleInRadians, float x, float y, float z);
+  void matrixRotate(float *matrix, float angleInDegrees, float x, float y, float z);
   void matrixScale(float *matrix, float x, float y, float z);
 
 #ifdef __cplusplus

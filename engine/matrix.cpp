@@ -183,11 +183,12 @@ void matrixTranslate(float *matrix, float x, float y, float z)
   matrix[15]=matrix[ 3]*x+matrix[ 7]*y+matrix[11]*z+matrix[15];
 }
 
-void matrixRotate(float *matrix, float angleInRadians, float x, float y, float z)
+void matrixRotate(float *matrix, float angleInDegrees, float x, float y, float z)
 {
   float m[16], rotate[16];
   float OneMinusCosAngle, CosAngle, SinAngle;
   float A_OneMinusCosAngle, C_OneMinusCosAngle;
+  float angleInRadians = angleInDegrees*((float)M_PI/180);
   
   CosAngle=cosf(angleInRadians);
   OneMinusCosAngle=1.0-CosAngle;

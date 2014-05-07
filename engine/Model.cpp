@@ -54,7 +54,7 @@ void engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLflo
 
 void engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  matrixRotate(_modelMatrix, angle*((GLfloat)M_PI/180), x, y, z);
+  matrixRotate(_modelMatrix, angle, x, y, z);
 }
 
 void engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)

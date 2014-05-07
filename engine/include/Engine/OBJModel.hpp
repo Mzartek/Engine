@@ -21,7 +21,7 @@ namespace engine
     GLuint getMaterial(const std::string name, const std::vector<material> mat);
     std::vector<material> loadMtl(const std::string path, const std::string name);
   public:
-    void loadObj(const std::string name);
+    void loadObj(const std::string name, GLubyte tex3D = 0);
   };
 }
 

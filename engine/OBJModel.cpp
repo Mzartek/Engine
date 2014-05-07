@@ -119,7 +119,7 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
   return mat;
 }
 
-void engine::OBJModel::loadObj(const std::string name)
+void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 {
   std::ifstream objfile(&name[0], std::ifstream::in | std::ifstream::binary);
   std::string str;
@@ -178,16 +178,24 @@ void engine::OBJModel::loadObj(const std::string name)
 	  objfile >> tmp[1];
 	  vt.push_back(tmp[0]);
 	  vt.push_back(tmp[1]);
+	  if(tex3D)
+	    objfile >> tmp[0];
 	}      
       else if(str == "f")
 	{
 	  objfile >> str;
-	  while(isdigit(str[0]))
+	  while(isdigit(str[0]) || str[0]=='-')
 	    {
 	      strtmp = &str[0];
+	      
+	      for(GLint i=0 ; strtmp[i]!='\0' ; i++)
+		if(strtmp[i]=='-')
+		  strtmp[i]=' ';
+
 	      num[0] = (strtoul(&strtmp[0], &strtmp, 0)-1) * 3;
 	      num[1] = (strtoul(&strtmp[1], &strtmp, 0)-1) * 2;
 	      num[2] = (strtoul(&strtmp[1], &strtmp, 0)-1) * 3;
+
 	      array.push_back(v[num[0]]); array.push_back(v[num[0]+1]); array.push_back(v[num[0]+2]);
 	      array.push_back(vt[num[1]]); array.push_back(vt[num[1]+1]);
 	      array.push_back(vn[num[2]]); array.push_back(vn[num[2]+1]); array.push_back(vn[num[2]+2]);
