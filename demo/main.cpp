@@ -20,7 +20,7 @@ engine::ShaderProgram *mainProgram;
 engine::ShaderProgram *shadowProgram;
 engine::ShaderProgram *skyboxProgram;
 
-engine::FreeCam cam;
+engine::Camera cam;
 engine::DirLight sun;
 engine::Model face;
 engine::OBJModel helicopter;
@@ -42,9 +42,20 @@ void display(void)
 
 void idle(void)
 {
-  cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+  GLfloat mat1[16];
+  static GLfloat angle = 0;
+
+  matrixLoadIdentity(mat1);
+  matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+  matrixRotate(mat1, angle, 0, 1, 0);
+  matrixTranslate(mat1, 20, 10, 0);
+  angle -= 0.005;
   
-  helicopter.matRotate(0.1, 0, 0, 1);
+  cam.setPositionCamera(mat1[12], mat1[13], mat1[14]);
+  cam.setPositionTarget(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+  
+  // cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+  // helicopter.matRotate(0.1, 0, 0, 1);
 }
 
 void reshape(GLuint w, GLuint h)
@@ -56,43 +67,44 @@ void keyboard(GLubyte key, GLboolean state)
 {
   keyState[key] = state;
   
-  if(keyState[MAJ]==true)
-    cam.setSpeed(0.05);
-  else
-    cam.setSpeed(0.25);
+  // if(keyState[MAJ]==true)
+  //   cam.setSpeed(0.05);
+  // else
+  //   cam.setSpeed(0.25);
   
   if(state)
     switch(key)
       {
       case ESC:
-	window.stop();
-	break;
+  	window.stop();
+  	break;
       }
 }
 
 void mouseMove(GLint xrel, GLint yrel)
 {
-  cam.mouseMove(xrel, yrel);
+  (void)xrel; (void)yrel;
+  // cam.mouseMove(xrel, yrel);
 }
 
 void init(void)
 {
-  cam.setPositionCamera(0, 1, 0);
-  cam.setSpeed(0.25);
+  // cam.setPositionCamera(0, 1, 0);
+  // cam.setSpeed(0.25);
 }
 
 void initGL(void)
 {
-  GLfloat vertex[]={-200, -200, 0,
+  GLfloat vertex[]={-1000, -1000, 0,
 		    0, 0,//
 		    0, 0, -1,
-		    -200, 200, 0,
+		    -1000, 1000, 0,
 		    0, 1,//
 		    0, 0, -1,
-		    200, 200, 0,
+		    1000, 1000, 0,
 		    1, 1,//
 		    0, 0, -1,
-		    200, -200, 0,
+		    1000, -1000, 0,
 		    1, 0,//
 		    0, 0, -1
   };
@@ -138,7 +150,7 @@ void initGL(void)
   helicopter.loadObj("resources/UH-60_Blackhawk/uh60.obj");
   helicopter.sortObject();
   helicopter.matScale(2, 2, 2);
-  helicopter.matTranslate(15, 10, 15);
+  helicopter.matTranslate(0, 1.5, 0);
   helicopter.matRotate(-90, 1, 0, 0);
 }
 
