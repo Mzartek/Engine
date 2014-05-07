@@ -12,5 +12,5 @@ newmtl Material__29
 	Kd 1.000000000000 1.000000000000 1.000000000000
 	Ks 0.899999976158 0.899999976158 0.899999976158
 	Ke 0.000000000000 0.000000000000 0.000000000000
-	map_Ka /UH-60_Blackhawk/pal.jpg
-	map_Kd /UH-60_Blackhawk/pal.jpg
+	map_Ka pal.jpg
+	map_Kd pal.jpg

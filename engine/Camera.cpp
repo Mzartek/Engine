@@ -73,5 +73,5 @@ void engine::Camera::position(void)
 
   matrixLoadIdentity(view);
   matrixLookAt(view, camera, target, head);
-  MultiplyMatrices4by4OpenGL_FLOAT(_VP, _projectionMatrix, view);
+  matrixMultiply(_VP, _projectionMatrix, view);
 }

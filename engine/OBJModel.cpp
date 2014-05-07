@@ -83,7 +83,7 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
 	  mtlfile >> num;
 	  tmp.shininess[0] = num;
 	}
-      else if(str == "Tr" || str == "d")
+      else if(str == "d")
 	{
 	  mtlfile >> num;
 	  tmp.diffuse[3] = num;
@@ -127,7 +127,8 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
   std::vector<GLfloat> vn;
   std::vector<GLfloat> vt;
   GLfloat tmp[3];
-  GLuint num[3], trianglePoint, matindex = 0, numIndex = 0;
+  GLint num[3];
+  GLuint trianglePoint, matindex = 0, numIndex = 0;
   GLchar *strtmp;
   GLboolean first = true, takestr = true;
   
@@ -187,14 +188,23 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	  while(isdigit(str[0]) || str[0]=='-')
 	    {
 	      strtmp = &str[0];
-	      
-	      for(GLint i=0 ; strtmp[i]!='\0' ; i++)
-		if(strtmp[i]=='-')
-		  strtmp[i]=' ';
 
-	      num[0] = (strtoul(&strtmp[0], &strtmp, 0)-1) * 3;
-	      num[1] = (strtoul(&strtmp[1], &strtmp, 0)-1) * 2;
-	      num[2] = (strtoul(&strtmp[1], &strtmp, 0)-1) * 3;
+	      num[0] = strtol(&strtmp[0], &strtmp, 0);
+	      num[1] = strtol(&strtmp[1], &strtmp, 0);
+	      num[2] = strtol(&strtmp[1], &strtmp, 0);
+
+	      if(num[0]>0)
+		{
+		  num[0] = (num[0]-1) * 3;
+		  num[1] = (num[1]-1) * 2;
+		  num[2] = (num[2]-1) * 3;
+		}
+	      else
+		{
+		  num[0] = v.size() + (num[0] * 3);
+		  num[1] = vt.size() + (num[1] * 2);
+		  num[2] = vn.size() + (num[2] * 3);
+		}
 
 	      array.push_back(v[num[0]]); array.push_back(v[num[0]+1]); array.push_back(v[num[0]+2]);
 	      array.push_back(vt[num[1]]); array.push_back(vt[num[1]+1]);

@@ -24,43 +24,93 @@ engine::Camera cam;
 engine::DirLight sun;
 engine::Model face;
 engine::OBJModel helicopter;
+engine::OBJModel grotor;
+engine::OBJModel protor;
 engine::SkyBox sky;
+
+void helicopterMatrixIdentity(void)
+{
+  helicopter.matIdentity();
+  grotor.matIdentity();
+  protor.matIdentity();
+}
+
+void helicopterMatrixScale(GLfloat x, GLfloat y, GLfloat z)
+{
+  helicopter.matScale(x, y, z);
+  grotor.matScale(x, y, z);
+  protor.matScale(x, y, z);
+}
+
+void helicopterMatrixTranslate(GLfloat x, GLfloat y, GLfloat z)
+{
+  helicopter.matTranslate(x, y, z);
+  grotor.matTranslate(x, y, z);
+  protor.matTranslate(x, y, z);
+}
+
+void helicopterMatrixRotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
+{
+  helicopter.matRotate(angle, x, y, z);
+  grotor.matRotate(angle, x, y, z);
+  protor.matRotate(angle, x, y, z);
+}
+
+void helicopterRotateRotor(GLfloat angle)
+{
+  grotor.matRotate(angle, 0, 0, 1);
+  protor.matRotate(angle, 1, 0, 0);
+}
+
+void helicopterDisplayShadow(engine::Light *l)
+{
+  helicopter.displayShadow(l);
+  grotor.displayShadow(l);
+  protor.displayShadow(l);
+}
+
+void helicopterDisplay(void)
+{
+  helicopter.display();
+  grotor.display();
+  protor.display();
+}
 
 void display(void)
 {
   sun.position();
   sun.newLoop();
   face.displayShadow(&sun);
-  helicopter.displayShadow(&sun);
+  helicopterDisplayShadow(&sun);
 
   cam.position();
   renderer.newLoop();
   sky.display();
   face.display();
-  helicopter.display();
+  helicopterDisplay();
 }
 
 void idle(void)
 {
   GLfloat mat1[16];
   static GLbyte step = 0;
-  static GLfloat angle = 125, height = 10;
+  static GLfloat angle = 125, height = 3.0;
   static GLuint timeStart = SDL_GetTicks();
+  
+  helicopterMatrixIdentity();
+  helicopterMatrixScale(2, 2, 2);
 
   switch (step)
     {
     case 0:
+      helicopterMatrixTranslate(0, height, 0);
+      
       matrixLoadIdentity(mat1);
       matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
       matrixRotate(mat1, angle, 0, 1, 0);
       matrixTranslate(mat1, 20, 10-height, 0);
-      
-      helicopter.matIdentity();
-      helicopter.matScale(2, 2, 2);
-      helicopter.matTranslate(0, height, 0);
-      helicopter.matRotate(-90, 1, 0, 0);
   
-      angle -= 0.9;
+      angle -= 0.5;
       if((SDL_GetTicks() - timeStart)>11000)
   	{
   	  step++;
@@ -68,18 +118,15 @@ void idle(void)
   	}
       break;
     case 1:
-      helicopter.matIdentity();
-      helicopter.matScale(2, 2, 2);
-      helicopter.matTranslate(0, height, 0);
-      helicopter.matRotate(-90, 1, 0, 0);
+      helicopterMatrixTranslate(0, height, 0);
       
       matrixLoadIdentity(mat1);
       matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
       matrixRotate(mat1, angle, 0, 1, 0);
       matrixTranslate(mat1, 40, 10-height, 0);
       
-      angle -=0.9;
-      height += 0.5;
+      angle -=0.5;
+      height += 0.25;
       if((SDL_GetTicks() - timeStart)>6000)
   	{
   	  step++;
@@ -87,18 +134,15 @@ void idle(void)
   	}
       break;
     case 2:
-      helicopter.matIdentity();
-      helicopter.matScale(2, 2, 2);
-      helicopter.matTranslate(0, height, 0);
-      helicopter.matRotate(-90, 1, 0, 0);
+      helicopterMatrixTranslate(0, height, 0);
       
       matrixLoadIdentity(mat1);
       matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
       matrixRotate(mat1, angle, 0, 1, 0);
       matrixTranslate(mat1, 40, 10, 0);
       
-      angle -=0.9;
-      height += 0.5;
+      angle -=0.5;
+      height += 0.25;
       if((SDL_GetTicks() - timeStart)>11000)
   	{
   	  step++;
@@ -107,17 +151,14 @@ void idle(void)
       break;
 
     case 3:
-      helicopter.matIdentity();
-      helicopter.matScale(2, 2, 2);
-      helicopter.matTranslate(0, height, 0);
-      helicopter.matRotate(-90, 1, 0, 0);
+      helicopterMatrixTranslate(0, height, 0);
       
       matrixLoadIdentity(mat1);
       matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
       matrixRotate(mat1, angle, 0, 1, 0);
       matrixTranslate(mat1, 20, 10, 0);
       
-      angle -=0.9;
+      angle -=0.5;
       if((SDL_GetTicks() - timeStart)>11000)
   	{
   	  step++;
@@ -129,6 +170,9 @@ void idle(void)
       break;
     }
   
+  helicopterMatrixRotate(-90, 1, 0, 0);
+  helicopterRotateRotor(angle * -20);
+  
   sun.setPosition(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
   cam.setPositionCamera(mat1[12], mat1[13], mat1[14]);
   cam.setPositionTarget(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
@@ -139,7 +183,7 @@ void idle(void)
 
 void reshape(GLuint w, GLuint h)
 {
-  cam.setPerspective(90.0, w, h, 0.1, 1500.0);
+  cam.setPerspective(90.0, w, h, 0.1, 2000.0);
 }
 
 void keyboard(GLubyte key, GLboolean state)
@@ -227,6 +271,19 @@ void initGL(void)
   helicopter.setRenderer(&renderer);
   helicopter.loadObj("resources/UH-60_Blackhawk/corps.obj", 1);
   helicopter.sortObject();
+
+  grotor.setRenderer(&renderer);
+  grotor.loadObj("resources/UH-60_Blackhawk/grotor.obj", 1);
+  grotor.sortObject();
+  
+  protor.setRenderer(&renderer);
+  protor.loadObj("resources/UH-60_Blackhawk/protor.obj", 1);
+  protor.sortObject();
+
+  // helicopterMatrixIdentity();
+  // helicopterMatrixScale(2, 2, 2);
+  // helicopterMatrixTranslate(0, 5, 0);
+  // helicopterMatrixRotate(-90, 1, 0, 0);
 }
 
 int main(int argc, char **argv)

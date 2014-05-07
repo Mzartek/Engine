@@ -91,22 +91,22 @@ void engine::Model::display(void) const
   
   glUseProgram(_context->getProgramId());
   
-  MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getCamera()->getMatrix(), _modelMatrix);
+  matrixMultiply(tmp, _context->getCamera()->getMatrix(), _modelMatrix);
   glUniformMatrix4fv(_context->MVPLocation, 1, GL_FALSE, tmp);
     
   if(_context->getDirLight()!=NULL)
     if(_context->getDirLight()->getShadowMap() != NULL)
       {
-  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getDirLight()->getMatrix(), _modelMatrix);
-  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, bias, tmp);
+  	matrixMultiply(tmp, _context->getDirLight()->getMatrix(), _modelMatrix);
+  	matrixMultiply(tmp, bias, tmp);
 	glUniformMatrix4fv(_context->dirShadowMVPLocation, 1, GL_FALSE, tmp);
       }
   
   if(_context->getSpotLight()!=NULL)
     if(_context->getSpotLight()->getShadowMap() != NULL)
       {
-  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, _context->getSpotLight()->getMatrix(), _modelMatrix);
-  	MultiplyMatrices4by4OpenGL_FLOAT(tmp, bias, tmp);
+  	matrixMultiply(tmp, _context->getSpotLight()->getMatrix(), _modelMatrix);
+  	matrixMultiply(tmp, bias, tmp);
 	glUniformMatrix4fv(_context->spotShadowMVPLocation, 1, GL_FALSE, tmp);
       }
   
@@ -129,7 +129,7 @@ void engine::Model::displayShadow(Light *l) const
     if(l->getShadowMap() != NULL)
       {
 	glUseProgram(l->getShadowMap()->getProgramId());
-	MultiplyMatrices4by4OpenGL_FLOAT(tmp, l->getMatrix(), _modelMatrix);
+	matrixMultiply(tmp, l->getMatrix(), _modelMatrix);
 	glUniformMatrix4fv(l->getShadowMap()->MVPLocation, 1, GL_FALSE, tmp);
 	glUseProgram(0);
 	for(i=0 ; i<_tObject.size(); i++)
