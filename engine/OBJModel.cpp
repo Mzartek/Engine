@@ -127,8 +127,8 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
   std::vector<GLfloat> vn;
   std::vector<GLfloat> vt;
   GLfloat tmp[3];
-  GLint num[3];
-  GLuint trianglePoint, matindex = 0, numIndex = 0;
+  GLint i, num[3];
+  GLuint savePoint, matindex = 0, numIndex = 0;
   GLchar *strtmp;
   GLboolean first = true, takestr = true;
   
@@ -149,7 +149,7 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
       else
 	takestr = true;
       if(str[0]=='#')
-	for(GLint i=objfile.get() ; i!='\n' && objfile.good() ; i=objfile.get());
+	for(i=objfile.get() ; i!='\n' && objfile.good() ; i=objfile.get());
       else if(str == "mtllib")
 	{
 	  objfile >> str;
@@ -213,13 +213,13 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 		break;
 	      objfile >> str;
 	    }
-	  trianglePoint = numIndex;
+	  savePoint = numIndex;
 	  index.push_back(numIndex++);
 	  index.push_back(numIndex++);
 	  index.push_back(numIndex++);
 	  for(; numIndex<(array.size()/8) ; numIndex++)
 	    {
-	      index.push_back(trianglePoint);
+	      index.push_back(savePoint);
 	      index.push_back(numIndex-1);
 	      index.push_back(numIndex);
 	    }

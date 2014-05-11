@@ -108,7 +108,6 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
 
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
 

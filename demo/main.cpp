@@ -110,7 +110,7 @@ void idle(void)
       matrixRotate(mat1, angle, 0, 1, 0);
       matrixTranslate(mat1, 20, 10-height, 0);
   
-      angle -= 0.5;
+      angle += 0.5;
       if((SDL_GetTicks() - timeStart)>11000)
   	{
   	  step++;
@@ -141,7 +141,7 @@ void idle(void)
       matrixRotate(mat1, angle, 0, 1, 0);
       matrixTranslate(mat1, 40, 10, 0);
       
-      angle -=0.5;
+      angle +=0.5;
       height += 0.25;
       if((SDL_GetTicks() - timeStart)>11000)
   	{
@@ -218,18 +218,18 @@ void init(void)
 
 void initGL(void)
 {
-  GLfloat vertex[]={-1000, -1000, 0,
+  GLfloat vertex[]={-1000, 0, -1000,
 		    0, 0,//
-		    0, 0, -1,
-		    -1000, 1000, 0,
+		    0, 1, 0,
+		    -1000, 0, 1000,
 		    0, 1,//
-		    0, 0, -1,
-		    1000, 1000, 0,
+		    0, 1, 0,
+		    1000, 0, 1000,
 		    1, 1,//
-		    0, 0, -1,
-		    1000, -1000, 0,
+		    0, 1, 0,
+		    1000, 0, -1000,
 		    1, 0,//
-		    0, 0, -1
+		    0, 1, 0
   };
   GLuint index[]={0, 1, 2, 0, 2, 3};
   GLfloat mat_ambient[] = {0.5, 0.5, 0.5, 1.0};
@@ -266,7 +266,6 @@ void initGL(void)
   		    sizeof index, index,
   		    "./resources/sand.jpg",
   		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-  face.matRotate(90, 1, 0, 0);
 
   helicopter.setRenderer(&renderer);
   helicopter.loadObj("resources/UH-60_Blackhawk/corps.obj", 1);

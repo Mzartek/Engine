@@ -4,11 +4,11 @@ CC= g++
 NAME= sample
 SYSTEM= $(shell uname)
 ifeq ($(SYSTEM), Linux)
-LIB= -I../engine/include -L../engine/lib -Wl,-rpath=../engine/lib -lGL -lSDL2 -lSDL2_image -lSDL2_mixer -lm
+LIB= -I../engine/include -L../engine/lib -Wl,-rpath=../engine/lib -lSDL2 -lSDL2_mixer
 else
-LIB= -I../engine/include -L../engine/lib -I/c/MinGW/tiers/include -L/c/MinGW/tiers/lib -lopengl32 -lglew32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lm
+LIB= -I../engine/include -L../engine/lib -I/c/MinGW/tiers/include -L/c/MinGW/tiers/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer
 endif
-FLAGS= -W -Wall -Werror -Wfatal-errors -lEngine $(LIB)
+FLAGS= -W -Wall -Wextra -Werror -Wfatal-errors -lEngine $(LIB)
 SRC= main.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 
@@ -20,10 +20,8 @@ obj/%.o:	%.cpp
 
 clean:	
 	rm -f $(OBJ)
-ifeq ($(SYSTEM), Linux)
 	rm -f *~
+	rm -f shader/*~
 	rm -f *#
 	rm -f $(NAME)
-else
 	rm -f $(NAME).exe
-endif

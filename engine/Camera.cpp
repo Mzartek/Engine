@@ -68,7 +68,7 @@ void engine::Camera::position(void)
 {
   GLfloat camera[] = {_pcamera._x, _pcamera._y, _pcamera._z};
   GLfloat target[] = {_ptarget._x, _ptarget._y, _ptarget._z};
-  GLfloat head[] = {0, 1.0, 0.0};
+  GLfloat head[] = {0.0, 1.0, 0.0};
   GLfloat view[16];
 
   matrixLoadIdentity(view);

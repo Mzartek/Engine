@@ -51,6 +51,11 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
   
   std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
   std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+  
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glEnable(GL_MULTISAMPLE);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void engine::Window::setDisplayFunc(void (*f) (void))
