@@ -1,7 +1,7 @@
 #ifndef WINDOW
 #define WINDOW
 
-#include "GL.hpp"
+#include "GLHead.hpp"
 
 namespace engine
 {

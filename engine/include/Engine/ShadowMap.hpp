@@ -1,8 +1,7 @@
 #ifndef SHADOW_MAP
 #define SHADOW_MAP
 
-#include "GL.hpp"
-#include "matrix.h"
+#include "GLHead.hpp"
 #include "ShaderProgram.hpp"
 
 namespace engine

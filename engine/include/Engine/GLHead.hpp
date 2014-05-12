@@ -1,5 +1,5 @@
-#ifndef GL_PERSO
-#define GL_PERSO
+#ifndef GL_HEAD
+#define GL_HEAD
 
 #include <iostream>
 #include <fstream>
@@ -20,11 +20,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "matrix.h"
+
 namespace engine
 {
   enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
   extern pixelFormat testFormat(unsigned f);
-  extern GLuint loadTex(const std::string path);
+  extern void loadTex(const std::string path, GLuint *texture);
 }
 
 #endif

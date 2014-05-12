@@ -1,8 +1,7 @@
 #ifndef CAMERA
 #define CAMERA
 
-#include "GL.hpp"
-#include "matrix.h"
+#include "GLHead.hpp"
 #include "Vector3D.hpp"
 
 namespace engine

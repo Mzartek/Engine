@@ -24,9 +24,12 @@ void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *v
 				 const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess)
 {
   Object *newone = new Object();
+  GLuint texture;
+  
+  loadTex(pathTexture, &texture);
 
   newone->setRenderer(_context);
-  newone->setTexture(engine::loadTex(pathTexture));
+  newone->setTexture(texture);
   newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
   newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
   newone->setSpecular(specular[0], specular[1], specular[2], specular[3]);

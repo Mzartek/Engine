@@ -1,32 +1,25 @@
-#include <Engine/Window.hpp>
-#include <Engine/ShaderProgram.hpp>
-#include <Engine/Renderer.hpp>
-#include <Engine/ShadowMap.hpp>
-#include <Engine/FreeCam.hpp>
-#include <Engine/DirLight.hpp>
-#include <Engine/OBJModel.hpp>
-#include <Engine/SkyBox.hpp>
-#include <SDL2/SDL_mixer.h>
-
-#define ESC 41
-#define MAJ 225
+#include "mainHead.hpp"
 
 bool keyState[256];
 Mix_Music *song;
 
-engine::Window window;
-engine::Renderer renderer;
 engine::ShaderProgram *mainProgram;
 engine::ShaderProgram *shadowProgram;
 engine::ShaderProgram *skyboxProgram;
+engine::ShaderProgram *screenProgram;
 
+engine::Window window;
+engine::Renderer renderer;
 engine::Camera cam;
 engine::DirLight sun;
 engine::Model face;
 engine::OBJModel helicopter;
 engine::OBJModel grotor;
 engine::OBJModel protor;
-engine::SkyBox sky;
+engine::SkyBox skybox;
+engine::Screen screen;
+
+GLfloat sr, sg, sb, sa;
 
 void helicopterMatrixIdentity(void)
 {
@@ -85,100 +78,11 @@ void display(void)
 
   cam.position();
   renderer.newLoop();
-  sky.display();
+  skybox.display();
   face.display();
   helicopterDisplay();
-}
 
-void idle(void)
-{
-  GLfloat mat1[16];
-  static GLbyte step = 0;
-  static GLfloat angle = 125, height = 3.0;
-  static GLuint timeStart = SDL_GetTicks();
-  
-  helicopterMatrixIdentity();
-  helicopterMatrixScale(2, 2, 2);
-
-  switch (step)
-    {
-    case 0:
-      helicopterMatrixTranslate(0, height, 0);
-      
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-      matrixRotate(mat1, angle, 0, 1, 0);
-      matrixTranslate(mat1, 20, 10-height, 0);
-  
-      angle += 0.5;
-      if((SDL_GetTicks() - timeStart)>11000)
-  	{
-  	  step++;
-  	  timeStart = SDL_GetTicks();
-  	}
-      break;
-    case 1:
-      helicopterMatrixTranslate(0, height, 0);
-      
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-      matrixRotate(mat1, angle, 0, 1, 0);
-      matrixTranslate(mat1, 40, 10-height, 0);
-      
-      angle -=0.5;
-      height += 0.25;
-      if((SDL_GetTicks() - timeStart)>6000)
-  	{
-  	  step++;
-  	  timeStart = SDL_GetTicks();
-  	}
-      break;
-    case 2:
-      helicopterMatrixTranslate(0, height, 0);
-      
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-      matrixRotate(mat1, angle, 0, 1, 0);
-      matrixTranslate(mat1, 40, 10, 0);
-      
-      angle +=0.5;
-      height += 0.25;
-      if((SDL_GetTicks() - timeStart)>11000)
-  	{
-  	  step++;
-  	  timeStart = SDL_GetTicks();
-  	}
-      break;
-
-    case 3:
-      helicopterMatrixTranslate(0, height, 0);
-      
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-      matrixRotate(mat1, angle, 0, 1, 0);
-      matrixTranslate(mat1, 20, 10, 0);
-      
-      angle -=0.5;
-      if((SDL_GetTicks() - timeStart)>11000)
-  	{
-  	  step++;
-  	  timeStart = SDL_GetTicks();
-  	}
-      break;
-    case 4:
-      window.stop();
-      break;
-    }
-  
-  helicopterMatrixRotate(-90, 1, 0, 0);
-  helicopterRotateRotor(angle * -20);
-  
-  sun.setPosition(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-  cam.setPositionCamera(mat1[12], mat1[13], mat1[14]);
-  cam.setPositionTarget(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-  
-  // cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  // helicopter.matRotate(0.1, 0, 0, 1);
+  screen.display(sr, sg, sb, sa);
 }
 
 void reshape(GLuint w, GLuint h)
@@ -237,12 +141,14 @@ void initGL(void)
   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat mat_shininess[] = {20.0};
 
-  mainProgram = new engine::ShaderProgram();
-  shadowProgram = new engine::ShaderProgram();
-  skyboxProgram = new engine::ShaderProgram();
+  mainProgram = new engine::ShaderProgram;
+  shadowProgram = new engine::ShaderProgram;
+  skyboxProgram = new engine::ShaderProgram;
+  screenProgram = new engine::ShaderProgram;
   mainProgram->loadProgram("shader/demoVert.c", "shader/demoFrag.c");
   shadowProgram->loadProgram("shader/shadowVert.c", "shader/shadowFrag.c");
   skyboxProgram->loadProgram("shader/skyboxVert.c", "shader/skyboxFrag.c");
+  screenProgram->loadProgram("shader/screenVert.c", "shader/screenFrag.c");
 
   renderer.setShaderProgram(mainProgram);
   renderer.setCamera(&cam);
@@ -255,11 +161,11 @@ void initGL(void)
   sun.setDiffuse(mat_diffuse[0], mat_diffuse[1], mat_diffuse[2], mat_diffuse[3]);
   sun.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
 
-  sky.load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
+  skybox.load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
 	   "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
 	   "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
   	   100, &cam, skyboxProgram);
-  sky.rotate(0, 0, 0, 0);
+  skybox.rotate(0, 0, 0, 0);
   
   face.setRenderer(&renderer);
   face.createObject(sizeof vertex, vertex,
@@ -279,6 +185,10 @@ void initGL(void)
   protor.loadObj("resources/UH-60_Blackhawk/protor.obj", 1);
   protor.sortObject();
 
+  screen.init(screenProgram);
+  sr = sg = sb = 0.0f;
+  sa = 1.0f;
+
   // helicopterMatrixIdentity();
   // helicopterMatrixScale(2, 2, 2);
   // helicopterMatrixTranslate(0, 5, 0);
@@ -294,7 +204,7 @@ int main(int argc, char **argv)
   else
     window.initWindow("Demo", atoi(argv[1]), atoi(argv[2]));
   window.setDisplayFunc(display);
-  window.setIdleFunc(idle);
+  window.setIdleFunc(sequence);
   window.setReshapeFunc(reshape);
   window.setKeyboardFunc(keyboard);
   window.setMouseMoveFunc(mouseMove);
@@ -315,6 +225,7 @@ int main(int argc, char **argv)
   delete mainProgram;
   delete shadowProgram;
   delete skyboxProgram;
+  delete screenProgram;
   
   return 0;
 }

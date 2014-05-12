@@ -1,7 +1,7 @@
 #ifndef SHADER_PROGRAM
 #define SHADER_PROGRAM
 
-#include "GL.hpp"
+#include "GLHead.hpp"
 
 namespace engine
 {

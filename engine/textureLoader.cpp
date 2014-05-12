@@ -1,4 +1,4 @@
-#include <Engine/GL.hpp>
+#include <Engine/GLHead.hpp>
 
 engine::pixelFormat engine::testFormat(unsigned f)
 {
@@ -11,9 +11,8 @@ engine::pixelFormat engine::testFormat(unsigned f)
   return UNKNOWN;
 }
 
-GLuint engine::loadTex(const std::string path)
+void engine::loadTex(const std::string path, GLuint *texture)
 {
-  GLuint texture;
   SDL_Surface *image = IMG_Load(&path[0]);
   if(image==NULL)
     {
@@ -21,8 +20,8 @@ GLuint engine::loadTex(const std::string path)
       exit(1);
     }
 
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
+  glGenTextures(1, texture);
+  glBindTexture(GL_TEXTURE_2D, *texture);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -45,6 +44,4 @@ GLuint engine::loadTex(const std::string path)
   glGenerateMipmap(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, 0);
   SDL_FreeSurface(image);
-  
-  return texture;
 }

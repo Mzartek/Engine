@@ -14,7 +14,7 @@ engine::Object::Object(void)
       _matSpecular[i]=1.0;
     }
   _matShininess[0]=1.0;
-  _context = NULL;
+  _renderer = NULL;
 }
 
 engine::Object::~Object(void)
@@ -29,9 +29,9 @@ engine::Object::~Object(void)
     glDeleteTextures(1, &_idTexture);
 }
 
-void engine::Object::setRenderer(Renderer *context)
+void engine::Object::setRenderer(Renderer *renderer)
 {
-  _context = context;
+  _renderer = renderer;
 }
 
 void engine::Object::setTexture(const GLuint &id)
@@ -82,7 +82,7 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
 {
   _numElement = sizeIndexArray/sizeof(GLuint);
   
-  // Vertex Array et Vertex Buffer Object
+  // Vertex Array, Vertex Buffer Object and Indec Buffer Object
   if(glIsVertexArray(_idVAO))
     glDeleteVertexArrays(1, &_idVAO);
   glGenVertexArrays(1, &_idVAO);
@@ -115,40 +115,40 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
 
 void engine::Object::display(void) const
 {
-  if(_context == NULL)
+  if(_renderer == NULL)
     {
       std::cerr << "You need to set the Renderer before" << std::endl;
       return;
     }
   
-  glUseProgram(_context->getProgramId());
+  glUseProgram(_renderer->getProgramId());
   
   glBindVertexArray(_idVAO);
 
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, _idTexture);
-  glUniform1i(_context->textureLocation, 0);
+  glUniform1i(_renderer->textureLocation, 0);
 
-  if(_context->getDirLight()!=NULL)
-    if(_context->getDirLight()->getShadowMap() != NULL)
+  if(_renderer->getDirLight()!=NULL)
+    if(_renderer->getDirLight()->getShadowMap() != NULL)
       {
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _context->getDirLight()->getShadowMap()->getIdDepthTexture());
-	glUniform1i(_context->dirShadowMapLocation, 1);
+	glBindTexture(GL_TEXTURE_2D, _renderer->getDirLight()->getShadowMap()->getIdDepthTexture());
+	glUniform1i(_renderer->dirShadowMapLocation, 1);
       }
 
-  if(_context->getSpotLight()!=NULL)
-    if(_context->getSpotLight()->getShadowMap() != NULL)
+  if(_renderer->getSpotLight()!=NULL)
+    if(_renderer->getSpotLight()->getShadowMap() != NULL)
       {
   	glActiveTexture(GL_TEXTURE2);
-  	glBindTexture(GL_TEXTURE_2D, _context->getSpotLight()->getShadowMap()->getIdDepthTexture());
-  	glUniform1i(_context->spotShadowMapLocation, 2);
+  	glBindTexture(GL_TEXTURE_2D, _renderer->getSpotLight()->getShadowMap()->getIdDepthTexture());
+  	glUniform1i(_renderer->spotShadowMapLocation, 2);
       }
   
-  glUniform4fv(_context->matAmbientLocation,  1, _matAmbient);
-  glUniform4fv(_context->matDiffuseLocation,  1, _matDiffuse);
-  glUniform4fv(_context->matSpecularLocation,  1, _matSpecular);
-  glUniform1fv(_context->matShininessLocation, 1, _matShininess);
+  glUniform4fv(_renderer->matAmbientLocation,  1, _matAmbient);
+  glUniform4fv(_renderer->matDiffuseLocation,  1, _matDiffuse);
+  glUniform4fv(_renderer->matSpecularLocation,  1, _matSpecular);
+  glUniform1fv(_renderer->matShininessLocation, 1, _matShininess);
 
   glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   

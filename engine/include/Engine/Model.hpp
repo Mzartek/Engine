@@ -1,7 +1,6 @@
 #ifndef MODEL
 #define MODEL
 
-#include "matrix.h"
 #include "Object.hpp"
 #include "Light.hpp"
 #include "Vector3D.hpp"

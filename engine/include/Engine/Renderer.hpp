@@ -1,8 +1,7 @@
 #ifndef RENDERER
 #define RENDERER
 
-#include "GL.hpp"
-#include "matrix.h"
+#include "GLHead.hpp"
 #include "ShaderProgram.hpp"
 #include "Camera.hpp"
 #include "DirLight.hpp"
