@@ -2,15 +2,17 @@
 
 engine::Model::Model(void)
 {
-  matIdentity();
+  _tObject = new std::vector<Object *>;
   _context = NULL;
+  matIdentity();
 }
 
 engine::Model::~Model(void)
 {
   GLuint i;
-  for(i=0 ; i<_tObject.size(); i++)
-    delete _tObject[i];
+  for(i=0 ; i<_tObject->size(); i++)
+    delete (*_tObject)[i];
+  delete _tObject;
 }
 
 void engine::Model::setRenderer(Renderer *context)
@@ -37,12 +39,12 @@ void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *v
   newone->load(sizeVertexArray, vertexArray,
 	       sizeIndexArray, indexArray);
   
-  _tObject.push_back(newone);
+  _tObject->push_back(newone);
 }
 
 void engine::Model::sortObject(void)
 {
-  qsort(&_tObject[0], _tObject.size(), sizeof _tObject[0], comparObject);
+  qsort(&(*_tObject)[0], _tObject->size(), sizeof (*_tObject)[0], comparObject);
 }
 
 void engine::Model::matIdentity(void)
@@ -119,8 +121,8 @@ void engine::Model::display(void) const
   
   glUseProgram(0);
   
-  for(i=0 ; i<_tObject.size(); i++)
-    _tObject[i]->display();
+  for(i=0 ; i<_tObject->size(); i++)
+    (*_tObject)[i]->display();
 }
 
 void engine::Model::displayShadow(Light *l) const
@@ -135,7 +137,7 @@ void engine::Model::displayShadow(Light *l) const
 	matrixMultiply(tmp, l->getMatrix(), _modelMatrix);
 	glUniformMatrix4fv(l->getShadowMap()->MVPLocation, 1, GL_FALSE, tmp);
 	glUseProgram(0);
-	for(i=0 ; i<_tObject.size(); i++)
-	  _tObject[i]->displayShadow(l);
+	for(i=0 ; i<_tObject->size(); i++)
+	  (*_tObject)[i]->displayShadow(l);
       }
 }

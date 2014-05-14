@@ -6,7 +6,7 @@
 
 namespace engine
 {
-  class SkyBox
+  class DLLAPI SkyBox
   {
   private:
     GLuint _idTexture;

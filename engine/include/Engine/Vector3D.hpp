@@ -35,5 +35,5 @@ namespace engine
   };
 }
 
-#include "Vector3D.cpp"
+#include "Vector3D.tpp"
 #endif

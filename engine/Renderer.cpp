@@ -92,7 +92,7 @@ void engine::Renderer::newLoop(void)
   glClearColor(0.5, 0.5, 0.5, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glViewport(0, 0, _cam->getWidth(), _cam->getHeight());
-  GLfloat camera[] = {_cam->getPositionCamera()._x, _cam->getPositionCamera()._y, _cam->getPositionCamera()._z};
+  GLfloat camera[] = {_cam->getPositionCamera()->_x, _cam->getPositionCamera()->_y, _cam->getPositionCamera()->_z};
   
   glUseProgram(_program->getId());
   

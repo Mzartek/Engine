@@ -35,13 +35,13 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
   GLboolean first = true;
   GLint i;
 
-  tmp.ambiant[0]=0.2; tmp.ambiant[1]=0.2; tmp.ambiant[2]=0.2; tmp.ambiant[3]=1.0;
-  tmp.diffuse[0]=0.8; tmp.diffuse[1]=0.8; tmp.diffuse[2]=0.8; tmp.diffuse[3]=1.0;
-  tmp.specular[0]=1.0; tmp.specular[1]=1.0; tmp.specular[2]=1.0; tmp.specular[3]=1.0;
-  tmp.shininess[0]=0.0;
+  tmp.ambiant[0]=0.2f; tmp.ambiant[1]=0.2f; tmp.ambiant[2]=0.2f; tmp.ambiant[3]=1.0f;
+  tmp.diffuse[0]=0.8f; tmp.diffuse[1]=0.8f; tmp.diffuse[2]=0.8f; tmp.diffuse[3]=1.0f;
+  tmp.specular[0]=1.0f; tmp.specular[1]=1.0f; tmp.specular[2]=1.0f; tmp.specular[3]=1.0f;
+  tmp.shininess[0]=0.0f;
   tmp.texture = path + "none.png";
   mtlfile.open(&(path + name)[0], std::ifstream::in | std::ifstream::binary);
-  if(mtlfile == NULL)
+  if(!mtlfile.is_open())
     {
       std::cerr << "Fail to open: " << name << std::endl;
       exit(1);
@@ -107,10 +107,10 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
 	    {
 	      mat.push_back(tmp);
 	      tmp.name = str;
-	      tmp.ambiant[0]=0.2; tmp.ambiant[1]=0.2; tmp.ambiant[2]=0.2; tmp.ambiant[3]=1.0;
-	      tmp.diffuse[0]=0.8; tmp.diffuse[1]=0.8; tmp.diffuse[2]=0.8; tmp.diffuse[3]=1.0;
-	      tmp.specular[0]=1.0; tmp.specular[1]=1.0; tmp.specular[2]=1.0; tmp.specular[3]=1.0;
-	      tmp.shininess[0]=0.0;
+	      tmp.ambiant[0]=0.2f; tmp.ambiant[1]=0.2f; tmp.ambiant[2]=0.2f; tmp.ambiant[3]=1.0f;
+	      tmp.diffuse[0]=0.8f; tmp.diffuse[1]=0.8f; tmp.diffuse[2]=0.8f; tmp.diffuse[3]=1.0f;
+	      tmp.specular[0]=1.0f; tmp.specular[1]=1.0f; tmp.specular[2]=1.0f; tmp.specular[3]=1.0f;
+	      tmp.shininess[0]=0.0f;
 	      tmp.texture = path + "none.png";
 	    }
 	}
@@ -136,7 +136,7 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
   std::vector<GLuint> index;
   std::vector<material> mat;
   
-  if(objfile==NULL)
+  if(!objfile.is_open())
     {
       std::cerr << "Error while opening file: " << name << std::endl;
       return;
@@ -201,9 +201,9 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 		}
 	      else
 		{
-		  num[0] = v.size() + (num[0] * 3);
-		  num[1] = vt.size() + (num[1] * 2);
-		  num[2] = vn.size() + (num[2] * 3);
+		  num[0] = (GLint)v.size() + (num[0] * 3);
+		  num[1] = (GLint)vt.size() + (num[1] * 2);
+		  num[2] = (GLint)vn.size() + (num[2] * 3);
 		}
 
 	      array.push_back(v[num[0]]); array.push_back(v[num[0]+1]); array.push_back(v[num[0]+2]);
@@ -235,8 +235,8 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	    }
 	  else
 	    {
-	      createObject(array.size()*sizeof(GLfloat), &array[0],
-	      		   index.size()*sizeof(GLuint), &index[0], 
+	      createObject((GLuint)array.size()*sizeof(GLfloat), &array[0],
+			   (GLuint)index.size()*sizeof(GLuint), &index[0],
 	      		   mat[matindex].texture,
 	      		   mat[matindex].ambiant, mat[matindex].diffuse, mat[matindex].specular, mat[matindex].shininess);
 	      numIndex=0;
@@ -246,8 +246,8 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	    }
 	} 
     }
-  createObject(array.size()*sizeof(GLfloat), &array[0],
-	       index.size()*sizeof(GLuint), &index[0], 
+  createObject((GLuint)array.size()*sizeof(GLfloat), &array[0],
+	       (GLuint)index.size()*sizeof(GLuint), &index[0],
 	       mat[matindex].texture,
 	       mat[matindex].ambiant, mat[matindex].diffuse, mat[matindex].specular, mat[matindex].shininess);
 }

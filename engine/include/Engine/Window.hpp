@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class Window
+  class DLLAPI Window
   {
   private:
     GLboolean _exit;

@@ -1,6 +1,6 @@
 #include "mainHead.hpp"
 
-bool keyState[256];
+GLboolean keyState[256];
 Mix_Music *song;
 
 engine::ShaderProgram *mainProgram;
@@ -87,7 +87,7 @@ void display(void)
 
 void reshape(GLuint w, GLuint h)
 {
-  cam.setPerspective(90.0, w, h, 0.1, 2000.0);
+  cam.setPerspective(90.0f, w, h, 0.1f, 2000.0f);
 }
 
 void keyboard(GLubyte key, GLboolean state)
@@ -162,16 +162,16 @@ void initGL(void)
   sun.setSpecular(mat_specular[0], mat_specular[1], mat_specular[2], mat_specular[3]);
 
   skybox.load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
-	   "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
-	   "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
-  	   100, &cam, skyboxProgram);
+	      "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
+	      "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
+	      100, &cam, skyboxProgram);
   skybox.rotate(0, 0, 0, 0);
   
   face.setRenderer(&renderer);
   face.createObject(sizeof vertex, vertex,
   		    sizeof index, index,
-  		    "./resources/sand.jpg",
-  		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
+  		    "resources/sand.jpg",
+		    mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
   helicopter.setRenderer(&renderer);
   helicopter.loadObj("resources/UH-60_Blackhawk/corps.obj", 1);

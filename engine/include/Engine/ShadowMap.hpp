@@ -6,7 +6,7 @@
 
 namespace engine
 {
-  class ShadowMap
+  class DLLAPI ShadowMap
   {
   private:
     GLuint _width;

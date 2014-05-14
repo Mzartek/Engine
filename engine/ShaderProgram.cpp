@@ -6,14 +6,14 @@ GLbyte *engine::ShaderProgram::readText(const std::string filename)
   GLbyte *content;
   GLuint size;
 
-  if(file == NULL)
+  if(!file.is_open())
     {
       std::cerr << "Error while opening file: " << filename << std::endl;
       exit(1);
     }
   //On obtient la taille du fichier
   file.seekg(0, std::ifstream::end);
-  size = file.tellg();
+  size = (GLuint)file.tellg();
   file.seekg(0, std::ifstream::beg);
 
   //On remplit content

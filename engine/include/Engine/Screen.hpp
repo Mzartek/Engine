@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class Screen
+  class DLLAPI Screen
   {
   private:
     GLuint _idVAO;

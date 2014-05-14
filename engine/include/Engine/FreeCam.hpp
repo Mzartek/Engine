@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class FreeCam : public MovableCamera
+  class DLLAPI FreeCam : public MovableCamera
   {
   public:
     FreeCam(void);

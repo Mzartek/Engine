@@ -19,9 +19,9 @@ void engine::Screen::init(ShaderProgram *program)
 {
   GLfloat vertex[] = {
     -1, -1,
-     1, -1,
+    1, -1,
     -1,  1,
-     1,  1
+    1,  1
   };
   
   _program = program;

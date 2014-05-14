@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class PlayerCam : public MovableCamera
+  class DLLAPI PlayerCam : public MovableCamera
   {
   public:
     PlayerCam(void);

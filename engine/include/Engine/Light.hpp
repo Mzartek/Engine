@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class Light
+  class DLLAPI Light
   {
   protected:
     ShadowMap *_shadow;

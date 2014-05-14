@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class OBJModel : public Model
+  class DLLAPI OBJModel : public Model
   {
   private:
     typedef struct material

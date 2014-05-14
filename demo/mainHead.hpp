@@ -15,7 +15,7 @@
 #include <Engine/Screen.hpp>
 #include <SDL2/SDL_mixer.h>
 
-extern bool keyState[256];
+extern GLboolean keyState[256];
 extern Mix_Music *song;
 
 extern engine::Window window;

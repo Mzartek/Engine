@@ -1,10 +1,10 @@
-#include <Engine/matrix.h>
+#include <Engine/matrix.hpp>
 
 void NormalizeVector(float *pvector)
 {
   float normalizingConstant;
   
-  normalizingConstant=1.0/sqrtf(pvector[0]*pvector[0]+pvector[1]*pvector[1]+pvector[2]*pvector[2]);
+  normalizingConstant=1.0f/sqrtf(pvector[0]*pvector[0]+pvector[1]*pvector[1]+pvector[2]*pvector[2]);
   pvector[0]*=normalizingConstant;
   pvector[1]*=normalizingConstant;
   pvector[2]*=normalizingConstant;
@@ -110,7 +110,7 @@ void matrixPerspective(float *matrix, const float fovyInDegrees, const float asp
 {
   float tmp, f;
   
-  tmp = M_PI * (fovyInDegrees/2) / 180;
+  tmp = (float)M_PI * (fovyInDegrees/2) / 180;
   f = cosf(tmp)/sinf(tmp);
   
   matrix[ 0]=f/aspectRatio;
@@ -136,40 +136,40 @@ void matrixPerspective(float *matrix, const float fovyInDegrees, const float asp
 
 void matrixLookAt(float *matrix, const float *eyePosition3D, const float *center3D, const float *upVector3D)
 {
-   float forward[3], side[3], up[3];
-   float matrix2[16], resultMatrix[16];
+  float forward[3], side[3], up[3];
+  float matrix2[16], resultMatrix[16];
    
-   forward[0] = center3D[0] - eyePosition3D[0];
-   forward[1] = center3D[1] - eyePosition3D[1];
-   forward[2] = center3D[2] - eyePosition3D[2];
-   NormalizeVector(forward);
+  forward[0] = center3D[0] - eyePosition3D[0];
+  forward[1] = center3D[1] - eyePosition3D[1];
+  forward[2] = center3D[2] - eyePosition3D[2];
+  NormalizeVector(forward);
    
-   ComputeNormalOfPlane(side, forward, upVector3D);
-   NormalizeVector(side);
-   ComputeNormalOfPlane(up, side, forward);
+  ComputeNormalOfPlane(side, forward, upVector3D);
+  NormalizeVector(side);
+  ComputeNormalOfPlane(up, side, forward);
    
-   matrix2[ 0] = side[0];
-   matrix2[ 4] = side[1];
-   matrix2[ 8] = side[2];
-   matrix2[12] = 0.0;
+  matrix2[ 0] = side[0];
+  matrix2[ 4] = side[1];
+  matrix2[ 8] = side[2];
+  matrix2[12] = 0.0;
    
-   matrix2[ 1] = up[0];
-   matrix2[ 5] = up[1];
-   matrix2[ 9] = up[2];
-   matrix2[13] = 0.0;
+  matrix2[ 1] = up[0];
+  matrix2[ 5] = up[1];
+  matrix2[ 9] = up[2];
+  matrix2[13] = 0.0;
    
-   matrix2[ 2] = -forward[0];
-   matrix2[ 6] = -forward[1];
-   matrix2[10] = -forward[2];
-   matrix2[14] = 0.0;
+  matrix2[ 2] = -forward[0];
+  matrix2[ 6] = -forward[1];
+  matrix2[10] = -forward[2];
+  matrix2[14] = 0.0;
    
-   matrix2[ 3] = matrix2[7] = matrix2[11] = 0.0;
-   matrix2[15] = 1.0;
+  matrix2[ 3] = matrix2[7] = matrix2[11] = 0.0;
+  matrix2[15] = 1.0;
    
-   matrixMultiply(resultMatrix, matrix, matrix2);
-   matrixTranslate(resultMatrix, -eyePosition3D[0], -eyePosition3D[1], -eyePosition3D[2]);
+  matrixMultiply(resultMatrix, matrix, matrix2);
+  matrixTranslate(resultMatrix, -eyePosition3D[0], -eyePosition3D[1], -eyePosition3D[2]);
    
-   memcpy(matrix, resultMatrix, 16*sizeof(float));
+  memcpy(matrix, resultMatrix, 16*sizeof(float));
 }
 
 void matrixTranslate(float *matrix, const float x, const float y, const float z)
@@ -188,7 +188,7 @@ void matrixRotate(float *matrix, const float angleInDegrees, const float x, cons
   float angleInRadians = angleInDegrees*((float)M_PI/180);
   
   CosAngle=cosf(angleInRadians);
-  OneMinusCosAngle=1.0-CosAngle;
+  OneMinusCosAngle=1.0f-CosAngle;
   SinAngle=sinf(angleInRadians);
   A_OneMinusCosAngle=x*OneMinusCosAngle;
   C_OneMinusCosAngle=z*OneMinusCosAngle;

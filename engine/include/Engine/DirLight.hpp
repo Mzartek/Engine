@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class DirLight : public Light
+  class DLLAPI DirLight : public Light
   {
   private:
     GLfloat _dim[3];

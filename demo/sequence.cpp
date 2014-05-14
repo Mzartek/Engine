@@ -15,7 +15,7 @@ void sequence(void)
     case 0: //Position static pour 17 secondes
       sr = sg = sb = 0.0;
       if(sa > 0.0f)
-	sa -= 0.001;
+	sa -= 0.001f;
       
       helicopterMatrixTranslate(0, height, 0);
       
@@ -35,7 +35,7 @@ void sequence(void)
     case 1: // PAF 1
       sr = sg = sb = 1.0;
       if(sa > 0.0f)
-	sa -= 0.05;
+	sa -= 0.05f;
 
       helicopterMatrixTranslate(0, height, 0);
       
@@ -54,7 +54,7 @@ void sequence(void)
       
     case 2: // PAF 2
       if(sa > 0.0f)
-	sa -= 0.05;
+	sa -= 0.05f;
 
       helicopterMatrixTranslate(0, height, 0);
       
@@ -73,7 +73,7 @@ void sequence(void)
       
     case 3: // PAF 3
       if(sa > 0.0f)
-	sa -= 0.05;
+	sa -= 0.05f;
 
       helicopterMatrixTranslate(0, height, 0);
       
@@ -90,61 +90,61 @@ void sequence(void)
       break;
     }
 
-      /*
+  /*
     case 2:
-      helicopterMatrixTranslate(0, height, 0);
+    helicopterMatrixTranslate(0, height, 0);
       
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-      matrixRotate(mat1, angle, 0, 1, 0);
-      matrixTranslate(mat1, 40, 10-height, 0);
+    matrixLoadIdentity(mat1);
+    matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+    matrixRotate(mat1, angle, 0, 1, 0);
+    matrixTranslate(mat1, 40, 10-height, 0);
       
-      angle -=0.5;
-      height += 0.25;
-      if((SDL_GetTicks() - timeStart)>6000)
-  	{
-  	  step++;
-  	  timeStart = SDL_GetTicks();
-  	}
-      break;
+    angle -=0.5;
+    height += 0.25;
+    if((SDL_GetTicks() - timeStart)>6000)
+    {
+    step++;
+    timeStart = SDL_GetTicks();
+    }
+    break;
 
     case 3:
-      helicopterMatrixTranslate(0, height, 0);
+    helicopterMatrixTranslate(0, height, 0);
       
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-      matrixRotate(mat1, angle, 0, 1, 0);
-      matrixTranslate(mat1, 40, 10, 0);
+    matrixLoadIdentity(mat1);
+    matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+    matrixRotate(mat1, angle, 0, 1, 0);
+    matrixTranslate(mat1, 40, 10, 0);
       
-      angle +=0.5;
-      height += 0.25;
-      if((SDL_GetTicks() - timeStart)>11000)
-  	{
-  	  step++;
-  	  timeStart = SDL_GetTicks();
-  	}
-      break;
+    angle +=0.5;
+    height += 0.25;
+    if((SDL_GetTicks() - timeStart)>11000)
+    {
+    step++;
+    timeStart = SDL_GetTicks();
+    }
+    break;
 
     case 4:
-      helicopterMatrixTranslate(0, height, 0);
+    helicopterMatrixTranslate(0, height, 0);
       
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-      matrixRotate(mat1, angle, 0, 1, 0);
-      matrixTranslate(mat1, 20, 10, 0);
+    matrixLoadIdentity(mat1);
+    matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+    matrixRotate(mat1, angle, 0, 1, 0);
+    matrixTranslate(mat1, 20, 10, 0);
       
-      angle -=0.5;
-      if((SDL_GetTicks() - timeStart)>11000)
-  	{
-  	  step++;
-  	  timeStart = SDL_GetTicks();
-  	}
-      break;
+    angle -=0.5;
+    if((SDL_GetTicks() - timeStart)>11000)
+    {
+    step++;
+    timeStart = SDL_GetTicks();
+    }
+    break;
       
     case 5:
-      window.stop();
-      break;
-      }*/
+    window.stop();
+    break;
+    }*/
   
   helicopterMatrixRotate(-90, 1, 0, 0);
   helicopterRotateRotor(rotor);

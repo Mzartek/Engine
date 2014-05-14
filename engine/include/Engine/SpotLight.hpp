@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class SpotLight : public Light
+  class DLLAPI SpotLight : public Light
   {
   protected:
     GLfloat _lightSpotCutOff[1];

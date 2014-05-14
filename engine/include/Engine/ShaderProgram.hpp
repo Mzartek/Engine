@@ -5,7 +5,7 @@
 
 namespace engine
 {
-  class ShaderProgram
+  class DLLAPI ShaderProgram
   {
   private:
     GLuint _idProgram;

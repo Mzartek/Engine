@@ -9,7 +9,7 @@
 
 namespace engine
 {
-  class Renderer
+  class DLLAPI Renderer
   {
   private:
     ShaderProgram *_program;

@@ -7,7 +7,7 @@
 
 namespace engine
 {
-  class Object
+  class DLLAPI Object
   {
     friend int comparObject(const void *p1, const void *p2);
   private:

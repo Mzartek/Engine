@@ -7,10 +7,10 @@
 
 namespace engine
 {
-  class Model
+  class DLLAPI Model
   {
   private:
-    std::vector<Object *> _tObject;
+    std::vector<Object *> *_tObject;
     Renderer *_context;
     GLfloat _modelMatrix[16];
   public:

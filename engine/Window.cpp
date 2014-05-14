@@ -41,7 +41,7 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
   
   _idGLContext = SDL_GL_CreateContext(_idWindow);
 
-#ifdef WIN
+#ifdef WIN32
   if(glewInit())
     {
       std::cerr << "Error init GLEW" << std::endl;
@@ -108,11 +108,11 @@ void engine::Window::mainLoop(void)
 	    break;
 	  case SDL_KEYDOWN:
 	    if(_keyboard)
-	      _keyboard(event.key.keysym.scancode, event.key.state);
+	      _keyboard((GLubyte)event.key.keysym.scancode, (GLubyte)event.key.state);
 	    break;
 	  case SDL_KEYUP:
 	    if(_keyboard)
-	      _keyboard(event.key.keysym.scancode, event.key.state);
+	      _keyboard((GLubyte)event.key.keysym.scancode, (GLubyte)event.key.state);
 	    break;
 	  case SDL_MOUSEMOTION:
 	    if(_mouseMove)
