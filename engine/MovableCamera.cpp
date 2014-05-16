@@ -21,8 +21,8 @@ void engine::MovableCamera::setSpeed(const GLfloat &v)
 
 void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 {
-  _atheta -= xrel;
-  _aphi -= yrel;
+  _atheta -= (GLfloat)xrel;
+  _aphi -= (GLfloat)yrel;
 
   if(_atheta > 360)
     _atheta -= 360;
@@ -40,7 +40,7 @@ void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 
   _vleft->_x = 1*_vforward->_z;
   _vleft->_z = -(1*_vforward->_x);
-  *_vleft /= sqrt(_vleft->_x*_vleft->_x + _vleft->_y*_vleft->_y + _vleft->_z*_vleft->_z);
+  *_vleft /= (GLfloat)sqrt(_vleft->_x*_vleft->_x + _vleft->_y*_vleft->_y + _vleft->_z*_vleft->_z);
   
   *_ptarget = *_pcamera + *_vforward;
 }

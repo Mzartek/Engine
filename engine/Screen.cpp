@@ -40,7 +40,7 @@ void engine::Screen::init(ShaderProgram *program)
   glBufferData(GL_ARRAY_BUFFER, sizeof vertex, vertex, GL_STATIC_DRAW);
   
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), BUFFER_OFFSET(0));
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, GLsizei(2*sizeof(GLfloat)), BUFFER_OFFSET(0));
 
   glBindVertexArray(0);
 }

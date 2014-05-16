@@ -189,9 +189,9 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	    {
 	      strtmp = &str[0];
 
-	      num[0] = strtol(&strtmp[0], &strtmp, 0);
-	      num[1] = strtol(&strtmp[1], &strtmp, 0);
-	      num[2] = strtol(&strtmp[1], &strtmp, 0);
+	      num[0] = (GLint)strtol(&strtmp[0], &strtmp, 0);
+	      num[1] = (GLint)strtol(&strtmp[1], &strtmp, 0);
+	      num[2] = (GLint)strtol(&strtmp[1], &strtmp, 0);
 
 	      if(num[0]>0)
 		{
@@ -235,8 +235,8 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	    }
 	  else
 	    {
-	      createObject((GLuint)array.size()*sizeof(GLfloat), &array[0],
-			   (GLuint)index.size()*sizeof(GLuint), &index[0],
+	      createObject((GLsizei)array.size()*(GLsizei)sizeof(GLfloat), &array[0],
+			   (GLsizei)index.size()*(GLsizei)sizeof(GLuint), &index[0],
 	      		   mat[matindex].texture,
 	      		   mat[matindex].ambiant, mat[matindex].diffuse, mat[matindex].specular, mat[matindex].shininess);
 	      numIndex=0;
@@ -246,8 +246,8 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	    }
 	} 
     }
-  createObject((GLuint)array.size()*sizeof(GLfloat), &array[0],
-	       (GLuint)index.size()*sizeof(GLuint), &index[0],
+  createObject((GLsizei)array.size()*(GLsizei)sizeof(GLfloat), &array[0],
+	       (GLsizei)index.size()*(GLsizei)sizeof(GLuint), &index[0],
 	       mat[matindex].texture,
 	       mat[matindex].ambiant, mat[matindex].diffuse, mat[matindex].specular, mat[matindex].shininess);
 }

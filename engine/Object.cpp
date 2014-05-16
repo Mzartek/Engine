@@ -77,10 +77,10 @@ GLfloat engine::Object::getTransparency(void)
 
 #define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
 
-void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
-			  const GLuint &sizeIndexArray, const GLuint *indexArray)
+void engine::Object::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
 {
-  _numElement = sizeIndexArray/sizeof(GLuint);
+  _numElement = sizeIndexArray/(GLsizei)sizeof(GLuint);
   
   // Vertex Array, Vertex Buffer Object and Indec Buffer Object
   if(glIsVertexArray(_idVAO))
@@ -104,9 +104,9 @@ void engine::Object::load(const GLuint &sizeVertexArray, const GLfloat *vertexAr
   glEnableVertexAttribArray(1);
   glEnableVertexAttribArray(2);
   
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(3*sizeof(GLfloat)));
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(5*sizeof(GLfloat)));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(8*sizeof(GLfloat)), BUFFER_OFFSET(0));
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(3 * sizeof(GLfloat)));
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(5 * sizeof(GLfloat)));
 
   glBindVertexArray(0);
 }

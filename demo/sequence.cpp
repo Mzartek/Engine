@@ -13,7 +13,7 @@ void sequence(void)
   switch (step)
     {
     case 0: //Position static pour 17 secondes
-      sr = sg = sb = 0.0;
+      sr = sg = sb = 0.0f;
       if(sa > 0.0f)
 	sa -= 0.001f;
       
@@ -28,12 +28,12 @@ void sequence(void)
   	{
   	  step++;
   	  timeStart = SDL_GetTicks();
-	  sa = 1.0;
+	  sa = 1.0f;
   	}
       break;
       
     case 1: // PAF 1
-      sr = sg = sb = 1.0;
+      sr = sg = sb = 1.0f;
       if(sa > 0.0f)
 	sa -= 0.05f;
 
@@ -43,12 +43,12 @@ void sequence(void)
       matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
       matrixTranslate(mat1, 0, 10, -50);
   
-      rotor += 1.0;
+      rotor += 1.0f;
       if((SDL_GetTicks() - timeStart)>580)
   	{
   	  step++;
   	  timeStart = SDL_GetTicks();
-	  sa = 1.0;
+	  sa = 1.0f;
   	}
       break;
       
@@ -62,12 +62,12 @@ void sequence(void)
       matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
       matrixTranslate(mat1, 10, 10, -20);
   
-      rotor += 10.0;
+      rotor += 10.0f;
       if((SDL_GetTicks() - timeStart)>580)
   	{
   	  step++;
   	  timeStart = SDL_GetTicks();
-	  sa = 1.0;
+	  sa = 1.0f;
   	}
       break;
       
@@ -81,7 +81,7 @@ void sequence(void)
       matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
       matrixTranslate(mat1, -10, 1, -8);
   
-      rotor += 20.0;
+      rotor += 20.0f;
       if((SDL_GetTicks() - timeStart)>200000)
   	{
   	  step++;

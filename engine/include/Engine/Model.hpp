@@ -17,8 +17,8 @@ namespace engine
     Model();
     ~Model();
     void setRenderer(Renderer *context);
-    void createObject(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
-		      const GLuint &sizeIndexArray, const GLuint *indexArray,
+    void createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+		      const GLsizei &sizeIndexArray, const GLuint *indexArray,
 		      const std::string pathTexture,
 		      const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess);
     void sortObject(void);

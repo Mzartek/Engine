@@ -20,7 +20,7 @@ namespace engine
     GLfloat _matDiffuse[4];
     GLfloat _matSpecular[4];
     GLfloat _matShininess[1];
-    GLuint _numElement;
+    GLsizei _numElement;
   public:
     Object(void);
     ~Object(void);
@@ -31,8 +31,8 @@ namespace engine
     void setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
     void setShininess(const GLfloat &x);
     GLfloat getTransparency(void);
-    void load(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
-	      const GLuint &sizeIndexArray, const GLuint *indexArray);
+    void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+	      const GLsizei &sizeIndexArray, const GLuint *indexArray);
     void display(void) const;
     void displayShadow(Light *l) const;
   };

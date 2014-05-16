@@ -20,8 +20,8 @@ void engine::Model::setRenderer(Renderer *context)
   _context = context;
 }
 
-void engine::Model::createObject(const GLuint &sizeVertexArray, const GLfloat *vertexArray,
-				 const GLuint &sizeIndexArray, const GLuint *indexArray,
+void engine::Model::createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+				 const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				 const std::string pathTexture,
 				 const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess)
 {

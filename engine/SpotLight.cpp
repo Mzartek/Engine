@@ -34,7 +34,7 @@ void engine::SpotLight::position(void)
       return;
     }
     
-  matrixPerspective(projection, _lightSpotCutOff[0] * 2, (float)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1200.0f);
+  matrixPerspective(projection, _lightSpotCutOff[0] * 2, (float)_shadow->getWidth() / (float)_shadow->getHeight(), 0.1f, 1200.0f);
   matrixLoadIdentity(view);
   matrixLookAt(view, position, target, head);
   matrixMultiply(_VP, projection, view);
