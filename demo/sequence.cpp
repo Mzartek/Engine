@@ -3,24 +3,28 @@
 void sequence(void)
 {
   GLfloat mat1[16];
+  engine::Vector3D<GLfloat> target;
   static GLubyte step = 0;
-  static GLfloat rotor = 0, height = 3.0;
+  static GLfloat rotor = 0, height = 3.0, angle;
   static GLuint timeStart = SDL_GetTicks();
   
   helicopterMatrixIdentity();
   helicopterMatrixScale(2, 2, 2);
+  helicopterMatrixTranslate(0, height, 0);
+  helicopterRotateRotor(rotor);
+  
+  matrixLoadIdentity(mat1);
   
   switch (step)
     {
     case 0: //Position static pour 17 secondes
       sr = sg = sb = 0.0f;
       if(sa > 0.0f)
-	sa -= 0.001f;
+  	sa -= 0.001f;
       
-      helicopterMatrixTranslate(0, height, 0);
+      target = helicopter.getPosition();
       
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+      matrixTranslate(mat1, target._x, target._y, target._z);
       matrixRotate(mat1, -20, 0, 1, 0);
       matrixTranslate(mat1, 10, 0, 0);
       
@@ -28,19 +32,18 @@ void sequence(void)
   	{
   	  step++;
   	  timeStart = SDL_GetTicks();
-	  sa = 1.0f;
+  	  sa = 1.0f;
   	}
       break;
       
     case 1: // PAF 1
       sr = sg = sb = 1.0f;
       if(sa > 0.0f)
-	sa -= 0.05f;
-
-      helicopterMatrixTranslate(0, height, 0);
+  	sa -= 0.05f;
       
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+      target = helicopter.getPosition();
+      
+      matrixTranslate(mat1, target._x, target._y, target._z);
       matrixTranslate(mat1, 0, 10, -50);
   
       rotor += 1.0f;
@@ -48,18 +51,17 @@ void sequence(void)
   	{
   	  step++;
   	  timeStart = SDL_GetTicks();
-	  sa = 1.0f;
+  	  sa = 1.0f;
   	}
       break;
       
     case 2: // PAF 2
       if(sa > 0.0f)
-	sa -= 0.05f;
-
-      helicopterMatrixTranslate(0, height, 0);
+  	sa -= 0.05f;
       
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+      target = helicopter.getPosition();
+      
+      matrixTranslate(mat1, target._x, target._y, target._z);
       matrixTranslate(mat1, 10, 10, -20);
   
       rotor += 10.0f;
@@ -67,26 +69,39 @@ void sequence(void)
   	{
   	  step++;
   	  timeStart = SDL_GetTicks();
-	  sa = 1.0f;
+  	  sa = 1.0f;
   	}
       break;
       
     case 3: // PAF 3
       if(sa > 0.0f)
-	sa -= 0.05f;
-
-      helicopterMatrixTranslate(0, height, 0);
+  	sa -= 0.05f;
       
-      matrixLoadIdentity(mat1);
-      matrixTranslate(mat1, helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+      target = helicopter.getPosition();
+      
+      matrixTranslate(mat1, target._x, target._y, target._z);
       matrixTranslate(mat1, -10, 1, -8);
   
       rotor += 20.0f;
-      if((SDL_GetTicks() - timeStart)>200000)
+      if((SDL_GetTicks() - timeStart)>5000)
   	{
   	  step++;
   	  timeStart = SDL_GetTicks();
+  	  angle=179.0f;
   	}
+      break;
+
+    case 4:
+      
+      target = helicopter.getPosition();
+      target._z -= 10.0f;
+      
+      matrixTranslate(mat1, target._x, target._y, target._z);
+      matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
+      matrixTranslate(mat1, 0.0, 1.0, 5.0);
+      
+      rotor += 20.0f;
+      angle -= 0.1f;
       break;
     }
 
@@ -146,13 +161,9 @@ void sequence(void)
     break;
     }*/
   
-  helicopterMatrixRotate(-90, 1, 0, 0);
-  helicopterRotateRotor(rotor);
-  
   sun.setPosition(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
   cam.setPositionCamera(mat1[12], mat1[13], mat1[14]);
-  cam.setPositionTarget(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
+  cam.setPositionTarget(target._x, target._y, target._z);
   
   // cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
-  // helicopter.matRotate(0.1, 0, 0, 1);
 }

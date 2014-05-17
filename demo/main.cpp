@@ -25,7 +25,9 @@ void helicopterMatrixIdentity(void)
 {
   helicopter.matIdentity();
   grotor.matIdentity();
+  grotor.matTranslate(0.08f, 0.0f, -1.03f);
   protor.matIdentity();
+  protor.matTranslate(0.25f, 2.40f, 19.75f);
 }
 
 void helicopterMatrixScale(GLfloat x, GLfloat y, GLfloat z)
@@ -51,7 +53,7 @@ void helicopterMatrixRotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 
 void helicopterRotateRotor(GLfloat angle)
 {
-  grotor.matRotate(angle, 0, 0, 1);
+  grotor.matRotate(angle, 0, 1, 0);
   protor.matRotate(angle, 1, 0, 0);
 }
 
@@ -95,9 +97,9 @@ void keyboard(GLubyte key, GLboolean state)
   keyState[key] = state;
   
   // if(keyState[MAJ]==true)
-  //   cam.setSpeed(0.05);
+  //   cam.setSpeed(0.05f);
   // else
-  //   cam.setSpeed(0.25);
+  //   cam.setSpeed(0.25f);
   
   if(state)
     switch(key)
@@ -117,7 +119,7 @@ void mouseMove(GLint xrel, GLint yrel)
 void init(void)
 {
   // cam.setPositionCamera(0, 1, 0);
-  // cam.setSpeed(0.25);
+  // cam.setSpeed(0.25f);
 }
 
 void initGL(void)
@@ -136,10 +138,10 @@ void initGL(void)
 		    0, 1, 0
   };
   GLuint index[]={0, 1, 2, 0, 2, 3};
-  GLfloat mat_ambient[] = {0.5, 0.5, 0.5, 1.0};
-  GLfloat mat_diffuse[] = {1.0, 1.0, 1.0, 1.0};
-  GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
-  GLfloat mat_shininess[] = {20.0};
+  GLfloat mat_ambient[] = {0.5f, 0.5f, 0.5f, 1.0f};
+  GLfloat mat_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+  GLfloat mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
+  GLfloat mat_shininess[] = {20.0f};
 
   mainProgram = new engine::ShaderProgram;
   shadowProgram = new engine::ShaderProgram;
@@ -178,7 +180,7 @@ void initGL(void)
   helicopter.sortObject();
 
   grotor.setRenderer(&renderer);
-  grotor.loadObj("resources/UH-60_Blackhawk/grotor.obj", 1);
+  grotor.loadObj("resources/UH-60_Blackhawk/grotor.obj");
   grotor.sortObject();
   
   protor.setRenderer(&renderer);

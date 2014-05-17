@@ -119,7 +119,7 @@ std::vector<engine::OBJModel::material> engine::OBJModel::loadMtl(const std::str
   return mat;
 }
 
-void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
+void engine::OBJModel::loadObj(const std::string name, GLenum texType)
 {
   std::ifstream objfile(&name[0], std::ifstream::in | std::ifstream::binary);
   std::string str;
@@ -179,13 +179,12 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	  objfile >> tmp[1];
 	  vt.push_back(tmp[0]);
 	  vt.push_back(tmp[1]);
-	  if(tex3D)
+	  if(texType == GL_TEXTURE_3D)
 	    objfile >> tmp[0];
 	}      
       else if(str == "f")
 	{
-	  objfile >> str;
-	  while(isdigit(str[0]) || str[0]=='-')
+	  for(objfile >> str ; (isdigit(str[0]) || str[0]=='-') && objfile.good() ; objfile >> str)
 	    {
 	      strtmp = &str[0];
 
@@ -209,19 +208,16 @@ void engine::OBJModel::loadObj(const std::string name, GLubyte tex3D)
 	      array.push_back(v[num[0]]); array.push_back(v[num[0]+1]); array.push_back(v[num[0]+2]);
 	      array.push_back(vt[num[1]]); array.push_back(vt[num[1]+1]);
 	      array.push_back(vn[num[2]]); array.push_back(vn[num[2]+1]); array.push_back(vn[num[2]+2]);
-	      if(objfile.eof())
-		break;
-	      objfile >> str;
 	    }
 	  savePoint = numIndex;
 	  index.push_back(numIndex++);
 	  index.push_back(numIndex++);
 	  index.push_back(numIndex++);
-	  for(; numIndex<(array.size()/8) ; numIndex++)
+	  while(numIndex<(array.size()/8))
 	    {
 	      index.push_back(savePoint);
 	      index.push_back(numIndex-1);
-	      index.push_back(numIndex);
+	      index.push_back(numIndex++);
 	    }
 	  takestr=false;
 	}      
