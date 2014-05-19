@@ -5,7 +5,7 @@ void sequence(void)
   GLfloat mat1[16];
   engine::Vector3D<GLfloat> target;
   static GLubyte step = 0;
-  static GLfloat rotor = 0, height = 3, angle, dist;
+  static GLfloat rotor = 0, height = 3, angle, dist, a = 0.01f;
   static GLuint timeStart = SDL_GetTicks();
   
   helicopterMatrixIdentity();
@@ -191,7 +191,9 @@ void sequence(void)
       matrixTranslate(mat1, 0.0, 0.0f - height, dist);
       
       rotor += 20.0f;
-      height += 0.3f;
+      height += a;
+      if(a<0.5)
+	a += 0.01f;
       if((SDL_GetTicks() - timeStart)>8100)
   	{
   	  step++;
