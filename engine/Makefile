@@ -6,7 +6,7 @@ SYSTEM= $(shell uname)
 ifeq ($(SYSTEM), Linux)
 LIB= -Iinclude -fPIC -lGL -lSDL2 -lSDL2_image -lm
 else
-BIN= bin/
+BIN= ../demo/
 LIB= -DWIN32 -DENGINE_EXPORTS -Iinclude -I/c/MinGW/user/include -L/c/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lm
 endif
 FLAGS= -O3 -W -Wall -Wextra -Wconversion -Werror -Wfatal-errors $(LIB)

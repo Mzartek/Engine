@@ -4,7 +4,9 @@
 *.a
 *~
 *#
+
 .fuse*
 sample
 sample.exe
 Visual
+sdl2-config
