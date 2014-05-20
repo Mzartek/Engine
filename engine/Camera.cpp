@@ -2,82 +2,82 @@
 
 engine::Camera::Camera(void)
 {
-  _pcamera = new Vector3D<GLfloat>;
-  _ptarget = new Vector3D<GLfloat>;
-  _pcamera->_x = 0;
-  _pcamera->_y = 0;
-  _pcamera->_z = 0;
+	_pcamera = new Vector3D<GLfloat>;
+	_ptarget = new Vector3D<GLfloat>;
+	_pcamera->_x = 0;
+	_pcamera->_y = 0;
+	_pcamera->_z = 0;
 }
 
 engine::Camera::Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  _pcamera = new Vector3D<GLfloat>;
-  _ptarget = new Vector3D<GLfloat>;
-  _pcamera->_x = x;
-  _pcamera->_y = y;
-  _pcamera->_z = z;
+	_pcamera = new Vector3D<GLfloat>;
+	_ptarget = new Vector3D<GLfloat>;
+	_pcamera->_x = x;
+	_pcamera->_y = y;
+	_pcamera->_z = z;
 }
 
 engine::Camera::~Camera(void)
 {
-  delete _pcamera;
-  delete _ptarget;
+	delete _pcamera;
+	delete _ptarget;
 }
 
 void engine::Camera::setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  _pcamera->_x = x;
-  _pcamera->_y = y;
-  _pcamera->_z = z;
+	_pcamera->_x = x;
+	_pcamera->_y = y;
+	_pcamera->_z = z;
 }
 
 void engine::Camera::setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-  _ptarget->_x = x;
-  _ptarget->_y = y;
-  _ptarget->_z = z;
+	_ptarget->_x = x;
+	_ptarget->_y = y;
+	_ptarget->_z = z;
 }
 
 void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)
 {
-  _width = width;
-  _height = height;
-  matrixPerspective(_projectionMatrix, fov, (GLfloat)_width / (GLfloat)_height, n, f);
+	_width = width;
+	_height = height;
+	matrixPerspective(_projectionMatrix, fov, (GLfloat)_width / (GLfloat)_height, n, f);
 }
 
 engine::Vector3D<GLfloat> *engine::Camera::getPositionCamera(void) const
 {
-  return _pcamera;
+	return _pcamera;
 }
 
 engine::Vector3D<GLfloat> *engine::Camera::getPositionTarget(void) const
 {
-  return _ptarget;
+	return _ptarget;
 }
 
 GLuint engine::Camera::getWidth(void) const
 {
-  return _width;
+	return _width;
 }
 
 GLuint engine::Camera::getHeight(void) const
 {
-  return _height;
+	return _height;
 }
 
 GLfloat *engine::Camera::getMatrix(void)
 {
-  return _VP;
+	return _VP;
 }
 
 void engine::Camera::position(void)
 {
-  GLfloat camera[] = {_pcamera->_x, _pcamera->_y, _pcamera->_z};
-  GLfloat target[] = {_ptarget->_x, _ptarget->_y, _ptarget->_z};
-  GLfloat head[] = {0.0, 1.0, 0.0};
-  GLfloat view[16];
+	GLfloat camera[] = {_pcamera->_x, _pcamera->_y, _pcamera->_z};
+	GLfloat target[] = {_ptarget->_x, _ptarget->_y, _ptarget->_z};
+	GLfloat head[] = {0.0, 1.0, 0.0};
+	GLfloat view[16];
 
-  matrixLoadIdentity(view);
-  matrixLookAt(view, camera, target, head);
-  matrixMultiply(_VP, _projectionMatrix, view);
+	matrixLoadIdentity(view);
+	matrixLookAt(view, camera, target, head);
+	matrixMultiply(_VP, _projectionMatrix, view);
 }

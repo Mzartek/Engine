@@ -28,13 +28,15 @@
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "matrix.hpp"
 
 namespace engine
 {
-  enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
-  extern DLLAPI pixelFormat testFormat(unsigned f);
-  extern DLLAPI void loadTex(const std::string path, GLuint *texture);
+	enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
+	extern DLLAPI pixelFormat testFormat(GLuint f);
+	extern DLLAPI void loadTextureFromFile(const std::string path, GLuint *texture);
+	extern DLLAPI void loadTextureFromSDL_Surface(const SDL_Surface *image, GLuint *texture);
 }
 
 #endif

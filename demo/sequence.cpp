@@ -22,7 +22,7 @@ void sequence(void)
 		if (sa > 0.0f)
 			sa -= 0.001f;
 
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixRotate(mat1, -20, 0, 1, 0);
@@ -40,7 +40,7 @@ void sequence(void)
 		if (sa > 0.0f)
 			sa -= 0.05f;
 
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixTranslate(mat1, 0, 10, -50);
@@ -57,7 +57,7 @@ void sequence(void)
 		if (sa > 0.0f)
 			sa -= 0.05f;
 
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixTranslate(mat1, 10, 10, -20);
@@ -74,8 +74,8 @@ void sequence(void)
 	case 3:
 		if (sa > 0.0f)
 			sa -= 0.05f;
-
-		target = helicopter.getPosition();
+		
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixRotate(mat1, angle, 0, 1, 0);
@@ -91,7 +91,7 @@ void sequence(void)
 		break;
 
 	case 4:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
@@ -108,7 +108,7 @@ void sequence(void)
 		break;
 
 	case 5:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
@@ -125,7 +125,7 @@ void sequence(void)
 		break;
 
 	case 6:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
@@ -142,7 +142,7 @@ void sequence(void)
 		break;
 
 	case 7:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 		target._z += 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
@@ -160,7 +160,7 @@ void sequence(void)
 		break;
 
 	case 8:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
@@ -176,7 +176,7 @@ void sequence(void)
 		break;
 
 	case 9:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
@@ -193,7 +193,7 @@ void sequence(void)
 		break;
 
 	case 10:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
@@ -209,7 +209,7 @@ void sequence(void)
 		break;
 
 	case 11:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
@@ -225,7 +225,7 @@ void sequence(void)
 		break;
 
 	case 12:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
@@ -242,7 +242,7 @@ void sequence(void)
 		break;
 
 	case 13:
-		target = helicopter.getPosition();
+		target = helicopter->getPosition();
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
@@ -276,20 +276,41 @@ void sequence(void)
 		break;
 
 	case 15:
-		if ((SDL_GetTicks() - timeStart) > 149000) // Fin
+		if ((SDL_GetTicks() - timeStart) > 115700) // Credit 1
 			step++;
 		break;
 
 	case 16:
-		window.stop();
+		text1->write("Programmeur:");
+		text2->write("Kevin Havranek");
+		if ((SDL_GetTicks() - timeStart) > 127100) // Credit 2
+			step++;
+		break;
+
+	case 17:
+		text1->write("Musique:");
+		text2->write("JOJO Beat");
+		if ((SDL_GetTicks() - timeStart) > 138500) // Credit 3
+			step++;
+		break;
+
+	case 18:
+		text1->write("Merci");
+		text2->write("d'avoir regarde!");
+		if ((SDL_GetTicks() - timeStart) > 150000) // Credit 3
+			step++;
+		break;
+
+	case 19:
+		window->stop();
 		break;
 	}
 
 	helicopterRotateRotor(rotor);
 
-	sun.setPosition(helicopter.getPosition()._x, helicopter.getPosition()._y, helicopter.getPosition()._z);
-	cam.setPositionCamera(mat1[12], mat1[13], mat1[14]);
-	cam.setPositionTarget(target._x, target._y, target._z);
-
+	sun->setPosition(helicopter->getPosition()._x, helicopter->getPosition()._y, helicopter->getPosition()._z);
+	cam->setPositionCamera(mat1[12], mat1[13], mat1[14]);
+	cam->setPositionTarget(target._x, target._y, target._z);
+	
 	// cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
 }

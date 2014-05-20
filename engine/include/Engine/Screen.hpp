@@ -5,19 +5,19 @@
 
 namespace engine
 {
-  class DLLAPI Screen
-  {
-  private:
-    GLuint _idVAO;
-    GLuint _idVBO;
-    ShaderProgram *_program;
-    GLint _colorLocation;
-  public:
-    Screen();
-    ~Screen();
-    void init(ShaderProgram *program);
-    void display(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
-  };
+	class DLLAPI Screen
+	{
+	private:
+		GLuint _idVAO;
+		GLuint _idVBO;
+		ShaderProgram *_program;
+		GLint _colorLocation;
+	public:
+		Screen();
+		~Screen();
+		void init(ShaderProgram *program);
+		void display(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+	};
 }
 
 #endif

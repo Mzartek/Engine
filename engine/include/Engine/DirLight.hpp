@@ -5,16 +5,16 @@
 
 namespace engine
 {
-  class DLLAPI DirLight : public Light
-  {
-  private:
-    GLfloat _dim[3];
-  public:
-    DirLight(void);
-    ~DirLight(void);
-    void setDimension(GLfloat x, GLfloat y, GLfloat z);
-    void position(void);
-  };
+	class DLLAPI DirLight : public Light
+	{
+	private:
+		GLfloat _dim[3];
+	public:
+		DirLight(void);
+		~DirLight(void);
+		void setDimension(GLfloat x, GLfloat y, GLfloat z);
+		void position(void);
+	};
 }
 
 #endif
