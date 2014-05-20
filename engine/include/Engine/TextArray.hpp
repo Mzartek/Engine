@@ -7,7 +7,7 @@
 
 namespace engine
 {
-	class TextArray
+	class DLLAPI TextArray
 	{
 	private:
 		GLuint _idTexture;
