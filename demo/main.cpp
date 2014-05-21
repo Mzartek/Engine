@@ -16,6 +16,7 @@ engine::SkyBox *skybox;
 engine::Screen *screen;
 engine::TextArray *text1;
 engine::TextArray *text2;
+engine::TextArray *text3;
 
 engine::ShaderProgram *mainProgram;
 engine::ShaderProgram *shadowProgram;
@@ -89,6 +90,7 @@ void display(void)
 	screen->display(sr, sg, sb, sa);
 	text1->display();
 	text2->display();
+	text3->display();
 }
 
 void reshape(GLuint w, GLuint h)
@@ -137,6 +139,7 @@ void init(void)
 	screen = new engine::Screen;
 	text1 = new engine::TextArray;
 	text2 = new engine::TextArray;
+	text3 = new engine::TextArray;
 }
 
 void initGL(void)
@@ -178,6 +181,9 @@ void initGL(void)
 	text2->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
 		      200, 200, 400, 100, textProgram, window);
+	text3->config("resources/font/SIXTY.TTF", 50,
+		      255, 255, 255,
+		      200, 100, 400, 100, textProgram, window);
 
 	renderer->setShaderProgram(mainProgram);
 	renderer->setCamera(cam);
@@ -224,10 +230,6 @@ void initGL(void)
 	// helicopterMatrixRotate(-90, 1, 0, 0);
 }
 
-void initClass(void)
-{
-}
-
 void deleteClass(void)
 {
 	delete renderer;
@@ -241,6 +243,7 @@ void deleteClass(void)
 	delete screen;
 	delete text1;
 	delete text2;
+	delete text3;
 	
 	delete mainProgram;
 	delete shadowProgram;
@@ -273,7 +276,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	song = Mix_LoadMUS("resources/song/song.mp3");
-	Mix_PlayMusic(song, 0);
+	Mix_PlayMusic(song, -1);
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 
 	window->mainLoop();

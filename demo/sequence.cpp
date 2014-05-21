@@ -180,7 +180,7 @@ void sequence(void)
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
 		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
-		matrixTranslate(mat1, 0.0, 0.0f - height, dist);
+		matrixTranslate(mat1, 0.0, 2.8f - height, dist);
 
 		rotor += 20.0f;
 		height += a;
@@ -237,7 +237,6 @@ void sequence(void)
 		if ((SDL_GetTicks() - timeStart) > 75700) // Helico qui tourne
 		{
 			step++;
-			angle = 200.0f;
 		}
 		break;
 
@@ -283,13 +282,15 @@ void sequence(void)
 	case 16:
 		text1->write("Programmeur:");
 		text2->write("Kevin Havranek");
+		text3->write(" ");
 		if ((SDL_GetTicks() - timeStart) > 127100) // Credit 2
 			step++;
 		break;
 
 	case 17:
 		text1->write("Musique:");
-		text2->write("JOJO Beat");
+		text2->write("Jojo Beat");
+		text3->write("Aka Geoffrey Richoux");
 		if ((SDL_GetTicks() - timeStart) > 138500) // Credit 3
 			step++;
 		break;
@@ -297,6 +298,7 @@ void sequence(void)
 	case 18:
 		text1->write("Merci");
 		text2->write("d'avoir regarde!");
+		text3->write(" ");
 		if ((SDL_GetTicks() - timeStart) > 150000) // Credit 3
 			step++;
 		break;

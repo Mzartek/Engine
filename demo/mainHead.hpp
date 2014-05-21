@@ -31,6 +31,7 @@ extern engine::OBJModel *protor;
 extern engine::SkyBox *sky;
 extern engine::TextArray *text1;
 extern engine::TextArray *text2;
+extern engine::TextArray *text3;
 
 extern engine::ShaderProgram *mainProgram;
 extern engine::ShaderProgram *shadowProgram;
