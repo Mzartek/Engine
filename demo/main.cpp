@@ -124,9 +124,6 @@ void mouseMove(GLint xrel, GLint yrel)
 
 void init(void)
 {
-	// cam->setPositionCamera(0, 1, 0);
-	// cam->setSpeed(0.25f);
-        
 	window = new engine::Window;
 	renderer = new engine::Renderer;
 	cam = new engine::Camera;
@@ -140,6 +137,9 @@ void init(void)
 	text1 = new engine::TextArray;
 	text2 = new engine::TextArray;
 	text3 = new engine::TextArray;
+	
+	// cam->setPositionCamera(0, 1, 0);
+	// cam->setSpeed(0.25f);
 }
 
 void initGL(void)
@@ -223,11 +223,6 @@ void initGL(void)
 	screen->init(screenProgram);
 	sr = sg = sb = 0.0f;
 	sa = 1.0f;
-
-	// helicopterMatrixIdentity();
-	// helicopterMatrixScale(2, 2, 2);
-	// helicopterMatrixTranslate(0, 5, 0);
-	// helicopterMatrixRotate(-90, 1, 0, 0);
 }
 
 void deleteClass(void)
