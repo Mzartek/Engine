@@ -47,15 +47,18 @@ float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
   return textureProj(tex, vec4(coord.x + (offSet.x * (1.0/texSize.x)), coord.y + (offSet.y * (1.0/texSize.y)), coord.z-0.005, coord.w));
 }
 
-float calcShadow(sampler2DShadow tex, vec4 coord)
+float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
 {
   ivec2 texSize = textureSize(tex, 0);
-  float x, y, shadow = 0.0;
-  
-  for(x=-1.0 ; x<=1.0 ; x+=1.0)
-    for(y=-1.0 ; y<=1.0 ; y+=1.0)
+  float a, x, y, shadow = 0.0;
+
+  a = (pcf-1.0)/2.0;
+  for(x=-a ; x<=a ; x+=1.0)
+    for(y=-a ; y<=a ; y+=1.0)
       shadow += lookUp(tex, coord, vec2(x,y), texSize);
-  shadow /= 9.0;
+  shadow /= (pcf*pcf);
+
+  //shadow = textureProj(tex, vec4(coord.x, coord.y, coord.z-0.005, coord.w));
 
   return shadow;
 }
@@ -91,7 +94,7 @@ void main(void)
   vec3 N = normalize(normal);
   float shadow;
 
-  shadow = calcShadow(dirShadowMap, outDirLight.shadowCoord);
+  shadow = calcShadow(dirShadowMap, outDirLight.shadowCoord, 3.0);
   final_color = calcDirLight(outDirLight, N, shadow);
   
   /* shadow = calcShadow(spotShadowMap, outSpotLight.shadowCoord); */
