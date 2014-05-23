@@ -31,8 +31,8 @@ namespace engine
 		GLfloat *getAmbient(void);
 		GLfloat *getDiffuse(void);
 		GLfloat *getSpecular(void);
-		virtual void position(void) = 0;
 		GLfloat *getMatrix(void);
+		virtual void position(void) = 0;
 		void newLoop(void) const;
 	};
 }
