@@ -14,6 +14,7 @@
 #include <Engine/SkyBox.hpp>
 #include <Engine/Screen.hpp>
 #include <Engine/TextArray.hpp>
+#include <Engine/GBuffer.hpp>
 #include <SDL2/SDL_mixer.h>
 
 extern GLboolean keyState[256];

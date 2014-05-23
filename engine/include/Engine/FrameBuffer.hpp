@@ -12,7 +12,6 @@ namespace engine
 		GLuint _width;
 		GLuint _height;
 		GLuint _idFBO;
-		GLuint _idTexture;
 		ShaderProgram *_program;
 	public:
 		FrameBuffer(void);
@@ -21,7 +20,6 @@ namespace engine
 		GLuint getWidth(void) const;
 		GLuint getHeight(void) const;
 		GLuint getIdFBO(void) const;
-		GLuint getIdTexture(void) const;
 		GLuint getProgramId(void) const;
 		void clear(void) const;
 	};

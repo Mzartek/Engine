@@ -23,6 +23,7 @@ engine::ShaderProgram *shadowProgram;
 engine::ShaderProgram *skyboxProgram;
 engine::ShaderProgram *screenProgram;
 engine::ShaderProgram *textProgram;
+engine::ShaderProgram *gBufferProgram;
 
 void helicopterMatrixIdentity(void)
 {
@@ -168,12 +169,14 @@ void initGL(void)
 	skyboxProgram = new engine::ShaderProgram;
 	screenProgram = new engine::ShaderProgram;
 	textProgram = new engine::ShaderProgram;
+	gBufferProgram = new engine::ShaderProgram;
 	
 	mainProgram->loadProgram("shader/demoVert.c", "shader/demoFrag.c");
 	shadowProgram->loadProgram("shader/shadowVert.c", "shader/shadowFrag.c");
 	skyboxProgram->loadProgram("shader/skyboxVert.c", "shader/skyboxFrag.c");
 	screenProgram->loadProgram("shader/screenVert.c", "shader/screenFrag.c");
 	textProgram->loadProgram("shader/textVert.c", "shader/textFrag.c");
+	gBufferProgram->loadProgram("shader/gBufferVert.c", "shader/gBufferFrag.c");
 
 	text1->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
@@ -205,7 +208,7 @@ void initGL(void)
 	face->setRenderer(renderer);
 	face->createObject(sizeof vertex, vertex,
 			   sizeof index, index,
-			   "resources/sand.jpg",
+			   "resources/ornaments.jpg",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	helicopter->setRenderer(renderer);

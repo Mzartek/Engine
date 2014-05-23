@@ -1,20 +1,22 @@
-#ifndef SHADOW_MAP
-#define SHADOW_MAP
+#ifndef GBUFFER
+#define GBUFFER
 
 #include "FrameBuffer.hpp"
 
 namespace engine
 {
-	class DLLAPI ShadowMap : public FrameBuffer
+	class GBuffer : public FrameBuffer
 	{
 	private:
+		GLuint _idTexture[2];
 		GLuint _idDepthTexture;
 	public:
 		GLint MVPLocation;
-		ShadowMap(void);
-		~ShadowMap(void);
+		GBuffer(void);
+		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
-		GLuint getIdDepthTexture(void) const;
+		GLuint getIdTexture(GLuint num);
+		GLuint getIdDepthTexture(void);
 	};
 }
 

@@ -133,7 +133,7 @@ void engine::Object::display(void) const
 		if(_renderer->getDirLight()->getShadowMap() != NULL)
 		{
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, _renderer->getDirLight()->getShadowMap()->getIdTexture());
+			glBindTexture(GL_TEXTURE_2D, _renderer->getDirLight()->getShadowMap()->getIdDepthTexture());
 			glUniform1i(_renderer->dirShadowMapLocation, 1);
 		}
 
@@ -141,7 +141,7 @@ void engine::Object::display(void) const
 		if(_renderer->getSpotLight()->getShadowMap() != NULL)
 		{
 			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, _renderer->getSpotLight()->getShadowMap()->getIdTexture());
+			glBindTexture(GL_TEXTURE_2D, _renderer->getSpotLight()->getShadowMap()->getIdDepthTexture());
 			glUniform1i(_renderer->spotShadowMapLocation, 2);
 		}
   

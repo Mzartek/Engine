@@ -17,27 +17,14 @@ struct dirLight
   vec4 shadowCoord;
 };
 
-struct spotLight
-{
-  vec3 spotDirection;
-  float spotCutOff;
-  vec3 rayDir;
-  vec4 ambient;
-  vec4 diffuse;
-  vec4 specular;
-  vec4 shadowCoord;
-};
-
 // Texture
 uniform sampler2D colorTexture;
 uniform sampler2DShadow dirShadowMap;
-uniform sampler2DShadow spotShadowMap;
 
 // In
 in vec2 outTexCoord;
 in material outMat;
 in dirLight outDirLight;
-in spotLight outSpotLight;
 in vec3 normal, eyeVec;
 
 out vec4 fragColor;
@@ -97,41 +84,5 @@ void main(void)
   shadow = calcShadow(dirShadowMap, outDirLight.shadowCoord, 3.0);
   final_color = calcDirLight(outDirLight, N, shadow);
   
-  /* shadow = calcShadow(spotShadowMap, outSpotLight.shadowCoord); */
-  /* final_color = calcSpotLight(outSpotLight, N, shadow); */
-  
   fragColor = texture(colorTexture, outTexCoord) * final_color;
 }
-
-/* vec4 calcSpotLight(spotLight light, vec3 N, float shadow) */
-/* { */
-/*   vec4 final_color; */
-/*   vec3 L, D, E, R; */
-/*   float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle; */
-/*   float cosTheta, spot, specular; */
-
-/*   final_color = light.ambient * outMat.ambient; */
-  
-/*   L = normalize(light.rayDir); */
-  
-/*   cosTheta = dot(L,N); */
-/*   if(cosTheta > 0.0) */
-/*     { */
-/*       D = normalize(light.spotDirection); */
-/*       E = normalize(eyeVec); */
-/*       R = reflect(-L, N); */
-		
-/*       cos_cur_angle = dot(-L, D); */
-/*       cos_outer_cone_angle = cos(radians(light.spotCutOff)); */
-/*       cos_inner_cone_angle = cos_outer_cone_angle + 0.1; */
-/*       cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle; */
-/*       spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0); */
-
-/*       specular = pow(max(dot(R, E), 0.0), outMat.shininess); */
-      
-/*       final_color += light.diffuse * outMat.diffuse * spot * shadow; */
-/*       final_color += light.specular * outMat.specular * specular * spot * shadow; */
-/*     } */
-
-/*   return final_color; */
-/* } */
