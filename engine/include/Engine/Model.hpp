@@ -4,6 +4,7 @@
 #include "Object.hpp"
 #include "Light.hpp"
 #include "Vector3D.hpp"
+#include "GBuffer.hpp"
 
 namespace engine
 {
@@ -27,8 +28,10 @@ namespace engine
 		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		Vector3D<GLfloat> getPosition(void) const;
+		Object *getObject(GLuint num) const;
 		void display(void) const;
 		void displayShadow(Light *l) const;
+		void displayOnGBuffer(GBuffer *g) const;
 	};
 }
     

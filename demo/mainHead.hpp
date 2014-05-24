@@ -24,6 +24,7 @@ extern GLfloat sr, sg, sb, sa;
 extern engine::Window *window;
 extern engine::Renderer *renderer;
 extern engine::Camera *cam;
+//extern engine::FreeCam *cam;
 extern engine::DirLight *sun;
 extern engine::Model *face;
 extern engine::OBJModel *helicopter;

@@ -7,6 +7,7 @@ GLfloat sr, sg, sb, sa;
 engine::Window *window;
 engine::Renderer *renderer;
 engine::Camera *cam;
+//engine::FreeCam *cam;
 engine::DirLight *sun;
 engine::Model *face;
 engine::OBJModel *helicopter;
@@ -17,6 +18,7 @@ engine::Screen *screen;
 engine::TextArray *text1;
 engine::TextArray *text2;
 engine::TextArray *text3;
+engine::GBuffer *gBuffer;
 
 engine::ShaderProgram *mainProgram;
 engine::ShaderProgram *shadowProgram;
@@ -81,13 +83,17 @@ void display(void)
 	sun->newLoop();
 	face->displayShadow(sun);
 	helicopterDisplayShadow(sun);
-
+	
 	cam->position();
+	
+	gBuffer->clear();
+	helicopter->displayOnGBuffer(gBuffer);
+	
 	renderer->newLoop();
 	skybox->display();
 	face->display();
 	helicopterDisplay();
-
+	
 	screen->display(sr, sg, sb, sa);
 	text1->display();
 	text2->display();
@@ -104,9 +110,9 @@ void keyboard(GLubyte key, GLboolean state)
 	keyState[key] = state;
 
 	// if(keyState[MAJ]==GL_TRUE)
-	//   cam->setSpeed(0.05f);
+	// 	cam->setSpeed(0.05f);
 	// else
-	//   cam->setSpeed(0.25f);
+	// 	cam->setSpeed(0.25f);
 
 	if (state)
 		switch (key)
@@ -128,6 +134,7 @@ void init(void)
 	window = new engine::Window;
 	renderer = new engine::Renderer;
 	cam = new engine::Camera;
+	// cam = new engine::FreeCam;
 	sun = new engine::DirLight;
 	face = new engine::Model;
 	helicopter = new engine::OBJModel;
@@ -138,7 +145,8 @@ void init(void)
 	text1 = new engine::TextArray;
 	text2 = new engine::TextArray;
 	text3 = new engine::TextArray;
-	
+	gBuffer = new engine::GBuffer;
+
 	// cam->setPositionCamera(0, 1, 0);
 	// cam->setSpeed(0.25f);
 }
@@ -178,6 +186,8 @@ void initGL(void)
 	textProgram->loadProgram("shader/textVert.c", "shader/textFrag.c");
 	gBufferProgram->loadProgram("shader/gBufferVert.c", "shader/gBufferFrag.c");
 
+	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram);
+
 	text1->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
 		      200, 400, 400, 100, textProgram, window);
@@ -192,7 +202,7 @@ void initGL(void)
 	renderer->setCamera(cam);
 	renderer->setDirLight(sun);
 
-	sun->configShadowMap(2048, 2048, shadowProgram);
+	sun->configShadowMap(1024, 1024, shadowProgram);
 	sun->setDirection(1, -1, 0);
 	sun->setDimension(50, 50, 50);
 	sun->setAmbient(mat_ambient[0], mat_ambient[1], mat_ambient[2], mat_ambient[3]);
@@ -242,6 +252,7 @@ void deleteClass(void)
 	delete text1;
 	delete text2;
 	delete text3;
+	delete gBuffer;
 	
 	delete mainProgram;
 	delete shadowProgram;

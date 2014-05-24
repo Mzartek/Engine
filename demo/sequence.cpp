@@ -14,6 +14,7 @@ void sequence(void)
 	helicopterMatrixRotate(a, 0.0, 1.0, 0.0);
 
 	matrixLoadIdentity(mat1);
+	// sa = 0.0f;
 
 	switch (step)
 	{
@@ -28,7 +29,7 @@ void sequence(void)
 		matrixRotate(mat1, -20, 0, 1, 0);
 		matrixTranslate(mat1, 10, 0, 0);
 
-		if ((SDL_GetTicks() - timeStart) > 15700) // PAF 1
+		if ((SDL_GetTicks() - timeStart) > 15450) // PAF 1
 		{
 			step++;
 			sa = 1.0f;
@@ -46,7 +47,7 @@ void sequence(void)
 		matrixTranslate(mat1, 0, 10, -50);
 
 		rotor += 1.0f;
-		if ((SDL_GetTicks() - timeStart) > 16450) // PAF 2
+		if ((SDL_GetTicks() - timeStart) > 16200) // PAF 2
 		{
 			step++;
 			sa = 1.0f;
@@ -63,7 +64,7 @@ void sequence(void)
 		matrixTranslate(mat1, 10, 10, -20);
 
 		rotor += 10.0f;
-		if ((SDL_GetTicks() - timeStart) > 17200) // PAF 3
+		if ((SDL_GetTicks() - timeStart) > 16950) // PAF 3
 		{
 			step++;
 			sa = 1.0f;
@@ -83,7 +84,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		angle += 0.01f;
-		if ((SDL_GetTicks() - timeStart) > 27700) // Front
+		if ((SDL_GetTicks() - timeStart) > 27450) // Front
 		{
 			step++;
 			angle = 179.0f;
@@ -100,7 +101,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		angle -= 0.1f;
-		if ((SDL_GetTicks() - timeStart) > 35700) // Cote
+		if ((SDL_GetTicks() - timeStart) > 35450) // Cote
 		{
 			step++;
 			angle = -30.0f;
@@ -117,7 +118,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		angle -= 0.1f;
-		if ((SDL_GetTicks() - timeStart) > 37700) // Front
+		if ((SDL_GetTicks() - timeStart) > 37450) // Front
 		{
 			step++;
 			angle = 180.0f;
@@ -134,7 +135,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		angle += 0.2f;
-		if ((SDL_GetTicks() - timeStart) > 39700) // Arriere
+		if ((SDL_GetTicks() - timeStart) > 39450) // Arriere
 		{
 			step++;
 			angle = -10.0f;
@@ -151,7 +152,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		angle += 0.2f;
-		if ((SDL_GetTicks() - timeStart) > 41700) // Avancer
+		if ((SDL_GetTicks() - timeStart) > 41450) // Avancer
 		{
 			step++;
 			angle = 220.0f;
@@ -168,7 +169,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		dist -= 0.6f;
-		if ((SDL_GetTicks() - timeStart) > 43700) // Decollage
+		if ((SDL_GetTicks() - timeStart) > 43450) // Decollage
 		{
 			step++;
 			a = 0.01f;
@@ -184,9 +185,9 @@ void sequence(void)
 
 		rotor += 20.0f;
 		height += a;
-		if (a < 0.5)
+		if (a < 0.3)
 			a += 0.01f;
-		if ((SDL_GetTicks() - timeStart) > 51700) // Remise a niveau
+		if ((SDL_GetTicks() - timeStart) > 51450) // Remise a niveau
 		{
 			step++;
 		}
@@ -202,7 +203,7 @@ void sequence(void)
 		rotor += 20.0f;
 		height += 0.1f;
 		angle += 0.5f;
-		if ((SDL_GetTicks() - timeStart) > 59700) // Vue du dessus
+		if ((SDL_GetTicks() - timeStart) > 59450) // Vue du dessus
 		{
 			step++;
 		}
@@ -217,7 +218,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		angle += 0.5f;
-		if ((SDL_GetTicks() - timeStart) > 67700) // Arrivee cubes
+		if ((SDL_GetTicks() - timeStart) > 67450) // Arrivee cubes
 		{
 			step++;
 			angle = 200.0f;
@@ -234,7 +235,7 @@ void sequence(void)
 
 		rotor += 20.0f;
 		angle -= 0.01f;
-		if ((SDL_GetTicks() - timeStart) > 75700) // Helico qui tourne
+		if ((SDL_GetTicks() - timeStart) > 75450) // Helico qui tourne
 		{
 			step++;
 		}
@@ -251,7 +252,7 @@ void sequence(void)
 		rotor += 20.0f;
 		angle -= 0.01f;
 		a -= 0.1f;
-		if ((SDL_GetTicks() - timeStart) > 103000) // Helico qui tombe
+		if ((SDL_GetTicks() - timeStart) > 102750) // Helico qui tombe
 		{
 			step++;
 		}
@@ -266,7 +267,7 @@ void sequence(void)
 		angle -= 0.01f;
 		a -= 0.1f;
 		height -= 0.5f;
-		if ((SDL_GetTicks() - timeStart) > 106500) // Fin
+		if ((SDL_GetTicks() - timeStart) > 106250) // Fin
 		{
 			step++;
 			sr = sg = sb = 0.0f;
@@ -275,7 +276,7 @@ void sequence(void)
 		break;
 
 	case 15:
-		if ((SDL_GetTicks() - timeStart) > 115700) // Credit 1
+		if ((SDL_GetTicks() - timeStart) > 115450) // Credit 1
 			step++;
 		break;
 
@@ -283,7 +284,7 @@ void sequence(void)
 		text1->write("Programmeur:");
 		text2->write("Kevin Havranek");
 		text3->write(" ");
-		if ((SDL_GetTicks() - timeStart) > 127100) // Credit 2
+		if ((SDL_GetTicks() - timeStart) > 127750) // Credit 2
 			step++;
 		break;
 
@@ -291,7 +292,7 @@ void sequence(void)
 		text1->write("Musique:");
 		text2->write("Jojo Beat");
 		text3->write("Aka Geoffrey Richoux");
-		if ((SDL_GetTicks() - timeStart) > 138500) // Credit 3
+		if ((SDL_GetTicks() - timeStart) > 138250) // Credit 3
 			step++;
 		break;
 
@@ -299,7 +300,7 @@ void sequence(void)
 		text1->write("Merci");
 		text2->write("d'avoir regarde!");
 		text3->write(" ");
-		if ((SDL_GetTicks() - timeStart) > 150000) // Credit 3
+		if ((SDL_GetTicks() - timeStart) > 148950) // Credit 3
 			step++;
 		break;
 
@@ -314,5 +315,5 @@ void sequence(void)
 	cam->setPositionCamera(mat1[12], mat1[13], mat1[14]);
 	cam->setPositionTarget(target._x, target._y, target._z);
 	
-	// cam.keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+	// cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
 }

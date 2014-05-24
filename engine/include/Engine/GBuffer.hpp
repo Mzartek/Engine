@@ -8,15 +8,18 @@ namespace engine
 	class GBuffer : public FrameBuffer
 	{
 	private:
-		GLuint _idTexture[2];
+		GLuint _idTexture[3];
 		GLuint _idDepthTexture;
+		GLint _MVPLocation;
+		GLint _textureLocation;
 	public:
-		GLint MVPLocation;
 		GBuffer(void);
 		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
-		GLuint getIdTexture(GLuint num);
-		GLuint getIdDepthTexture(void);
+		GLuint getIdTexture(GLuint num) const;
+		GLuint getIdDepthTexture(void) const;
+		GLint getMVPLocation(void) const;
+		GLint getTextureLocation(void) const;
 	};
 }
 

@@ -165,20 +165,50 @@ void engine::Object::display(void) const
 }
 
 void engine::Object::displayShadow(Light *l) const
-{ 
-	if(l != NULL)
-		if(l->getShadowMap() != NULL)
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
-			glUseProgram(l->getShadowMap()->getProgramId());
-			glBindVertexArray(_idVAO);
+{
+	if(l == NULL)
+	{
+		std::cerr << "Bad Light!" << std::endl;
+		return;
+	}
+	if(l->getShadowMap() == NULL)
+	{
+		std::cerr << "You need to config the ShadowMap before!" << std::endl;
+		return;
+	}
 	
-			glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
+	glUseProgram(l->getShadowMap()->getProgramId());
+	glBindVertexArray(_idVAO);
 	
-			glBindVertexArray(0);
-			glUseProgram(0);
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);     
-		}
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void engine::Object::displayOnGBuffer(GBuffer *g) const
+{
+	if(g == NULL)
+	{
+		std::cerr <<"Bad GBuffer!" << std::endl;
+		return;
+	}
+	
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
+	glUseProgram(g->getProgramId());
+	glBindVertexArray(_idVAO);
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _idTexture);
+	glUniform1i(g->getTextureLocation(), 0);
+	
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 int engine::comparObject(const void *p1, const void *p2)

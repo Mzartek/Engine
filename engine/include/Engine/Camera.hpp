@@ -18,7 +18,7 @@ namespace engine
 	public:
 		Camera(void);
 		Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		~Camera(void);
+		virtual ~Camera(void);
 		void setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f);

@@ -9,12 +9,13 @@ namespace engine
 	{
 	private:
 		GLuint _idDepthTexture;
+		GLint _MVPLocation;
 	public:
-		GLint MVPLocation;
 		ShadowMap(void);
 		~ShadowMap(void);
 		void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
 		GLuint getIdDepthTexture(void) const;
+		GLint getMVPLocation(void) const;
 	};
 }
 

@@ -4,6 +4,7 @@
 #include "GLHead.hpp"
 #include "Renderer.hpp"
 #include "Light.hpp"
+#include "GBuffer.hpp"
 
 namespace engine
 {
@@ -35,6 +36,7 @@ namespace engine
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
 		void display(void) const;
 		void displayShadow(Light *l) const;
+		void displayOnGBuffer(GBuffer *g) const;
 	};
   
 	int comparObject(const void *p1, const void *p2);

@@ -17,7 +17,7 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	_height = height;
   
 	_program = program;
-	MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
+	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 
 	// Frame Buffer Object
 	if(glIsFramebuffer(_idFBO))
@@ -25,7 +25,7 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	glGenFramebuffers(1, &_idFBO);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
   
-	// Depth Texture for Shadow Mapping
+	// Depth Texture
 	if(glIsTexture(_idDepthTexture))
 		glDeleteTextures(1, &_idDepthTexture);
 	glGenTextures(1, &_idDepthTexture);
@@ -36,7 +36,7 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, _width, _height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, _width, _height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
 	
 	glDrawBuffer(GL_NONE);
@@ -52,4 +52,9 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 GLuint engine::ShadowMap::getIdDepthTexture(void) const
 {
 	return _idDepthTexture;
+}
+
+GLint engine::ShadowMap::getMVPLocation(void) const
+{
+	return _MVPLocation;
 }

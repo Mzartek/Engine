@@ -26,13 +26,16 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 	_height = height;
   
 	_program = program;
-	MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
+	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
+	_textureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
 	
+	// Frame Buffer Object
 	if(glIsFramebuffer(_idFBO))
 		glDeleteFramebuffers(1, &_idFBO);
 	glGenFramebuffers(1, &_idFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
-	
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+
+	// Diffuse and Normal Texture
 	if(glIsTexture(_idTexture[0]))
 		glDeleteTextures(2, _idTexture);
 	glGenTextures(2, _idTexture);
@@ -44,9 +47,10 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, _width, _height, 0, GL_RGB, GL_FLOAT, 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[i], GL_TEXTURE_2D, _idTexture[i], 0);
+		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, colorAttachment[i], GL_TEXTURE_2D, _idTexture[i], 0);
 	}
-	
+
+	// Depth Texture
 	if(glIsTexture(_idDepthTexture))
 		glDeleteTextures(1, &_idDepthTexture);
 	glGenTextures(1, &_idDepthTexture);
@@ -55,8 +59,10 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, _width, _height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, _width, _height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
         
 	glDrawBuffers(2, colorAttachment);
     
@@ -64,12 +70,12 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 		std::cerr << "Framebuffer not complete" << std::endl;
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-GLuint engine::GBuffer::getIdTexture(GLuint num)
+GLuint engine::GBuffer::getIdTexture(GLuint num) const
 {
-	if(num>2)
+	if(num>=2)
 	{
 		std::cerr << "Bad num of texture" << std::endl;
 		return 0;
@@ -77,7 +83,17 @@ GLuint engine::GBuffer::getIdTexture(GLuint num)
 	return _idTexture[num];
 }
 
-GLuint engine::GBuffer::getIdDepthTexture(void)
+GLuint engine::GBuffer::getIdDepthTexture(void) const
 {
 	return _idDepthTexture;
+}
+
+GLint engine::GBuffer::getMVPLocation(void) const
+{
+	return _MVPLocation;
+}
+
+GLint engine::GBuffer::getTextureLocation(void) const
+{
+	return _textureLocation;
 }
