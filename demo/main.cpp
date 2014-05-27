@@ -5,8 +5,8 @@ Mix_Music *song;
 GLfloat sr, sg, sb, sa;
 
 engine::Window *window;
-// engine::Camera *cam;
-engine::FreeCam *cam;
+engine::Camera *cam;
+// engine::FreeCam *cam;
 engine::DirLight *sun;
 engine::Model *face;
 engine::OBJModel *helicopter;
@@ -125,10 +125,10 @@ void keyboard(GLubyte key, GLboolean state)
 {
 	keyState[key] = state;
 
-	if(keyState[MAJ]==GL_TRUE)
-		cam->setSpeed(0.05f);
-	else
-		cam->setSpeed(0.25f);
+	// if(keyState[MAJ]==GL_TRUE)
+	// 	cam->setSpeed(0.05f);
+	// else
+	// 	cam->setSpeed(0.25f);
 
 	if (state)
 		switch (key)
@@ -142,7 +142,7 @@ void keyboard(GLubyte key, GLboolean state)
 void mouseMove(GLint xrel, GLint yrel)
 {
 	(void)xrel; (void)yrel;
-	cam->mouseMove(xrel, yrel);
+	// cam->mouseMove(xrel, yrel);
 }
 
 void init(void)
@@ -163,8 +163,8 @@ void init(void)
 	gBuffer = new engine::GBuffer;
 	lBuffer = new engine::LBuffer;
 
-	cam->setPositionCamera(0, 1, 0);
-	cam->setSpeed(0.25f);
+	// cam->setPositionCamera(0, 1, 0);
+	// cam->setSpeed(0.25f);
 }
 
 void initGL(void)
