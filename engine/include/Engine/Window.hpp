@@ -32,6 +32,7 @@ namespace engine
 		SDL_Window *getId(void);
 		void mainLoop(void);
 		void stop(void);
+		void clear(void);
 	};
 }
 

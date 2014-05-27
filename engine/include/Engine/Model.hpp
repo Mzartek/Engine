@@ -3,8 +3,10 @@
 
 #include "Object.hpp"
 #include "Light.hpp"
-#include "Vector3D.hpp"
 #include "GBuffer.hpp"
+#include "ShaderProgram.hpp"
+#include "Camera.hpp"
+#include "Window.hpp"
 
 namespace engine
 {
@@ -12,12 +14,15 @@ namespace engine
 	{
 	private:
 		std::vector<Object *> *_tObject;
-		Renderer *_context;
 		GLfloat _modelMatrix[16];
+		ShaderProgram *_program;
+		GLint _screenWidthLocation;
+		GLint _screenHeightLocation;
+		GLint _MVPLocation;
 	public:
 		Model();
 		~Model();
-		void setRenderer(Renderer *context);
+		void config(ShaderProgram *program);
 		void createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				  const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				  const std::string pathTexture,
@@ -29,9 +34,9 @@ namespace engine
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		Vector3D<GLfloat> getPosition(void) const;
 		Object *getObject(GLuint num) const;
-		void display(void) const;
+		void display(Window *win, Camera *cam, LBuffer *l) const;
+		void displayOnGBuffer(Camera *cam, GBuffer *g) const;
 		void displayShadow(Light *l) const;
-		void displayOnGBuffer(GBuffer *g) const;
 	};
 }
     

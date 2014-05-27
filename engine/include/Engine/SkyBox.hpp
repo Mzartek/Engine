@@ -14,7 +14,6 @@ namespace engine
 		GLuint _idVBO;
 		GLuint _idIBO;
 		GLuint _numElement;
-		Camera *_cam;
 		ShaderProgram *_program;
 		GLint _MVPLocation;
 		GLint _textureLocation;
@@ -25,9 +24,9 @@ namespace engine
 		void load(std::string posx, std::string negx,
 			  std::string posy, std::string negy,
 			  std::string posz, std::string negz,
-			  GLfloat dim, Camera *cam, ShaderProgram *program);
+			  GLfloat dim, ShaderProgram *program);
 		void rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
-		void display(void);
+		void display(Camera *cam);
 	};
 }
 

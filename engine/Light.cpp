@@ -2,16 +2,12 @@
 
 engine::Light::Light(void)
 {
-	GLuint i;
 	_lightPosition[0] = 0;
 	_lightPosition[1] = 0;
 	_lightPosition[2] = 0;
-	for(i=0 ; i<4 ; i++)
-	{
-		_lightAmbient[i]=1.0;
-		_lightDiffuse[i]=1.0;
-		_lightSpecular[i]=1.0;
-	}
+	_lightColor[0]=1.0;
+	_lightColor[1]=1.0;
+	_lightColor[2]=1.0;
 	_lightDirection[0] = 1.0;
 	_lightDirection[1] = 0;
 	_lightDirection[2] = 0;
@@ -20,16 +16,12 @@ engine::Light::Light(void)
 
 engine::Light::Light(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	GLuint i;
 	_lightPosition[0] = x;
 	_lightPosition[1] = y;
 	_lightPosition[2] = z;
-	for(i=0 ; i<4 ; i++)
-	{
-		_lightAmbient[i]=1.0;
-		_lightDiffuse[i]=1.0;
-		_lightSpecular[i]=1.0;
-	}
+	_lightColor[0]=1.0;
+	_lightColor[1]=1.0;
+	_lightColor[2]=1.0;
 	_lightDirection[0] = 1.0;
 	_lightDirection[1] = 0;
 	_lightDirection[2] = 0;
@@ -40,14 +32,18 @@ engine::Light::~Light(void)
 {
 	if(_shadow!=NULL)
 		delete _shadow;
+	if(glIsVertexArray(_idVAO))
+		glDeleteVertexArrays(1, &_idVAO);
+	if(glIsBuffer(_idVBO))
+		glDeleteBuffers(1, &_idVBO);
 }
 
-void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *program)
+void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow)
 {
 	if(_shadow!=NULL)
 		delete _shadow;
-	_shadow = new ShadowMap();
-	_shadow->config(width, height, program);
+	_shadow = new ShadowMap;
+	_shadow->config(width, height, shadow);
 }
 
 void engine::Light::setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z)
@@ -64,33 +60,11 @@ void engine::Light::setDirection(const GLfloat &x, const GLfloat &y, const GLflo
 	_lightDirection[2] = z;
 }
 
-void engine::Light::setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
+void engine::Light::setColor(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_lightAmbient[0] = x;
-	_lightAmbient[1] = y;
-	_lightAmbient[2] = z;
-	_lightAmbient[3] = w;
-}
-
-void engine::Light::setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
-{
-	_lightDiffuse[0] = x;
-	_lightDiffuse[1] = y;
-	_lightDiffuse[2] = z;
-	_lightDiffuse[3] = w;
-}
-
-void engine::Light::setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
-{
-	_lightSpecular[0] = x;
-	_lightSpecular[1] = y;
-	_lightSpecular[2] = z;
-	_lightSpecular[3] = w;
-}
-
-engine::ShadowMap *engine::Light::getShadowMap(void)
-{
-	return _shadow;
+	_lightColor[0] = x;
+	_lightColor[1] = y;
+	_lightColor[2] = z;
 }
 
 GLfloat *engine::Light::getPosition(void)
@@ -103,27 +77,21 @@ GLfloat *engine::Light::getDirection(void)
 	return _lightDirection;
 }
 
-GLfloat *engine::Light::getAmbient(void)
+GLfloat *engine::Light::getColor(void)
 {
-	return _lightAmbient;
+	return _lightColor;
 }
 
-GLfloat *engine::Light::getDiffuse(void)
+engine::ShadowMap *engine::Light::getShadowMap(void)
 {
-	return _lightDiffuse;
+	return _shadow;
 }
-
-GLfloat *engine::Light::getSpecular(void)
-{
-	return _lightSpecular;
-}
-
 GLfloat *engine::Light::getMatrix(void)
 {
 	return _VP;
 }
 
-void engine::Light::newLoop(void) const
+void engine::Light::clear(void) const
 {
 	if(_shadow==NULL)
 	{
@@ -131,4 +99,49 @@ void engine::Light::newLoop(void) const
 		return;
 	}
 	_shadow->clear();
+}
+
+GLint engine::Light::getPositionTextureLocation(void) const
+{
+	return _positionTextureLocation;
+}
+
+GLint engine::Light::getNormalTextureLocation(void) const
+{
+	return _normalTextureLocation;
+}
+
+GLint engine::Light::getShininessTextureLocation(void) const
+{
+	return _shininessTextureLocation;
+}
+
+GLint engine::Light::getShadowMapLocation(void) const
+{
+	return _shadowMapLocation;
+}
+
+GLint engine::Light::getShadowMatrixLocation(void) const
+{
+	return _shadowMatrixLocation;
+}
+
+GLint engine::Light::getDiffuseTextureLocation(void) const
+{
+	return _diffuseTextureLocation;
+}
+
+GLint engine::Light::getSpecularTextureLocation(void) const
+{
+	return _specularTextureLocation;
+}
+
+GLint engine::Light::getCamPositionLocation(void) const
+{
+	return _camPositionLocation;
+}
+
+GLint engine::Light::getLightColorLocation(void) const
+{
+	return _lightColorLocation;
 }

@@ -2,38 +2,59 @@
 #define LIGHT
 
 #include "ShadowMap.hpp"
+#include "Camera.hpp"
+#include "GBuffer.hpp"
+#include "LBuffer.hpp"
 
 namespace engine
 {
 	class DLLAPI Light
 	{
 	protected:
+		GLuint _idVAO;
+		GLuint _idVBO;
 		ShadowMap *_shadow;
 		GLfloat _lightPosition[3];
 		GLfloat _lightDirection[3];
-		GLfloat _lightAmbient[4];
-		GLfloat _lightDiffuse[4];
-		GLfloat _lightSpecular[4];
+		GLfloat _lightColor[3];
 		GLfloat _VP[16];
+		ShaderProgram *_program;
+		// For LBuffer
+		GLint _positionTextureLocation;
+		GLint _normalTextureLocation;
+		GLint _shininessTextureLocation;
+		GLint _shadowMapLocation;
+		GLint _shadowMatrixLocation;
+		GLint _diffuseTextureLocation;
+		GLint _specularTextureLocation;
+	        GLint _camPositionLocation;
+		GLint _lightColorLocation;
 	public:
 		Light(void);
 		Light(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		virtual ~Light(void);
-		void configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *program);
+		virtual void config(ShaderProgram *program) = 0;
+		void configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow);
 		void setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void setDirection(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
-		void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
-		void setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
-		ShadowMap *getShadowMap(void);
+		void setColor(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		GLfloat *getPosition(void);
 		GLfloat *getDirection(void);
-		GLfloat *getAmbient(void);
-		GLfloat *getDiffuse(void);
-		GLfloat *getSpecular(void);
+		GLfloat *getColor(void);
+		ShadowMap *getShadowMap(void);
 		GLfloat *getMatrix(void);
+		GLint getPositionTextureLocation(void) const;
+		GLint getNormalTextureLocation(void) const;
+		GLint getShininessTextureLocation(void) const;
+		GLint getShadowMapLocation(void) const;
+		GLint getShadowMatrixLocation(void) const;
+		GLint getDiffuseTextureLocation(void) const;
+		GLint getSpecularTextureLocation(void) const;
+		GLint getCamPositionLocation(void) const;
+		GLint getLightColorLocation(void) const;
+		void clear(void) const;
 		virtual void position(void) = 0;
-		void newLoop(void) const;
+		virtual void display(Camera *cam, GBuffer *g, LBuffer *l) = 0;
 	};
 }
 

@@ -26,7 +26,7 @@ engine::SkyBox::~SkyBox()
 void engine::SkyBox::load(std::string posx, std::string negx,
 			  std::string posy, std::string negy,
 			  std::string posz, std::string negz,
-			  GLfloat dim, Camera *cam, ShaderProgram *program)
+			  GLfloat dim, ShaderProgram *program)
 {
 	GLuint i;
 	GLenum cube_map_target[] = {   
@@ -122,7 +122,6 @@ void engine::SkyBox::load(std::string posx, std::string negx,
   
 	glBindVertexArray(0);
 
-	_cam = cam;
 	_program = program;
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_textureLocation = glGetUniformLocation(_program->getId(), "cubeMap");
@@ -138,7 +137,7 @@ void engine::SkyBox::rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 	_z = z;
 }
 
-void engine::SkyBox::display(void)
+void engine::SkyBox::display(Camera *cam)
 {
 	GLfloat pos[16];
 	if(_program == NULL)
@@ -148,9 +147,9 @@ void engine::SkyBox::display(void)
 	}
 
 	matrixLoadIdentity(pos);
-	matrixTranslate(pos, _cam->getPositionCamera()->_x, _cam->getPositionCamera()->_y, _cam->getPositionCamera()->_z);
+	matrixTranslate(pos, cam->getPositionCamera()->_x, cam->getPositionCamera()->_y, cam->getPositionCamera()->_z);
 	matrixRotate(pos, _angle, _x, _y, _z);
-	matrixMultiply(pos, _cam->getMatrix(), pos);
+	matrixMultiply(pos, cam->getMatrix(), pos);
   
 	glDepthMask(GL_FALSE);
 	glUseProgram(_program->getId());

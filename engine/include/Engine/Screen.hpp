@@ -15,7 +15,7 @@ namespace engine
 	public:
 		Screen();
 		~Screen();
-		void init(ShaderProgram *program);
+		void config(ShaderProgram *program);
 		void display(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	};
 }

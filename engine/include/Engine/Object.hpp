@@ -2,7 +2,7 @@
 #define OBJECT
 
 #include "GLHead.hpp"
-#include "Renderer.hpp"
+#include "ShaderProgram.hpp"
 #include "Light.hpp"
 #include "GBuffer.hpp"
 
@@ -12,7 +12,6 @@ namespace engine
 	{
 		friend int comparObject(const void *p1, const void *p2);
 	private:
-		Renderer *_renderer;
 		GLuint _idTexture;
 		GLuint _idVAO;
 		GLuint _idVBO;
@@ -22,10 +21,17 @@ namespace engine
 		GLfloat _matSpecular[4];
 		GLfloat _matShininess[1];
 		GLsizei _numElement;
+		ShaderProgram *_program;
+		GLint _matAmbientLocation;
+		GLint _matDiffuseLocation;
+		GLint _matSpecularLocation;
+		GLint _colorTextureLocation;
+		GLint _lightDiffuseTextureLocation;
+		GLint _lightSpecularTextureLocation;
 	public:
 		Object(void);
 		~Object(void);
-		void setRenderer(Renderer *renderer);
+		void setShaderProgram(ShaderProgram *program);
 		void setTexture(const GLuint &id);
 		void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
 		void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
@@ -34,9 +40,9 @@ namespace engine
 		GLfloat getTransparency(void);
 		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
-		void display(void) const;
-		void displayShadow(Light *l) const;
+		void display(LBuffer *l) const;
 		void displayOnGBuffer(GBuffer *g) const;
+		void displayShadow(Light *l) const;
 	};
   
 	int comparObject(const void *p1, const void *p2);

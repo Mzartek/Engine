@@ -8,4 +8,6 @@
 .fuse*
 sample
 sample.exe
-Visual
+Debug
+Release
+x64

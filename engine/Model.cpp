@@ -3,7 +3,7 @@
 engine::Model::Model(void)
 {
 	_tObject = new std::vector<Object *>;
-	_context = NULL;
+	_program = NULL;
 	matIdentity();
 }
 
@@ -15,9 +15,12 @@ engine::Model::~Model(void)
 	delete _tObject;
 }
 
-void engine::Model::setRenderer(Renderer *context)
+void engine::Model::config(ShaderProgram *program)
 {
-	_context = context;
+	_program = program;
+	_screenWidthLocation = glGetUniformLocation(_program->getId(), "screenWidth");
+	_screenHeightLocation = glGetUniformLocation(_program->getId(), "screenHeight");
+	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 }
 
 void engine::Model::createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
@@ -30,7 +33,7 @@ void engine::Model::createObject(const GLsizei &sizeVertexArray, const GLfloat *
   
 	loadTextureFromFile(pathTexture, &texture);
 
-	newone->setRenderer(_context);
+	newone->setShaderProgram(_program);
 	newone->setTexture(texture);
 	newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
 	newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
@@ -86,53 +89,64 @@ engine::Object *engine::Model::getObject(GLuint num) const
 	return (*_tObject)[num];
 }
   
-void engine::Model::display(void) const
+void engine::Model::display(Window *win, Camera *cam, LBuffer *l) const
 {
 	GLuint i;
-	GLfloat tmp[16], bias[16];
+	GLfloat tmp[16];
   
-	if(_context == NULL)
+	if(_program == NULL)
 	{
-		std::cerr << "You need to set the Renderer before display a model" << std::endl;
+		std::cerr << "You need to configure the Model before" << std::endl;
 		return;
 	}
-	if(_context->getCamera()==NULL)
+	if(cam == NULL)
 	{
-		std::cerr <<"You need to set a camera to the Renderer before display a model" << std::endl;
+		std::cerr << "Bad Camera" << std::endl;
 		return;
 	}
+  
+	glUseProgram(_program->getId());
 
-	matrixLoadBias(bias);
+	glUniform1f(_screenWidthLocation, (GLfloat)win->getWidth());
+	glUniform1f(_screenHeightLocation, (GLfloat)win->getHeight());
   
-	glUseProgram(_context->getProgramId());
-  
-	matrixMultiply(tmp, _context->getCamera()->getMatrix(), _modelMatrix);
-	glUniformMatrix4fv(_context->MVPLocation, 1, GL_FALSE, tmp);
-    
-	if(_context->getDirLight()!=NULL)
-		if(_context->getDirLight()->getShadowMap() != NULL)
-		{
-			matrixMultiply(tmp, _context->getDirLight()->getMatrix(), _modelMatrix);
-			matrixMultiply(tmp, bias, tmp);
-			glUniformMatrix4fv(_context->dirShadowMVPLocation, 1, GL_FALSE, tmp);
-		}
-  
-	if(_context->getSpotLight()!=NULL)
-		if(_context->getSpotLight()->getShadowMap() != NULL)
-		{
-			matrixMultiply(tmp, _context->getSpotLight()->getMatrix(), _modelMatrix);
-			matrixMultiply(tmp, bias, tmp);
-			glUniformMatrix4fv(_context->spotShadowMVPLocation, 1, GL_FALSE, tmp);
-		}
-  
-	matrixNormalFromModel(tmp, _modelMatrix);
-	glUniformMatrix4fv(_context->modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
-	glUniformMatrix3fv(_context->normalMatrixLocation, 1, GL_FALSE, tmp);
+	matrixMultiply(tmp, cam->getMatrix(), _modelMatrix);
+	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, tmp);
   
 	glUseProgram(0);
   
 	for(i=0 ; i<_tObject->size(); i++)
-		(*_tObject)[i]->display();
+		(*_tObject)[i]->display(l);
+}
+
+void engine::Model::displayOnGBuffer(Camera *cam, GBuffer *g) const
+{
+	GLuint i;
+	GLfloat tmp[16];
+	
+	if(cam == NULL)
+	{
+		std::cerr << "Bad Camera" << std::endl;
+		return;
+	}
+	if(g == NULL)
+	{
+		std::cerr << "Bad GBuffer!" << std::endl;
+		return;
+	}
+        
+	glUseProgram(g->getProgramId());
+	
+	matrixMultiply(tmp, cam->getMatrix(), _modelMatrix);
+	glUniformMatrix4fv(g->getMVPLocation(), 1, GL_FALSE, tmp);
+	glUniformMatrix4fv(g->getModelMatrixLocation(), 1, GL_FALSE, _modelMatrix);
+	matrixNormalFromModel(tmp, _modelMatrix);
+	glUniformMatrix3fv(g->getNormalMatrixLocation(), 1, GL_FALSE, tmp);
+	
+	glUseProgram(0);
+	
+	for(i=0 ; i<_tObject->size(); i++)
+		(*_tObject)[i]->displayOnGBuffer(g);
 }
 
 void engine::Model::displayShadow(Light *l) const
@@ -152,38 +166,11 @@ void engine::Model::displayShadow(Light *l) const
 	}
 	
 	glUseProgram(l->getShadowMap()->getProgramId());
+	
 	matrixMultiply(tmp, l->getMatrix(), _modelMatrix);
 	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, tmp);
+	
 	glUseProgram(0);
 	for(i=0 ; i<_tObject->size(); i++)
 		(*_tObject)[i]->displayShadow(l);
-}
-
-void engine::Model::displayOnGBuffer(GBuffer *g) const
-{
-	GLuint i;
-	GLfloat tmp[16];
-  
-	if(_context == NULL)
-	{
-		std::cerr << "You need to set the Renderer before display a model!" << std::endl;
-		return;
-	}
-	if(_context->getCamera() == NULL)
-	{
-		std::cerr <<"You need to set a camera to the Renderer before display a model!" << std::endl;
-		return;
-	}
-	if(g == NULL)
-	{
-		std::cerr <<"Bad GBuffer!" << std::endl;
-		return;
-	}
-        
-	glUseProgram(g->getProgramId());
-	matrixMultiply(tmp, _context->getCamera()->getMatrix(), _modelMatrix);
-	glUniformMatrix4fv(g->getMVPLocation(), 1, GL_FALSE, tmp);
-	glUseProgram(0);
-	for(i=0 ; i<_tObject->size(); i++)
-		(*_tObject)[i]->displayOnGBuffer(g);
 }

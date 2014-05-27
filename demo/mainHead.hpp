@@ -6,7 +6,6 @@
 
 #include <Engine/Window.hpp>
 #include <Engine/ShaderProgram.hpp>
-#include <Engine/Renderer.hpp>
 #include <Engine/ShadowMap.hpp>
 #include <Engine/FreeCam.hpp>
 #include <Engine/DirLight.hpp>
@@ -22,9 +21,8 @@ extern Mix_Music *song;
 extern GLfloat sr, sg, sb, sa;
 
 extern engine::Window *window;
-extern engine::Renderer *renderer;
-extern engine::Camera *cam;
-//extern engine::FreeCam *cam;
+// extern engine::Camera *cam;
+extern engine::FreeCam *cam;
 extern engine::DirLight *sun;
 extern engine::Model *face;
 extern engine::OBJModel *helicopter;

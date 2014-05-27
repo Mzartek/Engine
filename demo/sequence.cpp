@@ -14,8 +14,8 @@ void sequence(void)
 	helicopterMatrixRotate(a, 0.0, 1.0, 0.0);
 
 	matrixLoadIdentity(mat1);
-	// sa = 0.0f;
-
+	sa = 0.0f;
+	
 	switch (step)
 	{
 	case 0: // Debut
@@ -312,8 +312,8 @@ void sequence(void)
 	helicopterRotateRotor(rotor);
 
 	sun->setPosition(helicopter->getPosition()._x, helicopter->getPosition()._y, helicopter->getPosition()._z);
-	cam->setPositionCamera(mat1[12], mat1[13], mat1[14]);
-	cam->setPositionTarget(target._x, target._y, target._z);
+	// cam->setPositionCamera(mat1[12], mat1[13], mat1[14]);
+	// cam->setPositionTarget(target._x, target._y, target._z);
 	
-	// cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+	cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
 }

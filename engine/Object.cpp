@@ -14,7 +14,7 @@ engine::Object::Object(void)
 		_matSpecular[i]=1.0;
 	}
 	_matShininess[0]=1.0;
-	_renderer = NULL;
+	_program = NULL;
 }
 
 engine::Object::~Object(void)
@@ -29,9 +29,15 @@ engine::Object::~Object(void)
 		glDeleteTextures(1, &_idTexture);
 }
 
-void engine::Object::setRenderer(Renderer *renderer)
+void engine::Object::setShaderProgram(ShaderProgram *program)
 {
-	_renderer = renderer;
+	_program = program;
+	_matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
+	_matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
+	_matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
+	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
+	_lightDiffuseTextureLocation = glGetUniformLocation(_program->getId(), "lightDiffuseTexture");
+	_lightSpecularTextureLocation = glGetUniformLocation(_program->getId(), "lightSpecularTexture");
 }
 
 void engine::Object::setTexture(const GLuint &id)
@@ -104,7 +110,7 @@ void engine::Object::load(const GLsizei &sizeVertexArray, const GLfloat *vertexA
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
   
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(8*sizeof(GLfloat)), BUFFER_OFFSET(0));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(0));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(3 * sizeof(GLfloat)));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(5 * sizeof(GLfloat)));
 
@@ -113,55 +119,69 @@ void engine::Object::load(const GLsizei &sizeVertexArray, const GLfloat *vertexA
 
 #undef BUFFER_OFFSET
 
-void engine::Object::display(void) const
+void engine::Object::display(LBuffer *l) const
 {
-	if(_renderer == NULL)
+	if(_program == NULL)
 	{
-		std::cerr << "You need to set the Renderer before" << std::endl;
+		std::cerr << "You need to set the ShaderProgram before" << std::endl;
 		return;
 	}
   
-	glUseProgram(_renderer->getProgramId());
+	glUseProgram(_program->getId());
   
 	glBindVertexArray(_idVAO);
+	
+	glUniform4fv(_matAmbientLocation,  1, _matAmbient);
+	glUniform4fv(_matDiffuseLocation,  1, _matDiffuse);
+	glUniform4fv(_matSpecularLocation,  1, _matSpecular);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
-	glUniform1i(_renderer->textureLocation, 0);
+	glUniform1i(_colorTextureLocation, 0);
 
-	if(_renderer->getDirLight()!=NULL)
-		if(_renderer->getDirLight()->getShadowMap() != NULL)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, _renderer->getDirLight()->getShadowMap()->getIdDepthTexture());
-			glUniform1i(_renderer->dirShadowMapLocation, 1);
-		}
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, l->getIdTexture(0));
+	glUniform1i(_lightDiffuseTextureLocation, 1);
 
-	if(_renderer->getSpotLight()!=NULL)
-		if(_renderer->getSpotLight()->getShadowMap() != NULL)
-		{
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, _renderer->getSpotLight()->getShadowMap()->getIdDepthTexture());
-			glUniform1i(_renderer->spotShadowMapLocation, 2);
-		}
-  
-	glUniform4fv(_renderer->matAmbientLocation,  1, _matAmbient);
-	glUniform4fv(_renderer->matDiffuseLocation,  1, _matDiffuse);
-	glUniform4fv(_renderer->matSpecularLocation,  1, _matSpecular);
-	glUniform1fv(_renderer->matShininessLocation, 1, _matShininess);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, l->getIdTexture(1));
+	glUniform1i(_lightSpecularTextureLocation, 2);
 
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, 0);
   
 	glBindVertexArray(0);
   
 	glUseProgram(0);
+}
+
+void engine::Object::displayOnGBuffer(GBuffer *g) const
+{	
+	if(g == NULL)
+	{
+		std::cerr <<"Bad GBuffer!" << std::endl;
+		return;
+	}
+	
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
+	glUseProgram(g->getProgramId());
+	glBindVertexArray(_idVAO);
+	
+	glUniform1fv(g->getShininessLocation(), 1, _matShininess);
+        
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 void engine::Object::displayShadow(Light *l) const
@@ -180,29 +200,6 @@ void engine::Object::displayShadow(Light *l) const
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 	glUseProgram(l->getShadowMap()->getProgramId());
 	glBindVertexArray(_idVAO);
-	
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
-	
-	glBindVertexArray(0);
-	glUseProgram(0);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-}
-
-void engine::Object::displayOnGBuffer(GBuffer *g) const
-{
-	if(g == NULL)
-	{
-		std::cerr <<"Bad GBuffer!" << std::endl;
-		return;
-	}
-	
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
-	glUseProgram(g->getProgramId());
-	glBindVertexArray(_idVAO);
-	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _idTexture);
-	glUniform1i(g->getTextureLocation(), 0);
 	
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	
