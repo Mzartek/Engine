@@ -38,11 +38,11 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+	// SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	// SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
 	SDL_GL_SetSwapInterval(1);
   
-	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, SDL_WINDOW_OPENGL);
+	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN);
   
 	if(!_idWindow)
 	{
@@ -68,8 +68,6 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glEnable(GL_MULTISAMPLE);
 }
 
 void engine::Window::setDisplayFunc(void (*f) (void))
@@ -115,6 +113,7 @@ SDL_Window *engine::Window::getId(void)
 void engine::Window::mainLoop(void)
 {
 	SDL_Event event;
+	
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	_reshape(_width, _height);
 	while(!_exit)
@@ -142,6 +141,7 @@ void engine::Window::mainLoop(void)
 			_idle();
 		if(_display)
 			_display();
+		
 		SDL_GL_SwapWindow(_idWindow);
 	}
 

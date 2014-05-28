@@ -175,6 +175,10 @@ void engine::Object::displayOnGBuffer(GBuffer *g) const
 	glUseProgram(g->getProgramId());
 	glBindVertexArray(_idVAO);
 	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _idTexture);
+	glUniform1i(g->getColorTextureLocation(), 0);
+	
 	glUniform1fv(g->getShininessLocation(), 1, _matShininess);
         
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

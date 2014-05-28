@@ -48,12 +48,11 @@ float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
 
 void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need to be normalize
 {
-	vec4 diff, spec;
 	vec3 L, E, R;
 	float cosTheta, specular;
 
-	diff = vec4(0.0, 0.0, 0.0, 0.0);
-	spec = vec4(0.0, 0.0, 0.0, 0.0);
+	outDiffuseTexture = texture(diffuseTexture, texCoord);
+	outSpecularTexture = texture(specularTexture, texCoord);
   
 	L = normalize(light.rayDir);
 	
@@ -65,24 +64,9 @@ void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need 
 
 		specular = pow(max(dot(R, E), 0.0), shininess);
       
-		diff = vec4(light.color, 1.0) * cosTheta * shadow;
-		spec = vec4(light.color, 1.0) * specular * shadow;
+		outDiffuseTexture += vec4(light.color, 1.0) * cosTheta * shadow;
+		outSpecularTexture += vec4(light.color, 1.0) * specular * shadow;
 	}
-	
-	diff = texture(diffuseTexture, texCoord) + diff;
-	diff.x = clamp(diff.x, 0.0, 1.0);
-	diff.y = clamp(diff.y, 0.0, 1.0);
-	diff.z = clamp(diff.z, 0.0, 1.0);
-	diff.w = clamp(diff.w, 0.0, 1.0);
-	
-	spec = texture(specularTexture, texCoord) + spec;
-	spec.x = clamp(spec.x, 0.0, 1.0);
-	spec.y = clamp(spec.y, 0.0, 1.0);
-	spec.z = clamp(spec.z, 0.0, 1.0);
-	spec.w = clamp(spec.w, 0.0, 1.0);
-	
-	outDiffuseTexture = diff;
-	outSpecularTexture = spec;
 }
 
 void main(void)
@@ -93,5 +77,5 @@ void main(void)
 	float s = 1.0;
 
 	s = calcShadow(shadowMap, light.shadowMatrix * vec4(position, 1.0), 3.0);
-        calcDirLight(normal, eyePos - position, shininess, s);
+	calcDirLight(normal, eyePos - position, shininess, s);
 }

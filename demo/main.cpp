@@ -103,12 +103,14 @@ void display(void)
 	// Light Pass
 	lBuffer->clear();
 	sun->display(cam, gBuffer, lBuffer);
-
+	
 	// Second Geometry Pass
 	window->clear();
 	skybox->display(cam);
 	face->display(window, cam, lBuffer);
 	helicopterDisplay(window, cam, lBuffer);
+	
+	//gBuffer->display(window);
 	
 	screen->display(sr, sg, sb, sa);
 	text1->display();
@@ -205,19 +207,22 @@ void initGL(void)
 	lightProgram->loadProgram("shader/dirLightVert.c", "shader/dirLightFrag.c");
 
 	// Buffer
-	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram);
+	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram, GL_FALSE);
 	lBuffer->config(window->getWidth(), window->getHeight());
 
 	// Text
 	text1->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
-		      200, 400, 400, 100, textProgram, window);
+			  window->getWidth() / 3, ((window->getHeight() / 4) * 2) + 100, 
+			  400, 100, textProgram, window);
 	text2->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
-		      200, 200, 400, 100, textProgram, window);
+			  window->getWidth() / 3, ((window->getHeight() / 4) * 2),
+			  400, 100, textProgram, window);
 	text3->config("resources/font/SIXTY.TTF", 50,
 		      255, 255, 255,
-		      200, 100, 400, 100, textProgram, window);
+			  window->getWidth() / 3, ((window->getHeight() / 4) * 2) - 100,
+			  400, 100, textProgram, window);
 
 	// Light
 	sun->config(lightProgram);
@@ -289,7 +294,7 @@ int main(int argc, char **argv)
 	init();
 
 	if (argc < 3)
-		window->initWindow("Demo", 800, 600);
+		window->initWindow("Demo", 1680, 1050);
 	else
 		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]));
 	window->setDisplayFunc(display);

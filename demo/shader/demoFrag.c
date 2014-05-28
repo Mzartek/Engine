@@ -22,13 +22,10 @@ out vec4 fragColor;
 void main(void)
 {
 	vec2 lightCoord = vec2(gl_FragCoord.x/outScreenWidth, gl_FragCoord.y/outScreenHeight);
-	vec4 final_color, lightDiff, lightSpec;
+	vec4 lightDiff = texture(lightDiffuseTexture, lightCoord);
+	vec4 lightSpec = texture(lightSpecularTexture, lightCoord);
+	vec4 final_color;
 
-	if(lightCoord.x >= 0.0 && lightCoord.x <= 1.0 && lightCoord.y >= 0.0 && lightCoord.y <= 1.0)
-	{
-		lightDiff = texture(lightDiffuseTexture, lightCoord);
-		lightSpec = texture(lightSpecularTexture, lightCoord);
-		final_color = outMat.ambient + (outMat.diffuse * lightDiff) + (outMat.specular * lightSpec);
-		fragColor = texture(colorTexture, outTexCoord) * final_color;
-	}
+	final_color = outMat.ambient + (outMat.diffuse * lightDiff) + (outMat.specular * lightSpec);
+	fragColor = texture(colorTexture, outTexCoord) * final_color;
 }

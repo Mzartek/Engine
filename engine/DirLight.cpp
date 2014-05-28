@@ -112,15 +112,15 @@ void engine::DirLight::display(Camera *cam, GBuffer *g, LBuffer *l)
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(0));
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(0)); // Position
 	glUniform1i(_positionTextureLocation, 0);
 	
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(1));
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(1)); // Normal
 	glUniform1i(_normalTextureLocation, 1);
 	
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(2));
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(2)); // Shininess
 	glUniform1i(_shininessTextureLocation, 2);
 
 	// ShadowMap

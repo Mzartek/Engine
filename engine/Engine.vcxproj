@@ -175,6 +175,7 @@
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="FreeCam.cpp" />
     <ClCompile Include="GBuffer.cpp" />
+    <ClCompile Include="LBuffer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -182,7 +183,6 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OBJModel.cpp" />
     <ClCompile Include="PlayerCam.cpp" />
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShadowMap.cpp" />

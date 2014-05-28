@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{6d780a6a-0a6d-45fe-9b60-e910e39252a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mainHead.hpp">
@@ -21,6 +24,48 @@
     </ClCompile>
     <ClCompile Include="sequence.cpp">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\demoFrag.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\demoVert.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\dirLightFrag.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\dirLightVert.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\gBufferFrag.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\gBufferVert.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\screenFrag.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\screenVert.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\shadowFrag.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\shadowVert.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\skyboxFrag.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\skyboxVert.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\textFrag.c">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="shader\textVert.c">
+      <Filter>Shader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
