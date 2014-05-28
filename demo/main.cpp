@@ -90,7 +90,7 @@ void display(void)
 	cam->position();
 	sun->position();
 
-	//Shadow Pass
+	// Shadow Pass
 	sun->clear();
 	face->displayShadow(sun);
 	helicopterDisplayShadow(sun);
