@@ -70,9 +70,6 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	glEnable(GL_MULTISAMPLE);
-	
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
 }
 
 void engine::Window::setDisplayFunc(void (*f) (void))
