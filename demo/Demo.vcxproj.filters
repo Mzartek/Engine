@@ -67,5 +67,8 @@
     <ClCompile Include="shader\textVert.c">
       <Filter>Shader</Filter>
     </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
