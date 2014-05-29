@@ -21,7 +21,7 @@ namespace engine
 	public:
 		Window(void);
 		~Window(void);
-		void initWindow(const std::string title, GLint const &w, GLint const &h);
+		void initWindow(const std::string title, GLint const &w, GLint const &h, GLboolean fullScreen);
 		void setDisplayFunc(void (*f) (void));
 		void setIdleFunc(void (*f) (void));
 		void setReshapeFunc(void (*f) (GLuint, GLuint));

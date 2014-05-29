@@ -2,7 +2,8 @@
 
 engine::Model::Model(void)
 {
-	_tObject = new std::vector<Object *>;
+	isMirror = GL_FALSE;
+	_tObject = NULL;
 	_program = NULL;
 	matIdentity();
 }
@@ -10,9 +11,30 @@ engine::Model::Model(void)
 engine::Model::~Model(void)
 {
 	GLuint i;
-	for(i=0 ; i<_tObject->size(); i++)
-		delete (*_tObject)[i];
-	delete _tObject;
+	if(_tObject != NULL && isMirror == GL_FALSE)
+	{		
+		for(i=0 ; i<_tObject->size(); i++)
+			delete (*_tObject)[i];
+		delete _tObject;
+	}
+}
+
+void engine::Model::initObjectArray(void)
+{
+	GLuint i;
+	if(_tObject != NULL && isMirror == GL_FALSE)
+	{		
+		for(i=0 ; i<_tObject->size(); i++)
+			delete (*_tObject)[i];
+		delete _tObject;
+	}
+	_tObject = new std::vector<Object *>;
+}
+
+void engine::Model::initObjectMirror(Model *m)
+{
+	isMirror = GL_TRUE;
+	_tObject = m->_tObject;
 }
 
 void engine::Model::config(ShaderProgram *program)

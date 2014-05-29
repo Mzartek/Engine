@@ -9,6 +9,10 @@ engine::Camera *cam;
 // engine::FreeCam *cam;
 engine::DirLight *sun;
 engine::Model *face;
+engine::OBJModel *cube1;
+engine::Model *cube2;
+engine::Model *cube3;
+engine::Model *cube4;
 engine::OBJModel *helicopter;
 engine::OBJModel *grotor;
 engine::OBJModel *protor;
@@ -53,14 +57,14 @@ void helicopterMatrixRotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 {
 	helicopter->matRotate(angle, x, y, z);
 	grotor->matRotate(angle, x, y, z);
-	grotor->matTranslate(0.025f, 0.0f, -0.5f);
 	protor->matRotate(angle, x, y, z);
-	protor->matTranslate(0.20f, 1.2f, 9.87f);
 }
 
 void helicopterRotateRotor(GLfloat angle)
 {
+	grotor->matTranslate(0.050f, 0.0f, -1.0f);
 	grotor->matRotate(angle, 0, 1, 0);
+	protor->matTranslate(0.40f, 2.4f, 19.74f);
 	protor->matRotate(angle, 1, 0, 0);
 }
 
@@ -93,11 +97,19 @@ void display(void)
 	// Shadow Pass
 	sun->clear();
 	face->displayShadow(sun);
+	cube1->displayShadow(sun);
+	cube2->displayShadow(sun);
+	cube3->displayShadow(sun);
+	cube4->displayShadow(sun);
 	helicopterDisplayShadow(sun);
 
 	// First Geometry Pass
 	gBuffer->clear();
 	face->displayOnGBuffer(cam, gBuffer);
+	cube1->displayOnGBuffer(cam, gBuffer);
+	cube2->displayOnGBuffer(cam, gBuffer);
+	cube3->displayOnGBuffer(cam, gBuffer);
+	cube4->displayOnGBuffer(cam, gBuffer);
 	helicopterDisplayOnGBuffer(cam, gBuffer);
 
 	// Light Pass
@@ -108,9 +120,13 @@ void display(void)
 	window->clear();
 	skybox->display(cam);
 	face->display(window, cam, lBuffer);
+	cube1->display(window, cam, lBuffer);
+	cube2->display(window, cam, lBuffer);
+	cube3->display(window, cam, lBuffer);
+	cube4->display(window, cam, lBuffer);
 	helicopterDisplay(window, cam, lBuffer);
 	
-	//gBuffer->display(window);
+	// gBuffer->display(window);
 	
 	screen->display(sr, sg, sb, sa);
 	text1->display();
@@ -150,10 +166,14 @@ void mouseMove(GLint xrel, GLint yrel)
 void init(void)
 {
 	window = new engine::Window;
-	// cam = new engine::Camera;
-	cam = new engine::FreeCam;
+	cam = new engine::Camera;
+	// cam = new engine::FreeCam;
 	sun = new engine::DirLight;
 	face = new engine::Model;
+	cube1 = new engine::OBJModel;
+	cube2 = new engine::Model;
+	cube3 = new engine::Model;
+	cube4 = new engine::Model;
 	helicopter = new engine::OBJModel;
 	grotor = new engine::OBJModel;
 	protor = new engine::OBJModel;
@@ -171,121 +191,44 @@ void init(void)
 
 void initGL(void)
 {
-	GLfloat vertex[] = { -1000, 0, -1000,
-			     0, 0,//
-			     0, 1, 0,
-			     -1000, 0, 1000,
-			     0, 1,//
-			     0, 1, 0,
-			     1000, 0, 1000,
-			     1, 1,//
-			     0, 1, 0,
-			     1000, 0, -1000,
-			     1, 0,//
-			     0, 1, 0
-	};
-	GLuint index[] = { 0, 1, 2, 0, 2, 3 };
-	GLfloat mat_ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	GLfloat mat_diffuse[] = { 0.9f, 0.9f, 0.9f, 1.0f };
-	GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	GLfloat mat_shininess[] = { 20.0f };
-	
-	mainProgram = new engine::ShaderProgram;
-	shadowProgram = new engine::ShaderProgram;
-	skyboxProgram = new engine::ShaderProgram;
-	screenProgram = new engine::ShaderProgram;
-	textProgram = new engine::ShaderProgram;
-	gBufferProgram = new engine::ShaderProgram;
-	lightProgram = new engine::ShaderProgram;
-	
-	mainProgram->loadProgram("shader/demoVert.c", "shader/demoFrag.c");
-	shadowProgram->loadProgram("shader/shadowVert.c", "shader/shadowFrag.c");
-	skyboxProgram->loadProgram("shader/skyboxVert.c", "shader/skyboxFrag.c");
-	screenProgram->loadProgram("shader/screenVert.c", "shader/screenFrag.c");
-	textProgram->loadProgram("shader/textVert.c", "shader/textFrag.c");
-	gBufferProgram->loadProgram("shader/gBufferVert.c", "shader/gBufferFrag.c");
-	lightProgram->loadProgram("shader/dirLightVert.c", "shader/dirLightFrag.c");
-
-	// Buffer
-	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram, GL_FALSE);
-	lBuffer->config(window->getWidth(), window->getHeight());
-
-	// Text
-	text1->config("resources/font/SIXTY.TTF", 100,
-		      255, 255, 255,
-			  window->getWidth() / 3, ((window->getHeight() / 4) * 2) + 100, 
-			  400, 100, textProgram, window);
-	text2->config("resources/font/SIXTY.TTF", 100,
-		      255, 255, 255,
-			  window->getWidth() / 3, ((window->getHeight() / 4) * 2),
-			  400, 100, textProgram, window);
-	text3->config("resources/font/SIXTY.TTF", 50,
-		      255, 255, 255,
-			  window->getWidth() / 3, ((window->getHeight() / 4) * 2) - 100,
-			  400, 100, textProgram, window);
-
-	// Light
-	sun->config(lightProgram);
-	sun->setDirection(1, -1, 0);
-	sun->setColor(mat_specular[0], mat_specular[1], mat_specular[2]);
-	sun->configShadowMap(1024, 1024, shadowProgram);
-	sun->setDimension(50, 50, 50);
-
-	// Skybox
-	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
-		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
-		     "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
-		     100, skyboxProgram);
-	skybox->rotate(0, 0, 0, 0);
-
-	// Model
-	face->config(mainProgram);
-	face->createObject(sizeof vertex, vertex,
-			   sizeof index, index,
-			   "resources/ornaments.jpg",
-			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-
-	helicopter->config(mainProgram);
-	helicopter->loadObj("resources/UH-60_Blackhawk/corps.obj", 1);
-	helicopter->sortObject();
-
-	grotor->config(mainProgram);
-	grotor->loadObj("resources/UH-60_Blackhawk/grotor.obj");
-	grotor->sortObject();
-
-	protor->config(mainProgram);
-	protor->loadObj("resources/UH-60_Blackhawk/protor.obj", 1);
-	protor->sortObject();
-
-	// Screen
-	screen->config(screenProgram);
-	sa = 1.0;
+	configShader();
+	configBuffer();
+	configText();
+	configLight();
+	configScreen();
+	loadFace();
+	loadCubes();
+	loadHelicopter();
+	loadSkybox();
 }
 
 void deleteClass(void)
 {
-	delete cam;
-	delete sun;
-	delete face;
-	delete helicopter;
-	delete grotor;
-	delete protor;
-	delete skybox;
-	delete screen;
-	delete text1;
-	delete text2;
-	delete text3;
-	delete gBuffer;
-	delete lBuffer;
-	
-	delete mainProgram;
-	delete shadowProgram;
-	delete skyboxProgram;
-	delete screenProgram;
-	delete textProgram;
-	delete gBufferProgram;
 	delete lightProgram;
+	delete gBufferProgram;
+	delete textProgram;
+	delete screenProgram;
+	delete skyboxProgram;
+	delete shadowProgram;
+	delete mainProgram;
 	
+	delete lBuffer;
+	delete gBuffer;
+	delete text3;
+	delete text2;
+	delete text1;
+	delete screen;
+	delete skybox;
+	delete protor;
+	delete grotor;
+	delete helicopter;
+	delete cube4;
+	delete cube3;
+	delete cube2;
+	delete cube1;
+	delete face;
+	delete sun;
+	delete cam;
 	delete window; // Need to be destroyed at last
 }
 
@@ -294,9 +237,9 @@ int main(int argc, char **argv)
 	init();
 
 	if (argc < 3)
-		window->initWindow("Demo", 1680, 1050);
+		window->initWindow("Demo", 800, 600, GL_TRUE);
 	else
-		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]));
+		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_TRUE);
 	window->setDisplayFunc(display);
 	window->setIdleFunc(sequence);
 	window->setReshapeFunc(reshape);

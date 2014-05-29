@@ -15,8 +15,10 @@ engine::Window::~Window(void)
 	SDL_Quit();
 }
 
-void engine::Window::initWindow(const std::string title, GLint const &w, GLint const &h)
+void engine::Window::initWindow(const std::string title, GLint const &w, GLint const &h, GLboolean fullScreen)
 {
+	Uint32 flags;
+	
 	_exit = false;
 	_width = w;
 	_height = h;
@@ -41,8 +43,12 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 	// SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	// SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
 	SDL_GL_SetSwapInterval(1);
-  
-	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN);
+
+	if(fullScreen == GL_TRUE)
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
+	else
+		flags = SDL_WINDOW_OPENGL;
+	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
   
 	if(!_idWindow)
 	{

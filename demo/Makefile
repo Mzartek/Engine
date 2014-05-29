@@ -10,7 +10,7 @@ else
 LIB= -I../engine/include -L../engine/lib -I/c/MinGW/user/include -L/c/MinGW/user/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer
 endif
 FLAGS= -W -Wall -Wextra -Wconversion -Werror -Wfatal-errors -lEngine $(LIB)
-SRC= main.cpp sequence.cpp
+SRC= main.cpp sequence.cpp config.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 
 all:	$(OBJ) 

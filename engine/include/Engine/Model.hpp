@@ -13,6 +13,7 @@ namespace engine
 	class DLLAPI Model
 	{
 	private:
+		GLboolean isMirror;
 		std::vector<Object *> *_tObject;
 		GLfloat _modelMatrix[16];
 		ShaderProgram *_program;
@@ -22,6 +23,8 @@ namespace engine
 	public:
 		Model();
 		~Model();
+		void initObjectArray(void);
+		void initObjectMirror(Model *m);
 		void config(ShaderProgram *program);
 		void createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				  const GLsizei &sizeIndexArray, const GLuint *indexArray,

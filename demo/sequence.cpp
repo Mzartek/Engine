@@ -4,14 +4,47 @@ void sequence(void)
 {
 	GLfloat mat1[16];
 	static engine::Vector3D<GLfloat> target;
-	static GLubyte step = 0;
-	static GLfloat angle, dist, a = 0, rotor = 0, height = 2.8f;
+	static GLubyte step = 0; // For the demo
+	static GLfloat dec = 0.0f, rotHeli = 0, rotor = 0, height = 6.0f;
+	static GLfloat angleCam, distCam;
+	static GLfloat angleCube = 0.0, rotCube = 0.0f;;
 	static GLuint timeStart = SDL_GetTicks();
 
 	helicopterMatrixIdentity();
-	helicopterMatrixScale(2, 2, 2);
 	helicopterMatrixTranslate(0, height, 0);
-	helicopterMatrixRotate(a, 0.0, 1.0, 0.0);
+	helicopterMatrixRotate(rotHeli, 0.0, 1.0, 0.0);
+
+	cube1->matIdentity();
+	cube1->matTranslate(0, height - 4.0f, 0);
+	cube1->matRotate(angleCube, 0.0, 0.0, 1.0);
+	cube1->matTranslate(-30, 0, 0);
+	cube1->matRotate(rotCube, 1.0, 0.0, 0.0);
+	cube1->matRotate(rotCube, 0.0, 1.0, 0.0);
+	cube1->matRotate(rotCube, 0.0, 0.0, 1.0);
+	
+	cube2->matIdentity();
+	cube2->matTranslate(0, height - 4.0f, 0);
+	cube2->matRotate(angleCube, 0.0, 0.0, 1.0);
+	cube2->matTranslate(+30, 0, 0);
+	cube2->matRotate(rotCube, 0.0, 0.0, 1.0);
+	cube2->matRotate(rotCube, 0.0, 1.0, 0.0);
+	cube2->matRotate(rotCube, 1.0, 0.0, 0.0);
+	
+	cube3->matIdentity();
+	cube3->matTranslate(0, height - 4.0f, 0);
+	cube3->matRotate(angleCube, 1.0, 0.0, 0.0);
+	cube3->matTranslate(0, 0, +40);
+	cube3->matRotate(rotCube, 0.0, 1.0, 0.0);
+	cube3->matRotate(rotCube, 1.0, 0.0, 0.0);
+	cube3->matRotate(rotCube, 0.0, 0.0, 1.0);
+	
+	cube4->matIdentity();
+	cube4->matTranslate(0, height - 4.0f, 0);
+	cube4->matRotate(angleCube, 1.0, 0.0, 0.0);
+	cube4->matTranslate(0, 0, -40);
+	cube4->matRotate(rotCube, 0.0, 1.0, 0.0);
+	cube4->matRotate(rotCube, 0.0, 0.0, 1.0);
+	cube4->matRotate(rotCube, 1.0, 0.0, 0.0);
 
 	matrixLoadIdentity(mat1);
 	// sa = 0.0f;
@@ -68,7 +101,7 @@ void sequence(void)
 		{
 			step++;
 			sa = 1.0f;
-			angle = 0.0f;
+			angleCam = 0.0f;
 		}
 		break;
 
@@ -79,15 +112,15 @@ void sequence(void)
 		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 0, 1, 0);
+		matrixRotate(mat1, angleCam, 0, 1, 0);
 		matrixTranslate(mat1, -10, 1, -8);
 
 		rotor += 20.0f;
-		angle += 0.01f;
+		angleCam += 0.01f;
 		if ((SDL_GetTicks() - timeStart) > 27450) // Front
 		{
 			step++;
-			angle = 179.0f;
+			angleCam = 179.0f;
 		}
 		break;
 
@@ -96,15 +129,15 @@ void sequence(void)
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
+		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 1.0, 5.0);
 
 		rotor += 20.0f;
-		angle -= 0.1f;
+		angleCam -= 0.1f;
 		if ((SDL_GetTicks() - timeStart) > 35450) // Cote
 		{
 			step++;
-			angle = -30.0f;
+			angleCam = -30.0f;
 		}
 		break;
 
@@ -113,15 +146,15 @@ void sequence(void)
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
+		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.5, 15.0);
 
 		rotor += 20.0f;
-		angle -= 0.1f;
+		angleCam -= 0.1f;
 		if ((SDL_GetTicks() - timeStart) > 37450) // Front
 		{
 			step++;
-			angle = 180.0f;
+			angleCam = 180.0f;
 		}
 		break;
 
@@ -130,15 +163,15 @@ void sequence(void)
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 1.0, 0.0, 0.0);
+		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 15.0);
 
 		rotor += 20.0f;
-		angle += 0.2f;
+		angleCam += 0.2f;
 		if ((SDL_GetTicks() - timeStart) > 39450) // Arriere
 		{
 			step++;
-			angle = -10.0f;
+			angleCam = -10.0f;
 		}
 		break;
 
@@ -147,16 +180,16 @@ void sequence(void)
 		target._z += 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 1.0, 1.0, 0.0);
+		matrixRotate(mat1, angleCam, 1.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 15.0);
 
 		rotor += 20.0f;
-		angle += 0.2f;
+		angleCam += 0.2f;
 		if ((SDL_GetTicks() - timeStart) > 41450) // Avancer
 		{
 			step++;
-			angle = 220.0f;
-			dist = 100.0f;
+			angleCam = 220.0f;
+			distCam = 100.0f;
 		}
 		break;
 
@@ -164,15 +197,14 @@ void sequence(void)
 		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
-		matrixTranslate(mat1, 0.0, 0.0, dist);
+		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
+		matrixTranslate(mat1, 0.0, 0.0, distCam);
 
 		rotor += 20.0f;
-		dist -= 0.6f;
+		distCam -= 0.6f;
 		if ((SDL_GetTicks() - timeStart) > 43450) // Decollage
 		{
 			step++;
-			a = 0.01f;
 		}
 		break;
 
@@ -180,13 +212,14 @@ void sequence(void)
 		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
-		matrixTranslate(mat1, 0.0, 2.8f - height, dist);
+		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
+		matrixTranslate(mat1, 0.0, 6.0f - height, distCam);
 
 		rotor += 20.0f;
-		height += a;
-		if (a < 0.3)
-			a += 0.01f;
+		height += dec;
+		rotCube += 0.1f;
+		if (dec < 0.3)
+			dec += 0.01f;
 		if ((SDL_GetTicks() - timeStart) > 51450) // Remise a niveau
 		{
 			step++;
@@ -197,12 +230,13 @@ void sequence(void)
 		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
+		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 1.0, 15.0);
 
 		rotor += 20.0f;
 		height += 0.1f;
-		angle += 0.5f;
+		rotCube += 0.1f;
+		angleCam += 0.5f;
 		if ((SDL_GetTicks() - timeStart) > 59450) // Vue du dessus
 		{
 			step++;
@@ -213,15 +247,16 @@ void sequence(void)
 		target = helicopter->getPosition();
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 0.0, 1.0, 0.0);
+		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 1.0, 10.0, 0.0);
 
 		rotor += 20.0f;
-		angle += 0.5f;
-		if ((SDL_GetTicks() - timeStart) > 67450) // Arrivee cubes
+		rotCube += 0.5f;
+		angleCam += 0.5f;
+		if ((SDL_GetTicks() - timeStart) > 67450) // Vue de devant
 		{
 			step++;
-			angle = 200.0f;
+			angleCam = 200.0f;
 		}
 		break;
 
@@ -230,11 +265,12 @@ void sequence(void)
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 1.0, 0.0, 0.0);
+		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 20.0);
 
 		rotor += 20.0f;
-		angle -= 0.01f;
+		rotCube += 0.5f;
+		angleCam -= 0.01f;
 		if ((SDL_GetTicks() - timeStart) > 75450) // Helico qui tourne
 		{
 			step++;
@@ -246,12 +282,14 @@ void sequence(void)
 		target._z -= 10.0f;
 
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 1.0, 0.0, 0.0);
+		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 20.0);
 
 		rotor += 20.0f;
-		angle -= 0.01f;
-		a -= 0.1f;
+		rotHeli -= 0.1f;
+		angleCube += 0.5f;
+		rotCube += 0.5f;
+		angleCam -= 0.01f;
 		if ((SDL_GetTicks() - timeStart) > 102750) // Helico qui tombe
 		{
 			step++;
@@ -260,13 +298,14 @@ void sequence(void)
 
 	case 14:
 		matrixTranslate(mat1, target._x, target._y, target._z);
-		matrixRotate(mat1, angle, 1.0, 0.0, 0.0);
+		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 20.0);
 
 		rotor += 20.0f;
-		angle -= 0.01f;
-		a -= 0.1f;
+		rotHeli -= 0.1f;
 		height -= 0.5f;
+		rotCube += 0.5f;
+		angleCam -= 0.01f;
 		if ((SDL_GetTicks() - timeStart) > 106250) // Fin
 		{
 			step++;
@@ -310,6 +349,12 @@ void sequence(void)
 	}
 
 	helicopterRotateRotor(rotor);
+	
+	helicopterMatrixScale(2, 2, 2);
+	cube1->matScale(4.0, 4.0, 4.0);
+	cube2->matScale(4.0, 4.0, 4.0);
+	cube3->matScale(4.0, 4.0, 4.0);
+	cube4->matScale(4.0, 4.0, 4.0);
 
 	sun->setPosition(helicopter->getPosition()._x, helicopter->getPosition()._y, helicopter->getPosition()._z);
 	cam->setPositionCamera(mat1[12], mat1[13], mat1[14]);

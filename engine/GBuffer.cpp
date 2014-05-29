@@ -62,7 +62,7 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, _width, _height, 0, GL_RGB, GL_FLOAT, 0);
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, colorAttachment[1], GL_TEXTURE_2D, _idTexture[1], 0);
 	
-	// Shininess Texture
+	// // Shininess Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[2]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
