@@ -318,32 +318,40 @@ void sequence(void)
 		if ((SDL_GetTicks() - timeStart) > 115450) // Credit 1
 			step++;
 		break;
-
+		
 	case 16:
-		text1->write("Programmeur:");
-		text2->write("Kevin Havranek");
-		text3->write(" ");
-		if ((SDL_GetTicks() - timeStart) > 127750) // Credit 2
+		text1->write("Ce programme");
+		text2->write("vous a ete");
+		text3->write("presente par:");
+		if ((SDL_GetTicks() - timeStart) > 123825) // Credit 2
 			step++;
 		break;
 
 	case 17:
-		text1->write("Musique:");
-		text2->write("Jojo Beat");
-		text3->write("Aka Geoffrey Richoux");
-		if ((SDL_GetTicks() - timeStart) > 138250) // Credit 3
+		text1->write("Programmeur:");
+		text2->write("Kevin Havranek");
+		text3->write(" ");
+		if ((SDL_GetTicks() - timeStart) > 132200) // Credit 3
 			step++;
 		break;
 
 	case 18:
-		text1->write("Merci");
-		text2->write("d'avoir regarde!");
-		text3->write(" ");
-		if ((SDL_GetTicks() - timeStart) > 148950) // Credit 3
+		text1->write("Musique:");
+		text2->write("Jojo Beat");
+		text3->write("Aka Geoffrey Richoux");
+		if ((SDL_GetTicks() - timeStart) > 140575) // Credit 4
 			step++;
 		break;
 
 	case 19:
+		text1->write("Merci");
+		text2->write("d'avoir regarde!");
+		text3->write(" ");
+		if ((SDL_GetTicks() - timeStart) > 148950) // Fin
+			step++;
+		break;
+
+	case 20:
 		window->stop();
 		break;
 	}
