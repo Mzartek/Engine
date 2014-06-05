@@ -145,7 +145,7 @@ void engine::DirLight::display(Camera *cam, GBuffer *g, LBuffer *l)
 	glUniform1i(_specularTextureLocation, 5);
 
 	// Cam position
-	glUniform3f(_camPositionLocation, cam->getPositionCamera()->_x, cam->getPositionCamera()->_y, cam->getPositionCamera()->_z);
+	glUniform3f(_camPositionLocation, cam->getPositionCamera()->x, cam->getPositionCamera()->y, cam->getPositionCamera()->z);
 	
 	// Color
 	glUniform3fv(_lightColorLocation, 1, _lightColor);

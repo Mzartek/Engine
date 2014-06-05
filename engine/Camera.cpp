@@ -4,18 +4,18 @@ engine::Camera::Camera(void)
 {
 	_pcamera = new Vector3D<GLfloat>;
 	_ptarget = new Vector3D<GLfloat>;
-	_pcamera->_x = 0;
-	_pcamera->_y = 0;
-	_pcamera->_z = 0;
+	_pcamera->x = 0;
+	_pcamera->y = 0;
+	_pcamera->z = 0;
 }
 
 engine::Camera::Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
 	_pcamera = new Vector3D<GLfloat>;
 	_ptarget = new Vector3D<GLfloat>;
-	_pcamera->_x = x;
-	_pcamera->_y = y;
-	_pcamera->_z = z;
+	_pcamera->x = x;
+	_pcamera->y = y;
+	_pcamera->z = z;
 }
 
 engine::Camera::~Camera(void)
@@ -26,16 +26,16 @@ engine::Camera::~Camera(void)
 
 void engine::Camera::setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_pcamera->_x = x;
-	_pcamera->_y = y;
-	_pcamera->_z = z;
+	_pcamera->x = x;
+	_pcamera->y = y;
+	_pcamera->z = z;
 }
 
 void engine::Camera::setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_ptarget->_x = x;
-	_ptarget->_y = y;
-	_ptarget->_z = z;
+	_ptarget->x = x;
+	_ptarget->y = y;
+	_ptarget->z = z;
 }
 
 void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)
@@ -72,8 +72,8 @@ GLfloat *engine::Camera::getMatrix(void)
 
 void engine::Camera::position(void)
 {
-	GLfloat camera[] = {_pcamera->_x, _pcamera->_y, _pcamera->_z};
-	GLfloat target[] = {_ptarget->_x, _ptarget->_y, _ptarget->_z};
+	GLfloat camera[] = {_pcamera->x, _pcamera->y, _pcamera->z};
+	GLfloat target[] = {_ptarget->x, _ptarget->y, _ptarget->z};
 	GLfloat head[] = {0.0, 1.0, 0.0};
 	GLfloat view[16];
 

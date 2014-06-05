@@ -95,9 +95,9 @@ void engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &
 engine::Vector3D<GLfloat> engine::Model::getPosition(void) const
 {
 	engine::Vector3D<GLfloat> tmp;
-	tmp._x = _modelMatrix[12];
-	tmp._y = _modelMatrix[13];
-	tmp._z = _modelMatrix[14];
+	tmp.x = _modelMatrix[12];
+	tmp.y = _modelMatrix[13];
+	tmp.z = _modelMatrix[14];
 	return tmp;
 }
 

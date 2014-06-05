@@ -16,13 +16,13 @@ void engine::PlayerCam::keyboardMove(const GLboolean &f, const GLboolean &b, con
 {
 	if(f)
 	{
-		_pcamera->_x -= _vleft->_z * _speed;
-		_pcamera->_z += _vleft->_x * _speed;
+		_pcamera->x -= _vleft->z * _speed;
+		_pcamera->z += _vleft->x * _speed;
 	}
 	if(b)
 	{
-		_pcamera->_x += _vleft->_z * _speed;
-		_pcamera->_z -= _vleft->_x * _speed;
+		_pcamera->x += _vleft->z * _speed;
+		_pcamera->z -= _vleft->x * _speed;
 	}
 	if(l)
 		*_pcamera += *_vleft * _speed;

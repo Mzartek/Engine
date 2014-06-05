@@ -7,13 +7,13 @@ namespace engine
 	class Vector3D
 	{
 	public:
-		T _x;
-		T _y;
-		T _z;
+		T x;
+		T y;
+		T z;
 		Vector3D(void);
-		Vector3D(const T &x, const T &y, const T &z);
+		Vector3D(const T &a, const T &b, const T &c);
 		~Vector3D(void);
-		void changement(const T &x, const T &y, const T &z);
+		void change(const T &a, const T &b, const T &c);
 		void operator=(const Vector3D &v);
 		void operator+=(const Vector3D &v);
 		void operator-=(const Vector3D &v);

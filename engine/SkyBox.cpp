@@ -147,7 +147,7 @@ void engine::SkyBox::display(Camera *cam)
 	}
 
 	matrixLoadIdentity(pos);
-	matrixTranslate(pos, cam->getPositionCamera()->_x, cam->getPositionCamera()->_y, cam->getPositionCamera()->_z);
+	matrixTranslate(pos, cam->getPositionCamera()->x, cam->getPositionCamera()->y, cam->getPositionCamera()->z);
 	matrixRotate(pos, _angle, _x, _y, _z);
 	matrixMultiply(pos, cam->getMatrix(), pos);
   

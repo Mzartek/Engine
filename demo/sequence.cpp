@@ -58,7 +58,7 @@ void sequence(void)
 
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, -20, 0, 1, 0);
 		matrixTranslate(mat1, 10, 0, 0);
 
@@ -76,7 +76,7 @@ void sequence(void)
 
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixTranslate(mat1, 0, 10, -50);
 
 		rotor += 1.0f;
@@ -93,7 +93,7 @@ void sequence(void)
 
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixTranslate(mat1, 10, 10, -20);
 
 		rotor += 10.0f;
@@ -111,7 +111,7 @@ void sequence(void)
 		
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 0, 1, 0);
 		matrixTranslate(mat1, -10, 1, -8);
 
@@ -126,9 +126,9 @@ void sequence(void)
 
 	case 4:
 		target = helicopter->getPosition();
-		target._z -= 10.0f;
+		target.z -= 10.0f;
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 1.0, 5.0);
 
@@ -143,9 +143,9 @@ void sequence(void)
 
 	case 5:
 		target = helicopter->getPosition();
-		target._z -= 10.0f;
+		target.z -= 10.0f;
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.5, 15.0);
 
@@ -160,9 +160,9 @@ void sequence(void)
 
 	case 6:
 		target = helicopter->getPosition();
-		target._z -= 10.0f;
+		target.z -= 10.0f;
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 15.0);
 
@@ -177,9 +177,9 @@ void sequence(void)
 
 	case 7:
 		target = helicopter->getPosition();
-		target._z += 10.0f;
+		target.z += 10.0f;
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 1.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 15.0);
 
@@ -196,7 +196,7 @@ void sequence(void)
 	case 8:
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, distCam);
 
@@ -211,7 +211,7 @@ void sequence(void)
 	case 9:
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 6.0f - height, distCam);
 
@@ -229,7 +229,7 @@ void sequence(void)
 	case 10:
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 0.0, 1.0, 15.0);
 
@@ -246,7 +246,7 @@ void sequence(void)
 	case 11:
 		target = helicopter->getPosition();
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 0.0, 1.0, 0.0);
 		matrixTranslate(mat1, 1.0, 10.0, 0.0);
 
@@ -262,9 +262,9 @@ void sequence(void)
 
 	case 12:
 		target = helicopter->getPosition();
-		target._z -= 10.0f;
+		target.z -= 10.0f;
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 20.0);
 
@@ -279,9 +279,9 @@ void sequence(void)
 
 	case 13:
 		target = helicopter->getPosition();
-		target._z -= 10.0f;
+		target.z -= 10.0f;
 
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 20.0);
 
@@ -297,7 +297,7 @@ void sequence(void)
 		break;
 
 	case 14:
-		matrixTranslate(mat1, target._x, target._y, target._z);
+		matrixTranslate(mat1, target.x, target.y, target.z);
 		matrixRotate(mat1, angleCam, 1.0, 0.0, 0.0);
 		matrixTranslate(mat1, 0.0, 0.0, 20.0);
 
@@ -364,9 +364,9 @@ void sequence(void)
 	cube3->matScale(4.0, 4.0, 4.0);
 	cube4->matScale(4.0, 4.0, 4.0);
 
-	sun->setPosition(helicopter->getPosition()._x, helicopter->getPosition()._y, helicopter->getPosition()._z);
+	sun->setPosition(helicopter->getPosition().x, helicopter->getPosition().y, helicopter->getPosition().z);
 	cam->setPositionCamera(mat1[12], mat1[13], mat1[14]);
-	cam->setPositionTarget(target._x, target._y, target._z);
+	cam->setPositionTarget(target.x, target.y, target.z);
 	
 	// cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
 }

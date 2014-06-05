@@ -1,17 +1,17 @@
 template <typename T>
 engine::Vector3D<T>::Vector3D(void)
 {
-  _x = 0;
-  _y = 0;
-  _z = 0;
+  x = 0;
+  y = 0;
+  z = 0;
 }
 
 template <typename T>
-engine::Vector3D<T>::Vector3D(const T &x, const T &y, const T &z)
+engine::Vector3D<T>::Vector3D(const T &a, const T &b, const T &c)
 {
-  _x = x;
-  _y = y;
-  _z = z;
+  x = a;
+  y = b;
+  z = c;
 }
 
 template <typename T>
@@ -20,51 +20,51 @@ engine::Vector3D<T>::~Vector3D(void)
 }
 
 template <typename T>
-void engine::Vector3D<T>::changement(const T &x, const T &y, const T &z)
+void engine::Vector3D<T>::change(const T &a, const T &b, const T &c)
 {
-  _x = x;
-  _y = y;
-  _z = z;
+  x = a;
+  y = b;
+  z = c;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator=(const Vector3D<T> &v)
 {
-  _x = v._x;
-  _y = v._y;
-  _z = v._z;
+  x = v.x;
+  y = v.y;
+  z = v.z;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator+=(const Vector3D<T> &v)
 {
-  _x += v._x;
-  _y += v._y;
-  _z += v._z;
+  x += v.x;
+  y += v.y;
+  z += v.z;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator-=(const Vector3D<T> &v)
 {
-  _x -= v._x;
-  _y -= v._y;
-  _z -= v._z;
+  x -= v.x;
+  y -= v.y;
+  z -= v.z;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator*=(const Vector3D<T> &v)
 {
-  _x *= v._x;
-  _y *= v._y;
-  _z *= v._z;
+  x *= v.x;
+  y *= v.y;
+  z *= v.z;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator/=(const Vector3D<T> &v)
 {
-  _x /= v._x;
-  _y /= v._y;
-  _z /= v._z;
+  x /= v.x;
+  y /= v.y;
+  z /= v.z;
 }
 
 template <typename T>
@@ -102,41 +102,41 @@ engine::Vector3D<T> engine::Vector3D<T>::operator/(const Vector3D<T> &v) const
 template <typename T>
 void engine::Vector3D<T>::operator=(const T &n)
 {
-  _x = n;
-  _y = n;
-  _z = n;
+  x = n;
+  y = n;
+  z = n;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator+=(const T &n)
 {
-  _x += n;
-  _y += n;
-  _z += n;
+  x += n;
+  y += n;
+  z += n;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator-=(const T &n)
 {
-  _x -= n;
-  _y -= n;
-  _z -= n;
+  x -= n;
+  y -= n;
+  z -= n;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator*=(const T &n)
 {
-  _x *= n;
-  _y *= n;
-  _z *= n;
+  x *= n;
+  y *= n;
+  z *= n;
 }
 
 template <typename T>
 void engine::Vector3D<T>::operator/=(const T &n)
 {
-  _x /= n;
-  _y /= n;
-  _z /= n;
+  x /= n;
+  y /= n;
+  z /= n;
 }
 
 template <typename T>
