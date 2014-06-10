@@ -2,7 +2,6 @@
 
 engine::Model::Model(void)
 {
-	isMirror = GL_FALSE;
 	_tObject = NULL;
 	_program = NULL;
 	matIdentity();
@@ -28,6 +27,7 @@ void engine::Model::initObjectArray(void)
 			delete (*_tObject)[i];
 		delete _tObject;
 	}
+	isMirror = GL_FALSE;
 	_tObject = new std::vector<Object *>;
 }
 
