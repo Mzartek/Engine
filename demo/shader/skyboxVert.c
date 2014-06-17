@@ -1,6 +1,7 @@
 #version 330
 
 uniform mat4 MVP;
+
 layout(location = 0) in vec3 vertexArray;
 
 out vec3 outTexCoord;

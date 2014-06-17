@@ -42,7 +42,7 @@ void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, con
 {
 	_width = width;
 	_height = height;
-	matrixPerspective(_projectionMatrix, fov, (GLfloat)_width / (GLfloat)_height, n, f);
+	matrixPerspective(_projectionMatrix, fov, (GLfloat)_width / _height, n, f);
 }
 
 engine::Vector3D<GLfloat> *engine::Camera::getPositionCamera(void) const

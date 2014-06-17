@@ -1,6 +1,6 @@
-#include "mainHead.hpp"
+#include "config.hpp"
 
-void configShader(void)
+void configShaders(void)
 {
 	mainProgram = new engine::ShaderProgram;
 	shadowProgram = new engine::ShaderProgram;
@@ -19,7 +19,7 @@ void configShader(void)
 	lightProgram->loadProgram("shader/dirLightVert.c", "shader/dirLightFrag.c");
 }
 
-void configBuffer(void)
+void configBuffers(void)
 {
 	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram, GL_FALSE);
 	lBuffer->config(window->getWidth(), window->getHeight());
@@ -31,6 +31,7 @@ void configText(void)
 		      255, 255, 255,
 		      (window->getWidth() / 2) - 200, (window->getHeight() / 2) + 100, 
 		      400, 100, textProgram, window);
+	text1->write("Coucou!");
 	text2->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
 		      (window->getWidth() / 2) - 200, (window->getHeight() / 2),
@@ -41,7 +42,7 @@ void configText(void)
 		      400, 100, textProgram, window);
 }
 
-void configLight(void)
+void configLights(void)
 {
 	GLfloat lightColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	
@@ -55,10 +56,10 @@ void configLight(void)
 void configScreen(void)
 {
 	screen->config(screenProgram);
-	sa = 1.0;
+	sa = 0.0f;
 }
 
-void loadFace(void)
+void configModels(void)
 {
 	GLfloat vertex[] = {
 		-500, 0, -500,
@@ -86,10 +87,8 @@ void loadFace(void)
 			   sizeof index, index,
 			   "resources/ornaments.jpg",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-}
 
-void loadCubes(void)
-{
+	//Cubes
 	cube1->config(mainProgram);
 	cube1->initObjectArray();
 	cube1->loadObj("resources/Crate/crate.obj");
@@ -103,27 +102,25 @@ void loadCubes(void)
 	
 	cube4->config(mainProgram);
 	cube4->initObjectMirror(cube1);
-}
 
-void loadHelicopter(void)
-{
+	//Helicopter
 	helicopter->config(mainProgram);
 	helicopter->initObjectArray();
-	helicopter->loadObj("resources/UH-60_Blackhawk/corps.obj");
+	helicopter->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
 	helicopter->sortObject();
 
 	grotor->config(mainProgram);
 	grotor->initObjectArray();
-	grotor->loadObj("resources/UH-60_Blackhawk/grotor.obj");
+	grotor->loadFromFile("resources/UH-60_Blackhawk/grotor.obj");
 	grotor->sortObject();
 
 	protor->config(mainProgram);
 	protor->initObjectArray();
-	protor->loadObj("resources/UH-60_Blackhawk/protor.obj");
+	protor->loadFromFile("resources/UH-60_Blackhawk/protor.obj");
 	protor->sortObject();
 }
 
-void loadSkybox(void)
+void configSkybox(void)
 {
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
 		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",

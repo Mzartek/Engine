@@ -81,7 +81,7 @@ GLfloat engine::Object::getTransparency(void)
 	return _matDiffuse[3];
 }
 
-#define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
+#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
 void engine::Object::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
@@ -110,9 +110,9 @@ void engine::Object::load(const GLsizei &sizeVertexArray, const GLfloat *vertexA
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
   
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(3 * sizeof(GLfloat)));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, GLsizei(8 * sizeof(GLfloat)), BUFFER_OFFSET(5 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(5 * sizeof(GLfloat)));
 
 	glBindVertexArray(0);
 }

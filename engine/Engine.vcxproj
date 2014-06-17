@@ -67,22 +67,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
-    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Assimp\lib\x86;C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>
-    <LibraryPath>C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Assimp\lib\x64;C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Assimp\lib\x64;C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Assimp\lib\x86;C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -95,7 +95,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -109,7 +109,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -127,7 +127,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -145,7 +145,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glew32.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -170,7 +170,9 @@
     <ClInclude Include="include\Engine\SkyBox.hpp" />
     <ClInclude Include="include\Engine\SpotLight.hpp" />
     <ClInclude Include="include\Engine\TextArray.hpp" />
+    <ClInclude Include="include\Engine\Vector2D.hpp" />
     <ClInclude Include="include\Engine\Vector3D.hpp" />
+    <ClInclude Include="include\Engine\Vector4D.hpp" />
     <ClInclude Include="include\Engine\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +197,13 @@
     <ClCompile Include="TextArray.cpp" />
     <ClCompile Include="textureLoader.cpp" />
     <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\Engine\Vector2D.tpp" />
+    <None Include="include\Engine\Vector3D.tpp">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="include\Engine\Vector4D.tpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

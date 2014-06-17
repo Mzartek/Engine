@@ -13,7 +13,7 @@ engine::Screen::~Screen()
 		glDeleteBuffers(1, &_idVBO);
 }
 
-#define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
+#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
 void engine::Screen::config(ShaderProgram *program)
 {
@@ -48,8 +48,8 @@ void engine::Screen::config(ShaderProgram *program)
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, GLsizei(4*sizeof(GLfloat)), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GLsizei(4*sizeof(GLfloat)), BUFFER_OFFSET(2*sizeof(GLfloat)));
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(0));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(2*sizeof(GLfloat)));
 
 	glBindVertexArray(0);
 }

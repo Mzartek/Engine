@@ -2,7 +2,6 @@
 #define CAMERA
 
 #include "GLHead.hpp"
-#include "Vector3D.hpp"
 #include "ShaderProgram.hpp"
 
 namespace engine

@@ -21,7 +21,7 @@ engine::SkyBox::~SkyBox()
 		glDeleteBuffers(1, &_idIBO);
 }
 
-#define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
+#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
 void engine::SkyBox::load(std::string posx, std::string negx,
 			  std::string posy, std::string negy,
@@ -97,7 +97,7 @@ void engine::SkyBox::load(std::string posx, std::string negx,
 		1, 5, 6, 1, 6, 2,
 		0, 3, 7, 0, 7, 4
 	};
-	_numElement = (GLuint)sizeof(indexArray) / (GLuint)sizeof(GLuint);
+	_numElement = sizeof(indexArray) / sizeof(GLuint);
   
 	if(glIsVertexArray(_idVAO))
 		glDeleteVertexArrays(1, &_idVAO);

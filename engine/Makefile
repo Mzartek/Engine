@@ -4,12 +4,12 @@ LIBNAME= Engine
 DIR= lib/
 SYSTEM= $(shell uname)
 ifeq ($(SYSTEM), Linux)
-LIB= -Iinclude -fPIC -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lm
+LIB= -Iinclude -fPIC -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp
 else
 BIN= ../demo/bin/
-LIB= -DWIN32 -DENGINE_EXPORTS -Iinclude -I/c/MinGW/user/include -L/c/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm
+LIB= -DWIN32 -DENGINE_EXPORTS -Iinclude -I/c/MinGW/user/include -L/c/MinGW/user/lib -I/c/Program\ Files\Assimp\include -L/c/Program\ Files\Assimp\lib\x64 -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp
 endif
-FLAGS= -O3 -W -Wall -Wextra -Wconversion -Werror -Wfatal-errors $(LIB)
+FLAGS= -O3 -W -Wall -Wextra -Wfatal-errors $(LIB)
 SRC= matrix.cpp textureLoader.cpp Object.cpp Window.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp Model.cpp OBJModel.cpp Light.cpp DirLight.cpp SpotLight.cpp FrameBuffer.cpp ShadowMap.cpp SkyBox.cpp Screen.cpp TextArray.cpp GBuffer.cpp LBuffer.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 IMPORT= -Wl,--out-implib,$(DIR)lib$(LIBNAME).a

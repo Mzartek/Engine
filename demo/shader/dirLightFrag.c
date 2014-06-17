@@ -1,11 +1,9 @@
 #version 330
 
-struct dirLight
-{
-	vec3 color;
-	vec3 rayDir;
-	mat4 shadowMatrix;
-};
+uniform vec3 camPosition;
+uniform vec3 lightColor;
+uniform vec3 lightDirection;
+uniform mat4 shadowMatrix;
 
 // From GBuffer
 uniform sampler2D positionTexture;
@@ -20,8 +18,6 @@ uniform sampler2D diffuseTexture;
 uniform sampler2D specularTexture;
 
 in vec2 texCoord;
-in vec3 eyePos;
-in dirLight light;
 
 layout(location = 0) out vec4 outDiffuseTexture;
 layout(location = 1) out vec4 outSpecularTexture;
@@ -54,7 +50,7 @@ void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need 
 	outDiffuseTexture = texture(diffuseTexture, texCoord);
 	outSpecularTexture = texture(specularTexture, texCoord);
   
-	L = normalize(light.rayDir);
+	L = normalize(lightDirection);
 	
 	cosTheta = dot(-L,N);
 	if(cosTheta > 0.0 && shadow != 0.0)
@@ -64,8 +60,8 @@ void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need 
 
 		specular = pow(max(dot(R, E), 0.0), shininess);
       
-		outDiffuseTexture += vec4(light.color, 1.0) * cosTheta * shadow;
-		outSpecularTexture += vec4(light.color, 1.0) * specular * shadow;
+		outDiffuseTexture += vec4(lightColor, 1.0) * cosTheta * shadow;
+		outSpecularTexture += vec4(lightColor, 1.0) * specular * shadow;
 	}
 }
 
@@ -76,6 +72,6 @@ void main(void)
 	float shininess = texture(shininessTexture, texCoord).x;
 	float s = 1.0;
 
-	s = calcShadow(shadowMap, light.shadowMatrix * vec4(position, 1.0), 3.0);
-	calcDirLight(normal, eyePos - position, shininess, s);
+	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 3.0);
+	calcDirLight(normal, camPosition - position, shininess, s);
 }

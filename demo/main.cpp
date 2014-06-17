@@ -1,21 +1,19 @@
-#include "mainHead.hpp"
+#include "config.hpp"
 
 GLboolean keyState[256];
-Mix_Music *song;
 GLfloat sr, sg, sb, sa;
 
 engine::Window *window;
-engine::Camera *cam;
-// engine::FreeCam *cam;
+engine::FreeCam *cam;
 engine::DirLight *sun;
 engine::Model *face;
 engine::OBJModel *cube1;
 engine::Model *cube2;
 engine::Model *cube3;
 engine::Model *cube4;
-engine::OBJModel *helicopter;
-engine::OBJModel *grotor;
-engine::OBJModel *protor;
+engine::Model *helicopter;
+engine::Model *grotor;
+engine::Model *protor;
 engine::SkyBox *skybox;
 engine::Screen *screen;
 engine::TextArray *text1;
@@ -130,8 +128,14 @@ void display(void)
 	
 	screen->display(sr, sg, sb, sa);
 	text1->display();
-	text2->display();
-	text3->display();
+	// text2->display();
+	// text3->display();
+}
+
+void idle(void)
+{
+	sun->setPosition(helicopter->getPosition().x, helicopter->getPosition().y, helicopter->getPosition().z);
+	cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
 }
 
 void reshape(GLuint w, GLuint h)
@@ -143,10 +147,10 @@ void keyboard(GLubyte key, GLboolean state)
 {
 	keyState[key] = state;
 
-	// if(keyState[MAJ]==GL_TRUE)
-	// 	cam->setSpeed(0.05f);
-	// else
-	// 	cam->setSpeed(0.25f);
+	if(keyState[MAJ]==GL_TRUE)
+		cam->setSpeed(0.05f);
+	else
+		cam->setSpeed(0.25f);
 
 	if (state)
 		switch (key)
@@ -159,24 +163,22 @@ void keyboard(GLubyte key, GLboolean state)
 
 void mouseMove(GLint xrel, GLint yrel)
 {
-	(void)xrel; (void)yrel;
-	// cam->mouseMove(xrel, yrel);
+	cam->mouseMove(xrel, yrel);
 }
 
 void init(void)
 {
 	window = new engine::Window;
-	cam = new engine::Camera;
-	// cam = new engine::FreeCam;
+	cam = new engine::FreeCam;
 	sun = new engine::DirLight;
 	face = new engine::Model;
 	cube1 = new engine::OBJModel;
 	cube2 = new engine::Model;
 	cube3 = new engine::Model;
 	cube4 = new engine::Model;
-	helicopter = new engine::OBJModel;
-	grotor = new engine::OBJModel;
-	protor = new engine::OBJModel;
+	helicopter = new engine::Model;
+	grotor = new engine::Model;
+	protor = new engine::Model;
 	skybox = new engine::SkyBox;
 	screen = new engine::Screen;
 	text1 = new engine::TextArray;
@@ -185,21 +187,24 @@ void init(void)
 	gBuffer = new engine::GBuffer;
 	lBuffer = new engine::LBuffer;
 
-	// cam->setPositionCamera(0, 1, 0);
-	// cam->setSpeed(0.25f);
+	cam->setPositionCamera(0, 1, 0);
+	cam->setSpeed(0.25f);
+
+    helicopterMatrixIdentity();
+	helicopterMatrixTranslate(0.0f, 6.0f, 0.0f);
+	helicopterRotateRotor(0.0f);
+	helicopterMatrixScale(2, 2, 2);
 }
 
 void initGL(void)
 {
-	configShader();
-	configBuffer();
+	configShaders();
+	configBuffers();
 	configText();
-	configLight();
+	configLights();
 	configScreen();
-	loadFace();
-	loadCubes();
-	loadHelicopter();
-	loadSkybox();
+	configModels();
+	configSkybox();
 }
 
 void deleteClass(void)
@@ -237,30 +242,18 @@ int main(int argc, char **argv)
 	init();
 
 	if (argc < 3)
-		window->initWindow("Demo", 800, 600, GL_TRUE);
+		window->initWindow("Demo", 800, 600, GL_FALSE);
 	else
-		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_TRUE);
+		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
 	window->setDisplayFunc(display);
-	window->setIdleFunc(sequence);
+	window->setIdleFunc(idle);
 	window->setReshapeFunc(reshape);
 	window->setKeyboardFunc(keyboard);
 	window->setMouseMoveFunc(mouseMove);
 
 	initGL();
-	
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
-	{
-		std::cerr << Mix_GetError() << std::endl;
-		return 1;
-	}
-	song = Mix_LoadMUS("resources/song/song.mp3");
-	Mix_PlayMusic(song, -1);
-	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 
 	window->mainLoop();
-
-	Mix_FreeMusic(song);
-	Mix_CloseAudio();
 
 	deleteClass();
 

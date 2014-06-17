@@ -10,5 +10,5 @@ out vec2 outTexCoord;
 void main(void)
 {
 	gl_Position = MVP * vec4(vertexArray.xy, 0.0, 1.0);
-	outTexCoord = vec2(textureArray.x, 1.0 - textureArray.y);
+	outTexCoord = textureArray;
 }

@@ -1,5 +1,5 @@
-#ifndef VECTEUR
-#define VECTEUR
+#ifndef VECTOR3D
+#define VECTOR3D
 
 namespace engine
 {
@@ -13,7 +13,7 @@ namespace engine
 		Vector3D(void);
 		Vector3D(const T &a, const T &b, const T &c);
 		~Vector3D(void);
-		void change(const T &a, const T &b, const T &c);
+		void set(const T &a, const T &b, const T &c);
 		void operator=(const Vector3D &v);
 		void operator+=(const Vector3D &v);
 		void operator-=(const Vector3D &v);

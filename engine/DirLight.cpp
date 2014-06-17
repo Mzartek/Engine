@@ -18,7 +18,7 @@ void engine::DirLight::setDimension(GLfloat x, GLfloat y, GLfloat z)
 	_dim[2] = z;
 }
 
-#define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
+#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
 void engine::DirLight::config(ShaderProgram *program)
 {
@@ -63,8 +63,8 @@ void engine::DirLight::config(ShaderProgram *program)
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, GLsizei(4*sizeof(GLfloat)), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GLsizei(4*sizeof(GLfloat)), BUFFER_OFFSET(2*sizeof(GLfloat)));
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(0));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(2*sizeof(GLfloat)));
 
 	glBindVertexArray(0);
 }

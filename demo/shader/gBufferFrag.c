@@ -1,11 +1,11 @@
 #version 330
 
 uniform sampler2D colorTexture;
+uniform float matShininess;
 
 in vec4 position;
 in vec2 texCoord;
 in vec3 normal;
-in float shininess;
 
 layout(location = 0) out vec4 outPositionTexture;
 layout(location = 1) out vec4 outNormalTexture;
@@ -16,6 +16,6 @@ void main(void)
 {
 	outPositionTexture = position;
 	outNormalTexture = vec4(normalize(normal), 1.0);
-	outShininessTexture = vec4(shininess, 0.0, 0.0, 1.0);
+	outShininessTexture = vec4(matShininess, 0.0, 0.0, 1.0);
 	outDiffuseTexture = texture(colorTexture, texCoord);
 }

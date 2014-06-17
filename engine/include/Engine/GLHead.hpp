@@ -29,10 +29,21 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+
 #include "matrix.hpp"
+#include "Vector2D.hpp"
+#include "Vector3D.hpp"
+#include "Vector4D.hpp"
 
 namespace engine
 {
+	typedef struct Vertex
+	{
+		Vector3D<GLfloat> position;
+		Vector2D<GLfloat> texCoord;
+		Vector3D<GLfloat> normal;
+	} Vertex;
+
 	enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
 	extern DLLAPI pixelFormat testFormat(GLuint f);
 	extern DLLAPI void loadTextureFromFile(const std::string path, GLuint *texture);

@@ -20,7 +20,7 @@ engine::Vector3D<T>::~Vector3D(void)
 }
 
 template <typename T>
-void engine::Vector3D<T>::change(const T &a, const T &b, const T &c)
+void engine::Vector3D<T>::set(const T &a, const T &b, const T &c)
 {
   x = a;
   y = b;

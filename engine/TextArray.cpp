@@ -20,7 +20,7 @@ engine::TextArray::~TextArray(void)
 	TTF_CloseFont(_font);
 }
 
-#define BUFFER_OFFSET(i) ((GLubyte *)NULL + (i))
+#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
 void engine::TextArray::config(const std::string fontFile, GLuint size,
 			       GLubyte r, GLubyte g, GLubyte b,
@@ -50,16 +50,16 @@ void engine::TextArray::config(const std::string fontFile, GLuint size,
 	
 	GLfloat vertexArray[] = {
 		(GLfloat)x, (GLfloat)y,
-		0, 0,
-
-		(GLfloat)(x+w), (GLfloat)y,
-		1, 0,
-
-		(GLfloat)x, (GLfloat)(y+h),
 		0, 1,
 
+		(GLfloat)(x+w), (GLfloat)y,
+		1, 1,
+
+		(GLfloat)x, (GLfloat)(y+h),
+		0, 0,
+
 		(GLfloat)(x+w), (GLfloat)(y+h),
-		1, 1
+		1, 0
 	};
   
 	if(glIsVertexArray(_idVAO))
@@ -76,8 +76,8 @@ void engine::TextArray::config(const std::string fontFile, GLuint size,
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
   
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, GLsizei(4*sizeof(GLfloat)), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GLsizei(4*sizeof(GLfloat)), BUFFER_OFFSET(2*sizeof(GLfloat)));
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(0));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(2*sizeof(GLfloat)));
 	
 	glBindVertexArray(0);
 

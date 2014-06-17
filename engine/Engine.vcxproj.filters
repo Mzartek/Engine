@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Templates">
+      <UniqueIdentifier>{2fa9abc8-8825-46ca-bd2e-40954b95d1cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\Camera.hpp">
@@ -77,6 +80,12 @@
     <ClInclude Include="include\Engine\Window.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\Engine\Vector2D.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Vector4D.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -142,5 +151,16 @@
     <ClCompile Include="LBuffer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\Engine\Vector2D.tpp">
+      <Filter>Templates</Filter>
+    </None>
+    <None Include="include\Engine\Vector3D.tpp">
+      <Filter>Templates</Filter>
+    </None>
+    <None Include="include\Engine\Vector4D.tpp">
+      <Filter>Templates</Filter>
+    </None>
   </ItemGroup>
 </Project>

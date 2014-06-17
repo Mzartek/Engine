@@ -1,4 +1,7 @@
 #include <Engine/Model.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
 
 engine::Model::Model(void)
 {
@@ -65,6 +68,100 @@ void engine::Model::createObject(const GLsizei &sizeVertexArray, const GLfloat *
 		     sizeIndexArray, indexArray);
   
 	_tObject->push_back(newone);
+}
+
+static std::string getDir(std::string file)
+{
+	GLuint size, i;
+	std::string path;
+
+	for (size = i = 0; file[i] != '\0'; i++)
+		if (file[i] == '/')
+			size = i + 1;
+
+	path.insert(0, file, 0, size);
+
+	return path;
+}
+
+void engine::Model::loadFromFile(const std::string file)
+{
+	Assimp::Importer Importer;
+	GLuint i, j;
+
+	if (_tObject != NULL && isMirror == GL_FALSE)
+	{
+		_tObject->clear();
+	}
+
+	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+	if (!pScene)
+	{
+		std::cerr << "Unable to load the model: " << file << std::endl;
+		return;
+	}
+
+	std::vector<Vertex> vertices;
+	std::vector<GLuint> indices;
+	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
+	for (i = 0; i<pScene->mNumMeshes; i++)
+	{
+		//vertices.resize(pScene->mMeshes[i]->mNumVertices);
+		for (j = 0; j<pScene->mMeshes[i]->mNumVertices; j++)
+		{
+			const aiVector3D *pPos = &(pScene->mMeshes[i]->mVertices[j]);
+			const aiVector3D *pNormal = pScene->mMeshes[i]->HasNormals() ? &(pScene->mMeshes[i]->mNormals[j]) : &Zero3D;
+			const aiVector3D *pTexCoord = pScene->mMeshes[i]->HasTextureCoords(0) ? &(pScene->mMeshes[i]->mTextureCoords[0][j]) : &Zero3D;
+
+			Vertex v =
+			{
+				Vector3D<GLfloat>(pPos->x, pPos->y, pPos->z),
+				Vector2D<GLfloat>(pTexCoord->x, pTexCoord->y),
+				Vector3D<GLfloat>(pNormal->x, pNormal->y, pNormal->z)
+			};
+
+			vertices.push_back(v);
+		}
+
+		//vertices.resize(pScene->mMeshes[i]->mNumFaces * 3);
+		for (j = 0; j < pScene->mMeshes[i]->mNumFaces; j++)
+		{
+			indices.push_back(pScene->mMeshes[i]->mFaces[j].mIndices[0]);
+			indices.push_back(pScene->mMeshes[i]->mFaces[j].mIndices[1]);
+			indices.push_back(pScene->mMeshes[i]->mFaces[j].mIndices[2]);
+		}
+
+		aiString path;
+		std::string fullPath;
+		if (pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+			fullPath = getDir(file) + path.data;
+		else
+			fullPath = "resources/none.png";
+
+		aiColor4D mat_ambient;
+		aiColor4D mat_diffuse;
+		aiColor4D mat_specular;
+		GLfloat mat_shininess;
+		GLfloat opacity;
+
+		pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_COLOR_AMBIENT, mat_ambient);
+		pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, mat_diffuse);
+		pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_COLOR_SPECULAR, mat_specular);
+		pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_SHININESS, mat_shininess);
+		pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_OPACITY, opacity);
+		mat_ambient.a = opacity;
+		mat_diffuse.a = opacity;
+		mat_specular.a = opacity;
+
+		createObject((GLsizei)vertices.size() * sizeof(Vertex), (GLfloat *)&vertices[0],
+			(GLsizei)indices.size() * sizeof(GLuint), &indices[0],
+			fullPath,
+			(GLfloat *)&mat_ambient, (GLfloat *)&mat_diffuse, (GLfloat *)&mat_specular,
+			&mat_shininess);
+
+		vertices.clear();
+		indices.clear();
+	}
 }
 
 void engine::Model::sortObject(void)
