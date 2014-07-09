@@ -36,8 +36,7 @@ void engine::Object::setShaderProgram(ShaderProgram *program)
 	_matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
 	_matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
 	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-	_lightDiffuseTextureLocation = glGetUniformLocation(_program->getId(), "lightDiffuseTexture");
-	_lightSpecularTextureLocation = glGetUniformLocation(_program->getId(), "lightSpecularTexture");
+	_lightTextureLocation = glGetUniformLocation(_program->getId(), "lightTexture");
 }
 
 void engine::Object::setTexture(const GLuint &id)
@@ -126,7 +125,7 @@ void engine::Object::display(LBuffer *l) const
 		std::cerr << "You need to set the ShaderProgram before" << std::endl;
 		return;
 	}
-  
+
 	glUseProgram(_program->getId());
   
 	glBindVertexArray(_idVAO);
@@ -140,12 +139,8 @@ void engine::Object::display(LBuffer *l) const
 	glUniform1i(_colorTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, l->getIdTexture(0));
-	glUniform1i(_lightDiffuseTextureLocation, 1);
-
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, l->getIdTexture(1));
-	glUniform1i(_lightSpecularTextureLocation, 2);
+	glBindTexture(GL_TEXTURE_2D, l->getIdTexture());
+	glUniform1i(_lightTextureLocation, 1);
 
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
   
@@ -170,7 +165,8 @@ void engine::Object::displayOnGBuffer(GBuffer *g) const
 		std::cerr <<"Bad GBuffer!" << std::endl;
 		return;
 	}
-	
+
+	glDisable(GL_BLEND);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
 	glUseProgram(g->getProgramId());
 	glBindVertexArray(_idVAO);
@@ -186,6 +182,7 @@ void engine::Object::displayOnGBuffer(GBuffer *g) const
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glEnable(GL_BLEND);
 }
 
 void engine::Object::displayShadow(Light *l) const
@@ -200,7 +197,8 @@ void engine::Object::displayShadow(Light *l) const
 		std::cerr << "You need to config the ShadowMap before!" << std::endl;
 		return;
 	}
-	
+
+	glDisable(GL_BLEND);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 	glUseProgram(l->getShadowMap()->getProgramId());
 	glBindVertexArray(_idVAO);
@@ -210,6 +208,7 @@ void engine::Object::displayShadow(Light *l) const
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glEnable(GL_BLEND);
 }
 
 int engine::comparObject(const void *p1, const void *p2)

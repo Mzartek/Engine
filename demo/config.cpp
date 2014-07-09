@@ -21,7 +21,7 @@ void configShaders(void)
 
 void configBuffers(void)
 {
-	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram, GL_FALSE);
+	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram, GL_TRUE);
 	lBuffer->config(window->getWidth(), window->getHeight());
 }
 

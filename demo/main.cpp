@@ -115,21 +115,22 @@ void display(void)
 	sun->display(cam, gBuffer, lBuffer);
 	
 	// Second Geometry Pass
-	window->clear();
+	/*window->clear();
 	skybox->display(cam);
 	face->display(window, cam, lBuffer);
 	cube1->display(window, cam, lBuffer);
 	cube2->display(window, cam, lBuffer);
 	cube3->display(window, cam, lBuffer);
 	cube4->display(window, cam, lBuffer);
-	helicopterDisplay(window, cam, lBuffer);
+	helicopterDisplay(window, cam, lBuffer);*/
+
+	gBuffer->display(window, GBUF_DIFFUSE);
 	
-	// gBuffer->display(window);
-	
-	screen->display(sr, sg, sb, sa);
 	text1->display();
 	// text2->display();
 	// text3->display();
+
+	//screen->display(sr, sg, sb, sa);
 }
 
 void idle(void)
@@ -242,7 +243,7 @@ int main(int argc, char **argv)
 	init();
 
 	if (argc < 3)
-		window->initWindow("Demo", 800, 600, GL_FALSE);
+		window->initWindow("Demo", 1680, 1050, GL_TRUE);
 	else
 		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
 	window->setDisplayFunc(display);

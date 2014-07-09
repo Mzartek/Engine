@@ -4,12 +4,17 @@
 #include "FrameBuffer.hpp"
 #include "Window.hpp"
 
+#define GBUF_NUM_TEX 3
+#define GBUF_POSITION 0
+#define GBUF_NORMAL 1
+#define GBUF_DIFFUSE 2
+
 namespace engine
 {
 	class DLLAPI GBuffer : public FrameBuffer
 	{
 	private:
-		GLuint _idTexture[4];
+		GLuint _idTexture[GBUF_NUM_TEX];
 		GLuint _idDepthRender;
 		GLint _MVPLocation;
 		GLint _modelMatrixLocation;
@@ -20,7 +25,6 @@ namespace engine
 		GBuffer(void);
 		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height, ShaderProgram *program, GLboolean withColor);
-		void display(Window *w);
 		GLuint getIdTexture(GLuint num) const;
 		GLuint getIdDepthRender(void) const;
 		GLint getMVPLocation(void) const;
@@ -28,6 +32,7 @@ namespace engine
 		GLint getNormalMatrixLocation(void) const;
 		GLint getShininessLocation(void) const;
 		GLint getColorTextureLocation(void) const;
+		void display(Window *w, GLuint buf) const;
 	};
 }
 

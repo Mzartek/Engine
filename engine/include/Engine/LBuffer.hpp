@@ -1,6 +1,7 @@
 #ifndef LBUFFER
 #define LBUFFER
 
+#include "Window.hpp"
 #include "FrameBuffer.hpp"
 
 namespace engine
@@ -8,12 +9,13 @@ namespace engine
 	class DLLAPI LBuffer : public FrameBuffer
 	{
 	private:
-		GLuint _idTexture[2];
+		GLuint _idTexture;
 	public:
 		LBuffer(void);
 		~LBuffer(void);
 		void config(const GLuint &width, const GLuint &height);
-		GLuint getIdTexture(GLuint num) const;
+		GLuint getIdTexture(void) const;
+		void display(Window *w) const;
 	};
 }
 

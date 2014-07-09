@@ -26,8 +26,7 @@ namespace engine
 		GLint _matDiffuseLocation;
 		GLint _matSpecularLocation;
 		GLint _colorTextureLocation;
-		GLint _lightDiffuseTextureLocation;
-		GLint _lightSpecularTextureLocation;
+		GLint _lightTextureLocation;
 	public:
 		Object(void);
 		~Object(void);

@@ -2,22 +2,18 @@
 
 engine::LBuffer::LBuffer(void)
 {
-	memset(_idTexture, 0, sizeof _idTexture);
+	memset(&_idTexture, 0, sizeof _idTexture);
 }
 
 engine::LBuffer::~LBuffer(void)
 {
-	if(glIsTexture(_idTexture[0]))
-		glDeleteTextures(2, _idTexture);
+	if(glIsTexture(_idTexture))
+		glDeleteTextures(1, &_idTexture);
 }
 
 void engine::LBuffer::config(const GLuint &width, const GLuint &height)
 {
-	GLuint i;
-	GLenum colorAttachment[] = {
-		GL_COLOR_ATTACHMENT0,
-		GL_COLOR_ATTACHMENT1,
-	};
+	GLenum colorAttachment = GL_COLOR_ATTACHMENT0;
 	
 	_width = width;
 	_height = height;
@@ -26,39 +22,39 @@ void engine::LBuffer::config(const GLuint &width, const GLuint &height)
 	if(glIsFramebuffer(_idFBO))
 		glDeleteFramebuffers(1, &_idFBO);
 	glGenFramebuffers(1, &_idFBO);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
 	// Texture
-	if(glIsTexture(_idTexture[0]))
-		glDeleteTextures(2, _idTexture);
-	glGenTextures(2, _idTexture);
-	for(i=0 ; i<2 ; i++)
-	{
-		glBindTexture(GL_TEXTURE_2D, _idTexture[i]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, _width, _height, 0, GL_RGBA, GL_FLOAT, 0);
-		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, colorAttachment[i], GL_TEXTURE_2D, _idTexture[i], 0);
-	}
+	if(glIsTexture(_idTexture))
+		glDeleteTextures(1, &_idTexture);
+	glGenTextures(1, &_idTexture);
 
-	glDrawBuffers(2, colorAttachment);
+	glBindTexture(GL_TEXTURE_2D, _idTexture);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32UI, _width, _height);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment, GL_TEXTURE_2D, _idTexture, 0);
+
+	glDrawBuffers(1, &colorAttachment);
     
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
-	
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-GLuint engine::LBuffer::getIdTexture(GLuint num) const
+GLuint engine::LBuffer::getIdTexture(void) const
 {
-	if(num>=2)
-	{
-		std::cerr << "Bad num of texture" << std::endl;
-		return 0;
-	}
-	return _idTexture[num];
+	return _idTexture;
+}
+
+void engine::LBuffer::display(Window *w) const
+{
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, _idFBO);
+
+	glReadBuffer(GL_COLOR_ATTACHMENT0);
+
+	glBlitFramebuffer(0, 0, _width, _height, 0, 0, w->getWidth(), w->getHeight(), GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 }

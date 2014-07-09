@@ -113,8 +113,8 @@ void engine::TextArray::display(void)
 		std::cerr << "You need to configure the TextArray before" << std::endl;
 		return;
 	}
-	
-	glDepthMask(GL_FALSE);
+
+	glDisable(GL_DEPTH_TEST);
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
 	
@@ -129,7 +129,7 @@ void engine::TextArray::display(void)
 	glBindTexture(GL_TEXTURE0, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
-	glDepthMask(GL_TRUE);
+	glEnable(GL_DEPTH_TEST);
 }
 
 #undef BUFFER_OFFSET

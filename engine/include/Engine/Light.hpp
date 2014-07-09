@@ -22,12 +22,10 @@ namespace engine
 		// For LBuffer
 		GLint _positionTextureLocation;
 		GLint _normalTextureLocation;
-		GLint _shininessTextureLocation;
 		GLint _shadowMapLocation;
 		GLint _shadowMatrixLocation;
-		GLint _diffuseTextureLocation;
-		GLint _specularTextureLocation;
-	        GLint _camPositionLocation;
+		GLint _lightTextureLocation;
+	    GLint _camPositionLocation;
 		GLint _lightColorLocation;
 	public:
 		Light(void);
@@ -45,11 +43,9 @@ namespace engine
 		GLfloat *getMatrix(void);
 		GLint getPositionTextureLocation(void) const;
 		GLint getNormalTextureLocation(void) const;
-		GLint getShininessTextureLocation(void) const;
 		GLint getShadowMapLocation(void) const;
 		GLint getShadowMatrixLocation(void) const;
-		GLint getDiffuseTextureLocation(void) const;
-		GLint getSpecularTextureLocation(void) const;
+		GLint getLightTextureLocation(void) const;
 		GLint getCamPositionLocation(void) const;
 		GLint getLightColorLocation(void) const;
 		void clear(void) const;

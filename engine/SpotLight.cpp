@@ -16,11 +16,9 @@ void engine::SpotLight::config(ShaderProgram *program)
 	_program = program;
 	_positionTextureLocation = glGetUniformLocation(_program->getId(), "positionTexture");
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
-	_shininessTextureLocation = glGetUniformLocation(_program->getId(), "shininessTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
 	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
-	_diffuseTextureLocation = glGetUniformLocation(_program->getId(), "diffuseTexture");
-	_specularTextureLocation = glGetUniformLocation(_program->getId(), "specularTexture");
+	_lightTextureLocation = glGetUniformLocation(_program->getId(), "lightTexture");
 	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
 	_lightColorLocation = glGetUniformLocation(_program->getId(), "lightColor");
 	_lightPositionLocation = glGetUniformLocation(_program->getId(), "lightPosition");

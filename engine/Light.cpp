@@ -111,11 +111,6 @@ GLint engine::Light::getNormalTextureLocation(void) const
 	return _normalTextureLocation;
 }
 
-GLint engine::Light::getShininessTextureLocation(void) const
-{
-	return _shininessTextureLocation;
-}
-
 GLint engine::Light::getShadowMapLocation(void) const
 {
 	return _shadowMapLocation;
@@ -126,14 +121,9 @@ GLint engine::Light::getShadowMatrixLocation(void) const
 	return _shadowMatrixLocation;
 }
 
-GLint engine::Light::getDiffuseTextureLocation(void) const
+GLint engine::Light::getLightTextureLocation(void) const
 {
-	return _diffuseTextureLocation;
-}
-
-GLint engine::Light::getSpecularTextureLocation(void) const
-{
-	return _specularTextureLocation;
+	return _lightTextureLocation;
 }
 
 GLint engine::Light::getCamPositionLocation(void) const
