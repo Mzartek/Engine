@@ -71,6 +71,6 @@ void main(void)
 	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
 	float s = 1.0;
 
-	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 3.0);
+	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
 	calcDirLight(normal.xyz, camPosition - position, normal.w, s);
 }

@@ -3,6 +3,7 @@
 engine::ShadowMap::ShadowMap(void)
 {
 	_idDepthTexture = 0;
+	_program = NULL;
 }
 
 engine::ShadowMap::~ShadowMap(void)
@@ -55,6 +56,11 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 GLuint engine::ShadowMap::getIdDepthTexture(void) const
 {
 	return _idDepthTexture;
+}
+
+GLuint engine::ShadowMap::getProgramId(void) const
+{
+	return _program->getId();
 }
 
 GLint engine::ShadowMap::getMVPLocation(void) const

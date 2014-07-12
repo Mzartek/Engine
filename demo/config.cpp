@@ -2,26 +2,24 @@
 
 void configShaders(void)
 {
-	mainProgram = new engine::ShaderProgram;
+	objectProgram = new engine::ShaderProgram;
+	lightProgram = new engine::ShaderProgram;
 	shadowProgram = new engine::ShaderProgram;
 	skyboxProgram = new engine::ShaderProgram;
 	screenProgram = new engine::ShaderProgram;
 	textProgram = new engine::ShaderProgram;
-	gBufferProgram = new engine::ShaderProgram;
-	lightProgram = new engine::ShaderProgram;
 
-	mainProgram->loadProgram("shader/demoVert.glsl", "shader/demoFrag.glsl");
+	objectProgram->loadProgram("shader/objectVert.glsl", "shader/objectFrag.glsl");
+	lightProgram->loadProgram("shader/dirLightVert.glsl", "shader/dirLightFrag.glsl");
 	shadowProgram->loadProgram("shader/shadowVert.glsl", "shader/shadowFrag.glsl");
 	skyboxProgram->loadProgram("shader/skyboxVert.glsl", "shader/skyboxFrag.glsl");
 	screenProgram->loadProgram("shader/screenVert.glsl", "shader/screenFrag.glsl");
 	textProgram->loadProgram("shader/textVert.glsl", "shader/textFrag.glsl");
-	gBufferProgram->loadProgram("shader/gBufferVert.glsl", "shader/gBufferFrag.glsl");
-	lightProgram->loadProgram("shader/dirLightVert.glsl", "shader/dirLightFrag.glsl");
 }
 
 void configBuffers(void)
 {
-	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram);
+	gBuffer->config(window->getWidth(), window->getHeight());
 	lBuffer->config(window->getWidth(), window->getHeight());
 }
 
@@ -82,39 +80,39 @@ void configModels(void)
 	GLfloat mat_shininess[] = { 20.0f };
 
 	face->initObjectArray();
-	face->config(mainProgram);
+	face->config(objectProgram);
 	face->createObject(sizeof vertex, vertex,
 			   sizeof index, index,
 			   "resources/ornaments.jpg",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	//Cubes
-	cube1->config(mainProgram);
+	cube1->config(objectProgram);
 	cube1->initObjectArray();
 	cube1->loadObj("resources/Crate/crate.obj");
 	cube1->sortObject();
 
-	cube2->config(mainProgram);
+	cube2->config(objectProgram);
 	cube2->initObjectMirror(cube1);
 
-	cube3->config(mainProgram);
+	cube3->config(objectProgram);
 	cube3->initObjectMirror(cube1);
 
-	cube4->config(mainProgram);
+	cube4->config(objectProgram);
 	cube4->initObjectMirror(cube1);
 
 	//Helicopter
-	helicopter->config(mainProgram);
+	helicopter->config(objectProgram);
 	helicopter->initObjectArray();
 	helicopter->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
 	helicopter->sortObject();
 
-	grotor->config(mainProgram);
+	grotor->config(objectProgram);
 	grotor->initObjectArray();
 	grotor->loadFromFile("resources/UH-60_Blackhawk/grotor.obj");
 	grotor->sortObject();
 
-	protor->config(mainProgram);
+	protor->config(objectProgram);
 	protor->initObjectArray();
 	protor->loadFromFile("resources/UH-60_Blackhawk/protor.obj");
 	protor->sortObject();

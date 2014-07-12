@@ -2,6 +2,7 @@
 #define SHADOW_MAP
 
 #include "FrameBuffer.hpp"
+#include "ShaderProgram.hpp"
 
 namespace engine
 {
@@ -9,6 +10,7 @@ namespace engine
 	{
 	private:
 		GLuint _idDepthTexture;
+		ShaderProgram *_program;
 		GLint _MVPLocation;
 		GLint _colorTextureLocation;
 		GLint _shadowMapLocation;
@@ -19,6 +21,7 @@ namespace engine
 		~ShadowMap(void);
 		void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
 		GLuint getIdDepthTexture(void) const;
+		GLuint getProgramId(void) const;
 		GLint getMVPLocation(void) const;
 		GLint getColorTextureLocation(void) const;
 		GLint getShadowMapLocation(void) const;

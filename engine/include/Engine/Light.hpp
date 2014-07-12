@@ -50,7 +50,7 @@ namespace engine
 		GLint getLightColorLocation(void) const;
 		void clear(void) const;
 		virtual void position(void) = 0;
-		virtual void display(Camera *cam, GBuffer *g, LBuffer *l) = 0;
+		virtual void display(LBuffer *l, GBuffer *g, Camera *cam) = 0;
 	};
 }
 

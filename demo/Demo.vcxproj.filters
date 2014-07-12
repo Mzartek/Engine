@@ -27,24 +27,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\demoFrag.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\demoVert.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\dirLightFrag.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\dirLightVert.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\gBufferFrag.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\gBufferVert.glsl">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="shader\screenFrag.glsl">
       <Filter>Shader</Filter>
     </None>
@@ -73,6 +55,18 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="shader\textVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\dirLightFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\dirLightVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\objectFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\objectVert.glsl">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

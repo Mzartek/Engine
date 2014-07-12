@@ -115,6 +115,7 @@ void engine::TextArray::display(void)
 	}
 
 	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
 	
@@ -129,6 +130,7 @@ void engine::TextArray::display(void)
 	glBindTexture(GL_TEXTURE0, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
+	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 }
 

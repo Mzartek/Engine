@@ -22,13 +22,12 @@ engine::TextArray *text3;
 engine::GBuffer *gBuffer;
 engine::LBuffer *lBuffer;
 
-engine::ShaderProgram *mainProgram;
+engine::ShaderProgram *objectProgram;
+engine::ShaderProgram *lightProgram;
 engine::ShaderProgram *shadowProgram;
 engine::ShaderProgram *skyboxProgram;
 engine::ShaderProgram *screenProgram;
 engine::ShaderProgram *textProgram;
-engine::ShaderProgram *gBufferProgram;
-engine::ShaderProgram *lightProgram;
 
 void helicopterMatrixIdentity(void)
 {
@@ -73,19 +72,19 @@ void helicopterDisplayShadow(engine::Light *l)
 	protor->displayShadow(l);
 }
 
-void helicopterDisplayOnGBuffer(engine::Camera *c, engine::GBuffer *g)
+void helicopterDisplay(engine::GBuffer *g, engine::Camera *c)
 {
-	helicopter->displayOnGBuffer(c, g);
-	grotor->displayOnGBuffer(c, g);
-	protor->displayOnGBuffer(c, g);
+	helicopter->display(g, c);
+	grotor->display(g, c);
+	protor->display(g, c);
 }
 
-void helicopterDisplay(engine::Window *w, engine::Camera *c, engine::LBuffer *l)
+/*void helicopterDisplay(engine::Window *w, engine::Camera *c, engine::LBuffer *l)
 {
 	helicopter->display(w, c, l);
 	grotor->display(w, c, l);
 	protor->display(w, c, l);
-}
+}*/
 
 void display(void)
 {
@@ -94,43 +93,35 @@ void display(void)
 
 	// Shadow Pass
 	sun->clear();
+	face->displayShadow(sun);
 	cube1->displayShadow(sun);
 	cube2->displayShadow(sun);
 	cube3->displayShadow(sun);
 	cube4->displayShadow(sun);
 	helicopterDisplayShadow(sun);
-	face->displayShadow(sun);
 
-	// First Geometry Pass
+	// GBuffer
 	gBuffer->clear();
-	cube1->displayOnGBuffer(cam, gBuffer);
-	cube2->displayOnGBuffer(cam, gBuffer);
-	cube3->displayOnGBuffer(cam, gBuffer);
-	cube4->displayOnGBuffer(cam, gBuffer);
-	helicopterDisplayOnGBuffer(cam, gBuffer);
-	face->displayOnGBuffer(cam, gBuffer);
+	face->display(gBuffer, cam);
+	cube1->display(gBuffer, cam);
+	cube2->display(gBuffer, cam);
+	cube3->display(gBuffer, cam);
+	cube4->display(gBuffer, cam);
+	helicopterDisplay(gBuffer, cam);
 
-	// Light Pass
+	// LBuffer
 	lBuffer->clear();
-	sun->display(cam, gBuffer, lBuffer);
+	sun->display(lBuffer, gBuffer, cam);
 
-	// Second Geometry Pass
+	// Nothing
 	window->clear();
-	/*skybox->display(cam);
-	cube1->display(window, cam, lBuffer);
-	cube2->display(window, cam, lBuffer);
-	cube3->display(window, cam, lBuffer);
-	cube4->display(window, cam, lBuffer);
-	helicopterDisplay(window, cam, lBuffer);
-	face->display(window, cam, lBuffer);*/
+	//skybox->display(cam);
 
-	gBuffer->display(window, GBUF_NORMAL);
+	screen->display(gBuffer, lBuffer, sr, sg, sb, sa);
 
 	text1->display();
 	// text2->display();
 	// text3->display();
-
-	//screen->display(sr, sg, sb, sa);
 }
 
 void idle(void)
@@ -210,13 +201,12 @@ void initGL(void)
 
 void deleteClass(void)
 {
-	delete lightProgram;
-	delete gBufferProgram;
 	delete textProgram;
 	delete screenProgram;
 	delete skyboxProgram;
 	delete shadowProgram;
-	delete mainProgram;
+	delete lightProgram;
+	delete objectProgram;
 
 	delete lBuffer;
 	delete gBuffer;

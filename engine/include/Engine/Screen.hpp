@@ -2,6 +2,8 @@
 #define SCREEN
 
 #include "ShaderProgram.hpp"
+#include "GBuffer.hpp"
+#include "LBuffer.hpp"
 
 namespace engine
 {
@@ -12,11 +14,13 @@ namespace engine
 		GLuint _idVBO;
 		ShaderProgram *_program;
 		GLint _colorLocation;
+		GLint _materialTextureLocation;
+		GLint _lightTextureLocation;
 	public:
 		Screen();
 		~Screen();
 		void config(ShaderProgram *program);
-		void display(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+		void display(GBuffer *gbuf, LBuffer *lbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	};
 }
 

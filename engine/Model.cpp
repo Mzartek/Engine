@@ -43,9 +43,9 @@ void engine::Model::initObjectMirror(Model *m)
 void engine::Model::config(ShaderProgram *program)
 {
 	_program = program;
-	_screenWidthLocation = glGetUniformLocation(_program->getId(), "screenWidth");
-	_screenHeightLocation = glGetUniformLocation(_program->getId(), "screenHeight");
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
+	_modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
+	_normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
 }
 
 void engine::Model::createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
@@ -208,7 +208,7 @@ engine::Object *engine::Model::getObject(GLuint num) const
 	return (*_tObject)[num];
 }
   
-void engine::Model::display(Window *win, Camera *cam, LBuffer *l) const
+void engine::Model::display(GBuffer *g, Camera *cam) const
 {
 	GLuint i;
 	GLfloat tmp[16];
@@ -226,46 +226,21 @@ void engine::Model::display(Window *win, Camera *cam, LBuffer *l) const
   
 	glUseProgram(_program->getId());
 
-	glUniform1f(_screenWidthLocation, (GLfloat)win->getWidth());
-	glUniform1f(_screenHeightLocation, (GLfloat)win->getHeight());
-  
+	// MVP Matrix
 	matrixMultiply(tmp, cam->getMatrix(), _modelMatrix);
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, tmp);
-  
-	glUseProgram(0);
-  
-	for(i=0 ; i<_tObject->size(); i++)
-		(*_tObject)[i]->display(l);
-}
 
-void engine::Model::displayOnGBuffer(Camera *cam, GBuffer *g) const
-{
-	GLuint i;
-	GLfloat tmp[16];
-	
-	if(cam == NULL)
-	{
-		std::cerr << "Bad Camera" << std::endl;
-		return;
-	}
-	if(g == NULL)
-	{
-		std::cerr << "Bad GBuffer!" << std::endl;
-		return;
-	}
-        
-	glUseProgram(g->getProgramId());
-	
-	matrixMultiply(tmp, cam->getMatrix(), _modelMatrix);
-	glUniformMatrix4fv(g->getMVPLocation(), 1, GL_FALSE, tmp);
-	glUniformMatrix4fv(g->getModelMatrixLocation(), 1, GL_FALSE, _modelMatrix);
+	// Model Matrix
+	glUniformMatrix4fv(_modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
+
+	// Normal Matrix
 	matrixNormalFromModel(tmp, _modelMatrix);
-	glUniformMatrix3fv(g->getNormalMatrixLocation(), 1, GL_FALSE, tmp);
-	
+	glUniformMatrix3fv(_normalMatrixLocation, 1, GL_FALSE, tmp);
+  
 	glUseProgram(0);
-	
+  
 	for(i=0 ; i<_tObject->size(); i++)
-		(*_tObject)[i]->displayOnGBuffer(g);
+		(*_tObject)[i]->display(g);
 }
 
 void engine::Model::displayShadow(Light *l) const
@@ -290,6 +265,7 @@ void engine::Model::displayShadow(Light *l) const
 	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, tmp);
 	
 	glUseProgram(0);
+
 	for(i=0 ; i<_tObject->size(); i++)
 		(*_tObject)[i]->displayShadow(l);
 }

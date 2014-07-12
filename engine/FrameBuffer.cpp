@@ -3,7 +3,6 @@
 engine::FrameBuffer::FrameBuffer(void)
 {
 	_idFBO = 0;
-	_program = NULL;
 }
 
 engine::FrameBuffer::~FrameBuffer(void)
@@ -25,11 +24,6 @@ GLuint engine::FrameBuffer::getHeight(void) const
 GLuint engine::FrameBuffer::getIdFBO(void) const
 {
 	return _idFBO;
-}
-
-GLuint engine::FrameBuffer::getProgramId(void) const
-{
-	return _program->getId();
 }
 
 void engine::FrameBuffer::clear(void) const

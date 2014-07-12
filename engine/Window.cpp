@@ -69,8 +69,6 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);

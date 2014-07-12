@@ -37,13 +37,12 @@ extern engine::TextArray *text3;
 extern engine::GBuffer *gBuffer;
 extern engine::LBuffer *lBuffer;
 
-extern engine::ShaderProgram *mainProgram;
+extern engine::ShaderProgram *objectProgram;
+extern engine::ShaderProgram *lightProgram;
 extern engine::ShaderProgram *shadowProgram;
 extern engine::ShaderProgram *skyboxProgram;
 extern engine::ShaderProgram *screenProgram;
 extern engine::ShaderProgram *textProgram;
-extern engine::ShaderProgram *gBufferProgram;
-extern engine::ShaderProgram *lightProgram;
 
 extern void configShaders(void);
 extern void configBuffers(void);

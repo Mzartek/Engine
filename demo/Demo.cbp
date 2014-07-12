@@ -43,12 +43,10 @@
 		<Unit filename="config.cpp" />
 		<Unit filename="config.hpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="shader/demoFrag.glsl" />
-		<Unit filename="shader/demoVert.glsl" />
 		<Unit filename="shader/dirLightFrag.glsl" />
 		<Unit filename="shader/dirLightVert.glsl" />
-		<Unit filename="shader/gBufferFrag.glsl" />
-		<Unit filename="shader/gBufferVert.glsl" />
+		<Unit filename="shader/objectFrag.glsl" />
+		<Unit filename="shader/objectVert.glsl" />
 		<Unit filename="shader/screenFrag.glsl" />
 		<Unit filename="shader/screenVert.glsl" />
 		<Unit filename="shader/shadowFrag.glsl" />

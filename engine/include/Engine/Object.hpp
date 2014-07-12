@@ -25,8 +25,9 @@ namespace engine
 		GLint _matAmbientLocation;
 		GLint _matDiffuseLocation;
 		GLint _matSpecularLocation;
+		GLint _matShininessLocation;
 		GLint _colorTextureLocation;
-		GLint _lightTextureLocation;
+		GLint _gBufferMaterialTextureLocation;
 	public:
 		Object(void);
 		~Object(void);
@@ -39,8 +40,7 @@ namespace engine
 		GLfloat getTransparency(void);
 		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
-		void display(LBuffer *l) const;
-		void displayOnGBuffer(GBuffer *g) const;
+		void display(GBuffer *g) const;
 		void displayShadow(Light *l) const;
 	};
   

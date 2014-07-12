@@ -17,9 +17,9 @@ namespace engine
 		std::vector<Object *> *_tObject;
 		GLfloat _modelMatrix[16];
 		ShaderProgram *_program;
-		GLint _screenWidthLocation;
-		GLint _screenHeightLocation;
 		GLint _MVPLocation;
+		GLint _modelMatrixLocation;
+		GLint _normalMatrixLocation;
 	public:
 		Model();
 		~Model();
@@ -38,8 +38,7 @@ namespace engine
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		Vector3D<GLfloat> getPosition(void) const;
 		Object *getObject(GLuint num) const;
-		void display(Window *win, Camera *cam, LBuffer *l) const;
-		void displayOnGBuffer(Camera *cam, GBuffer *g) const;
+		void display(GBuffer *g, Camera *cam) const;
 		void displayShadow(Light *l) const;
 	};
 }

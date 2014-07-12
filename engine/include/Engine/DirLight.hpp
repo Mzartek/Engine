@@ -17,7 +17,7 @@ namespace engine
 		void setDimension(GLfloat x, GLfloat y, GLfloat z);
 		GLint getLightDirectionLocation(void) const;
 		void position(void);
-		void display(Camera *cam, GBuffer *g, LBuffer *l);
+		void display(LBuffer *l, GBuffer *g, Camera *cam);
 	};
 }
 

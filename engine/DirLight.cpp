@@ -76,7 +76,7 @@ void engine::DirLight::position(void)
 	matrixMultiply(_VP, _projection, view);
 }
 
-void engine::DirLight::display(Camera *cam, GBuffer *g, LBuffer *l)
+void engine::DirLight::display(LBuffer *l, GBuffer *g, Camera *cam)
 {
 	GLfloat tmp[16];
 	if(g == NULL)
@@ -90,7 +90,6 @@ void engine::DirLight::display(Camera *cam, GBuffer *g, LBuffer *l)
 		return;
 	}
 
-	glDisable(GL_BLEND);
 	glBindFramebuffer(GL_FRAMEBUFFER, l->getIdFBO());
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
@@ -136,7 +135,6 @@ void engine::DirLight::display(Camera *cam, GBuffer *g, LBuffer *l)
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glEnable(GL_BLEND);
 }
 
 GLint engine::DirLight::getLightDirectionLocation(void) const
