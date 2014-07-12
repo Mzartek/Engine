@@ -1,28 +1,35 @@
 # Makefile for making dll
+
 CC= g++
 LIBNAME= Engine
+BIN= bin/
 DIR= lib/
 SYSTEM= $(shell uname)
+
 ifeq ($(SYSTEM), Linux)
-LIB= -Iinclude -fPIC -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp
+
+COMPILER_OPTIONS=  -O3 -W -Wall -Wextra -Wfatal-errors -Iinclude -fPIC
+LINKER_OPTIONS= -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp
+
 else
-BIN= ../demo/bin/
-LIB= -DWIN32 -DENGINE_EXPORTS -Iinclude -I/c/MinGW/user/include -L/c/MinGW/user/lib -I/c/Program\ Files\Assimp\include -L/c/Program\ Files\Assimp\lib\x64 -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp
+
+COMPILER_OPTIONS=  -O3 -W -Wall -Wextra -Wfatal-errors -DWIN32 -DENGINE_EXPORTS -Iinclude -I/c/MinGW/user/include -I/c/Program\ Files\Assimp\include
+LINKER_OPTIONS= -L/c/MinGW/user/lib -L/c/Program\ Files\Assimp\lib\x64 -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
+
 endif
-FLAGS= -O3 -W -Wall -Wextra -Wfatal-errors $(LIB)
+
 SRC= matrix.cpp textureLoader.cpp Object.cpp Window.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp Model.cpp OBJModel.cpp Light.cpp DirLight.cpp SpotLight.cpp FrameBuffer.cpp ShadowMap.cpp SkyBox.cpp Screen.cpp TextArray.cpp GBuffer.cpp LBuffer.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
-IMPORT= -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
 
 all:	$(OBJ)
 ifeq ($(SYSTEM), Linux)
-	$(CC) -shared -o $(DIR)lib$(LIBNAME).so $^ $(FLAGS)
+	$(CC) -shared $^ -o $(DIR)lib$(LIBNAME).so $(LINKER_OPTIONS)
 else
-	$(CC) -shared -o $(BIN)$(LIBNAME).dll $^ $(FLAGS) $(IMPORT)
+	$(CC) -shared $^ -o $(BIN)$(LIBNAME).dll $(LINKER_OPTIONS)
 endif
 
 obj/%.o:	%.cpp
-	$(CC) -c -o $@ $^ $(FLAGS)
+	$(CC) $(COMPILER_OPTIONS) -c $^ -o $@
 
 clean:	
 	rm -f $(OBJ)

@@ -7,7 +7,7 @@
 #define GBUF_NUM_TEX 3
 #define GBUF_POSITION 0
 #define GBUF_NORMAL 1
-#define GBUF_DIFFUSE 2
+#define GBUF_MATERIAL 2
 
 namespace engine
 {
@@ -19,8 +19,12 @@ namespace engine
 		GLint _MVPLocation;
 		GLint _modelMatrixLocation;
 		GLint _normalMatrixLocation;
-		GLint _shininessLocation;
+		GLint _matAmbientLocation;
+		GLint _matDiffuseLocation;
+		GLint _matSpecularLocation;
+		GLint _matShininessLocation;
 		GLint _colorTextureLocation;
+		GLint _gBufferMaterialTextureLocation;
 	public:
 		GBuffer(void);
 		~GBuffer(void);
@@ -30,8 +34,12 @@ namespace engine
 		GLint getMVPLocation(void) const;
 		GLint getModelMatrixLocation(void) const;
 		GLint getNormalMatrixLocation(void) const;
-		GLint getShininessLocation(void) const;
+		GLint getMatAmbientLocation(void) const;
+		GLint getMatDiffuseLocation(void) const;
+		GLint getMatSpecularLocation(void) const;
+		GLint getMatShininessLocation(void) const;
 		GLint getColorTextureLocation(void) const;
+		GLint getGBufferMaterialTextureLocation(void) const;
 		void display(Window *w, GLuint buf) const;
 	};
 }

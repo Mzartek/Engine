@@ -94,37 +94,37 @@ void display(void)
 
 	// Shadow Pass
 	sun->clear();
-	face->displayShadow(sun);
 	cube1->displayShadow(sun);
 	cube2->displayShadow(sun);
 	cube3->displayShadow(sun);
 	cube4->displayShadow(sun);
 	helicopterDisplayShadow(sun);
+	face->displayShadow(sun);
 
 	// First Geometry Pass
 	gBuffer->clear();
-	face->displayOnGBuffer(cam, gBuffer);
 	cube1->displayOnGBuffer(cam, gBuffer);
 	cube2->displayOnGBuffer(cam, gBuffer);
 	cube3->displayOnGBuffer(cam, gBuffer);
 	cube4->displayOnGBuffer(cam, gBuffer);
 	helicopterDisplayOnGBuffer(cam, gBuffer);
+	face->displayOnGBuffer(cam, gBuffer);
 
 	// Light Pass
 	lBuffer->clear();
 	sun->display(cam, gBuffer, lBuffer);
 	
 	// Second Geometry Pass
-	/*window->clear();
+	window->clear();
 	skybox->display(cam);
-	face->display(window, cam, lBuffer);
 	cube1->display(window, cam, lBuffer);
 	cube2->display(window, cam, lBuffer);
 	cube3->display(window, cam, lBuffer);
 	cube4->display(window, cam, lBuffer);
-	helicopterDisplay(window, cam, lBuffer);*/
+	helicopterDisplay(window, cam, lBuffer);
+	face->display(window, cam, lBuffer);
 
-	gBuffer->display(window, GBUF_DIFFUSE);
+	//gBuffer->display(window, GBUF_NORMAL);
 	
 	text1->display();
 	// text2->display();
@@ -141,7 +141,7 @@ void idle(void)
 
 void reshape(GLuint w, GLuint h)
 {
-	cam->setPerspective(90.0f, w, h, 0.1f, 2000.0f);
+	cam->setPerspective(90.0f, w, h, 0.001f, 2000.0f);
 }
 
 void keyboard(GLubyte key, GLboolean state)

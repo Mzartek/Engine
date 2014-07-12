@@ -8,7 +8,7 @@ namespace engine
 	class DLLAPI DirLight : public Light
 	{
 	private:
-		GLfloat _dim[3];
+		GLfloat _projection[16];
 		GLint _lightDirectionLocation;
 	public:
 		DirLight(void);

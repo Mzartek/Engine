@@ -174,8 +174,15 @@ void engine::Object::displayOnGBuffer(GBuffer *g) const
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
 	glUniform1i(g->getColorTextureLocation(), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
+	glUniform1i(g->getGBufferMaterialTextureLocation(), 1);
 	
-	glUniform1fv(g->getShininessLocation(), 1, _matShininess);
+	glUniform4fv(g->getMatAmbientLocation(), 1, _matAmbient);
+	glUniform4fv(g->getMatDiffuseLocation(), 1, _matDiffuse);
+	glUniform4fv(g->getMatSpecularLocation(), 1, _matSpecular);
+	glUniform1fv(g->getMatShininessLocation(), 1, _matShininess);
         
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	
@@ -202,6 +209,17 @@ void engine::Object::displayShadow(Light *l) const
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 	glUseProgram(l->getShadowMap()->getProgramId());
 	glBindVertexArray(_idVAO);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _idTexture);
+	glUniform1i(l->getShadowMap()->getColorTextureLocation(), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, l->getShadowMap()->getIdDepthTexture());
+	glUniform1i(l->getShadowMap()->getShadowMapLocation(), 1);
+
+	glUniform1f(l->getShadowMap()->getAlphaLocation(), _matDiffuse[3]);
+	glUniform2f(l->getShadowMap()->getScreenLocation(), (GLfloat)l->getShadowMap()->getWidth(), (GLfloat)l->getShadowMap()->getHeight());
 	
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	

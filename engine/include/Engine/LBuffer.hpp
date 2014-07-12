@@ -15,7 +15,6 @@ namespace engine
 		~LBuffer(void);
 		void config(const GLuint &width, const GLuint &height);
 		GLuint getIdTexture(void) const;
-		void display(Window *w) const;
 	};
 }
 

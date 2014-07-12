@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Engine" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Engine" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Engine" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O3" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fPIC" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lGL" />
+			<Add option="-lSDL2" />
+			<Add option="-lSDL2_image" />
+			<Add option="-lSDL2_ttf" />
+			<Add option="-lm" />
+			<Add option="-lassimp" />
+		</Linker>
+		<Unit filename="Camera.cpp" />
+		<Unit filename="DirLight.cpp" />
+		<Unit filename="FrameBuffer.cpp" />
+		<Unit filename="FreeCam.cpp" />
+		<Unit filename="GBuffer.cpp" />
+		<Unit filename="LBuffer.cpp" />
+		<Unit filename="Light.cpp" />
+		<Unit filename="Model.cpp" />
+		<Unit filename="MovableCamera.cpp" />
+		<Unit filename="OBJModel.cpp" />
+		<Unit filename="Object.cpp" />
+		<Unit filename="PlayerCam.cpp" />
+		<Unit filename="Screen.cpp" />
+		<Unit filename="ShaderProgram.cpp" />
+		<Unit filename="ShadowMap.cpp" />
+		<Unit filename="SkyBox.cpp" />
+		<Unit filename="SpotLight.cpp" />
+		<Unit filename="TextArray.cpp" />
+		<Unit filename="Window.cpp" />
+		<Unit filename="include/Engine/Camera.hpp" />
+		<Unit filename="include/Engine/DirLight.hpp" />
+		<Unit filename="include/Engine/FrameBuffer.hpp" />
+		<Unit filename="include/Engine/FreeCam.hpp" />
+		<Unit filename="include/Engine/GBuffer.hpp" />
+		<Unit filename="include/Engine/GLHead.hpp" />
+		<Unit filename="include/Engine/LBuffer.hpp" />
+		<Unit filename="include/Engine/Light.hpp" />
+		<Unit filename="include/Engine/Model.hpp" />
+		<Unit filename="include/Engine/MovableCamera.hpp" />
+		<Unit filename="include/Engine/OBJModel.hpp" />
+		<Unit filename="include/Engine/Object.hpp" />
+		<Unit filename="include/Engine/PlayerCam.hpp" />
+		<Unit filename="include/Engine/Screen.hpp" />
+		<Unit filename="include/Engine/ShaderProgram.hpp" />
+		<Unit filename="include/Engine/ShadowMap.hpp" />
+		<Unit filename="include/Engine/SkyBox.hpp" />
+		<Unit filename="include/Engine/SpotLight.hpp" />
+		<Unit filename="include/Engine/TextArray.hpp" />
+		<Unit filename="include/Engine/Vector2D.hpp" />
+		<Unit filename="include/Engine/Vector2D.tpp" />
+		<Unit filename="include/Engine/Vector3D.hpp" />
+		<Unit filename="include/Engine/Vector3D.tpp" />
+		<Unit filename="include/Engine/Vector4D.hpp" />
+		<Unit filename="include/Engine/Vector4D.tpp" />
+		<Unit filename="include/Engine/Window.hpp" />
+		<Unit filename="include/Engine/matrix.hpp" />
+		<Unit filename="matrix.cpp" />
+		<Unit filename="textureLoader.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -72,6 +72,8 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 	glEnable(GL_BLEND);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
 }
 
 void engine::Window::setDisplayFunc(void (*f) (void))
@@ -160,7 +162,6 @@ void engine::Window::stop(void)
 
 void engine::Window::clear(void)
 {
-	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, _width, _height);
 }

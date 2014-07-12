@@ -20,6 +20,8 @@ layout(location = 0) out uvec4 outLightTexture;
 
 float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
 {
+	if (coord.x > 1.0 || coord.y > 1.0 || coord.x < 0.0 || coord.y < 0.0)
+		return 1.0;
 	return textureProj(tex, vec4(coord.x + (offSet.x * (1.0/texSize.x)), coord.y + (offSet.y * (1.0/texSize.y)), coord.z-0.005, coord.w));
 }
 
@@ -39,9 +41,9 @@ float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
 void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need to be normalize
 {
 	vec3 L, E, R;
-	uvec4 srcLight = texelFetch(lightTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
-	vec4 cDiff = vec4(0x0000FFFF & (ivec4(srcLight) >> 16)) / 65535;
-	vec4 cSpec = vec4(0x0000FFFF & ivec4(srcLight)) / 65535;
+	uvec4 dstLight = texelFetch(lightTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
+	vec4 cDiff = vec4(0x0000FFFF & (ivec4(dstLight) >> 16)) / 65535;
+	vec4 cSpec = vec4(0x0000FFFF & ivec4(dstLight)) / 65535;
 	float cosTheta, specular;
   
 	L = normalize(lightDirection);
@@ -58,7 +60,9 @@ void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need 
 		cSpec = clamp(cSpec + (vec4(lightColor, 1.0) * specular * shadow), 0.0, 1.0);
 	}
 
-	outLightTexture = (0xFFFF0000 & uvec4(ivec4(cDiff * 65535) << 16)) | uvec4(0x0000FFFF & ivec4(cSpec * 65535));
+	outLightTexture = 
+		uvec4(0xFFFF0000 & uvec4(ivec4(cDiff * 65535) << 16)) | 
+		uvec4(0x0000FFFF & ivec4(cSpec * 65535));
 }
 
 void main(void)
@@ -67,6 +71,6 @@ void main(void)
 	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
 	float s = 1.0;
 
-	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
+	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 3.0);
 	calcDirLight(normal.xyz, camPosition - position, normal.w, s);
 }

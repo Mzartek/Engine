@@ -47,14 +47,3 @@ GLuint engine::LBuffer::getIdTexture(void) const
 {
 	return _idTexture;
 }
-
-void engine::LBuffer::display(Window *w) const
-{
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, _idFBO);
-
-	glReadBuffer(GL_COLOR_ATTACHMENT0);
-
-	glBlitFramebuffer(0, 0, _width, _height, 0, 0, w->getWidth(), w->getHeight(), GL_COLOR_BUFFER_BIT, GL_LINEAR);
-
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-}

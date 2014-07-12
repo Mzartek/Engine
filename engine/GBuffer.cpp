@@ -29,8 +29,12 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
 	_normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
-	_shininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
+	_matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
+	_matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
+	_matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
+	_matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
 	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
+	_gBufferMaterialTextureLocation = glGetUniformLocation(_program->getId(), "gBufferMaterialTexture");
 	
 	// Frame Buffer Object
 	if(glIsFramebuffer(_idFBO))
@@ -45,7 +49,7 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 	
 	// Position Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[0]);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, _width, _height);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, _width, _height);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[0], GL_TEXTURE_2D, _idTexture[0], 0);
@@ -57,19 +61,17 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height, ShaderPr
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[1], GL_TEXTURE_2D, _idTexture[1], 0);
 	
-	// Diffuse Texture
-	if(withColor == GL_TRUE)
-	{
-		glBindTexture(GL_TEXTURE_2D, _idTexture[2]);
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, _width, _height);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[2], GL_TEXTURE_2D, _idTexture[2], 0);
+	// Material Texture
+	glBindTexture(GL_TEXTURE_2D, _idTexture[2]);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32UI, _width, _height);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[2], GL_TEXTURE_2D, _idTexture[2], 0);
+	
+	glDrawBuffers(GBUF_NUM_TEX, colorAttachment);
 
-		glDrawBuffers(GBUF_NUM_TEX, colorAttachment);
-	}
-	else
-		glDrawBuffers(GBUF_NUM_TEX - 1, colorAttachment);
+	if (withColor)
+		std::cout << "LOL" << std::endl;
 
 	// Depth Render
 	if(glIsRenderbuffer(_idDepthRender))
@@ -115,14 +117,34 @@ GLint engine::GBuffer::getNormalMatrixLocation(void) const
 	return _normalMatrixLocation;
 }
 
-GLint engine::GBuffer::getShininessLocation(void) const
+GLint engine::GBuffer::getMatAmbientLocation(void) const
 {
-	return _shininessLocation;
+	return _matAmbientLocation;
+}
+
+GLint engine::GBuffer::getMatDiffuseLocation(void) const
+{
+	return _matDiffuseLocation;
+}
+
+GLint engine::GBuffer::getMatSpecularLocation(void) const
+{
+	return _matSpecularLocation;
+}
+
+GLint engine::GBuffer::getMatShininessLocation(void) const
+{
+	return _matShininessLocation;
 }
 
 GLint engine::GBuffer::getColorTextureLocation(void) const
 {
 	return _colorTextureLocation;
+}
+
+GLint engine::GBuffer::getGBufferMaterialTextureLocation(void) const
+{
+	return _gBufferMaterialTextureLocation;
 }
 
 void engine::GBuffer::display(Window *w, GLuint buf) const

@@ -4,7 +4,7 @@ uniform mat4 MVP;
 uniform mat4 modelMatrix;
 uniform mat3 normalMatrix;
 
-out vec4 position;
+out vec3 position;
 out vec2 texCoord;
 out vec3 normal;
 
@@ -16,7 +16,7 @@ void main(void)
 {
 	gl_Position =  MVP * vec4(vertexArray, 1.0);
 
-	position = modelMatrix * vec4(vertexArray, 1.0);
+	position = vec3(modelMatrix * vec4(vertexArray, 1.0));
 	texCoord = textureArray;
 	normal = normalMatrix * normalArray;
 }
