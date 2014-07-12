@@ -9,19 +9,19 @@ void configShaders(void)
 	textProgram = new engine::ShaderProgram;
 	gBufferProgram = new engine::ShaderProgram;
 	lightProgram = new engine::ShaderProgram;
-	
-	mainProgram->loadProgram("shader/demoVert.c", "shader/demoFrag.c");
-	shadowProgram->loadProgram("shader/shadowVert.c", "shader/shadowFrag.c");
-	skyboxProgram->loadProgram("shader/skyboxVert.c", "shader/skyboxFrag.c");
-	screenProgram->loadProgram("shader/screenVert.c", "shader/screenFrag.c");
-	textProgram->loadProgram("shader/textVert.c", "shader/textFrag.c");
-	gBufferProgram->loadProgram("shader/gBufferVert.c", "shader/gBufferFrag.c");
-	lightProgram->loadProgram("shader/dirLightVert.c", "shader/dirLightFrag.c");
+
+	mainProgram->loadProgram("shader/demoVert.glsl", "shader/demoFrag.glsl");
+	shadowProgram->loadProgram("shader/shadowVert.glsl", "shader/shadowFrag.glsl");
+	skyboxProgram->loadProgram("shader/skyboxVert.glsl", "shader/skyboxFrag.glsl");
+	screenProgram->loadProgram("shader/screenVert.glsl", "shader/screenFrag.glsl");
+	textProgram->loadProgram("shader/textVert.glsl", "shader/textFrag.glsl");
+	gBufferProgram->loadProgram("shader/gBufferVert.glsl", "shader/gBufferFrag.glsl");
+	lightProgram->loadProgram("shader/dirLightVert.glsl", "shader/dirLightFrag.glsl");
 }
 
 void configBuffers(void)
 {
-	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram, GL_FALSE);
+	gBuffer->config(window->getWidth(), window->getHeight(), gBufferProgram);
 	lBuffer->config(window->getWidth(), window->getHeight());
 }
 
@@ -29,7 +29,7 @@ void configText(void)
 {
 	text1->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
-		      (window->getWidth() / 2) - 200, (window->getHeight() / 2) + 100, 
+		      (window->getWidth() / 2) - 200, (window->getHeight() / 2) + 100,
 		      400, 100, textProgram, window);
 	text1->write("Coucou!");
 	text2->config("resources/font/SIXTY.TTF", 100,
@@ -45,7 +45,7 @@ void configText(void)
 void configLights(void)
 {
 	GLfloat lightColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	
+
 	sun->config(lightProgram);
 	sun->setDirection(1, -1, 0);
 	sun->setColor(lightColor[0], lightColor[1], lightColor[2]);
@@ -96,10 +96,10 @@ void configModels(void)
 
 	cube2->config(mainProgram);
 	cube2->initObjectMirror(cube1);
-	
+
 	cube3->config(mainProgram);
 	cube3->initObjectMirror(cube1);
-	
+
 	cube4->config(mainProgram);
 	cube4->initObjectMirror(cube1);
 

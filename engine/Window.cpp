@@ -18,11 +18,11 @@ engine::Window::~Window(void)
 void engine::Window::initWindow(const std::string title, GLint const &w, GLint const &h, GLboolean fullScreen)
 {
 	Uint32 flags;
-	
+
 	_exit = false;
 	_width = w;
 	_height = h;
-  
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cerr << "Error init SDL: " << SDL_GetError() << std::endl;
@@ -36,7 +36,7 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 		TTF_Quit();
 		exit(1);
 	}
-  
+
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -47,14 +47,14 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 	else
 		flags = SDL_WINDOW_OPENGL;
 	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
-  
+
 	if(!_idWindow)
 	{
 		std::cerr << "Can't set video mode: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		exit(1);
 	}
-  
+
 	_idGLContext = SDL_GL_CreateContext(_idWindow);
 
 #ifdef WIN32
@@ -64,7 +64,7 @@ void engine::Window::initWindow(const std::string title, GLint const &w, GLint c
 		exit(1);
 	}
 #endif
-  
+
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
@@ -119,7 +119,7 @@ SDL_Window *engine::Window::getId(void)
 void engine::Window::mainLoop(void)
 {
 	SDL_Event event;
-	
+
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	_reshape(_width, _height);
 	while(!_exit)
@@ -147,7 +147,7 @@ void engine::Window::mainLoop(void)
 			_idle();
 		if(_display)
 			_display();
-		
+
 		SDL_GL_SwapWindow(_idWindow);
 	}
 

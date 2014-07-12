@@ -113,19 +113,19 @@ void display(void)
 	// Light Pass
 	lBuffer->clear();
 	sun->display(cam, gBuffer, lBuffer);
-	
+
 	// Second Geometry Pass
 	window->clear();
-	skybox->display(cam);
+	/*skybox->display(cam);
 	cube1->display(window, cam, lBuffer);
 	cube2->display(window, cam, lBuffer);
 	cube3->display(window, cam, lBuffer);
 	cube4->display(window, cam, lBuffer);
 	helicopterDisplay(window, cam, lBuffer);
-	face->display(window, cam, lBuffer);
+	face->display(window, cam, lBuffer);*/
 
-	//gBuffer->display(window, GBUF_NORMAL);
-	
+	gBuffer->display(window, GBUF_NORMAL);
+
 	text1->display();
 	// text2->display();
 	// text3->display();
@@ -217,7 +217,7 @@ void deleteClass(void)
 	delete skyboxProgram;
 	delete shadowProgram;
 	delete mainProgram;
-	
+
 	delete lBuffer;
 	delete gBuffer;
 	delete text3;

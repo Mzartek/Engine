@@ -28,7 +28,7 @@ namespace engine
 	public:
 		GBuffer(void);
 		~GBuffer(void);
-		void config(const GLuint &width, const GLuint &height, ShaderProgram *program, GLboolean withColor);
+		void config(const GLuint &width, const GLuint &height, ShaderProgram *program);
 		GLuint getIdTexture(GLuint num) const;
 		GLuint getIdDepthRender(void) const;
 		GLint getMVPLocation(void) const;
