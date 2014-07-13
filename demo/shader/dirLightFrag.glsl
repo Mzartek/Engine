@@ -35,16 +35,23 @@ float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
 	return shadow;
 }
 
-void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need to be normalize
+struct light
+{
+    vec3 diff;
+    vec3 spec;
+};
+
+light calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need to be normalize
 {
 	vec3 L, E, R;
 	float cosTheta, specular;
+	light res;
 
-	vec3 lightDiff = vec3(0.0, 0.0, 0.0);
-	vec3 lightSpec = vec3(0.0, 0.0, 0.0);
-  
+	res.diff = vec3(0.0, 0.0, 0.0);
+	res.spec = vec3(0.0, 0.0, 0.0);
+
 	L = normalize(lightDirection);
-	
+
 	cosTheta = dot(-L,N);
 	if(cosTheta > 0.0 && shadow != 0.0)
 	{
@@ -52,33 +59,38 @@ void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need 
 		R = reflect(L, N);
 
 		specular = pow(max(dot(R, E), 0.0), shininess);
-      
-		lightDiff += lightColor * cosTheta * shadow;
-		lightSpec += lightColor * specular * shadow;
+
+		res.diff += lightColor * cosTheta * shadow;
+		res.spec += lightColor * specular * shadow;
 	}
 
-	uvec3 material = texelFetch(materialTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
-	vec3 finalColor = vec3(0x000000FF & (ivec3(material) >> 24)) / 255;
-	vec3 matAmbient = vec3(0x000000FF & (ivec3(material) >> 16)) / 255;
-	vec3 matDiffuse = vec3(0x000000FF & (ivec3(material) >> 8)) / 255;
-	vec3 matSpecular = vec3(0x000000FF & ivec3(material)) / 255;
-
-	finalColor *= matAmbient + (matDiffuse * lightDiff) + (matSpecular * lightSpec);
-	finalColor = clamp(finalColor, 0.0, 1.0);
-
-	outMaterial = 
-		uvec3(0xFF000000 & uvec3(ivec3(finalColor * 255) << 24)) |
-		uvec3(0x00FF0000 & (ivec3(matAmbient * 255) << 16)) |
-		uvec3(0x0000FF00 & (ivec3(matDiffuse * 255) << 8)) |
-		uvec3(0x000000FF & ivec3(matSpecular * 255));
+	return res;
 }
 
 void main(void)
 {
-	vec3 position = texelFetch(positionTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
-	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
-	float s = 1.0;
+	vec3 position, finalColor, matAmbient, matDiffuse, matSpecular;
+	vec4 normal;
+	uvec3 material;
+	float s;
+	light l;
+
+	position = texelFetch(positionTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
+	normal = texelFetch(normalTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
+	material = texelFetch(materialTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
+	finalColor = vec3(0x000000FF & (ivec3(material) >> 24)) / 255;
+	matAmbient = vec3(0x000000FF & (ivec3(material) >> 16)) / 255;
+	matDiffuse = vec3(0x000000FF & (ivec3(material) >> 8)) / 255;
+	matSpecular = vec3(0x000000FF & ivec3(material)) / 255;
 
 	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
-	calcDirLight(normal.xyz, camPosition - position, normal.w, s);
+	l = calcDirLight(normal.xyz, camPosition - position, normal.w, s);
+	finalColor *= matAmbient + (matDiffuse * l.diff) + (matSpecular * l.spec);
+	finalColor = clamp(finalColor, 0.0, 1.0);
+
+	outMaterial =
+		uvec3(0xFF000000 & uvec3(ivec3(finalColor * 255) << 24)) |
+		uvec3(0x00FF0000 & (ivec3(matAmbient * 255) << 16)) |
+		uvec3(0x0000FF00 & (ivec3(matDiffuse * 255) << 8)) |
+		uvec3(0x000000FF & ivec3(matSpecular * 255));
 }
