@@ -33,7 +33,6 @@ void engine::Object::setShaderProgram(ShaderProgram *program)
 {
 	_program = program;
 	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
 	_matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
 	_matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
 	_matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
@@ -134,16 +133,13 @@ void engine::Object::display(GBuffer *g) const
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
 	glUniform1i(_colorTextureLocation, 0);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_materialTextureLocation, 1);
 	
 	glUniform4fv(_matAmbientLocation,  1, _matAmbient);
 	glUniform4fv(_matDiffuseLocation,  1, _matDiffuse);
 	glUniform4fv(_matSpecularLocation,  1, _matSpecular);
 	glUniform1fv(_matShininessLocation, 1, _matShininess);
 
+	glDrawBuffers(GBUF_NUM_TEX, g->colorAttachment);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);

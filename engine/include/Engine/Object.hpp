@@ -23,7 +23,6 @@ namespace engine
 		GLsizei _numElement;
 		ShaderProgram *_program;
 		GLint _colorTextureLocation;
-		GLint _materialTextureLocation;
 		GLint _matAmbientLocation;
 		GLint _matDiffuseLocation;
 		GLint _matSpecularLocation;

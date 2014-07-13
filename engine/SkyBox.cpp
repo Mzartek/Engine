@@ -162,6 +162,7 @@ void engine::SkyBox::display(GBuffer *g, Camera *cam)
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
 	glUniform1i(_textureLocation, 0);
 
+	glDrawBuffers(1, &g->colorAttachment[GBUF_MATERIAL]);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);

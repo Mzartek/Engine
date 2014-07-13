@@ -20,7 +20,6 @@ engine::TextArray *text1;
 engine::TextArray *text2;
 engine::TextArray *text3;
 engine::GBuffer *gBuffer;
-engine::LBuffer *lBuffer;
 
 engine::ShaderProgram *objectProgram;
 engine::ShaderProgram *lightProgram;
@@ -109,14 +108,11 @@ void display(void)
 	cube3->display(gBuffer, cam);
 	cube4->display(gBuffer, cam);
 	helicopterDisplay(gBuffer, cam);
-
-	// LBuffer
-	lBuffer->clear();
-	sun->display(lBuffer, gBuffer, cam);
+	sun->display(gBuffer, cam);
 
 	// Screen
 	window->clear();
-	screen->display(gBuffer, lBuffer, sr, sg, sb, sa);
+	screen->display(gBuffer, sr, sg, sb, sa);
 
 	// Text
 	text1->display();
@@ -177,7 +173,6 @@ void init(void)
 	text2 = new engine::TextArray;
 	text3 = new engine::TextArray;
 	gBuffer = new engine::GBuffer;
-	lBuffer = new engine::LBuffer;
 
 	cam->setPositionCamera(0, 1, 0);
 	cam->setSpeed(0.25f);
@@ -208,7 +203,6 @@ void deleteClass(void)
 	delete lightProgram;
 	delete objectProgram;
 
-	delete lBuffer;
 	delete gBuffer;
 	delete text3;
 	delete text2;

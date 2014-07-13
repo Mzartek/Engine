@@ -67,22 +67,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
-    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Assimp\lib\x86;C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>
-    <LibraryPath>C:\Program Files\Assimp\lib\x64;C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\Program Files\Assimp\lib\x64;C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\perso\x64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Program Files\Assimp\include;C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Assimp\lib\x86;C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\perso\include;C:\Users\Mzartek\Desktop\Programmation\Engine-GL4-\engine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\perso\x86\lib;$(LibraryPath)</LibraryPath>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -156,7 +156,6 @@
     <ClInclude Include="include\Engine\FreeCam.hpp" />
     <ClInclude Include="include\Engine\GBuffer.hpp" />
     <ClInclude Include="include\Engine\GLHead.hpp" />
-    <ClInclude Include="include\Engine\LBuffer.hpp" />
     <ClInclude Include="include\Engine\Light.hpp" />
     <ClInclude Include="include\Engine\matrix.hpp" />
     <ClInclude Include="include\Engine\Model.hpp" />
@@ -181,7 +180,6 @@
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="FreeCam.cpp" />
     <ClCompile Include="GBuffer.cpp" />
-    <ClCompile Include="LBuffer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="Model.cpp" />

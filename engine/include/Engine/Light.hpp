@@ -4,7 +4,6 @@
 #include "ShadowMap.hpp"
 #include "Camera.hpp"
 #include "GBuffer.hpp"
-#include "LBuffer.hpp"
 
 namespace engine
 {
@@ -22,6 +21,7 @@ namespace engine
 		// For LBuffer
 		GLint _positionTextureLocation;
 		GLint _normalTextureLocation;
+		GLint _materialTextureLocation;
 		GLint _shadowMapLocation;
 		GLint _shadowMatrixLocation;
 		GLint _lightTextureLocation;
@@ -41,16 +41,9 @@ namespace engine
 		GLfloat *getColor(void);
 		ShadowMap *getShadowMap(void);
 		GLfloat *getMatrix(void);
-		GLint getPositionTextureLocation(void) const;
-		GLint getNormalTextureLocation(void) const;
-		GLint getShadowMapLocation(void) const;
-		GLint getShadowMatrixLocation(void) const;
-		GLint getLightTextureLocation(void) const;
-		GLint getCamPositionLocation(void) const;
-		GLint getLightColorLocation(void) const;
 		void clear(void) const;
 		virtual void position(void) = 0;
-		virtual void display(LBuffer *l, GBuffer *g, Camera *cam) = 0;
+		virtual void display(GBuffer *g, Camera *cam) = 0;
 	};
 }
 

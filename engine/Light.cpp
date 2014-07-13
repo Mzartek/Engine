@@ -100,38 +100,3 @@ void engine::Light::clear(void) const
 	}
 	_shadow->clear();
 }
-
-GLint engine::Light::getPositionTextureLocation(void) const
-{
-	return _positionTextureLocation;
-}
-
-GLint engine::Light::getNormalTextureLocation(void) const
-{
-	return _normalTextureLocation;
-}
-
-GLint engine::Light::getShadowMapLocation(void) const
-{
-	return _shadowMapLocation;
-}
-
-GLint engine::Light::getShadowMatrixLocation(void) const
-{
-	return _shadowMatrixLocation;
-}
-
-GLint engine::Light::getLightTextureLocation(void) const
-{
-	return _lightTextureLocation;
-}
-
-GLint engine::Light::getCamPositionLocation(void) const
-{
-	return _camPositionLocation;
-}
-
-GLint engine::Light::getLightColorLocation(void) const
-{
-	return _lightColorLocation;
-}

@@ -2,6 +2,9 @@
 
 engine::GBuffer::GBuffer(void)
 {
+	colorAttachment[GBUF_POSITION] = GL_COLOR_ATTACHMENT0;
+	colorAttachment[GBUF_NORMAL] = GL_COLOR_ATTACHMENT1;
+	colorAttachment[GBUF_MATERIAL] = GL_COLOR_ATTACHMENT2;
 	memset(_idTexture, 0, sizeof _idTexture);
 	_idDepthRender = 0;
 }
@@ -16,12 +19,6 @@ engine::GBuffer::~GBuffer(void)
 
 void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 {
-	GLenum colorAttachment[] = {
-		GL_COLOR_ATTACHMENT0,
-		GL_COLOR_ATTACHMENT1,
-		GL_COLOR_ATTACHMENT2
-	};
-
 	_width = width;
 	_height = height;
 
@@ -37,27 +34,25 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	glGenTextures(GBUF_NUM_TEX, _idTexture);
 
 	// Position Texture
-	glBindTexture(GL_TEXTURE_2D, _idTexture[0]);
+	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_POSITION]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, _width, _height);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[0], GL_TEXTURE_2D, _idTexture[0], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[GBUF_POSITION], GL_TEXTURE_2D, _idTexture[GBUF_POSITION], 0);
 
 	// Normal Texture
-	glBindTexture(GL_TEXTURE_2D, _idTexture[1]);
+	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_NORMAL]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, _width, _height);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[1], GL_TEXTURE_2D, _idTexture[1], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[GBUF_NORMAL], GL_TEXTURE_2D, _idTexture[GBUF_NORMAL], 0);
 
 	// Material Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[2]);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32UI, _width, _height);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32UI, _width, _height);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[2], GL_TEXTURE_2D, _idTexture[2], 0);
-
-	glDrawBuffers(GBUF_NUM_TEX, colorAttachment);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachment[GBUF_MATERIAL], GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL], 0);
 
 	// Depth Render
 	if(glIsRenderbuffer(_idDepthRender))

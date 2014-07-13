@@ -20,7 +20,6 @@ void configShaders(void)
 void configBuffers(void)
 {
 	gBuffer->config(window->getWidth(), window->getHeight());
-	lBuffer->config(window->getWidth(), window->getHeight());
 }
 
 void configText(void)

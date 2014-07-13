@@ -8,15 +8,12 @@ uniform mat4 shadowMatrix;
 // From GBuffer
 uniform sampler2D positionTexture;
 uniform sampler2D normalTexture;
+uniform usampler2D materialTexture;
 
 // From ShadowMap
 uniform sampler2DShadow shadowMap;
 
-// Form LBuffer
-uniform usampler2D lightTexture;
-
-layout(location = 0) out uvec4 outLightTexture;
-
+layout(location = 0) out uvec3 outMaterial;
 
 float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
 {
@@ -41,10 +38,10 @@ float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
 void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need to be normalize
 {
 	vec3 L, E, R;
-	uvec4 dstLight = texelFetch(lightTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
-	vec4 cDiff = vec4(0x0000FFFF & (ivec4(dstLight) >> 16)) / 65535;
-	vec4 cSpec = vec4(0x0000FFFF & ivec4(dstLight)) / 65535;
 	float cosTheta, specular;
+
+	vec3 lightDiff = vec3(0.0, 0.0, 0.0);
+	vec3 lightSpec = vec3(0.0, 0.0, 0.0);
   
 	L = normalize(lightDirection);
 	
@@ -56,13 +53,24 @@ void calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need 
 
 		specular = pow(max(dot(R, E), 0.0), shininess);
       
-		cDiff = clamp(cDiff + (vec4(lightColor, 1.0) * cosTheta * shadow), 0.0, 1.0);
-		cSpec = clamp(cSpec + (vec4(lightColor, 1.0) * specular * shadow), 0.0, 1.0);
+		lightDiff += lightColor * cosTheta * shadow;
+		lightSpec += lightColor * specular * shadow;
 	}
 
-	outLightTexture = 
-		uvec4(0xFFFF0000 & uvec4(ivec4(cDiff * 65535) << 16)) | 
-		uvec4(0x0000FFFF & ivec4(cSpec * 65535));
+	uvec3 material = texelFetch(materialTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
+	vec3 finalColor = vec3(0x000000FF & (ivec3(material) >> 24)) / 255;
+	vec3 matAmbient = vec3(0x000000FF & (ivec3(material) >> 16)) / 255;
+	vec3 matDiffuse = vec3(0x000000FF & (ivec3(material) >> 8)) / 255;
+	vec3 matSpecular = vec3(0x000000FF & ivec3(material)) / 255;
+
+	finalColor *= matAmbient + (matDiffuse * lightDiff) + (matSpecular * lightSpec);
+	finalColor = clamp(finalColor, 0.0, 1.0);
+
+	outMaterial = 
+		uvec3(0xFF000000 & uvec3(ivec3(finalColor * 255) << 24)) |
+		uvec3(0x00FF0000 & (ivec3(matAmbient * 255) << 16)) |
+		uvec3(0x0000FF00 & (ivec3(matDiffuse * 255) << 8)) |
+		uvec3(0x000000FF & ivec3(matSpecular * 255));
 }
 
 void main(void)

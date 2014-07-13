@@ -35,7 +35,6 @@ extern engine::TextArray *text1;
 extern engine::TextArray *text2;
 extern engine::TextArray *text3;
 extern engine::GBuffer *gBuffer;
-extern engine::LBuffer *lBuffer;
 
 extern engine::ShaderProgram *objectProgram;
 extern engine::ShaderProgram *lightProgram;

@@ -17,6 +17,7 @@ namespace engine
 		GLuint _idTexture[GBUF_NUM_TEX];
 		GLuint _idDepthRender;
 	public:
+		GLenum colorAttachment[GBUF_NUM_TEX];
 		GBuffer(void);
 		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height);

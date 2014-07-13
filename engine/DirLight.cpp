@@ -21,6 +21,7 @@ void engine::DirLight::config(ShaderProgram *program)
 	_program = program;
 	_positionTextureLocation = glGetUniformLocation(_program->getId(), "positionTexture");
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
+	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
 	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
 	_lightTextureLocation = glGetUniformLocation(_program->getId(), "lightTexture");
@@ -76,7 +77,7 @@ void engine::DirLight::position(void)
 	matrixMultiply(_VP, _projection, view);
 }
 
-void engine::DirLight::display(LBuffer *l, GBuffer *g, Camera *cam)
+void engine::DirLight::display(GBuffer *g, Camera *cam)
 {
 	GLfloat tmp[16];
 	if(g == NULL)
@@ -90,18 +91,22 @@ void engine::DirLight::display(LBuffer *l, GBuffer *g, Camera *cam)
 		return;
 	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, l->getIdFBO());
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(0)); // Position
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_POSITION));
 	glUniform1i(_positionTextureLocation, 0);
 	
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(1)); // Normal
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
 	glUniform1i(_normalTextureLocation, 1);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
+	glUniform1i(_materialTextureLocation, 2);
 
 	// ShadowMap
 	if(_shadow != NULL)
@@ -115,11 +120,6 @@ void engine::DirLight::display(LBuffer *l, GBuffer *g, Camera *cam)
 		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, tmp);
 	}
 
-	// LBuffer
-	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, l->getIdTexture());
-	glUniform1i(_lightTextureLocation, 4);
-
 	// Cam position
 	glUniform3f(_camPositionLocation, cam->getPositionCamera()->x, cam->getPositionCamera()->y, cam->getPositionCamera()->z);
 	
@@ -130,14 +130,10 @@ void engine::DirLight::display(LBuffer *l, GBuffer *g, Camera *cam)
 	glUniform3fv(_lightDirectionLocation, 1, _lightDirection);
 
 	// Drawing
+	glDrawBuffers(1, &g->colorAttachment[GBUF_MATERIAL]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-GLint engine::DirLight::getLightDirectionLocation(void) const
-{
-	return _lightDirectionLocation;
 }

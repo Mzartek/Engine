@@ -15,9 +15,8 @@ namespace engine
 		~DirLight(void);
 		void config(ShaderProgram *program);
 		void setDimension(GLfloat x, GLfloat y, GLfloat z);
-		GLint getLightDirectionLocation(void) const;
 		void position(void);
-		void display(LBuffer *l, GBuffer *g, Camera *cam);
+		void display(GBuffer *g, Camera *cam);
 	};
 }
 

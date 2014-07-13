@@ -13,12 +13,12 @@ LINKER_OPTIONS= -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp
 
 else
 
-COMPILER_OPTIONS=  -O3 -W -Wall -Wextra -Wfatal-errors -DWIN32 -DENGINE_EXPORTS -Iinclude -I/c/MinGW/user/include -I/c/Program\ Files\Assimp\include
-LINKER_OPTIONS= -L/c/MinGW/user/lib -L/c/Program\ Files\Assimp\lib\x64 -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
+COMPILER_OPTIONS=  -O3 -W -Wall -Wextra -Wfatal-errors -DWIN32 -DENGINE_EXPORTS -Iinclude -I/c/MinGW/user/include
+LINKER_OPTIONS= -L/c/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
 
 endif
 
-SRC= matrix.cpp textureLoader.cpp Object.cpp Window.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp Model.cpp OBJModel.cpp Light.cpp DirLight.cpp SpotLight.cpp FrameBuffer.cpp ShadowMap.cpp SkyBox.cpp Screen.cpp TextArray.cpp GBuffer.cpp LBuffer.cpp
+SRC= matrix.cpp textureLoader.cpp Object.cpp Window.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp Model.cpp OBJModel.cpp Light.cpp DirLight.cpp SpotLight.cpp FrameBuffer.cpp ShadowMap.cpp SkyBox.cpp Screen.cpp TextArray.cpp GBuffer.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 
 all:	$(OBJ)
