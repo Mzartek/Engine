@@ -22,6 +22,9 @@ namespace engine
 		GLfloat _matShininess[1];
 		GLsizei _numElement;
 		ShaderProgram *_program;
+		GLint _positionTextureLocation;
+		GLint _normalTextureLocation;
+		GLint _materialTextureLocation;
 		GLint _colorTextureLocation;
 		GLint _matAmbientLocation;
 		GLint _matDiffuseLocation;
@@ -42,9 +45,9 @@ namespace engine
 		void display(GBuffer *g) const;
 		void displayShadow(Light *l) const;
 	};
-  
+
 	int comparObject(const void *p1, const void *p2);
-  
+
 }
 
 
