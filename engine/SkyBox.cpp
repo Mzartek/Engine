@@ -137,7 +137,7 @@ void engine::SkyBox::rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 	_z = z;
 }
 
-void engine::SkyBox::display(Camera *cam)
+void engine::SkyBox::display(GBuffer *g, Camera *cam)
 {
 	GLfloat pos[16];
 	if(_program == NULL)
@@ -152,9 +152,10 @@ void engine::SkyBox::display(Camera *cam)
 	matrixMultiply(pos, cam->getMatrix(), pos);
   
 	glDepthMask(GL_FALSE);
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
-  
+	
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, pos);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -163,8 +164,8 @@ void engine::SkyBox::display(Camera *cam)
 
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDepthMask(GL_TRUE);
 }

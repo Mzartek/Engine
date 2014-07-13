@@ -22,12 +22,12 @@ namespace engine
 		GLfloat _matShininess[1];
 		GLsizei _numElement;
 		ShaderProgram *_program;
+		GLint _colorTextureLocation;
+		GLint _materialTextureLocation;
 		GLint _matAmbientLocation;
 		GLint _matDiffuseLocation;
 		GLint _matSpecularLocation;
 		GLint _matShininessLocation;
-		GLint _colorTextureLocation;
-		GLint _gBufferMaterialTextureLocation;
 	public:
 		Object(void);
 		~Object(void);

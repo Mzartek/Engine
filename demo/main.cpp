@@ -102,6 +102,7 @@ void display(void)
 
 	// GBuffer
 	gBuffer->clear();
+	skybox->display(gBuffer, cam);
 	face->display(gBuffer, cam);
 	cube1->display(gBuffer, cam);
 	cube2->display(gBuffer, cam);
@@ -113,12 +114,11 @@ void display(void)
 	lBuffer->clear();
 	sun->display(lBuffer, gBuffer, cam);
 
-	// Nothing
+	// Screen
 	window->clear();
-	//skybox->display(cam);
-
 	screen->display(gBuffer, lBuffer, sr, sg, sb, sa);
 
+	// Text
 	text1->display();
 	// text2->display();
 	// text3->display();

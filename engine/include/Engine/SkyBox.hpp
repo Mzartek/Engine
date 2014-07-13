@@ -2,6 +2,7 @@
 #define SKYBOX
 
 #include "ShaderProgram.hpp"
+#include "GBuffer.hpp"
 #include "Camera.hpp"
 
 namespace engine
@@ -26,7 +27,7 @@ namespace engine
 			  std::string posz, std::string negz,
 			  GLfloat dim, ShaderProgram *program);
 		void rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
-		void display(Camera *cam);
+		void display(GBuffer *g, Camera *cam);
 	};
 }
 

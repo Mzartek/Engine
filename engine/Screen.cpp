@@ -67,7 +67,6 @@ void engine::Screen::display(GBuffer *gbuf, LBuffer *lbuf, GLfloat r, GLfloat g,
 	}
   
 	glDepthMask(GL_FALSE);
-	glEnable(GL_BLEND);
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
 
@@ -85,6 +84,5 @@ void engine::Screen::display(GBuffer *gbuf, LBuffer *lbuf, GLfloat r, GLfloat g,
   
 	glBindVertexArray(0);
 	glUseProgram(0);
-	glDisable(GL_BLEND);
 	glDepthMask(GL_TRUE);
 }
