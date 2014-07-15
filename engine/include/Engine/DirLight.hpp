@@ -7,14 +7,11 @@ namespace engine
 {
 	class DLLAPI DirLight : public Light
 	{
-	private:
-		GLfloat _projection[16];
-		GLint _lightDirectionLocation;
 	public:
 		DirLight(void);
 		~DirLight(void);
 		void config(ShaderProgram *program);
-		void setDimension(GLfloat x, GLfloat y, GLfloat z);
+		void setMatrixDimension(const GLfloat &dim);
 		void position(void);
 		void display(GBuffer *g, Camera *cam);
 	};

@@ -21,6 +21,7 @@ extern DLLAPI void matrixMultiply(float *result, const float *matrix1, const flo
 extern DLLAPI void matrixLoadIdentity(float *matrix);
 extern DLLAPI void matrixLoadBias(float *matrix);
 extern DLLAPI void matrixNormalFromModel(float *result, const float *matrix);
+extern DLLAPI void matrixInverse(float *resulat, const float *matrix);
 extern DLLAPI void matrixOrtho(float *matrix, const float left, const float right, const float bottom, const float top, const float nearVal, const float farVal);
 extern DLLAPI void matrixPerspective(float *matrix, const float fovyInDegrees, const float aspectRatio, const float znear, const float zfar);
 extern DLLAPI void matrixLookAt(float *matrix, const float *eyePosition3D, const float *center3D, const float *upVector3D);

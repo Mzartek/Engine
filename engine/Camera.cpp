@@ -45,14 +45,14 @@ void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, con
 	matrixPerspective(_projectionMatrix, fov, (GLfloat)_width / _height, n, f);
 }
 
-engine::Vector3D<GLfloat> *engine::Camera::getPositionCamera(void) const
+engine::Vector3D<GLfloat> engine::Camera::getPositionCamera(void) const
 {
-	return _pcamera;
+	return *_pcamera;
 }
 
-engine::Vector3D<GLfloat> *engine::Camera::getPositionTarget(void) const
+engine::Vector3D<GLfloat> engine::Camera::getPositionTarget(void) const
 {
-	return _ptarget;
+	return *_ptarget;
 }
 
 GLuint engine::Camera::getWidth(void) const
@@ -65,9 +65,14 @@ GLuint engine::Camera::getHeight(void) const
 	return _height;
 }
 
-GLfloat *engine::Camera::getMatrix(void)
+GLfloat *engine::Camera::getProjectionMatrix(void)
 {
-	return _VP;
+	return _projectionMatrix;
+}
+
+GLfloat *engine::Camera::getVPMatrix(void)
+{
+	return _VPMatrix;
 }
 
 void engine::Camera::position(void)
@@ -79,5 +84,5 @@ void engine::Camera::position(void)
 
 	matrixLoadIdentity(view);
 	matrixLookAt(view, camera, target, head);
-	matrixMultiply(_VP, _projectionMatrix, view);
+	matrixMultiply(_VPMatrix, _projectionMatrix, view);
 }

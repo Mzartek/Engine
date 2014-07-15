@@ -47,7 +47,7 @@ void configLights(void)
 	sun->setDirection(1, -1, 0);
 	sun->setColor(lightColor[0], lightColor[1], lightColor[2]);
 	sun->configShadowMap(1024, 1024, shadowProgram);
-	sun->setDimension(50, 50, 50);
+	sun->setMatrixDimension(50);
 }
 
 void configScreen(void)

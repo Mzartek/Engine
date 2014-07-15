@@ -147,9 +147,9 @@ void engine::SkyBox::display(GBuffer *g, Camera *cam)
 	}
 
 	matrixLoadIdentity(pos);
-	matrixTranslate(pos, cam->getPositionCamera()->x, cam->getPositionCamera()->y, cam->getPositionCamera()->z);
+	matrixTranslate(pos, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 	matrixRotate(pos, _angle, _x, _y, _z);
-	matrixMultiply(pos, cam->getMatrix(), pos);
+	matrixMultiply(pos, cam->getVPMatrix(), pos);
   
 	glDepthMask(GL_FALSE);
 	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());

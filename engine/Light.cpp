@@ -86,9 +86,9 @@ engine::ShadowMap *engine::Light::getShadowMap(void)
 {
 	return _shadow;
 }
-GLfloat *engine::Light::getMatrix(void)
+GLfloat *engine::Light::getVPMatrix(void)
 {
-	return _VP;
+	return _VPMatrix;
 }
 
 void engine::Light::clear(void) const

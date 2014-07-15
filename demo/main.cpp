@@ -99,7 +99,7 @@ void display(void)
 	cube4->displayShadow(sun);
 	helicopterDisplayShadow(sun);
 
-	// GBuffer
+	// Object Pass
 	gBuffer->clear();
 	skybox->display(gBuffer, cam);
 	face->display(gBuffer, cam);
@@ -108,6 +108,8 @@ void display(void)
 	cube3->display(gBuffer, cam);
 	cube4->display(gBuffer, cam);
 	helicopterDisplay(gBuffer, cam);
+
+	// Light Pass
 	sun->display(gBuffer, cam);
 
 	// Screen
@@ -115,9 +117,9 @@ void display(void)
 	screen->display(gBuffer, sr, sg, sb, sa);
 
 	// Text
-	text1->display();
-	// text2->display();
-	// text3->display();
+	//text1->display();
+	//text2->display();
+	//text3->display();
 }
 
 void idle(void)
@@ -128,7 +130,7 @@ void idle(void)
 
 void reshape(GLuint w, GLuint h)
 {
-	cam->setPerspective(90.0f, w, h, 0.001f, 2000.0f);
+	cam->setPerspective(90.0f, w, h, 0.1f, 1000.f);
 }
 
 void keyboard(GLubyte key, GLboolean state)

@@ -9,9 +9,9 @@ engine::DirLight::~DirLight(void)
 {
 }
 
-void engine::DirLight::setDimension(GLfloat x, GLfloat y, GLfloat z)
+void engine::DirLight::setMatrixDimension(const GLfloat &dim)
 {
-	matrixOrtho(_projection, -x, x, -y, y, -z, z);
+	matrixOrtho(_projection, -dim, dim, -dim, dim, -dim, dim);
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
@@ -19,12 +19,14 @@ void engine::DirLight::setDimension(GLfloat x, GLfloat y, GLfloat z)
 void engine::DirLight::config(ShaderProgram *program)
 {
 	_program = program;
-	_positionTextureLocation = glGetUniformLocation(_program->getId(), "positionTexture");
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
+	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
 	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
 	_lightTextureLocation = glGetUniformLocation(_program->getId(), "lightTexture");
+	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
+	_IVPLocation = glGetUniformLocation(_program->getId(), "IVP");
 	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
 	_lightColorLocation = glGetUniformLocation(_program->getId(), "lightColor");
 	_lightDirectionLocation = glGetUniformLocation(_program->getId(), "lightDirection");
@@ -74,7 +76,7 @@ void engine::DirLight::position(void)
 
 	matrixLoadIdentity(view);
 	matrixLookAt(view, position, target, head);
-	matrixMultiply(_VP, _projection, view);
+	matrixMultiply(_VPMatrix, _projection, view);
 }
 
 void engine::DirLight::display(GBuffer *g, Camera *cam)
@@ -91,28 +93,29 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 		return;
 	}
 
+	glDepthMask(GL_FALSE);
 	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_POSITION));
-	glUniform1i(_positionTextureLocation, 0);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
+	glUniform1i(_normalTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
-	glUniform1i(_normalTextureLocation, 1);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
+	glUniform1i(_materialTextureLocation, 1);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_materialTextureLocation, 2);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
+	glUniform1i(_depthTextureLocation, 2);
 
 	// ShadowMap
 	if(_shadow != NULL)
 	{
 		matrixLoadBias(tmp);
-		matrixMultiply(tmp, tmp, _VP);
+		matrixMultiply(tmp, tmp, _VPMatrix);
 		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, tmp);
 
 		glActiveTexture(GL_TEXTURE3);
@@ -120,8 +123,15 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 		glUniform1i(_shadowMapLocation, 3);
 	}
 
+	// Screen
+	glUniform2ui(_screenLocation, g->getWidth(), g->getHeight());
+
+	// InverseViewProjection
+	matrixInverse(tmp, cam->getVPMatrix());
+	glUniformMatrix4fv(_IVPLocation, 1, GL_FALSE, tmp);
+
 	// Cam position
-	glUniform3f(_camPositionLocation, cam->getPositionCamera()->x, cam->getPositionCamera()->y, cam->getPositionCamera()->z);
+	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 
 	// Color
 	glUniform3fv(_lightColorLocation, 1, _lightColor);
@@ -130,10 +140,11 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	glUniform3fv(_lightDirectionLocation, 1, _lightDirection);
 
 	// Drawing
-	glDrawBuffers(1, &g->colorAttachment[GBUF_MATERIAL]);
+	glDrawBuffers(1, &g->colorAttachment[GBUF_DEPTH]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glDepthMask(GL_TRUE);
 }

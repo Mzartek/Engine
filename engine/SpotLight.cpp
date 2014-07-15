@@ -14,8 +14,9 @@ engine::SpotLight::~SpotLight(void)
 void engine::SpotLight::config(ShaderProgram *program)
 {
 	_program = program;
-	_positionTextureLocation = glGetUniformLocation(_program->getId(), "positionTexture");
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
+	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
+	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
 	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
 	_lightTextureLocation = glGetUniformLocation(_program->getId(), "lightTexture");
@@ -90,7 +91,7 @@ void engine::SpotLight::position(void)
 	matrixPerspective(projection, _lightSpotCutOff[0] * 2, (float)_shadow->getWidth() / (float)_shadow->getHeight(), 0.1f, 1200.0f);
 	matrixLoadIdentity(view);
 	matrixLookAt(view, position, target, head);
-	matrixMultiply(_VP, projection, view);
+	matrixMultiply(_VPMatrix, projection, view);
 }
 
 GLint engine::SpotLight::getLightPositionLocation(void) const

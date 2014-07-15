@@ -227,7 +227,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	glUseProgram(_program->getId());
 
 	// MVP Matrix
-	matrixMultiply(tmp, cam->getMatrix(), _modelMatrix);
+	matrixMultiply(tmp, cam->getVPMatrix(), _modelMatrix);
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, tmp);
 
 	// Model Matrix
@@ -261,7 +261,7 @@ void engine::Model::displayShadow(Light *l) const
 	
 	glUseProgram(l->getShadowMap()->getProgramId());
 	
-	matrixMultiply(tmp, l->getMatrix(), _modelMatrix);
+	matrixMultiply(tmp, l->getVPMatrix(), _modelMatrix);
 	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, tmp);
 	
 	glUseProgram(0);

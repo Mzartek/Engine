@@ -22,9 +22,9 @@ namespace engine
 		GLfloat _matShininess[1];
 		GLsizei _numElement;
 		ShaderProgram *_program;
-		GLint _positionTextureLocation;
 		GLint _normalTextureLocation;
 		GLint _materialTextureLocation;
+		GLint _depthTextureLocation;
 		GLint _colorTextureLocation;
 		GLint _matAmbientLocation;
 		GLint _matDiffuseLocation;

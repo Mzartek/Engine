@@ -35,6 +35,8 @@
 #include "Vector3D.hpp"
 #include "Vector4D.hpp"
 
+#define MIPMAP_LEVEL 10
+
 namespace engine
 {
 	typedef struct Vertex

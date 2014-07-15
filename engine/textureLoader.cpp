@@ -1,4 +1,4 @@
-#include <Engine/GLHead.hpp>
+﻿#include <Engine/GLHead.hpp>
 
 engine::pixelFormat engine::testFormat(GLuint f)
 {
@@ -28,26 +28,29 @@ void engine::loadTextureFromFile(const std::string path, GLuint *texture)
 
 	glGenTextures(1, texture);
 	glBindTexture(GL_TEXTURE_2D, *texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	switch(testFormat(image->format->format))
 	{
 	case RGB:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+		glTexStorage2D(GL_TEXTURE_2D, MIPMAP_LEVEL, GL_RGB8, image->w, image->h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case BGR:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+		glTexStorage2D(GL_TEXTURE_2D, MIPMAP_LEVEL, GL_RGB8, image->w, image->h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case RGBA:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
+		glTexStorage2D(GL_TEXTURE_2D, MIPMAP_LEVEL, GL_RGBA8, image->w, image->h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	default:
 		std::cerr << "Format " << image->format->format << " unknown" << std::endl;
 		break;
 	}
 	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	SDL_FreeSurface(image);
 }

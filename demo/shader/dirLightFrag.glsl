@@ -1,23 +1,34 @@
 #version 330
 
-uniform vec3 camPosition;
-uniform vec3 lightColor;
-uniform vec3 lightDirection;
-uniform mat4 shadowMatrix;
-
 // From GBuffer
-uniform sampler2D positionTexture;
 uniform sampler2D normalTexture;
 uniform usampler2D materialTexture;
+uniform sampler2D depthTexture;
 
 // From ShadowMap
 uniform sampler2DShadow shadowMap;
+uniform mat4 shadowMatrix;
+
+// GLobals
+uniform uvec2 screen;
+uniform mat4 IVP;
+uniform vec3 camPosition;
+uniform vec3 lightColor;
+uniform vec3 lightDirection;
 
 layout(location = 0) out uvec3 outMaterial;
 
+vec3 getPosition(void)
+{
+  vec2 texCoord = vec2(gl_FragCoord.x/screen.x, gl_FragCoord.y/screen.y);
+  vec4 tmp1 = vec4(texCoord * 2.0f - 1.0f, texture(depthTexture, texCoord).z * 2.0f - 1.0f, 1.0f);
+  vec4 tmp2 = IVP * tmp1;
+  return tmp2.xyz / tmp2.w;
+}
+
 float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
 {
-	if (coord.x > 1.0 || coord.y > 1.0 || coord.x < 0.0 || coord.y < 0.0)
+	if (coord.x > 1.0 || coord.x < 0.0 || coord.y > 1.0 || coord.y < 0.0)
 		return 1.0;
 	return textureProj(tex, vec4(coord.x + (offSet.x * (1.0/texSize.x)), coord.y + (offSet.y * (1.0/texSize.y)), coord.z-0.005, coord.w));
 }
@@ -75,7 +86,7 @@ void main(void)
 	float s;
 	light l;
 
-	position = texelFetch(positionTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
+	position = getPosition();
 	normal = texelFetch(normalTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
 	material = texelFetch(materialTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
 	finalColor = vec3(0x000000FF & (ivec3(material) >> 24)) / 255;

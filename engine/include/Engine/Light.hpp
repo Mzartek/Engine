@@ -16,17 +16,21 @@ namespace engine
 		GLfloat _lightPosition[3];
 		GLfloat _lightDirection[3];
 		GLfloat _lightColor[3];
-		GLfloat _VP[16];
+		GLfloat _projection[16];
+		GLfloat _VPMatrix[16];
 		ShaderProgram *_program;
 		// For LBuffer
-		GLint _positionTextureLocation;
 		GLint _normalTextureLocation;
 		GLint _materialTextureLocation;
+		GLint _depthTextureLocation;
 		GLint _shadowMapLocation;
 		GLint _shadowMatrixLocation;
+		GLint _screenLocation;
+		GLint _IVPLocation;
 		GLint _lightTextureLocation;
 	    GLint _camPositionLocation;
 		GLint _lightColorLocation;
+		GLint _lightDirectionLocation;
 	public:
 		Light(void);
 		Light(const GLfloat &x, const GLfloat &y, const GLfloat &z);
@@ -40,7 +44,7 @@ namespace engine
 		GLfloat *getDirection(void);
 		GLfloat *getColor(void);
 		ShadowMap *getShadowMap(void);
-		GLfloat *getMatrix(void);
+		GLfloat *getVPMatrix(void);
 		void clear(void) const;
 		virtual void position(void) = 0;
 		virtual void display(GBuffer *g, Camera *cam) = 0;

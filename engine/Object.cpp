@@ -32,9 +32,9 @@ engine::Object::~Object(void)
 void engine::Object::setShaderProgram(ShaderProgram *program)
 {
 	_program = program;
-	_positionTextureLocation = glGetUniformLocation(_program->getId(), "positionTexture");
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
+	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
 	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
 	_matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
 	_matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
@@ -134,16 +134,16 @@ void engine::Object::display(GBuffer *g) const
 	glBindVertexArray(_idVAO);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_POSITION));
-	glUniform1i(_positionTextureLocation, 0);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
+	glUniform1i(_normalTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
-	glUniform1i(_normalTextureLocation, 1);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
+	glUniform1i(_materialTextureLocation, 1);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_materialTextureLocation, 2);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
+	glUniform1i(_depthTextureLocation, 2);
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
@@ -154,7 +154,7 @@ void engine::Object::display(GBuffer *g) const
 	glUniform4fv(_matSpecularLocation,  1, _matSpecular);
 	glUniform1fv(_matShininessLocation, 1, _matShininess);
 
-	glDrawBuffers(GBUF_NUM_TEX, g->colorAttachment);
+	glDrawBuffers(2, g->colorAttachment);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
