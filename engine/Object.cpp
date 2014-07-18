@@ -1,7 +1,7 @@
 #include <Engine/Object.hpp>
 
-GLint _memState = 0;
-static std::vector<void *> _tmem;
+GLint engine::Object::_memState = 0;
+std::vector<void *> _tmem;
 
 engine::Object::Object(void)
 {

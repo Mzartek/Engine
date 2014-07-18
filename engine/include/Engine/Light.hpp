@@ -27,7 +27,6 @@ namespace engine
 		GLint _shadowMatrixLocation;
 		GLint _screenLocation;
 		GLint _IVPLocation;
-		GLint _lightTextureLocation;
 	    GLint _camPositionLocation;
 		GLint _lightColorLocation;
 		GLint _lightDirectionLocation;

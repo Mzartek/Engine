@@ -24,7 +24,6 @@ void engine::DirLight::config(ShaderProgram *program)
 	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
 	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
-	_lightTextureLocation = glGetUniformLocation(_program->getId(), "lightTexture");
 	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
 	_IVPLocation = glGetUniformLocation(_program->getId(), "IVP");
 	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
@@ -140,7 +139,7 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	glUniform3fv(_lightDirectionLocation, 1, _lightDirection);
 
 	// Drawing
-	glDrawBuffers(1, &g->colorAttachment[GBUF_DEPTH]);
+	glDrawBuffers(1, &g->colorAttachment[GBUF_MATERIAL]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
