@@ -1,22 +1,22 @@
 #ifndef SHADER_PROGRAM
 #define SHADER_PROGRAM
 
-#include "GLHead.hpp"
+#include "Object.hpp"
 
 namespace engine
 {
-	class DLLAPI ShaderProgram
+	class DLLAPI ShaderProgram : public Object
 	{
 	private:
 		GLuint _idProgram;
 		GLuint _idVertexShader;
 		GLuint _idFragmentShader;
-		GLbyte *readText(const std::string filename);
-		GLuint loadShader(const std::string filename, GLenum type);
+		GLchar *readText(const GLchar *filename);
+		GLuint loadShader(const GLchar *filename, const GLenum &type);
 	public:
 		ShaderProgram(void);
 		~ShaderProgram(void);
-		GLint loadProgram(const std::string vs, const std::string fs);
+		GLint loadProgram(const GLchar *vs, const GLchar *fs);
 		GLuint getId(void);
 	};
 }

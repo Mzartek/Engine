@@ -22,9 +22,9 @@ engine::TextArray::~TextArray(void)
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::TextArray::config(const std::string fontFile, GLuint size,
-			       GLubyte r, GLubyte g, GLubyte b,
-			       GLuint x, GLuint y, GLuint w, GLuint h, ShaderProgram *program, Window *window)
+void engine::TextArray::config(const GLchar *font, const GLuint &size,
+	const GLubyte &r, const GLubyte &g, const GLubyte &b,
+	const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Window *window)
 {
 	SDL_Surface *t;
 	
@@ -33,10 +33,10 @@ void engine::TextArray::config(const std::string fontFile, GLuint size,
 	_color.b = b;
 	_color.a = 0;
 	
-	_font = TTF_OpenFont(&fontFile[0], size);
+	_font = TTF_OpenFont(font, size);
 	if(_font == NULL)
 	{
-		std::cerr << "Error while loading fontFile: " << fontFile << std::endl;
+		std::cerr << "Error while loading fontFile: " << font << std::endl;
 		exit(1);
 	}
 	t = TTF_RenderText_Blended(_font, " ", _color);
@@ -88,7 +88,7 @@ void engine::TextArray::config(const std::string fontFile, GLuint size,
 	matrixOrtho(_mat, 0, (GLfloat)window->getWidth(), 0, (GLfloat)window->getHeight(), -1, 1);
 }
 
-void engine::TextArray::write(const std::string text)
+void engine::TextArray::write(const GLchar *text)
 {
 	SDL_Surface *t;
 	

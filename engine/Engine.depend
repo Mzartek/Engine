@@ -237,14 +237,13 @@
 
 1405185160 ndow.hpp>
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Camera.cpp
+1405453441 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Camera.cpp
 	<Engine/Camera.hpp>
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Camera.hpp
-	"GLHead.hpp"
+1405608525 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Camera.hpp
 	"ShaderProgram.hpp"
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/GLHead.hpp
+1405621092 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/GLHead.hpp
 	<Windows.h>
 	<GL/glew.h>
 	<iostream>
@@ -264,52 +263,52 @@
 	"Vector3D.hpp"
 	"Vector4D.hpp"
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/matrix.hpp
+1405347071 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/matrix.hpp
 	<math.h>
 	<string.h>
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector2D.hpp
+1405612550 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector2D.hpp
 	"Vector2D.tpp"
 
 1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector2D.tpp
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector3D.hpp
+1405612556 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector3D.hpp
 	"Vector3D.tpp"
 
 1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector3D.tpp
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector4D.hpp
+1405612563 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector4D.hpp
 	"Vector4D.tpp"
 
 1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Vector4D.tpp
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/ShaderProgram.hpp
-	"GLHead.hpp"
+1405617739 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/ShaderProgram.hpp
+	"Object.hpp"
 
-1405268453 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/DirLight.cpp
+1405454143 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/DirLight.cpp
 	<Engine/DirLight.hpp>
 
-1405267775 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/DirLight.hpp
+1405454138 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/DirLight.hpp
 	"Light.hpp"
 
-1405267768 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Light.hpp
+1405608595 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Light.hpp
 	"ShadowMap.hpp"
 	"Camera.hpp"
 	"GBuffer.hpp"
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/ShadowMap.hpp
+1405601770 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/ShadowMap.hpp
 	"FrameBuffer.hpp"
 	"ShaderProgram.hpp"
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/FrameBuffer.hpp
-	"GLHead.hpp"
+1405608392 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/FrameBuffer.hpp
+	"Object.hpp"
 
-1405290377 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/GBuffer.hpp
+1405349028 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/GBuffer.hpp
 	"FrameBuffer.hpp"
 	"Window.hpp"
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Window.hpp
-	"GLHead.hpp"
+1405608724 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Window.hpp
+	"Object.hpp"
 
 1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/FrameBuffer.cpp
 	<Engine/FrameBuffer.hpp>
@@ -323,34 +322,31 @@
 1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/MovableCamera.hpp
 	"Camera.hpp"
 
-1405290408 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/GBuffer.cpp
+1405606680 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/GBuffer.cpp
 	<Engine/GBuffer.hpp>
 
-1405265352 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Light.cpp
+1405453321 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Light.cpp
 	<Engine/Light.hpp>
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/matrix.cpp
+1405348634 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/matrix.cpp
 	<Engine/matrix.hpp>
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Model.cpp
+1405607198 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Model.cpp
 	<Engine/Model.hpp>
 	<assimp/postprocess.h>
 	<assimp/Importer.hpp>
 	<assimp/scene.h>
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Model.hpp
-	"Object.hpp"
+1405608601 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Model.hpp
+	"GLObject.hpp"
 	"Light.hpp"
 	"GBuffer.hpp"
 	"ShaderProgram.hpp"
 	"Camera.hpp"
 	"Window.hpp"
 
-1405287779 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Object.hpp
+1405618151 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Object.hpp
 	"GLHead.hpp"
-	"ShaderProgram.hpp"
-	"Light.hpp"
-	"GBuffer.hpp"
 
 1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/MovableCamera.cpp
 	<Engine/MovableCamera.hpp>
@@ -367,47 +363,53 @@
 1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/PlayerCam.hpp
 	"MovableCamera.hpp"
 
-1405277982 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Screen.cpp
+1405596278 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Screen.cpp
 	<Engine/Screen.hpp>
 
-1405264536 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Screen.hpp
+1405608519 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/Screen.hpp
 	"ShaderProgram.hpp"
 	"GBuffer.hpp"
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/ShaderProgram.cpp
+1405605480 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/ShaderProgram.cpp
 	<Engine/ShaderProgram.hpp>
 
-1405264872 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/ShadowMap.cpp
+1405606682 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/ShadowMap.cpp
 	<Engine/ShadowMap.hpp>
 
-1405279078 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/SkyBox.cpp
+1405604008 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/SkyBox.cpp
 	<Engine/SkyBox.hpp>
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/SkyBox.hpp
+1405608663 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/SkyBox.hpp
 	"ShaderProgram.hpp"
 	"GBuffer.hpp"
 	"Camera.hpp"
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/SpotLight.cpp
+1405349393 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/SpotLight.cpp
 	<Engine/SpotLight.hpp>
 
 1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/SpotLight.hpp
 	"Light.hpp"
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/TextArray.cpp
+1405599110 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/TextArray.cpp
 	<Engine/TextArray.hpp>
 
-1405261390 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/TextArray.hpp
-	"GLHead.hpp"
+1405608672 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/TextArray.hpp
 	"ShaderProgram.hpp"
 	"Window.hpp"
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/textureLoader.cpp
-	<Engine/GLHead.hpp>
+1405603378 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/textureLoader.cpp
 
-1405261390 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Window.cpp
+1405602416 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Window.cpp
 	<Engine/Window.hpp>
 
-1405288004 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Object.cpp
+1405613948 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/Object.cpp
 	<Engine/Object.hpp>
+
+1405606461 source:/media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/GLObject.cpp
+	<Engine/GLObject.hpp>
+
+1405608549 /media/win7/Users/Mzartek/Desktop/Programmation/Engine-GL4-/engine/include/Engine/GLObject.hpp
+	"ShaderProgram.hpp"
+	"Light.hpp"
+	"GBuffer.hpp"
 

@@ -1,11 +1,11 @@
 #ifndef FRAMEBUFFER
 #define FRAMEBUFFER
 
-#include "GLHead.hpp"
+#include "Object.hpp"
 
 namespace engine
 {
-	class DLLAPI FrameBuffer
+	class DLLAPI FrameBuffer : public Object
 	{
 	protected:
 		GLuint _width;
@@ -13,7 +13,7 @@ namespace engine
 		GLuint _idFBO;
 	public:
 		FrameBuffer(void);
-		virtual ~FrameBuffer(void);
+		~FrameBuffer(void);
 		GLuint getWidth(void) const;
 		GLuint getHeight(void) const;
 		GLuint getIdFBO(void) const;

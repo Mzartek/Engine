@@ -15,7 +15,7 @@ engine::Window::~Window(void)
 	SDL_Quit();
 }
 
-void engine::Window::initWindow(const std::string title, GLint const &w, GLint const &h, GLboolean fullScreen)
+void engine::Window::initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
 {
 	Uint32 flags;
 

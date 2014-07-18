@@ -7,7 +7,7 @@ engine::Window *window;
 engine::FreeCam *cam;
 engine::DirLight *sun;
 engine::Model *face;
-engine::OBJModel *cube1;
+engine::Model *cube1;
 engine::Model *cube2;
 engine::Model *cube3;
 engine::Model *cube4;
@@ -99,7 +99,7 @@ void display(void)
 	cube4->displayShadow(sun);
 	helicopterDisplayShadow(sun);
 
-	// Object Pass
+	// GLObject Pass
 	gBuffer->clear();
 	skybox->display(gBuffer, cam);
 	face->display(gBuffer, cam);
@@ -158,11 +158,10 @@ void mouseMove(GLint xrel, GLint yrel)
 
 void init(void)
 {
-	window = new engine::Window;
 	cam = new engine::FreeCam;
 	sun = new engine::DirLight;
 	face = new engine::Model;
-	cube1 = new engine::OBJModel;
+	cube1 = new engine::Model;
 	cube2 = new engine::Model;
 	cube3 = new engine::Model;
 	cube4 = new engine::Model;
@@ -176,6 +175,21 @@ void init(void)
 	text3 = new engine::TextArray;
 	gBuffer = new engine::GBuffer;
 
+	objectProgram = new engine::ShaderProgram;
+	lightProgram = new engine::ShaderProgram;
+	shadowProgram = new engine::ShaderProgram;
+	skyboxProgram = new engine::ShaderProgram;
+	screenProgram = new engine::ShaderProgram;
+	textProgram = new engine::ShaderProgram;
+
+	configShaders();
+	configBuffers();
+	configText();
+	configLights();
+	configScreen();
+	configModels();
+	configSkybox();
+
 	cam->setPositionCamera(0, 1, 0);
 	cam->setSpeed(0.25f);
 
@@ -185,18 +199,7 @@ void init(void)
 	helicopterMatrixScale(2, 2, 2);
 }
 
-void initGL(void)
-{
-	configShaders();
-	configBuffers();
-	configText();
-	configLights();
-	configScreen();
-	configModels();
-	configSkybox();
-}
-
-void deleteClass(void)
+void kill(void)
 {
 	delete textProgram;
 	delete screenProgram;
@@ -221,12 +224,11 @@ void deleteClass(void)
 	delete face;
 	delete sun;
 	delete cam;
-	delete window; // Need to be destroyed at last
 }
 
 int main(int argc, char **argv)
 {
-	init();
+	window = new engine::Window;
 
 	if (argc < 3)
 		window->initWindow("Demo", 1680, 1050, GL_TRUE);
@@ -238,11 +240,14 @@ int main(int argc, char **argv)
 	window->setKeyboardFunc(keyboard);
 	window->setMouseMoveFunc(mouseMove);
 
-	initGL();
+	init();
 
 	window->mainLoop();
 
-	deleteClass();
+	kill();
 
+	delete window;
+	std::cout << "MemState " << engine::Object::getMemoryState() << std::endl;
+	engine::Object::displayMemoryInfo();
 	return 0;
 }

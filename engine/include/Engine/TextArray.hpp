@@ -1,13 +1,12 @@
 #ifndef TEXT_ARRAY
 #define TEXT_ARRAY
 
-#include "GLHead.hpp"
 #include "ShaderProgram.hpp"
 #include "Window.hpp"
 
 namespace engine
 {
-	class DLLAPI TextArray
+	class DLLAPI TextArray : public Object
 	{
 	private:
 		GLuint _idTexture;
@@ -22,10 +21,10 @@ namespace engine
 	public:
 		TextArray(void);
 		~TextArray(void);
-		void config(const std::string font, GLuint size,
-			    GLubyte r, GLubyte g, GLubyte b,
-			    GLuint x, GLuint y, GLuint w, GLuint h, ShaderProgram *program, Window *window);
-		void write(const std::string text);
+		void config(const GLchar *font, const GLuint &size,
+			const GLubyte &r, const GLubyte &g, const GLubyte &b,
+			const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Window *window);
+		void write(const GLchar *text);
 		void display(void);
 	};
 }

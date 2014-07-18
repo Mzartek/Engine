@@ -57,7 +57,7 @@ void engine::Screen::config(ShaderProgram *program)
 
 #undef BUFFER_OFFSET
 
-void engine::Screen::display(GBuffer *gbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+void engine::Screen::display(GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
 {
 	if(_program==NULL)
 	{

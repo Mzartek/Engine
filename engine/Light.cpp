@@ -30,7 +30,7 @@ engine::Light::Light(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 
 engine::Light::~Light(void)
 {
-	if(_shadow!=NULL)
+	if (_shadow != NULL)
 		delete _shadow;
 	if(glIsVertexArray(_idVAO))
 		glDeleteVertexArrays(1, &_idVAO);
@@ -40,7 +40,7 @@ engine::Light::~Light(void)
 
 void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow)
 {
-	if(_shadow!=NULL)
+	if (_shadow != NULL)
 		delete _shadow;
 	_shadow = new ShadowMap;
 	_shadow->config(width, height, shadow);

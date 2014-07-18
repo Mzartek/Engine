@@ -4,6 +4,13 @@ engine::PlayerCam::PlayerCam(void)
 {
 }
 
+engine::PlayerCam::PlayerCam(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+{
+	_pcamera->x = x;
+	_pcamera->y = y;
+	_pcamera->z = z;
+}
+
 engine::PlayerCam::~PlayerCam(void)
 {
 }

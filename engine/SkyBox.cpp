@@ -23,10 +23,10 @@ engine::SkyBox::~SkyBox()
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::SkyBox::load(std::string posx, std::string negx,
-			  std::string posy, std::string negy,
-			  std::string posz, std::string negz,
-			  GLfloat dim, ShaderProgram *program)
+void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
+	const GLchar *posy, const GLchar *negy,
+	const GLchar *posz, const GLchar *negz,
+	GLfloat dim, ShaderProgram *program)
 {
 	GLuint i;
 	GLenum cube_map_target[] = {   
@@ -129,7 +129,7 @@ void engine::SkyBox::load(std::string posx, std::string negx,
 
 #undef BUFFER_OFFSET
 
-void engine::SkyBox::rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
+void engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
 	_angle = angle;
 	_x = x;

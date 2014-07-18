@@ -18,7 +18,7 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	_width = width;
 	_height = height;
 
-	// Frame Buffer Object
+	// Frame Buffer GLObject
 	if(glIsFramebuffer(_idFBO))
 		glDeleteFramebuffers(1, &_idFBO);
 	glGenFramebuffers(1, &_idFBO);
@@ -54,7 +54,7 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-GLuint engine::GBuffer::getIdTexture(GLuint num) const
+GLuint engine::GBuffer::getIdTexture(const GLuint &num) const
 {
 	if (num >= GBUF_NUM_TEX)
 	{
@@ -64,7 +64,7 @@ GLuint engine::GBuffer::getIdTexture(GLuint num) const
 	return _idTexture[num];
 }
 
-void engine::GBuffer::display(Window *w, GLuint buf) const
+void engine::GBuffer::display(Window *w, const GLuint &buf) const
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, _idFBO);
 

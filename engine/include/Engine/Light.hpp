@@ -7,7 +7,7 @@
 
 namespace engine
 {
-	class DLLAPI Light
+	class DLLAPI Light : public Object
 	{
 	protected:
 		GLuint _idVAO;

@@ -5,7 +5,7 @@
 
 engine::Model::Model(void)
 {
-	_tObject = NULL;
+	_tGLObject = NULL;
 	_program = NULL;
 	matIdentity();
 }
@@ -13,31 +13,31 @@ engine::Model::Model(void)
 engine::Model::~Model(void)
 {
 	GLuint i;
-	if(_tObject != NULL && isMirror == GL_FALSE)
-	{		
-		for(i=0 ; i<_tObject->size(); i++)
-			delete (*_tObject)[i];
-		delete _tObject;
+	if (_tGLObject != NULL && isMirror == GL_FALSE)
+	{
+		for (i = 0; i<_tGLObject->size(); i++)
+			delete (*_tGLObject)[i];
+		delete _tGLObject;
 	}
 }
 
-void engine::Model::initObjectArray(void)
+void engine::Model::initGLObjectArray(void)
 {
 	GLuint i;
-	if(_tObject != NULL && isMirror == GL_FALSE)
-	{		
-		for(i=0 ; i<_tObject->size(); i++)
-			delete (*_tObject)[i];
-		delete _tObject;
+	if (_tGLObject != NULL && isMirror == GL_FALSE)
+	{
+		for (i = 0; i<_tGLObject->size(); i++)
+			delete (*_tGLObject)[i];
+		delete _tGLObject;
 	}
 	isMirror = GL_FALSE;
-	_tObject = new std::vector<Object *>;
+	_tGLObject = new std::vector<GLObject *>;
 }
 
-void engine::Model::initObjectMirror(Model *m)
+void engine::Model::initGLObjectMirror(Model *m)
 {
 	isMirror = GL_TRUE;
-	_tObject = m->_tObject;
+	_tGLObject = m->_tGLObject;
 }
 
 void engine::Model::config(ShaderProgram *program)
@@ -48,14 +48,14 @@ void engine::Model::config(ShaderProgram *program)
 	_normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
 }
 
-void engine::Model::createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				 const GLsizei &sizeIndexArray, const GLuint *indexArray,
-				 const std::string pathTexture,
+				 const GLchar *pathTexture,
 				 const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess)
 {
-	Object *newone = new Object();
+	GLObject *newone = new GLObject;
 	GLuint texture;
-  
+
 	loadTextureFromFile(pathTexture, &texture);
 
 	newone->setShaderProgram(_program);
@@ -66,11 +66,11 @@ void engine::Model::createObject(const GLsizei &sizeVertexArray, const GLfloat *
 	newone->setShininess(shininess[0]);
 	newone->load(sizeVertexArray, vertexArray,
 		     sizeIndexArray, indexArray);
-  
-	_tObject->push_back(newone);
+
+	_tGLObject->push_back(newone);
 }
 
-static std::string getDir(std::string file)
+static std::string getDir(const GLchar *file)
 {
 	GLuint size, i;
 	std::string path;
@@ -84,15 +84,13 @@ static std::string getDir(std::string file)
 	return path;
 }
 
-void engine::Model::loadFromFile(const std::string file)
+void engine::Model::loadFromFile(const GLchar *file)
 {
 	Assimp::Importer Importer;
 	GLuint i, j;
 
-	if (_tObject != NULL && isMirror == GL_FALSE)
-	{
-		_tObject->clear();
-	}
+	if (_tGLObject != NULL && isMirror == GL_FALSE)
+		_tGLObject->clear();
 
 	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
 	if (!pScene)
@@ -134,7 +132,7 @@ void engine::Model::loadFromFile(const std::string file)
 		aiString path;
 		std::string fullPath;
 		if (pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
-			fullPath = getDir(file) + path.data;
+			fullPath = getDir(file) + path.C_Str();
 		else
 			fullPath = "resources/none.png";
 
@@ -153,9 +151,9 @@ void engine::Model::loadFromFile(const std::string file)
 		mat_diffuse.a = opacity;
 		mat_specular.a = opacity;
 
-		createObject((GLsizei)vertices.size() * sizeof(Vertex), (GLfloat *)&vertices[0],
+		createGLObject((GLsizei)vertices.size() * sizeof(Vertex), (GLfloat *)&vertices[0],
 			(GLsizei)indices.size() * sizeof(GLuint), &indices[0],
-			fullPath,
+			&fullPath[0],
 			(GLfloat *)&mat_ambient, (GLfloat *)&mat_diffuse, (GLfloat *)&mat_specular,
 			&mat_shininess);
 
@@ -164,9 +162,9 @@ void engine::Model::loadFromFile(const std::string file)
 	}
 }
 
-void engine::Model::sortObject(void)
+void engine::Model::sortGLObject(void)
 {
-	qsort(&(*_tObject)[0], _tObject->size(), sizeof (*_tObject)[0], comparObject);
+	qsort(&(*_tGLObject)[0], _tGLObject->size(), sizeof (*_tGLObject)[0], comparGLObject);
 }
 
 void engine::Model::matIdentity(void)
@@ -198,21 +196,21 @@ engine::Vector3D<GLfloat> engine::Model::getPosition(void) const
 	return tmp;
 }
 
-engine::Object *engine::Model::getObject(GLuint num) const
+engine::GLObject *engine::Model::getGLObject(const GLuint &num) const
 {
-	if(num>=_tObject->size())
+	if(num>=_tGLObject->size())
 	{
-		std::cerr << "Bad num Object" << std::endl;
+		std::cerr << "Bad num GLObject" << std::endl;
 		return NULL;
 	}
-	return (*_tObject)[num];
+	return (*_tGLObject)[num];
 }
-  
+
 void engine::Model::display(GBuffer *g, Camera *cam) const
 {
 	GLuint i;
 	GLfloat tmp[16];
-  
+
 	if(_program == NULL)
 	{
 		std::cerr << "You need to configure the Model before" << std::endl;
@@ -223,7 +221,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 		std::cerr << "Bad Camera" << std::endl;
 		return;
 	}
-  
+
 	glUseProgram(_program->getId());
 
 	// MVP Matrix
@@ -236,11 +234,11 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	// Normal Matrix
 	matrixNormalFromModel(tmp, _modelMatrix);
 	glUniformMatrix3fv(_normalMatrixLocation, 1, GL_FALSE, tmp);
-  
+
 	glUseProgram(0);
-  
-	for(i=0 ; i<_tObject->size(); i++)
-		(*_tObject)[i]->display(g);
+
+	for(i=0 ; i<_tGLObject->size(); i++)
+		(*_tGLObject)[i]->display(g);
 }
 
 void engine::Model::displayShadow(Light *l) const
@@ -258,14 +256,14 @@ void engine::Model::displayShadow(Light *l) const
 		std::cerr << "You need to config the ShadowMap before!" << std::endl;
 		return;
 	}
-	
+
 	glUseProgram(l->getShadowMap()->getProgramId());
-	
+
 	matrixMultiply(tmp, l->getVPMatrix(), _modelMatrix);
 	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, tmp);
-	
+
 	glUseProgram(0);
 
-	for(i=0 ; i<_tObject->size(); i++)
-		(*_tObject)[i]->displayShadow(l);
+	for(i=0 ; i<_tGLObject->size(); i++)
+		(*_tGLObject)[i]->displayShadow(l);
 }

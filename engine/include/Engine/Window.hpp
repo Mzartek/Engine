@@ -1,11 +1,11 @@
 #ifndef WINDOW
 #define WINDOW
 
-#include "GLHead.hpp"
+#include "Object.hpp"
 
 namespace engine
 {
-	class DLLAPI Window
+	class DLLAPI Window : public Object
 	{
 	private:
 		GLboolean _exit;
@@ -21,7 +21,7 @@ namespace engine
 	public:
 		Window(void);
 		~Window(void);
-		void initWindow(const std::string title, GLint const &w, GLint const &h, GLboolean fullScreen);
+		void initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen);
 		void setDisplayFunc(void (*f) (void));
 		void setIdleFunc(void (*f) (void));
 		void setReshapeFunc(void (*f) (GLuint, GLuint));

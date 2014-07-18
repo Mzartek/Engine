@@ -1,7 +1,7 @@
 #ifndef MODEL
 #define MODEL
 
-#include "Object.hpp"
+#include "GLObject.hpp"
 #include "Light.hpp"
 #include "GBuffer.hpp"
 #include "ShaderProgram.hpp"
@@ -10,11 +10,11 @@
 
 namespace engine
 {
-	class DLLAPI Model
+	class DLLAPI Model : public Object
 	{
 	private:
 		GLboolean isMirror;
-		std::vector<Object *> *_tObject;
+		std::vector<GLObject *> *_tGLObject;
 		GLfloat _modelMatrix[16];
 		ShaderProgram *_program;
 		GLint _MVPLocation;
@@ -23,25 +23,25 @@ namespace engine
 	public:
 		Model();
 		~Model();
-		void initObjectArray(void);
-		void initObjectMirror(Model *m);
+		void initGLObjectArray(void);
+		void initGLObjectMirror(Model *m);
 		void config(ShaderProgram *program);
-		void createObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+		void createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				  const GLsizei &sizeIndexArray, const GLuint *indexArray,
-				  const std::string pathTexture,
+				  const GLchar *pathTexture,
 				  const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess);
-		void loadFromFile(const std::string file);
-		void sortObject(void);
+		void loadFromFile(const GLchar *file);
+		void sortGLObject(void);
 		void matIdentity(void);
 		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		Vector3D<GLfloat> getPosition(void) const;
-		Object *getObject(GLuint num) const;
+		GLObject *getGLObject(const GLuint &num) const;
 		void display(GBuffer *g, Camera *cam) const;
 		void displayShadow(Light *l) const;
 	};
 }
-    
+
 
 #endif

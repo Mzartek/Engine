@@ -2,13 +2,6 @@
 
 void configShaders(void)
 {
-	objectProgram = new engine::ShaderProgram;
-	lightProgram = new engine::ShaderProgram;
-	shadowProgram = new engine::ShaderProgram;
-	skyboxProgram = new engine::ShaderProgram;
-	screenProgram = new engine::ShaderProgram;
-	textProgram = new engine::ShaderProgram;
-
 	objectProgram->loadProgram("shader/objectVert.glsl", "shader/objectFrag.glsl");
 	lightProgram->loadProgram("shader/dirLightVert.glsl", "shader/dirLightFrag.glsl");
 	shadowProgram->loadProgram("shader/shadowVert.glsl", "shader/shadowFrag.glsl");
@@ -27,7 +20,7 @@ void configText(void)
 	text1->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
 		      (window->getWidth() / 2) - 200, (window->getHeight() / 2) + 100,
-		      400, 100, textProgram, window);
+			  400, 100, textProgram, window);
 	text1->write("Coucou!");
 	text2->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
@@ -36,7 +29,7 @@ void configText(void)
 	text3->config("resources/font/SIXTY.TTF", 50,
 		      255, 255, 255,
 		      (window->getWidth() / 2) - 200, (window->getHeight() / 2) - 100,
-		      400, 100, textProgram, window);
+			  400, 100, textProgram, window);
 }
 
 void configLights(void)
@@ -78,43 +71,43 @@ void configModels(void)
 	GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLfloat mat_shininess[] = { 20.0f };
 
-	face->initObjectArray();
+	face->initGLObjectArray();
 	face->config(objectProgram);
-	face->createObject(sizeof vertex, vertex,
+	face->createGLObject(sizeof vertex, vertex,
 			   sizeof index, index,
 			   "resources/ornaments.jpg",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	//Cubes
 	cube1->config(objectProgram);
-	cube1->initObjectArray();
-	cube1->loadObj("resources/Crate/crate.obj");
-	cube1->sortObject();
+	cube1->initGLObjectArray();
+	cube1->loadFromFile("resources/Crate/crate.obj");
+	cube1->sortGLObject();
 
 	cube2->config(objectProgram);
-	cube2->initObjectMirror(cube1);
+	cube2->initGLObjectMirror(cube1);
 
 	cube3->config(objectProgram);
-	cube3->initObjectMirror(cube1);
+	cube3->initGLObjectMirror(cube1);
 
 	cube4->config(objectProgram);
-	cube4->initObjectMirror(cube1);
+	cube4->initGLObjectMirror(cube1);
 
 	//Helicopter
 	helicopter->config(objectProgram);
-	helicopter->initObjectArray();
+	helicopter->initGLObjectArray();
 	helicopter->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
-	helicopter->sortObject();
+	helicopter->sortGLObject();
 
 	grotor->config(objectProgram);
-	grotor->initObjectArray();
+	grotor->initGLObjectArray();
 	grotor->loadFromFile("resources/UH-60_Blackhawk/grotor.obj");
-	grotor->sortObject();
+	grotor->sortGLObject();
 
 	protor->config(objectProgram);
-	protor->initObjectArray();
+	protor->initGLObjectArray();
 	protor->loadFromFile("resources/UH-60_Blackhawk/protor.obj");
-	protor->sortObject();
+	protor->sortGLObject();
 }
 
 void configSkybox(void)
@@ -122,6 +115,6 @@ void configSkybox(void)
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
 		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
 		     "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
-		     100, skyboxProgram);
+			 100, skyboxProgram);
 	skybox->rotate(0, 0, 0, 0);
 }

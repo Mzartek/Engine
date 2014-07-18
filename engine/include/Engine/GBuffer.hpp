@@ -20,8 +20,8 @@ namespace engine
 		GBuffer(void);
 		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height);
-		GLuint getIdTexture(GLuint num) const;
-		void display(Window *w, GLuint buf) const;
+		GLuint getIdTexture(const GLuint &num) const;
+		void display(Window *w, const GLuint &buf) const;
 	};
 }
 

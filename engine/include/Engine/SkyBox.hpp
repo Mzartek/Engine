@@ -7,7 +7,7 @@
 
 namespace engine
 {
-	class DLLAPI SkyBox
+	class DLLAPI SkyBox : public Object
 	{
 	private:
 		GLuint _idTexture;
@@ -22,11 +22,11 @@ namespace engine
 	public:
 		SkyBox(void);
 		~SkyBox(void);
-		void load(std::string posx, std::string negx,
-			  std::string posy, std::string negy,
-			  std::string posz, std::string negz,
-			  GLfloat dim, ShaderProgram *program);
-		void rotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
+		void load(const GLchar *posx, const GLchar *negx,
+			const GLchar *posy, const GLchar *negy,
+			const GLchar *posz, const GLchar *negz,
+			GLfloat dim, ShaderProgram *program);
+		void rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void display(GBuffer *g, Camera *cam);
 	};
 }

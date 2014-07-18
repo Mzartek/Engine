@@ -4,6 +4,13 @@ engine::FreeCam::FreeCam(void)
 {
 }
 
+engine::FreeCam::FreeCam(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+{
+	_pcamera->x = x;
+	_pcamera->y = y;
+	_pcamera->z = z;
+}
+
 engine::FreeCam::~FreeCam(void)
 {
 }

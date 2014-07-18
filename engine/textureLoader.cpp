@@ -1,6 +1,6 @@
 ﻿#include <Engine/GLHead.hpp>
 
-engine::pixelFormat engine::testFormat(GLuint f)
+engine::pixelFormat engine::testFormat(const GLuint &f)
 {
 	switch(f)
 	{
@@ -17,7 +17,7 @@ engine::pixelFormat engine::testFormat(GLuint f)
 	}
 }
 
-void engine::loadTextureFromFile(const std::string path, GLuint *texture)
+void engine::loadTextureFromFile(const GLchar *path, GLuint *texture)
 {
 	SDL_Surface *image = IMG_Load(&path[0]);
 	if(image==NULL)

@@ -48,10 +48,10 @@
 		<Unit filename="FrameBuffer.cpp" />
 		<Unit filename="FreeCam.cpp" />
 		<Unit filename="GBuffer.cpp" />
+		<Unit filename="GLObject.cpp" />
 		<Unit filename="Light.cpp" />
 		<Unit filename="Model.cpp" />
 		<Unit filename="MovableCamera.cpp" />
-		<Unit filename="OBJModel.cpp" />
 		<Unit filename="Object.cpp" />
 		<Unit filename="PlayerCam.cpp" />
 		<Unit filename="Screen.cpp" />
@@ -67,10 +67,10 @@
 		<Unit filename="include/Engine/FreeCam.hpp" />
 		<Unit filename="include/Engine/GBuffer.hpp" />
 		<Unit filename="include/Engine/GLHead.hpp" />
+		<Unit filename="include/Engine/GLObject.hpp" />
 		<Unit filename="include/Engine/Light.hpp" />
 		<Unit filename="include/Engine/Model.hpp" />
 		<Unit filename="include/Engine/MovableCamera.hpp" />
-		<Unit filename="include/Engine/OBJModel.hpp" />
 		<Unit filename="include/Engine/Object.hpp" />
 		<Unit filename="include/Engine/PlayerCam.hpp" />
 		<Unit filename="include/Engine/Screen.hpp" />
@@ -87,6 +87,7 @@
 		<Unit filename="include/Engine/Vector4D.tpp" />
 		<Unit filename="include/Engine/Window.hpp" />
 		<Unit filename="include/Engine/matrix.hpp" />
+		<Unit filename="include/Engine/memControl.hpp" />
 		<Unit filename="matrix.cpp" />
 		<Unit filename="textureLoader.cpp" />
 		<Extensions>

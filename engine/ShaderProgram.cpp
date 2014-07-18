@@ -1,10 +1,10 @@
 #include <Engine/ShaderProgram.hpp>
 
-GLbyte *engine::ShaderProgram::readText(const std::string filename)
+GLchar *engine::ShaderProgram::readText(const GLchar *filename)
 {
-	std::ifstream file(&filename[0], std::ifstream::in | std::ifstream::binary);
-	GLbyte *content;
-	GLuint size;
+	std::ifstream file(filename, std::ifstream::in | std::ifstream::binary);
+	GLchar *content;
+	GLint size;
 
 	if(!file.is_open())
 	{
@@ -13,55 +13,56 @@ GLbyte *engine::ShaderProgram::readText(const std::string filename)
 	}
 	//On obtient la taille du fichier
 	file.seekg(0, std::ifstream::end);
-	size = (GLuint)file.tellg();
+	size = (GLint)file.tellg();
 	file.seekg(0, std::ifstream::beg);
 
 	//On remplit content
-	content = new GLbyte[size+1];
+	content = new char[size + 1];
 	assert(content != NULL);
-	file.read((char *)content, size);
+	file.read(content, size);
 	content[size] = '\0';
   
+	file.close();
 	return content;
 }
 
-GLuint engine::ShaderProgram::loadShader(const std::string filename, GLenum type)
+GLuint engine::ShaderProgram::loadShader(const GLchar *filename, const GLenum &type)
 {
 	GLuint id;
-	GLbyte *content, *log;
+	GLchar *content, *log;
 	GLsizei logsize;
 	GLint status;
-  
+
 	id = glCreateShader(type);
 	if(id == 0)
 	{
 		std::cerr << "Error while creating shader" << std::endl;
 		exit(1);
 	}
-  
+
 	content = readText(filename);
 
-	glShaderSource(id, 1, (const char **)&content, NULL);
+	glShaderSource(id, 1, (const GLchar **)&content, NULL);
 	glCompileShader(id);
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 	if(status != GL_TRUE)
 	{
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
         
-		log = new GLbyte[logsize + 1];
+		log = new char[logsize + 1];
 		assert(log != NULL);
 
 		log[logsize] = '\0';
         
-		glGetShaderInfoLog(id, logsize, &logsize, (char *)log);
+		glGetShaderInfoLog(id, logsize, &logsize, log);
 		std::cerr << "Error while compiling shader: " << filename << std::endl << log << std::endl;
         
 		glDeleteShader(id);
-		delete log;
+		delete[] log;
 		return 0;
 	}
   
-	delete content;
+	delete[] content;
 	return id;
 }
 
@@ -80,9 +81,9 @@ engine::ShaderProgram::~ShaderProgram(void)
 		glDeleteShader(_idFragmentShader);
 }
 
-GLint engine::ShaderProgram::loadProgram(const std::string vs, const std::string fs)
+GLint engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *fs)
 {
-	GLbyte *log;
+	GLchar *log;
 	GLsizei logsize;
 	GLint status;
   
@@ -105,15 +106,15 @@ GLint engine::ShaderProgram::loadProgram(const std::string vs, const std::string
 
 	glAttachShader(_idProgram, _idVertexShader);
 	glAttachShader(_idProgram, _idFragmentShader);
-  
+
 	glLinkProgram(_idProgram);
-  
+
 	glGetProgramiv(_idProgram, GL_LINK_STATUS, &status);
 	if(status != GL_TRUE)
 	{
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
         
-		log = new GLbyte[logsize + 1];
+		log = new GLchar[logsize + 1];
 		assert(log != NULL);
 
 		log[logsize] = '\0';
@@ -121,7 +122,7 @@ GLint engine::ShaderProgram::loadProgram(const std::string vs, const std::string
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, (char *)log);
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
         
-		delete log;
+		delete[] log;
 		return 0;
 	}
 

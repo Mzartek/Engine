@@ -6,7 +6,7 @@
 
 namespace engine
 {
-	class DLLAPI Screen
+	class DLLAPI Screen : public Object
 	{
 	private:
 		GLuint _idVAO;
@@ -18,7 +18,7 @@ namespace engine
 		Screen();
 		~Screen();
 		void config(ShaderProgram *program);
-		void display(GBuffer *gbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+		void display(GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a);
 	};
 }
 

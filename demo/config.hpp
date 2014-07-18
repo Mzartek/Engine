@@ -4,12 +4,13 @@
 #define ESC 41
 #define MAJ 225
 
+#include <Engine/Object.hpp>
 #include <Engine/Window.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/ShadowMap.hpp>
 #include <Engine/FreeCam.hpp>
 #include <Engine/DirLight.hpp>
-#include <Engine/OBJModel.hpp>
+#include <Engine/Model.hpp>
 #include <Engine/SkyBox.hpp>
 #include <Engine/Screen.hpp>
 #include <Engine/TextArray.hpp>
@@ -22,7 +23,7 @@ extern engine::Window *window;
 extern engine::FreeCam *cam;
 extern engine::DirLight *sun;
 extern engine::Model *face;
-extern engine::OBJModel *cube1;
+extern engine::Model *cube1;
 extern engine::Model *cube2;
 extern engine::Model *cube3;
 extern engine::Model *cube4;

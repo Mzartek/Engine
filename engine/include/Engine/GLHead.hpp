@@ -47,8 +47,8 @@ namespace engine
 	} Vertex;
 
 	enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
-	extern DLLAPI pixelFormat testFormat(GLuint f);
-	extern DLLAPI void loadTextureFromFile(const std::string path, GLuint *texture);
+	extern DLLAPI pixelFormat testFormat(const GLuint &f);
+	extern DLLAPI void loadTextureFromFile(const GLchar *path, GLuint *texture);
 	extern DLLAPI void loadTextureFromSDL_Surface(const SDL_Surface *image, GLuint *texture);
 }
 
