@@ -18,7 +18,6 @@ namespace engine
 		GLfloat _modelMatrix[16];
 		ShaderProgram *_program;
 		GLint _MVPLocation;
-		GLint _modelMatrixLocation;
 		GLint _normalMatrixLocation;
 	public:
 		Model();

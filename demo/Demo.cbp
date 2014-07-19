@@ -43,23 +43,25 @@
 		<Unit filename="config.cpp" />
 		<Unit filename="config.hpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="shader/dirLightFrag.glsl" />
-		<Unit filename="shader/dirLightVert.glsl" />
-		<Unit filename="shader/objectFrag.glsl" />
-		<Unit filename="shader/objectVert.glsl" />
-		<Unit filename="shader/screenFrag.glsl" />
-		<Unit filename="shader/screenVert.glsl" />
-		<Unit filename="shader/shadowFrag.glsl" />
-		<Unit filename="shader/shadowVert.glsl" />
-		<Unit filename="shader/skyboxFrag.glsl" />
-		<Unit filename="shader/skyboxVert.glsl" />
-		<Unit filename="shader/spotLightFrag.glsl" />
-		<Unit filename="shader/spotLightVert.glsl" />
-		<Unit filename="shader/textFrag.glsl" />
-		<Unit filename="shader/textVert.glsl" />
+		<Unit filename="shader/dirLight/dirLightFrag.glsl" />
+		<Unit filename="shader/dirLight/dirLightVert.glsl" />
+		<Unit filename="shader/object/objectFrag.glsl" />
+		<Unit filename="shader/object/objectGeom.glsl" />
+		<Unit filename="shader/object/objectVert.glsl" />
+		<Unit filename="shader/screen/screenFrag.glsl" />
+		<Unit filename="shader/screen/screenVert.glsl" />
+		<Unit filename="shader/shadow/shadowFrag.glsl" />
+		<Unit filename="shader/shadow/shadowVert.glsl" />
+		<Unit filename="shader/skybox/skyboxFrag.glsl" />
+		<Unit filename="shader/skybox/skyboxVert.glsl" />
+		<Unit filename="shader/spotLight/spotLightFrag.glsl" />
+		<Unit filename="shader/spotLight/spotLightVert.glsl" />
+		<Unit filename="shader/text/textFrag.glsl" />
+		<Unit filename="shader/text/textVert.glsl" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

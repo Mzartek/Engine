@@ -26,40 +26,21 @@
     <ClInclude Include="config.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\dirLightFrag.glsl" />
-    <None Include="shader\dirLightVert.glsl" />
-    <None Include="shader\objectFrag.glsl" />
-    <None Include="shader\objectVert.glsl" />
-    <None Include="shader\screenFrag.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\screenVert.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\shadowFrag.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\shadowVert.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\skyboxFrag.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\skyboxVert.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\spotLightFrag.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\spotLightVert.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\textFrag.glsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shader\textVert.glsl">
-      <FileType>Document</FileType>
-    </None>
+    <None Include="shader\dirLight\dirLightFrag.glsl" />
+    <None Include="shader\dirLight\dirLightVert.glsl" />
+    <None Include="shader\object\objectFrag.glsl" />
+    <None Include="shader\object\objectGeom.glsl" />
+    <None Include="shader\object\objectVert.glsl" />
+    <None Include="shader\screen\screenFrag.glsl" />
+    <None Include="shader\screen\screenVert.glsl" />
+    <None Include="shader\shadow\shadowFrag.glsl" />
+    <None Include="shader\shadow\shadowVert.glsl" />
+    <None Include="shader\skybox\skyboxFrag.glsl" />
+    <None Include="shader\skybox\skyboxVert.glsl" />
+    <None Include="shader\spotLight\spotLightFrag.glsl" />
+    <None Include="shader\spotLight\spotLightVert.glsl" />
+    <None Include="shader\text\textFrag.glsl" />
+    <None Include="shader\text\textVert.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{24F43546-9599-4386-AD14-5D12D8FD9A6F}</ProjectGuid>

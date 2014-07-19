@@ -44,7 +44,6 @@ void engine::Model::config(ShaderProgram *program)
 {
 	_program = program;
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
-	_modelMatrixLocation = glGetUniformLocation(_program->getId(), "modelMatrix");
 	_normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
 }
 
@@ -227,9 +226,6 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	// MVP Matrix
 	matrixMultiply(tmp, cam->getVPMatrix(), _modelMatrix);
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, tmp);
-
-	// Model Matrix
-	glUniformMatrix4fv(_modelMatrixLocation, 1, GL_FALSE, _modelMatrix);
 
 	// Normal Matrix
 	matrixNormalFromModel(tmp, _modelMatrix);

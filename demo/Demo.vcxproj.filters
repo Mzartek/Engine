@@ -27,46 +27,49 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\screenFrag.glsl">
+    <None Include="shader\dirLight\dirLightFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\screenVert.glsl">
+    <None Include="shader\dirLight\dirLightVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\shadowFrag.glsl">
+    <None Include="shader\object\objectFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\shadowVert.glsl">
+    <None Include="shader\object\objectVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\skyboxFrag.glsl">
+    <None Include="shader\screen\screenFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\skyboxVert.glsl">
+    <None Include="shader\screen\screenVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\spotLightFrag.glsl">
+    <None Include="shader\shadow\shadowFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\spotLightVert.glsl">
+    <None Include="shader\shadow\shadowVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\textFrag.glsl">
+    <None Include="shader\skybox\skyboxFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\textVert.glsl">
+    <None Include="shader\skybox\skyboxVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\dirLightFrag.glsl">
+    <None Include="shader\spotLight\spotLightFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\dirLightVert.glsl">
+    <None Include="shader\spotLight\spotLightVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\objectFrag.glsl">
+    <None Include="shader\text\textFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\objectVert.glsl">
+    <None Include="shader\text\textVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\object\objectGeom.glsl">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

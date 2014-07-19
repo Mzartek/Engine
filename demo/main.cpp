@@ -146,7 +146,7 @@ void keyboard(GLubyte key, GLboolean state)
 		switch (key)
 		{
 		case ESC:
-			window->stop();
+			window->stopLoop();
 			break;
 		}
 }
@@ -248,6 +248,6 @@ int main(int argc, char **argv)
 
 	delete window;
 	std::cout << "MemState " << engine::Object::getMemoryState() << std::endl;
-	engine::Object::displayMemoryInfo();
+	engine::Object::saveMemoryInfo("memLost.txt");
 	return 0;
 }

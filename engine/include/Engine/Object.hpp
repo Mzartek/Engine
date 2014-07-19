@@ -17,7 +17,7 @@ namespace engine
 		void operator delete(void *p);
 		void operator delete[](void *p);
 		static GLint getMemoryState(void);
-		static void displayMemoryInfo(void);
+		static void saveMemoryInfo(const GLchar *filename);
 	};
 }
 

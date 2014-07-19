@@ -8,7 +8,7 @@ namespace engine
 	class DLLAPI Window : public Object
 	{
 	private:
-		GLboolean _exit;
+		GLboolean _stopLoop;
 		GLuint _width;
 		GLuint _height;
 		SDL_Window *_idWindow;
@@ -31,7 +31,7 @@ namespace engine
 		GLuint getHeight(void);
 		SDL_Window *getId(void);
 		void mainLoop(void);
-		void stop(void);
+		void stopLoop(void);
 		void clear(void);
 	};
 }

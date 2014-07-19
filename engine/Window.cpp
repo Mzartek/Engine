@@ -19,7 +19,6 @@ void engine::Window::initWindow(const GLchar *title, const GLint &w, const GLint
 {
 	Uint32 flags;
 
-	_exit = false;
 	_width = w;
 	_height = h;
 
@@ -120,13 +119,14 @@ void engine::Window::mainLoop(void)
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	_reshape(_width, _height);
-	while(!_exit)
+	_stopLoop = false;
+	while (!_stopLoop)
 	{
 		while(SDL_PollEvent(&event))
 			switch(event.type)
 			{
 			case SDL_QUIT:
-				_exit = true;
+				_stopLoop = true;
 				break;
 			case SDL_KEYDOWN:
 				if(_keyboard)
@@ -153,9 +153,9 @@ void engine::Window::mainLoop(void)
 	SDL_DestroyWindow(_idWindow);
 }
 
-void engine::Window::stop(void)
+void engine::Window::stopLoop(void)
 {
-	_exit=true;
+	_stopLoop = true;
 }
 
 void engine::Window::clear(void)

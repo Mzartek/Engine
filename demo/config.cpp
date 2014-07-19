@@ -2,12 +2,12 @@
 
 void configShaders(void)
 {
-	objectProgram->loadProgram("shader/objectVert.glsl", "shader/objectFrag.glsl");
-	lightProgram->loadProgram("shader/dirLightVert.glsl", "shader/dirLightFrag.glsl");
-	shadowProgram->loadProgram("shader/shadowVert.glsl", "shader/shadowFrag.glsl");
-	skyboxProgram->loadProgram("shader/skyboxVert.glsl", "shader/skyboxFrag.glsl");
-	screenProgram->loadProgram("shader/screenVert.glsl", "shader/screenFrag.glsl");
-	textProgram->loadProgram("shader/textVert.glsl", "shader/textFrag.glsl");
+	objectProgram->loadProgram("shader/object/objectVert.glsl", NULL, NULL, "shader/object/objectGeom.glsl", "shader/object/objectFrag.glsl");
+	lightProgram->loadProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
+	shadowProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
+	skyboxProgram->loadProgram("shader/skybox/skyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/skyboxFrag.glsl");
+	screenProgram->loadProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
+	textProgram->loadProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
 }
 
 void configBuffers(void)

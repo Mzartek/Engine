@@ -1,5 +1,5 @@
-#ifndef GLOBJECT
-#define GLOBJECT
+#ifndef GL_OBJECT
+#define GL_OBJECT
 
 #include "ShaderProgram.hpp"
 #include "Light.hpp"
