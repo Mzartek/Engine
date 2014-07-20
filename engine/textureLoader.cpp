@@ -31,16 +31,13 @@ void engine::loadTextureFromFile(const GLchar *path, GLuint *texture)
 	switch(testFormat(image->format->format))
 	{
 	case RGB:
-		glTexStorage2D(GL_TEXTURE_2D, MIPMAP_LEVEL, GL_RGB8, image->w, image->h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case BGR:
-		glTexStorage2D(GL_TEXTURE_2D, MIPMAP_LEVEL, GL_RGB8, image->w, image->h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case RGBA:
-		glTexStorage2D(GL_TEXTURE_2D, MIPMAP_LEVEL, GL_RGBA8, image->w, image->h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	default:
 		std::cerr << "Format " << image->format->format << " unknown" << std::endl;

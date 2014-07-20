@@ -14,8 +14,6 @@ namespace engine
 		GLint _MVPLocation;
 		GLint _colorTextureLocation;
 		GLint _shadowMapLocation;
-		GLint _alphaLocation;
-		GLint _screenLocation;
 	public:
 		ShadowMap(void);
 		~ShadowMap(void);
@@ -25,8 +23,6 @@ namespace engine
 		GLint getMVPLocation(void) const;
 		GLint getColorTextureLocation(void) const;
 		GLint getShadowMapLocation(void) const;
-		GLint getAlphaLocation(void) const;
-		GLint getScreenLocation(void) const;
 	};
 }
 

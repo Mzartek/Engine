@@ -20,7 +20,7 @@ void main(void)
 {
     vec4 color = texture(colorTexture, texCoord);
 
-    if(color.a == 1.0 && matAmbient.a == 1.0 && matDiffuse.a == 1.0 && matSpecular.a == 1.0)
+    if(color.a > 0.5)
     {
         outNormal = vec4(normalize(normal), matShininess);
         outMaterial =

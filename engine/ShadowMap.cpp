@@ -21,8 +21,6 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
-	_alphaLocation = glGetUniformLocation(program->getId(), "alpha");
-	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
 
 	// Frame Buffer GLObject"
 	if(glIsFramebuffer(_idFBO))
@@ -72,14 +70,4 @@ GLint engine::ShadowMap::getColorTextureLocation(void) const
 GLint engine::ShadowMap::getShadowMapLocation(void) const
 {
 	return _shadowMapLocation;
-}
-
-GLint engine::ShadowMap::getScreenLocation(void) const
-{
-	return _screenLocation;
-}
-
-GLint engine::ShadowMap::getAlphaLocation(void) const
-{
-	return _alphaLocation;
 }

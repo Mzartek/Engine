@@ -21,7 +21,7 @@ GLchar *engine::ShaderProgram::readText(const GLchar *filename)
 	assert(content != NULL);
 	file.read(content, size);
 	content[size] = '\0';
-  
+
 	file.close();
 	return content;
 }
@@ -48,27 +48,32 @@ GLuint engine::ShaderProgram::loadShader(const GLchar *filename, const GLenum &t
 	if(status != GL_TRUE)
 	{
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
-        
+
 		log = new char[logsize + 1];
 		assert(log != NULL);
 
 		log[logsize] = '\0';
-        
+
 		glGetShaderInfoLog(id, logsize, &logsize, log);
 		std::cerr << "Error while compiling shader: " << filename << std::endl << log << std::endl;
-        
+
 		glDeleteShader(id);
 		delete[] log;
 		return 0;
 	}
-  
+
 	delete[] content;
 	return id;
 }
 
 engine::ShaderProgram::ShaderProgram(void)
 {
-	_idProgram = _idVertexShader = _idTessControlShader = _idTessEvaluationShader = _idGeometryShader = _idFragmentShader = NULL;
+	_idProgram = 0;
+	_idVertexShader = 0;
+	_idTessControlShader = 0;
+	_idTessEvaluationShader = 0;
+	_idGeometryShader = 0;
+	_idFragmentShader = 0;
 }
 
 engine::ShaderProgram::~ShaderProgram(void)
@@ -145,15 +150,15 @@ GLint engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, co
 	if(status != GL_TRUE)
 	{
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
-        
+
 		log = new GLchar[logsize + 1];
 		assert(log != NULL);
 
 		log[logsize] = '\0';
-        
+
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, (char *)log);
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
-        
+
 		delete[] log;
 		return 0;
 	}

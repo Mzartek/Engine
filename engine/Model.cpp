@@ -234,7 +234,8 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	glUseProgram(0);
 
 	for(i=0 ; i<_tGLObject->size(); i++)
-		(*_tGLObject)[i]->display(g);
+        if((*_tGLObject)[i]->getTransparency() == 1.0f)
+            (*_tGLObject)[i]->display(g);
 }
 
 void engine::Model::displayShadow(Light *l) const
@@ -261,5 +262,6 @@ void engine::Model::displayShadow(Light *l) const
 	glUseProgram(0);
 
 	for(i=0 ; i<_tGLObject->size(); i++)
-		(*_tGLObject)[i]->displayShadow(l);
+        if((*_tGLObject)[i]->getTransparency() == 1.0f)
+            (*_tGLObject)[i]->displayShadow(l);
 }

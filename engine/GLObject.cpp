@@ -187,9 +187,6 @@ void engine::GLObject::displayShadow(Light *l) const
 	glBindTexture(GL_TEXTURE_2D, l->getShadowMap()->getIdDepthTexture());
 	glUniform1i(l->getShadowMap()->getShadowMapLocation(), 1);
 
-	glUniform1f(l->getShadowMap()->getAlphaLocation(), _matDiffuse[3]);
-	glUniform2f(l->getShadowMap()->getScreenLocation(), (GLfloat)l->getShadowMap()->getWidth(), (GLfloat)l->getShadowMap()->getHeight());
-
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
