@@ -231,7 +231,7 @@ int main(int argc, char **argv)
 	window = new engine::Window;
 
 	if (argc < 3)
-		window->initWindow("Demo", 1680, 1050, GL_TRUE);
+		window->initWindow("Demo", 800, 600, GL_FALSE);
 	else
 		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
 	window->setDisplayFunc(display);

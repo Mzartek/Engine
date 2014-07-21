@@ -38,8 +38,10 @@ void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 	_vforward->z = r_temp*(GLfloat)cos(_atheta*M_PI / 180);
 	_vforward->x = r_temp*(GLfloat)sin(_atheta*M_PI / 180);
 
-	_vleft->x = 1*_vforward->z;
-	_vleft->z = -(1*_vforward->x);
+	_vleft->x = _vforward->z;
+	_vleft->y = 0;
+	_vleft->z = -_vforward->x;
+
 	*_vleft /= (GLfloat)sqrt(_vleft->x*_vleft->x + _vleft->y*_vleft->y + _vleft->z*_vleft->z);
   
 	*_ptarget = *_pcamera + *_vforward;
