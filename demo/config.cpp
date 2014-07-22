@@ -2,10 +2,10 @@
 
 void configShaders(void)
 {
-	objectProgram->loadProgram("shader/object/objectVert.glsl", NULL, NULL, "shader/object/objectGeom.glsl", "shader/object/objectFrag.glsl");
-	lightProgram->loadProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
+	objectProgram->loadProgram("shader/object/gObjectVert.glsl", NULL, NULL, "shader/object/gObjectGeom.glsl", "shader/object/gObjectFrag.glsl");
+	lightProgram->loadProgram("shader/dirLight/gDirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/gDirLightFrag.glsl");
 	shadowProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
-	skyboxProgram->loadProgram("shader/skybox/skyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/skyboxFrag.glsl");
+	skyboxProgram->loadProgram("shader/skybox/gSkyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/gSkyboxFrag.glsl");
 	screenProgram->loadProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
 	textProgram->loadProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
 }

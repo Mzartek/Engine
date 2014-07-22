@@ -71,3 +71,11 @@ GLint engine::ShadowMap::getShadowMapLocation(void) const
 {
 	return _shadowMapLocation;
 }
+
+void engine::ShadowMap::clear(void) const
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, _width, _height);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}

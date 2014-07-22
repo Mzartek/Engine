@@ -74,3 +74,11 @@ void engine::GBuffer::display(Window *w, const GLuint &buf) const
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 }
+
+void engine::GBuffer::clear(void) const
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, _width, _height);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}

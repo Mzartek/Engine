@@ -14,7 +14,7 @@ engine::GLObject::GLObject(void)
 		_matSpecular[i]=1.0;
 	}
 	_matShininess[0]=1.0;
-	_program = NULL;
+	_gProgram = NULL;
 }
 
 engine::GLObject::~GLObject(void)
@@ -29,17 +29,17 @@ engine::GLObject::~GLObject(void)
 		glDeleteTextures(1, &_idTexture);
 }
 
-void engine::GLObject::setShaderProgram(ShaderProgram *program)
+void engine::GLObject::setShaderProgram(ShaderProgram *gProgram)
 {
-	_program = program;
-	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
-	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
-	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
-	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-	_matAmbientLocation = glGetUniformLocation(_program->getId(), "matAmbient");
-	_matDiffuseLocation = glGetUniformLocation(_program->getId(), "matDiffuse");
-	_matSpecularLocation = glGetUniformLocation(_program->getId(), "matSpecular");
-	_matShininessLocation = glGetUniformLocation(_program->getId(), "matShininess");
+	_gProgram = gProgram;
+	_gNormalTextureLocation = glGetUniformLocation(_gProgram->getId(), "normalTexture");
+	_gMaterialTextureLocation = glGetUniformLocation(_gProgram->getId(), "materialTexture");
+	_gDepthTextureLocation = glGetUniformLocation(_gProgram->getId(), "depthTexture");
+	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
+	_gMatAmbientLocation = glGetUniformLocation(_gProgram->getId(), "matAmbient");
+	_gMatDiffuseLocation = glGetUniformLocation(_gProgram->getId(), "matDiffuse");
+	_gMatSpecularLocation = glGetUniformLocation(_gProgram->getId(), "matSpecular");
+	_gMatShininessLocation = glGetUniformLocation(_gProgram->getId(), "matShininess");
 }
 
 void engine::GLObject::setTexture(const GLuint &id)
@@ -123,36 +123,36 @@ void engine::GLObject::load(const GLsizei &sizeVertexArray, const GLfloat *verte
 
 void engine::GLObject::display(GBuffer *g) const
 {
-	if(_program == NULL)
+	if (_gProgram == NULL)
 	{
 		std::cerr << "You need to set the ShaderProgram before" << std::endl;
 		return;
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
-	glUseProgram(_program->getId());
+	glUseProgram(_gProgram->getId());
 	glBindVertexArray(_idVAO);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
-	glUniform1i(_normalTextureLocation, 0);
+	glUniform1i(_gNormalTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_materialTextureLocation, 1);
+	glUniform1i(_gMaterialTextureLocation, 1);
 
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
-	glUniform1i(_depthTextureLocation, 2);
+	glUniform1i(_gDepthTextureLocation, 2);
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
-	glUniform1i(_colorTextureLocation, 3);
+	glUniform1i(_gColorTextureLocation, 3);
 
-	glUniform4fv(_matAmbientLocation,  1, _matAmbient);
-	glUniform4fv(_matDiffuseLocation,  1, _matDiffuse);
-	glUniform4fv(_matSpecularLocation,  1, _matSpecular);
-	glUniform1fv(_matShininessLocation, 1, _matShininess);
+	glUniform4fv(_gMatAmbientLocation, 1, _matAmbient);
+	glUniform4fv(_gMatDiffuseLocation, 1, _matDiffuse);
+	glUniform4fv(_gMatSpecularLocation, 1, _matSpecular);
+	glUniform1fv(_gMatShininessLocation, 1, _matShininess);
 
 	glDrawBuffers(2, g->colorAttachment);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

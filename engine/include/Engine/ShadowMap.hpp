@@ -23,6 +23,7 @@ namespace engine
 		GLint getMVPLocation(void) const;
 		GLint getColorTextureLocation(void) const;
 		GLint getShadowMapLocation(void) const;
+		void clear(void) const;
 	};
 }
 

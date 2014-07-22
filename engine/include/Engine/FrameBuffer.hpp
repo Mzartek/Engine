@@ -17,7 +17,7 @@ namespace engine
 		GLuint getWidth(void) const;
 		GLuint getHeight(void) const;
 		GLuint getIdFBO(void) const;
-		void clear(void) const;
+		virtual void clear(void) const = 0;
 	};
 }
 

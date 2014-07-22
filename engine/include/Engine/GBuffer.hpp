@@ -22,6 +22,7 @@ namespace engine
 		void config(const GLuint &width, const GLuint &height);
 		GLuint getIdTexture(const GLuint &num) const;
 		void display(Window *w, const GLuint &buf) const;
+		void clear(void) const;
 	};
 }
 
