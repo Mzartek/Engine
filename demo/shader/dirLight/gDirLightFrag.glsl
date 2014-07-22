@@ -16,7 +16,7 @@ uniform vec3 camPosition;
 uniform vec3 lightColor;
 uniform vec3 lightDirection;
 
-layout(location = 0) out uvec3 outMaterial;
+layout(location = 0) out uvec4 outMaterial;
 
 vec3 getPosition(void)
 {
@@ -80,28 +80,28 @@ light calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need
 
 void main(void)
 {
-	vec3 position, finalColor, matAmbient, matDiffuse, matSpecular;
-	vec4 normal;
-	uvec3 material;
+	vec3 position;;
+	vec4 normal, finalColor, matAmbient, matDiffuse, matSpecular;
+	uvec4 material;
 	float s;
 	light l;
 
 	position = getPosition();
 	normal = texelFetch(normalTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
-	material = texelFetch(materialTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).xyz;
-	finalColor = vec3(0x000000FF & (ivec3(material) >> 24)) / 255;
-	matAmbient = vec3(0x000000FF & (ivec3(material) >> 16)) / 255;
-	matDiffuse = vec3(0x000000FF & (ivec3(material) >> 8)) / 255;
-	matSpecular = vec3(0x000000FF & ivec3(material)) / 255;
+	material = texelFetch(materialTexture, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0);
+	finalColor = vec4(0x000000FF & (ivec4(material) >> 24)) / 255;
+	matAmbient = vec4(0x000000FF & (ivec4(material) >> 16)) / 255;
+	matDiffuse = vec4(0x000000FF & (ivec4(material) >> 8)) / 255;
+	matSpecular = vec4(0x000000FF & ivec4(material)) / 255;
 
 	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
 	l = calcDirLight(normal.xyz, camPosition - position, normal.w, s);
-	finalColor *= matAmbient + (matDiffuse * l.diff) + (matSpecular * l.spec);
+	finalColor *= matAmbient + (matDiffuse * vec4(l.diff, 1.0)) + (matSpecular * vec4(l.spec, 1.0));
 	finalColor = clamp(finalColor, 0.0, 1.0);
 
 	outMaterial =
-		uvec3(0xFF000000 & uvec3(ivec3(finalColor * 255) << 24)) |
-		uvec3(0x00FF0000 & (ivec3(matAmbient * 255) << 16)) |
-		uvec3(0x0000FF00 & (ivec3(matDiffuse * 255) << 8)) |
-		uvec3(0x000000FF & ivec3(matSpecular * 255));
+		uvec4(0xFF000000 & uvec4(ivec4(finalColor * 255) << 24)) |
+		uvec4(0x00FF0000 & (ivec4(matAmbient * 255) << 16)) |
+		uvec4(0x0000FF00 & (ivec4(matDiffuse * 255) << 8)) |
+		uvec4(0x000000FF & ivec4(matSpecular * 255));
 }
