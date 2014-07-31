@@ -114,7 +114,7 @@ void display(void)
 
 	// Screen
 	window->clear();
-	screen->display(gBuffer, sr, sg, sb, sa);
+	screen->display(window, gBuffer, sr, sg, sb, sa);
 
 	// Text
 	//text1->display();

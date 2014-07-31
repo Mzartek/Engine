@@ -19,21 +19,15 @@ void engine::Screen::config(ShaderProgram *program)
 {
 	GLfloat vertex[] = {
 		-1, -1,
-		0, 0,
-		
 		1, -1,
-		1, 0,
-		
 		-1,  1,
-		0, 1,
-		
 		1,  1,
-		1, 1
 	};
 	
 	_program = program;
 	_colorLocation = glGetUniformLocation(_program->getId(), "color");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
+	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
 	
 	if(glIsVertexArray(_idVAO))
 		glDeleteVertexArrays(1, &_idVAO);
@@ -47,17 +41,15 @@ void engine::Screen::config(ShaderProgram *program)
 	glBufferData(GL_ARRAY_BUFFER, sizeof vertex, vertex, GL_STATIC_DRAW);
   
 	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
 	
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(2*sizeof(GLfloat)));
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), BUFFER_OFFSET(0));
 
 	glBindVertexArray(0);
 }
 
 #undef BUFFER_OFFSET
 
-void engine::Screen::display(GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
+void engine::Screen::display(Window *win, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
 {
 	if(_program==NULL)
 	{
@@ -74,6 +66,8 @@ void engine::Screen::display(GBuffer *gbuf, const GLfloat &r, const GLfloat &g, 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 	glUniform1i(_materialTextureLocation, 0);
+
+	glUniform2ui(_screenLocation, win->getWidth(), win->getHeight());
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
   

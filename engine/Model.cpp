@@ -57,7 +57,7 @@ void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat
 
 	loadTextureFromFile(pathTexture, &texture);
 
-	newone->setShaderProgram(_program);
+	newone->config(_program);
 	newone->setTexture(texture);
 	newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
 	newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);

@@ -29,10 +29,11 @@ namespace engine
 		GLint _gMatDiffuseLocation;
 		GLint _gMatSpecularLocation;
 		GLint _gMatShininessLocation;
+		GLint _gScreenLocation;
 	public:
 		GLObject(void);
 		~GLObject(void);
-		void setShaderProgram(ShaderProgram *gProgram);
+		void config(ShaderProgram *gProgram);
 		void setTexture(const GLuint &id);
 		void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
 		void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);

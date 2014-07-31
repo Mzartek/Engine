@@ -71,8 +71,8 @@ void configModels(void)
 	GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLfloat mat_shininess[] = { 20.0f };
 
-	face->initGLObjectArray();
 	face->config(objectProgram);
+	face->initGLObjectArray();
 	face->createGLObject(sizeof vertex, vertex,
 			   sizeof index, index,
 			   "resources/ornaments.jpg",
