@@ -62,19 +62,22 @@ void matrixLoadBias(float *matrix)
 
 void matrixNormalFromModel(float *result, const float *matrix)
 {
+	float tmp[16];
 	float idet = 1/((matrix[ 0]*((matrix[ 5]*matrix[10])-(matrix[ 9]*matrix[ 6]))) -
 			(matrix[ 4]*((matrix[ 1]*matrix[10])-(matrix[ 9]*matrix[ 2]))) +
 			(matrix[ 8]*((matrix[ 1]*matrix[ 6])-(matrix[ 5]*matrix[ 2]))));
 
-	result[0]=idet *  ((matrix[ 5]*matrix[10])-(matrix[ 9]*matrix[ 6]));
-	result[1]=idet * -((matrix[ 4]*matrix[10])-(matrix[ 8]*matrix[ 6]));
-	result[2]=idet *  ((matrix[ 4]*matrix[ 9])-(matrix[ 8]*matrix[ 5]));
-	result[3]=idet * -((matrix[ 1]*matrix[10])-(matrix[ 9]*matrix[ 2]));
-	result[4]=idet *  ((matrix[ 0]*matrix[10])-(matrix[ 8]*matrix[ 2]));
-	result[5]=idet * -((matrix[ 0]*matrix[ 9])-(matrix[ 8]*matrix[ 1]));
-	result[6]=idet *  ((matrix[ 1]*matrix[ 6])-(matrix[ 5]*matrix[ 2]));
-	result[7]=idet * -((matrix[ 0]*matrix[ 6])-(matrix[ 4]*matrix[ 2]));
-	result[8]=idet *  ((matrix[ 0]*matrix[ 5])-(matrix[ 4]*matrix[ 1]));
+	tmp[0] = idet *  ((matrix[5] * matrix[10]) - (matrix[9] * matrix[6]));
+	tmp[1] = idet * -((matrix[4] * matrix[10]) - (matrix[8] * matrix[6]));
+	tmp[2] = idet *  ((matrix[4] * matrix[9]) - (matrix[8] * matrix[5]));
+	tmp[3] = idet * -((matrix[1] * matrix[10]) - (matrix[9] * matrix[2]));
+	tmp[4] = idet *  ((matrix[0] * matrix[10]) - (matrix[8] * matrix[2]));
+	tmp[5] = idet * -((matrix[0] * matrix[9]) - (matrix[8] * matrix[1]));
+	tmp[6] = idet *  ((matrix[1] * matrix[6]) - (matrix[5] * matrix[2]));
+	tmp[7] = idet * -((matrix[0] * matrix[6]) - (matrix[4] * matrix[2]));
+	tmp[8] = idet *  ((matrix[0] * matrix[5]) - (matrix[4] * matrix[1]));
+
+	memcpy(result, tmp, 16 * sizeof(float));
 }
 
 void matrixInverse(float *result, const float *matrix)

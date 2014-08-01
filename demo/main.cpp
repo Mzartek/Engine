@@ -11,9 +11,7 @@ engine::Model *cube1;
 engine::Model *cube2;
 engine::Model *cube3;
 engine::Model *cube4;
-engine::Model *helicopter;
-engine::Model *grotor;
-engine::Model *protor;
+engine::Model *heli;
 engine::SkyBox *skybox;
 engine::Screen *screen;
 engine::TextArray *text1;
@@ -28,63 +26,6 @@ engine::ShaderProgram *skyboxProgram;
 engine::ShaderProgram *screenProgram;
 engine::ShaderProgram *textProgram;
 
-void helicopterMatrixIdentity(void)
-{
-	helicopter->matIdentity();
-	grotor->matIdentity();
-	protor->matIdentity();
-}
-
-void helicopterMatrixScale(GLfloat x, GLfloat y, GLfloat z)
-{
-	helicopter->matScale(x, y, z);
-	grotor->matScale(x, y, z);
-	protor->matScale(x, y, z);
-}
-
-void helicopterMatrixTranslate(GLfloat x, GLfloat y, GLfloat z)
-{
-	helicopter->matTranslate(x, y, z);
-	grotor->matTranslate(x, y, z);
-	protor->matTranslate(x, y, z);
-}
-
-void helicopterMatrixRotate(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
-{
-	helicopter->matRotate(angle, x, y, z);
-	grotor->matRotate(angle, x, y, z);
-	protor->matRotate(angle, x, y, z);
-}
-
-void helicopterRotateRotor(GLfloat angle)
-{
-	grotor->matTranslate(0.050f, 0.0f, -1.0f);
-	grotor->matRotate(angle, 0, 1, 0);
-	protor->matTranslate(0.40f, 2.4f, 19.74f);
-	protor->matRotate(angle, 1, 0, 0);
-}
-
-void helicopterDisplayShadow(engine::Light *l)
-{
-	helicopter->displayShadow(l);
-	grotor->displayShadow(l);
-	protor->displayShadow(l);
-}
-
-void helicopterDisplay(engine::GBuffer *g, engine::Camera *c)
-{
-	helicopter->display(g, c);
-	grotor->display(g, c);
-	protor->display(g, c);
-}
-
-/*void helicopterDisplay(engine::Window *w, engine::Camera *c, engine::LBuffer *l)
-{
-	helicopter->display(w, c, l);
-	grotor->display(w, c, l);
-	protor->display(w, c, l);
-}*/
-
 void display(void)
 {
 	cam->position();
@@ -97,7 +38,7 @@ void display(void)
 	cube2->displayShadow(sun);
 	cube3->displayShadow(sun);
 	cube4->displayShadow(sun);
-	helicopterDisplayShadow(sun);
+	heli->displayShadow(sun);
 
 	// GLObject Pass
 	gBuffer->clear();
@@ -107,7 +48,7 @@ void display(void)
 	cube2->display(gBuffer, cam);
 	cube3->display(gBuffer, cam);
 	cube4->display(gBuffer, cam);
-	helicopterDisplay(gBuffer, cam);
+	heli->display(gBuffer, cam);
 
 	// Light Pass
 	sun->display(gBuffer, cam);
@@ -124,8 +65,10 @@ void display(void)
 
 void idle(void)
 {
-	sun->setPosition(helicopter->getPosition().x, helicopter->getPosition().y, helicopter->getPosition().z);
+	sun->setPosition(heli->getPosition().x, heli->getPosition().y, heli->getPosition().z);
 	cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+
+	heli->matRotate(0.1f, 0, 1, 0);
 }
 
 void reshape(GLuint w, GLuint h)
@@ -165,9 +108,7 @@ void init(void)
 	cube2 = new engine::Model;
 	cube3 = new engine::Model;
 	cube4 = new engine::Model;
-	helicopter = new engine::Model;
-	grotor = new engine::Model;
-	protor = new engine::Model;
+	heli = new engine::Model;
 	skybox = new engine::SkyBox;
 	screen = new engine::Screen;
 	text1 = new engine::TextArray;
@@ -192,11 +133,6 @@ void init(void)
 
 	cam->setPositionCamera(0, 1, 0);
 	cam->setSpeed(0.25f);
-
-    helicopterMatrixIdentity();
-	helicopterMatrixTranslate(0.0f, 6.0f, 0.0f);
-	helicopterRotateRotor(0.0f);
-	helicopterMatrixScale(2, 2, 2);
 }
 
 void kill(void)
@@ -214,9 +150,7 @@ void kill(void)
 	delete text1;
 	delete screen;
 	delete skybox;
-	delete protor;
-	delete grotor;
-	delete helicopter;
+	delete heli;
 	delete cube4;
 	delete cube3;
 	delete cube2;

@@ -40,7 +40,7 @@ void configLights(void)
 	sun->setDirection(1, -1, 0);
 	sun->setColor(lightColor[0], lightColor[1], lightColor[2]);
 	sun->configShadowMap(1024, 1024, shadowProgram);
-	sun->setMatrixDimension(50);
+	sun->setMatrixDimension(25);
 }
 
 void configScreen(void)
@@ -94,20 +94,13 @@ void configModels(void)
 	cube4->initGLObjectMirror(cube1);
 
 	//Helicopter
-	helicopter->config(objectProgram);
-	helicopter->initGLObjectArray();
-	helicopter->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
-	helicopter->sortGLObject();
-
-	grotor->config(objectProgram);
-	grotor->initGLObjectArray();
-	grotor->loadFromFile("resources/UH-60_Blackhawk/grotor.obj");
-	grotor->sortGLObject();
-
-	protor->config(objectProgram);
-	protor->initGLObjectArray();
-	protor->loadFromFile("resources/UH-60_Blackhawk/protor.obj");
-	protor->sortGLObject();
+	heli->config(objectProgram);
+	heli->initGLObjectArray();
+	heli->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
+	heli->sortGLObject();
+	heli->matIdentity();
+	heli->matTranslate(0.0f, 6.0f, 0.0f);
+	heli->matScale(2, 2, 2);
 }
 
 void configSkybox(void)
@@ -115,6 +108,6 @@ void configSkybox(void)
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
 		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
 		     "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
-			 100, skyboxProgram);
+			 10, skyboxProgram);
 	skybox->rotate(0, 0, 0, 0);
 }

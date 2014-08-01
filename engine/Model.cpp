@@ -36,6 +36,13 @@ void engine::Model::initGLObjectArray(void)
 
 void engine::Model::initGLObjectMirror(Model *m)
 {
+	GLuint i;
+	if (_tGLObject != NULL && isMirror == GL_FALSE)
+	{
+		for (i = 0; i<_tGLObject->size(); i++)
+			delete (*_tGLObject)[i];
+		delete _tGLObject;
+	}
 	isMirror = GL_TRUE;
 	_tGLObject = m->_tGLObject;
 }

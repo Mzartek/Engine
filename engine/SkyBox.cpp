@@ -62,13 +62,13 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 		switch(testFormat(image[i]->format->format))
 		{
 		case RGB:
-			glTexImage2D(cube_map_target[i], 0, GL_RGB, image[i]->w, image[i]->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexImage2D(cube_map_target[i], 0, GL_RGB32F, image[i]->w, image[i]->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		case BGR:
-			glTexImage2D(cube_map_target[i], 0, GL_RGB, image[i]->w, image[i]->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexImage2D(cube_map_target[i], 0, GL_RGB32F, image[i]->w, image[i]->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		case RGBA:
-			glTexImage2D(cube_map_target[i], 0, GL_RGBA, image[i]->w, image[i]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexImage2D(cube_map_target[i], 0, GL_RGBA32F, image[i]->w, image[i]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		default:
 			std::cerr << "Format " << image[i]->format->format << " unknown" << std::endl;
