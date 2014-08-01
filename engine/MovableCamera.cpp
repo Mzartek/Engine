@@ -14,6 +14,34 @@ engine::MovableCamera::~MovableCamera(void)
 	delete _vleft;
 }
 
+void engine::MovableCamera::setInitialAngle(const GLfloat &t, const GLfloat &p)
+{
+	_atheta = t;
+	_aphi = p;
+
+	if (_atheta > 360)
+		_atheta -= 360;
+	else if (_atheta < -360)
+		_atheta += 360;
+	if (_aphi > 89)
+		_aphi = 89;
+	else if (_aphi < -89)
+		_aphi = -89;
+
+	GLfloat r_temp = (GLfloat)cos(_aphi*M_PI / 180);
+	_vforward->y = (GLfloat)sin(_aphi*M_PI / 180);
+	_vforward->z = r_temp*(GLfloat)cos(_atheta*M_PI / 180);
+	_vforward->x = r_temp*(GLfloat)sin(_atheta*M_PI / 180);
+
+	_vleft->x = _vforward->z;
+	_vleft->y = 0;
+	_vleft->z = -_vforward->x;
+
+	*_vleft /= (GLfloat)sqrt(_vleft->x*_vleft->x + _vleft->y*_vleft->y + _vleft->z*_vleft->z);
+
+	*_ptarget = *_pcamera + *_vforward;
+}
+
 void engine::MovableCamera::setSpeed(const GLfloat &v)
 {
 	_speed = v;

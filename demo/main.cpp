@@ -132,6 +132,7 @@ void init(void)
 	configSkybox();
 
 	cam->setPositionCamera(0, 1, 0);
+	cam->setInitialAngle(135, 0);
 	cam->setSpeed(0.25f);
 }
 
@@ -165,7 +166,7 @@ int main(int argc, char **argv)
 	window = new engine::Window;
 
 	if (argc < 3)
-		window->initWindow("Demo", 1680, 1050, GL_TRUE);
+		window->initWindow("Demo", 800, 600, GL_FALSE);
 	else
 		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
 	window->setDisplayFunc(display);

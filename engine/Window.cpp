@@ -117,9 +117,15 @@ void engine::Window::mainLoop(void)
 {
 	SDL_Event event;
 
+	if (!_reshape || !_idle || !_display)
+	{
+		std::cerr << "You need to set the Reshape, Idle and Display Function before" << std::endl;
+		return;
+	}
+
 	SDL_SetRelativeMouseMode(SDL_TRUE);
-	_reshape(_width, _height);
 	_stopLoop = false;
+	_reshape(_width, _height);
 	while (!_stopLoop)
 	{
 		while(SDL_PollEvent(&event))
@@ -141,10 +147,9 @@ void engine::Window::mainLoop(void)
 					_mouseMove(event.motion.xrel, event.motion.yrel);
 				break;
 			}
-		if(_idle)
-			_idle();
-		if(_display)
-			_display();
+
+		_idle();
+		_display();
 
 		SDL_GL_SwapWindow(_idWindow);
 	}
@@ -160,6 +165,6 @@ void engine::Window::stopLoop(void)
 
 void engine::Window::clear(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glViewport(0, 0, _width, _height);
 }

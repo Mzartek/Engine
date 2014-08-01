@@ -17,6 +17,7 @@ namespace engine
 	public:
 		MovableCamera(void);
 		~MovableCamera(void);
+		void setInitialAngle(const GLfloat &t, const GLfloat &p);
 		void setSpeed(const GLfloat &v);
 		void mouseMove(const GLint &xrel, const GLint &yrel);
 		Vector3D<GLfloat> *getForward(void) const;
