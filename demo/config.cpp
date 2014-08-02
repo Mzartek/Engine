@@ -12,24 +12,24 @@ void configShaders(void)
 
 void configBuffers(void)
 {
-	gBuffer->config(window->getWidth(), window->getHeight());
+	gBuffer->config(renderer->getWidth(), renderer->getHeight());
 }
 
 void configText(void)
 {
 	text1->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
-		      (window->getWidth() / 2) - 200, (window->getHeight() / 2) + 100,
-			  400, 100, textProgram, window);
+			  (renderer->getWidth() / 2) - 200, (renderer->getHeight() / 2) + 100,
+			  400, 100, textProgram, renderer);
 	text1->write("Coucou!");
 	text2->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
-		      (window->getWidth() / 2) - 200, (window->getHeight() / 2),
-		      400, 100, textProgram, window);
+			  (renderer->getWidth() / 2) - 200, (renderer->getHeight() / 2),
+			  400, 100, textProgram, renderer);
 	text3->config("resources/font/SIXTY.TTF", 50,
 		      255, 255, 255,
-		      (window->getWidth() / 2) - 200, (window->getHeight() / 2) - 100,
-			  400, 100, textProgram, window);
+			  (renderer->getWidth() / 2) - 200, (renderer->getHeight() / 2) - 100,
+			  400, 100, textProgram, renderer);
 }
 
 void configLights(void)

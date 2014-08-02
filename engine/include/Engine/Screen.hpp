@@ -19,7 +19,7 @@ namespace engine
 		Screen();
 		~Screen();
 		void config(ShaderProgram *program);
-		void display(Window *win, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a);
+		void display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a);
 	};
 }
 

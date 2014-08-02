@@ -95,7 +95,7 @@ void main(void)
 	matDiffuse = vec4(0x000000FF & (ivec4(material) >> 8)) / 255;
 	matSpecular = vec4(0x000000FF & ivec4(material)) / 255;
 
-	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
+	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 3.0);
 	l = calcDirLight(normal.xyz, camPosition - position, normal.w, s);
 	finalColor *= matAmbient + (matDiffuse * vec4(l.diff, 1.0)) + (matSpecular * vec4(l.spec, 1.0));
 	finalColor = clamp(finalColor, 0.0, 1.0);

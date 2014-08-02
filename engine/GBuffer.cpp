@@ -64,13 +64,13 @@ GLuint engine::GBuffer::getIdTexture(const GLuint &num) const
 	return _idTexture[num];
 }
 
-void engine::GBuffer::display(Window *w, const GLuint &buf) const
+void engine::GBuffer::display(Renderer *r, const GLuint &buf) const
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, _idFBO);
 
 	glReadBuffer(colorAttachment[buf]);
 
-	glBlitFramebuffer(0, 0, _width, _height, 0, 0, w->getWidth(), w->getHeight(), GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	glBlitFramebuffer(0, 0, _width, _height, 0, 0, r->getWidth(), r->getHeight(), GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 }

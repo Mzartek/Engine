@@ -1,11 +1,11 @@
-#ifndef WINDOW
-#define WINDOW
+#ifndef RENDERER
+#define RENDERER
 
 #include "Object.hpp"
 
 namespace engine
 {
-	class DLLAPI Window : public Object
+	class DLLAPI Renderer : public Object
 	{
 	private:
 		GLboolean _stopLoop;
@@ -19,8 +19,8 @@ namespace engine
 		void (*_keyboard) (GLubyte, GLboolean);
 		void (*_mouseMove) (GLint, GLint);
 	public:
-		Window(void);
-		~Window(void);
+		Renderer(void);
+		~Renderer(void);
 		void initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen);
 		void setDisplayFunc(void (*f) (void));
 		void setIdleFunc(void (*f) (void));

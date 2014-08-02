@@ -2,7 +2,7 @@
 #define TEXT_ARRAY
 
 #include "ShaderProgram.hpp"
-#include "Window.hpp"
+#include "Renderer.hpp"
 
 namespace engine
 {
@@ -23,7 +23,7 @@ namespace engine
 		~TextArray(void);
 		void config(const GLchar *font, const GLuint &size,
 			const GLubyte &r, const GLubyte &g, const GLubyte &b,
-			const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Window *window);
+			const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Renderer *renderer);
 		void write(const GLchar *text);
 		void display(void);
 	};

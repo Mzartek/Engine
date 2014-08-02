@@ -1,6 +1,6 @@
-#include <Engine/Window.hpp>
+#include <Engine/Renderer.hpp>
 
-engine::Window::Window(void)
+engine::Renderer::Renderer(void)
 {
 	_display = NULL;
 	_idle = NULL;
@@ -9,13 +9,13 @@ engine::Window::Window(void)
 	_mouseMove = NULL;
 }
 
-engine::Window::~Window(void)
+engine::Renderer::~Renderer(void)
 {
 	TTF_Quit();
 	SDL_Quit();
 }
 
-void engine::Window::initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
+void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
 {
 	Uint32 flags;
 
@@ -73,47 +73,47 @@ void engine::Window::initWindow(const GLchar *title, const GLint &w, const GLint
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 }
 
-void engine::Window::setDisplayFunc(void (*f) (void))
+void engine::Renderer::setDisplayFunc(void (*f) (void))
 {
 	_display = f;
 }
 
-void engine::Window::setIdleFunc(void (*f) (void))
+void engine::Renderer::setIdleFunc(void (*f) (void))
 {
 	_idle = f;
 }
 
-void engine::Window::setReshapeFunc(void (*f) (GLuint, GLuint))
+void engine::Renderer::setReshapeFunc(void (*f) (GLuint, GLuint))
 {
 	_reshape = f;
 }
 
-void engine::Window::setKeyboardFunc(void (*f) (GLubyte, GLboolean))
+void engine::Renderer::setKeyboardFunc(void (*f) (GLubyte, GLboolean))
 {
 	_keyboard = f;
 }
 
-void engine::Window::setMouseMoveFunc(void (*f) (GLint, GLint))
+void engine::Renderer::setMouseMoveFunc(void (*f) (GLint, GLint))
 {
 	_mouseMove = f;
 }
 
-GLuint engine::Window::getWidth(void)
+GLuint engine::Renderer::getWidth(void)
 {
 	return _width;
 }
 
-GLuint engine::Window::getHeight(void)
+GLuint engine::Renderer::getHeight(void)
 {
 	return _height;
 }
 
-SDL_Window *engine::Window::getId(void)
+SDL_Window *engine::Renderer::getId(void)
 {
 	return _idWindow;
 }
 
-void engine::Window::mainLoop(void)
+void engine::Renderer::mainLoop(void)
 {
 	SDL_Event event;
 
@@ -158,12 +158,12 @@ void engine::Window::mainLoop(void)
 	SDL_DestroyWindow(_idWindow);
 }
 
-void engine::Window::stopLoop(void)
+void engine::Renderer::stopLoop(void)
 {
 	_stopLoop = true;
 }
 
-void engine::Window::clear(void)
+void engine::Renderer::clear(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glViewport(0, 0, _width, _height);

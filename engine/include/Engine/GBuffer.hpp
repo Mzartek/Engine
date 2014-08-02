@@ -2,7 +2,7 @@
 #define GBUFFER
 
 #include "FrameBuffer.hpp"
-#include "Window.hpp"
+#include "Renderer.hpp"
 
 #define GBUF_NUM_TEX 3
 #define GBUF_NORMAL 0
@@ -21,7 +21,7 @@ namespace engine
 		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height);
 		GLuint getIdTexture(const GLuint &num) const;
-		void display(Window *w, const GLuint &buf) const;
+		void display(Renderer *r, const GLuint &buf) const;
 		void clear(void) const;
 	};
 }

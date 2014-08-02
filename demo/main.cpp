@@ -3,7 +3,7 @@
 GLboolean keyState[256];
 GLfloat sr, sg, sb, sa;
 
-engine::Window *window;
+engine::Renderer *renderer;
 engine::FreeCam *cam;
 engine::DirLight *sun;
 engine::Model *face;
@@ -54,8 +54,8 @@ void display(void)
 	sun->display(gBuffer, cam);
 
 	// Screen
-	window->clear();
-	screen->display(window, gBuffer, sr, sg, sb, sa);
+	renderer->clear();
+	screen->display(renderer, gBuffer, sr, sg, sb, sa);
 
 	// Text
 	//text1->display();
@@ -89,7 +89,7 @@ void keyboard(GLubyte key, GLboolean state)
 		switch (key)
 		{
 		case ESC:
-			window->stopLoop();
+			renderer->stopLoop();
 			break;
 		}
 }
@@ -163,25 +163,25 @@ void kill(void)
 
 int main(int argc, char **argv)
 {
-	window = new engine::Window;
+	renderer = new engine::Renderer;
 
 	if (argc < 3)
-		window->initWindow("Demo", 800, 600, GL_FALSE);
+		renderer->initWindow("Demo", 800, 600, GL_FALSE);
 	else
-		window->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
-	window->setDisplayFunc(display);
-	window->setIdleFunc(idle);
-	window->setReshapeFunc(reshape);
-	window->setKeyboardFunc(keyboard);
-	window->setMouseMoveFunc(mouseMove);
+		renderer->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
+	renderer->setDisplayFunc(display);
+	renderer->setIdleFunc(idle);
+	renderer->setReshapeFunc(reshape);
+	renderer->setKeyboardFunc(keyboard);
+	renderer->setMouseMoveFunc(mouseMove);
 
 	init();
 
-	window->mainLoop();
+	renderer->mainLoop();
 
 	kill();
 
-	delete window;
+	delete renderer;
 	std::cout << "MemState " << engine::Object::getMemoryState() << std::endl;
 	engine::Object::saveMemoryInfo("memLost.txt");
 	return 0;

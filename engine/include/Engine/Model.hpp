@@ -3,10 +3,8 @@
 
 #include "GLObject.hpp"
 #include "Light.hpp"
-#include "GBuffer.hpp"
 #include "ShaderProgram.hpp"
 #include "Camera.hpp"
-#include "Window.hpp"
 
 namespace engine
 {

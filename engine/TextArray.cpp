@@ -24,7 +24,7 @@ engine::TextArray::~TextArray(void)
 
 void engine::TextArray::config(const GLchar *font, const GLuint &size,
 	const GLubyte &r, const GLubyte &g, const GLubyte &b,
-	const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Window *window)
+	const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Renderer *renderer)
 {
 	SDL_Surface *t;
 	
@@ -85,7 +85,7 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_textureLocation = glGetUniformLocation(_program->getId(), "textTex");
 
-	matrixOrtho(_mat, 0, (GLfloat)window->getWidth(), 0, (GLfloat)window->getHeight(), -1, 1);
+	matrixOrtho(_mat, 0, (GLfloat)renderer->getWidth(), 0, (GLfloat)renderer->getHeight(), -1, 1);
 }
 
 void engine::TextArray::write(const GLchar *text)

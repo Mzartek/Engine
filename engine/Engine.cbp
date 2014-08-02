@@ -54,13 +54,13 @@
 		<Unit filename="MovableCamera.cpp" />
 		<Unit filename="Object.cpp" />
 		<Unit filename="PlayerCam.cpp" />
+		<Unit filename="Renderer.cpp" />
 		<Unit filename="Screen.cpp" />
 		<Unit filename="ShaderProgram.cpp" />
 		<Unit filename="ShadowMap.cpp" />
 		<Unit filename="SkyBox.cpp" />
 		<Unit filename="SpotLight.cpp" />
 		<Unit filename="TextArray.cpp" />
-		<Unit filename="Window.cpp" />
 		<Unit filename="include/Engine/Camera.hpp" />
 		<Unit filename="include/Engine/DirLight.hpp" />
 		<Unit filename="include/Engine/FrameBuffer.hpp" />
@@ -73,6 +73,7 @@
 		<Unit filename="include/Engine/MovableCamera.hpp" />
 		<Unit filename="include/Engine/Object.hpp" />
 		<Unit filename="include/Engine/PlayerCam.hpp" />
+		<Unit filename="include/Engine/Renderer.hpp" />
 		<Unit filename="include/Engine/Screen.hpp" />
 		<Unit filename="include/Engine/ShaderProgram.hpp" />
 		<Unit filename="include/Engine/ShadowMap.hpp" />
@@ -85,7 +86,6 @@
 		<Unit filename="include/Engine/Vector3D.tpp" />
 		<Unit filename="include/Engine/Vector4D.hpp" />
 		<Unit filename="include/Engine/Vector4D.tpp" />
-		<Unit filename="include/Engine/Window.hpp" />
 		<Unit filename="include/Engine/matrix.hpp" />
 		<Unit filename="include/Engine/memControl.hpp" />
 		<Unit filename="matrix.cpp" />

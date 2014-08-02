@@ -4,8 +4,8 @@
 #define ESC 41
 #define MAJ 225
 
+#include <Engine/Renderer.hpp>
 #include <Engine/Object.hpp>
-#include <Engine/Window.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/ShadowMap.hpp>
 #include <Engine/FreeCam.hpp>
@@ -19,7 +19,7 @@
 extern GLboolean keyState[256];
 extern GLfloat sr, sg, sb, sa;
 
-extern engine::Window *window;
+extern engine::Renderer *renderer;
 extern engine::FreeCam *cam;
 extern engine::DirLight *sun;
 extern engine::Model *face;

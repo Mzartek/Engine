@@ -35,12 +35,12 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 		GL_TEXTURE_CUBE_MAP_POSITIVE_Z, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 	};
 	SDL_Surface *image[6];
-	image[0] = IMG_Load(&posx[0]);
-	image[1] = IMG_Load(&negx[0]);
-	image[2] = IMG_Load(&posy[0]);
-	image[3] = IMG_Load(&negy[0]);
-	image[4] = IMG_Load(&posz[0]);
-	image[5] = IMG_Load(&negz[0]);
+	image[0] = IMG_Load(posx);
+	image[1] = IMG_Load(negx);
+	image[2] = IMG_Load(posy);
+	image[3] = IMG_Load(negy);
+	image[4] = IMG_Load(posz);
+	image[5] = IMG_Load(negz);
   
 	if(glIsTexture(_idTexture))
 		glDeleteTextures(1, &_idTexture);
