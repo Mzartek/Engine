@@ -13,13 +13,12 @@ namespace engine
 		GLuint _idVAO;
 		GLuint _idVBO;
 		ShadowMap *_shadow;
-		GLfloat _lightPosition[3];
-		GLfloat _lightDirection[3];
-		GLfloat _lightColor[3];
-		GLfloat _projection[16];
-		GLfloat _VPMatrix[16];
+		glm::vec3 *_lightPosition;
+		glm::vec3 *_lightDirection;
+		glm::vec3 *_lightColor;
+		glm::mat4 *_projectionMatrix;
+		glm::mat4 *_VPMatrix;
 		ShaderProgram *_program;
-		// For LBuffer
 		GLint _normalTextureLocation;
 		GLint _materialTextureLocation;
 		GLint _depthTextureLocation;
@@ -39,11 +38,12 @@ namespace engine
 		void setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void setDirection(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void setColor(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		GLfloat *getPosition(void);
-		GLfloat *getDirection(void);
-		GLfloat *getColor(void);
 		ShadowMap *getShadowMap(void);
-		GLfloat *getVPMatrix(void);
+		glm::vec3 getPosition(void) const;
+		glm::vec3 getDirection(void) const;
+		glm::vec3 getColor(void) const;
+		glm::mat4 getProjectionMatrix(void) const;
+		glm::mat4 getVPMatrix(void) const;
 		void clear(void) const;
 		virtual void position(void) = 0;
 		virtual void display(GBuffer *g, Camera *cam) = 0;

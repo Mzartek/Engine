@@ -2,40 +2,37 @@
 
 engine::Light::Light(void)
 {
-	_lightPosition[0] = 0;
-	_lightPosition[1] = 0;
-	_lightPosition[2] = 0;
-	_lightColor[0]=1.0;
-	_lightColor[1]=1.0;
-	_lightColor[2]=1.0;
-	_lightDirection[0] = 1.0;
-	_lightDirection[1] = 0;
-	_lightDirection[2] = 0;
 	_shadow = NULL;
+	_lightPosition = new glm::vec3;
+	_lightDirection = new glm::vec3;
+	_lightColor = new glm::vec3;
+	_projectionMatrix = new glm::mat4;
+	_VPMatrix = new glm::mat4;
 }
 
 engine::Light::Light(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_lightPosition[0] = x;
-	_lightPosition[1] = y;
-	_lightPosition[2] = z;
-	_lightColor[0]=1.0;
-	_lightColor[1]=1.0;
-	_lightColor[2]=1.0;
-	_lightDirection[0] = 1.0;
-	_lightDirection[1] = 0;
-	_lightDirection[2] = 0;
 	_shadow = NULL;
+	_lightPosition = new glm::vec3(x, y, z);
+	_lightDirection = new glm::vec3;
+	_lightColor = new glm::vec3;
+	_projectionMatrix = new glm::mat4;
+	_VPMatrix = new glm::mat4;
 }
 
 engine::Light::~Light(void)
 {
-	if (_shadow != NULL)
-		delete _shadow;
 	if(glIsVertexArray(_idVAO))
 		glDeleteVertexArrays(1, &_idVAO);
 	if(glIsBuffer(_idVBO))
 		glDeleteBuffers(1, &_idVBO);
+	if (_shadow != NULL)
+		delete _shadow;
+	delete _lightPosition;
+	delete _lightDirection;
+	delete _lightColor;
+	delete _projectionMatrix;
+	delete _VPMatrix;
 }
 
 void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow)
@@ -48,47 +45,53 @@ void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, S
 
 void engine::Light::setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_lightPosition[0] = x;
-	_lightPosition[1] = y;
-	_lightPosition[2] = z;
+	_lightPosition->x = x;
+	_lightPosition->y = y;
+	_lightPosition->z = z;
 }
 
 void engine::Light::setDirection(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_lightDirection[0] = x;
-	_lightDirection[1] = y;
-	_lightDirection[2] = z;
+	_lightDirection->x = x;
+	_lightDirection->y = y;
+	_lightDirection->z = z;
 }
 
 void engine::Light::setColor(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_lightColor[0] = x;
-	_lightColor[1] = y;
-	_lightColor[2] = z;
-}
-
-GLfloat *engine::Light::getPosition(void)
-{
-	return _lightPosition;
-}
-
-GLfloat *engine::Light::getDirection(void)
-{
-	return _lightDirection;
-}
-
-GLfloat *engine::Light::getColor(void)
-{
-	return _lightColor;
+	_lightColor->x = x;
+	_lightColor->y = y;
+	_lightColor->z = z;
 }
 
 engine::ShadowMap *engine::Light::getShadowMap(void)
 {
 	return _shadow;
 }
-GLfloat *engine::Light::getVPMatrix(void)
+
+glm::vec3 engine::Light::getPosition(void) const
 {
-	return _VPMatrix;
+	return *_lightPosition;
+}
+
+glm::vec3 engine::Light::getDirection(void) const
+{
+	return *_lightDirection;
+}
+
+glm::vec3 engine::Light::getColor(void) const
+{
+	return *_lightColor;
+}
+
+glm::mat4 engine::Light::getProjectionMatrix(void) const
+{
+	return *_projectionMatrix;
+}
+
+glm::mat4 engine::Light::getVPMatrix(void) const
+{
+	return *_VPMatrix;
 }
 
 void engine::Light::clear(void) const

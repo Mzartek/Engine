@@ -8,7 +8,7 @@ namespace engine
 	class DLLAPI SpotLight : public Light
 	{
 	protected:
-		GLfloat _lightSpotCutOff[1];
+		GLfloat _lightSpotCutOff;
 		GLint _lightPositionLocation;
 		GLint _lightDirectionLocation;
 		GLint _lightSpotCutOffLocation;
@@ -17,7 +17,7 @@ namespace engine
 		~SpotLight(void);
 		void config(ShaderProgram *program);
 		void setSpotCutOff(const float &x);
-		GLfloat *getSpotCutOff(void);
+		GLfloat getSpotCutOff(void) const;
 		GLint getLightPositionLocation(void) const;
 		GLint getLightDirectionLocation(void) const;
 		GLint getLightSpotCutOffLocation(void) const;

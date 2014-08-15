@@ -1,7 +1,6 @@
 #version 330
 
-uniform mat4 MVP;
-uniform mat3 normalMatrix;
+uniform mat4 MVP, normalMatrix;
 
 out vec2 vtexCoord;
 out vec3 vnormal;
@@ -15,5 +14,5 @@ void main(void)
 	gl_Position =  MVP * vec4(vertexArray, 1.0);
 
 	vtexCoord = textureArray;
-	vnormal = normalMatrix * normalArray;
+	vnormal = mat3(normalMatrix) * normalArray;
 }

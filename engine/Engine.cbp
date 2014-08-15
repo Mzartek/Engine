@@ -80,15 +80,7 @@
 		<Unit filename="include/Engine/SkyBox.hpp" />
 		<Unit filename="include/Engine/SpotLight.hpp" />
 		<Unit filename="include/Engine/TextArray.hpp" />
-		<Unit filename="include/Engine/Vector2D.hpp" />
-		<Unit filename="include/Engine/Vector2D.tpp" />
-		<Unit filename="include/Engine/Vector3D.hpp" />
-		<Unit filename="include/Engine/Vector3D.tpp" />
-		<Unit filename="include/Engine/Vector4D.hpp" />
-		<Unit filename="include/Engine/Vector4D.tpp" />
-		<Unit filename="include/Engine/matrix.hpp" />
 		<Unit filename="include/Engine/memControl.hpp" />
-		<Unit filename="matrix.cpp" />
 		<Unit filename="textureLoader.cpp" />
 		<Extensions>
 			<code_completion />

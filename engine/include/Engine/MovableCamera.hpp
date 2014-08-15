@@ -11,8 +11,8 @@ namespace engine
 		GLfloat _atheta;
 		GLfloat _aphi;
 	protected:
-		Vector3D<GLfloat> *_vforward;
-		Vector3D<GLfloat> *_vleft;
+		glm::vec3 *_vforward;
+		glm::vec3 *_vleft;
 		GLfloat _speed;
 	public:
 		MovableCamera(void);
@@ -20,7 +20,8 @@ namespace engine
 		void setInitialAngle(const GLfloat &t, const GLfloat &p);
 		void setSpeed(const GLfloat &v);
 		void mouseMove(const GLint &xrel, const GLint &yrel);
-		Vector3D<GLfloat> *getForward(void) const;
+		glm::vec3 getForward(void) const;
+		glm::vec3 getLeft(void) const;
 		virtual void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) = 0;
 	};
 }

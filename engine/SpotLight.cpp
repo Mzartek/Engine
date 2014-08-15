@@ -2,7 +2,7 @@
 
 engine::SpotLight::SpotLight(void)
 {
-	_lightSpotCutOff[0] = 45;
+	_lightSpotCutOff = 45;
 }
 
 engine::SpotLight::~SpotLight(void)
@@ -64,33 +64,24 @@ void engine::SpotLight::config(ShaderProgram *program)
 
 void engine::SpotLight::setSpotCutOff(const float &x)
 {
-	_lightSpotCutOff[0] = x;
+	_lightSpotCutOff = x;
 }
 
-GLfloat *engine::SpotLight::getSpotCutOff(void)
+GLfloat engine::SpotLight::getSpotCutOff(void) const
 {
 	return _lightSpotCutOff;
 }
 
 void engine::SpotLight::position(void)
 {
-	GLfloat position[] = {_lightPosition[0], _lightPosition[1], _lightPosition[2]};
-	GLfloat target[] = {_lightPosition[0] + _lightDirection[0],
-			    _lightPosition[1] + _lightDirection[1],
-			    _lightPosition[2] + _lightDirection[2]};
-	GLfloat head[] = {0.0, 1.0, 0.0};
-	GLfloat projection[16], view[16];
-
 	if(_shadow==NULL)
 	{
 		std::cerr << "No need to position the light if you don't use shadowMapping" << std::endl;
 		return;
 	}
     
-	matrixPerspective(projection, _lightSpotCutOff[0] * 2, (float)_shadow->getWidth() / (float)_shadow->getHeight(), 0.1f, 1200.0f);
-	matrixLoadIdentity(view);
-	matrixLookAt(view, position, target, head);
-	matrixMultiply(_VPMatrix, projection, view);
+	*_VPMatrix = glm::perspective(_lightSpotCutOff * 2, (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1200.0f) *
+		glm::lookAt(*_lightPosition, *_lightPosition + *_lightDirection, glm::vec3(0.0f, 1.0f , 0.0f));
 }
 
 GLint engine::SpotLight::getLightPositionLocation(void) const

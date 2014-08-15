@@ -13,7 +13,7 @@ namespace engine
 	private:
 		GLboolean isMirror;
 		std::vector<GLObject *> *_tGLObject;
-		GLfloat _modelMatrix[16];
+		glm::mat4 *_modelMatrix;
 		ShaderProgram *_program;
 		GLint _MVPLocation;
 		GLint _normalMatrixLocation;
@@ -33,7 +33,7 @@ namespace engine
 		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		Vector3D<GLfloat> getPosition(void) const;
+		glm::vec3 getPosition(void) const;
 		GLObject *getGLObject(const GLuint &num) const;
 		void display(GBuffer *g, Camera *cam) const;
 		void displayShadow(Light *l) const;

@@ -30,18 +30,21 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "matrix.hpp"
-#include "Vector2D.hpp"
-#include "Vector3D.hpp"
-#include "Vector4D.hpp"
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/matrix.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtx/transform2.hpp>
 
 namespace engine
 {
 	typedef struct Vertex
 	{
-		Vector3D<GLfloat> position;
-		Vector2D<GLfloat> texCoord;
-		Vector3D<GLfloat> normal;
+		glm::vec3 position;
+		glm::vec2 texCoord;
+		glm::vec3 normal;
 	} Vertex;
 
 	enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};

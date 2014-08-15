@@ -2,7 +2,7 @@
 
 engine::DirLight::DirLight(void)
 {
-	matrixOrtho(_projection, -100, 100, -100, 100, -100, 100);
+	*_projectionMatrix = glm::ortho(-100, 100, -100, 100, -100, 100);
 }
 
 engine::DirLight::~DirLight(void)
@@ -11,7 +11,7 @@ engine::DirLight::~DirLight(void)
 
 void engine::DirLight::setMatrixDimension(const GLfloat &dim)
 {
-	matrixOrtho(_projection, -dim, dim, -dim, dim, -dim, dim);
+	*_projectionMatrix = glm::ortho(-dim, dim, -dim, dim, -dim, dim);
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
@@ -60,27 +60,17 @@ void engine::DirLight::config(ShaderProgram *program)
 
 void engine::DirLight::position(void)
 {
-	GLfloat position[] = {_lightPosition[0]-_lightDirection[0],
-			      _lightPosition[1]-_lightDirection[1],
-			      _lightPosition[2]-_lightDirection[2]};
-	GLfloat target[] = {_lightPosition[0], _lightPosition[1], _lightPosition[2]};
-	GLfloat head[] = {0.0, 1.0, 0.0};
-	GLfloat view[16];
-
 	if(_shadow==NULL)
 	{
 		std::cerr << "No need to position the light if you don't use shadowMapping" << std::endl;
 		return;
 	}
 
-	matrixLoadIdentity(view);
-	matrixLookAt(view, position, target, head);
-	matrixMultiply(_VPMatrix, _projection, view);
+	*_VPMatrix = *_projectionMatrix * glm::lookAt(*_lightPosition - *_lightDirection, *_lightPosition, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void engine::DirLight::display(GBuffer *g, Camera *cam)
 {
-	GLfloat tmp[16];
 	if(g == NULL)
 	{
 		std::cerr << "Bad GBuffer" << std::endl;
@@ -113,9 +103,12 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	// ShadowMap
 	if(_shadow != NULL)
 	{
-		matrixLoadBias(tmp);
-		matrixMultiply(tmp, tmp, _VPMatrix);
-		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, tmp);
+		glm::mat4 bias;
+		bias[0] = glm::vec4(0.5f, 0.0f, 0.0f, 0.0f);
+		bias[1] = glm::vec4(0.0f, 0.5f, 0.0f, 0.0f);
+		bias[2] = glm::vec4(0.0f, 0.0f, 0.5f, 0.0f);
+		bias[3] = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, glm::value_ptr(bias * *_VPMatrix));
 
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
@@ -126,17 +119,16 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	glUniform2ui(_screenLocation, g->getWidth(), g->getHeight());
 
 	// InverseViewProjection
-	matrixInverse(tmp, cam->getVPMatrix());
-	glUniformMatrix4fv(_IVPLocation, 1, GL_FALSE, tmp);
+	glUniformMatrix4fv(_IVPLocation, 1, GL_FALSE, glm::value_ptr(glm::inverse(cam->getVPMatrix())));
 
 	// Cam position
 	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 
 	// Color
-	glUniform3fv(_lightColorLocation, 1, _lightColor);
+	glUniform3fv(_lightColorLocation, 1, glm::value_ptr(*_lightColor));
 
 	// Direction
-	glUniform3fv(_lightDirectionLocation, 1, _lightDirection);
+	glUniform3fv(_lightDirectionLocation, 1, glm::value_ptr(*_lightDirection));
 
 	// Drawing
 	glDrawBuffers(1, &g->colorAttachment[GBUF_MATERIAL]);

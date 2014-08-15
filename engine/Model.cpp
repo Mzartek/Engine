@@ -6,8 +6,8 @@
 engine::Model::Model(void)
 {
 	_tGLObject = NULL;
+	_modelMatrix = new glm::mat4;
 	_program = NULL;
-	matIdentity();
 }
 
 engine::Model::~Model(void)
@@ -19,6 +19,7 @@ engine::Model::~Model(void)
 			delete (*_tGLObject)[i];
 		delete _tGLObject;
 	}
+	delete _modelMatrix;
 }
 
 void engine::Model::initGLObjectArray(void)
@@ -119,9 +120,9 @@ void engine::Model::loadFromFile(const GLchar *file)
 
 			Vertex v =
 			{
-				Vector3D<GLfloat>(pPos->x, pPos->y, pPos->z),
-				Vector2D<GLfloat>(pTexCoord->x, pTexCoord->y),
-				Vector3D<GLfloat>(pNormal->x, pNormal->y, pNormal->z)
+				glm::vec3(pPos->x, pPos->y, pPos->z),
+				glm::vec2(pTexCoord->x, pTexCoord->y),
+				glm::vec3(pNormal->x, pNormal->y, pNormal->z)
 			};
 
 			vertices.push_back(v);
@@ -175,31 +176,27 @@ void engine::Model::sortGLObject(void)
 
 void engine::Model::matIdentity(void)
 {
-	matrixLoadIdentity(_modelMatrix);
+	*_modelMatrix = glm::mat4(1.0f);
 }
 
 void engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	matrixTranslate(_modelMatrix, x, y, z);
+	*_modelMatrix *= glm::translate(glm::vec3(x, y, z));
 }
 
 void engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	matrixRotate(_modelMatrix, angle, x, y, z);
+	*_modelMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
 }
 
 void engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	matrixScale(_modelMatrix, x, y, z);
+	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
 }
 
-engine::Vector3D<GLfloat> engine::Model::getPosition(void) const
+glm::vec3 engine::Model::getPosition(void) const
 {
-	engine::Vector3D<GLfloat> tmp;
-	tmp.x = _modelMatrix[12];
-	tmp.y = _modelMatrix[13];
-	tmp.z = _modelMatrix[14];
-	return tmp;
+	return glm::vec3((*_modelMatrix)[0][3], (*_modelMatrix)[1][3], (*_modelMatrix)[2][3]);
 }
 
 engine::GLObject *engine::Model::getGLObject(const GLuint &num) const
@@ -215,7 +212,6 @@ engine::GLObject *engine::Model::getGLObject(const GLuint &num) const
 void engine::Model::display(GBuffer *g, Camera *cam) const
 {
 	GLuint i;
-	GLfloat tmp[16];
 
 	if(_program == NULL)
 	{
@@ -231,12 +227,10 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	glUseProgram(_program->getId());
 
 	// MVP Matrix
-	matrixMultiply(tmp, cam->getVPMatrix(), _modelMatrix);
-	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, tmp);
+	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
 
-	// Normal Matrix
-	matrixNormalFromModel(tmp, _modelMatrix);
-	glUniformMatrix3fv(_normalMatrixLocation, 1, GL_FALSE, tmp);
+	// Normal Matrix	
+	glUniformMatrix4fv(_normalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
 
 	glUseProgram(0);
 
@@ -248,7 +242,6 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 void engine::Model::displayShadow(Light *l) const
 {
 	GLuint i;
-	GLfloat tmp[16];
 
 	if(l == NULL)
 	{
@@ -263,8 +256,7 @@ void engine::Model::displayShadow(Light *l) const
 
 	glUseProgram(l->getShadowMap()->getProgramId());
 
-	matrixMultiply(tmp, l->getVPMatrix(), _modelMatrix);
-	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, tmp);
+	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, glm::value_ptr(l->getVPMatrix() * *_modelMatrix));
 
 	glUseProgram(0);
 

@@ -12,10 +12,10 @@ namespace engine
 		GLuint _idTexture;
 		GLuint _idVAO;
 		GLuint _idVBO;
+		glm::mat4 *_mat;
 		ShaderProgram *_program;
 		GLint _MVPLocation;
 		GLint _textureLocation;
-		GLfloat _mat[16];
 		TTF_Font *_font;
 		SDL_Color _color;
 	public:

@@ -8,12 +8,10 @@ namespace engine
 	class DLLAPI Camera : public Object
 	{
 	protected:
-		Vector3D<GLfloat> *_pcamera;
-		Vector3D<GLfloat> *_ptarget;
-		GLuint _width;
-		GLuint _height;
-		GLfloat _projectionMatrix[16];
-		GLfloat _VPMatrix[16];
+		glm::vec3 *_pcamera;
+		glm::vec3 *_ptarget;
+		glm::mat4 *_projectionMatrix;
+		glm::mat4 *_VPMatrix;
 	public:
 		Camera(void);
 		Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
@@ -21,12 +19,10 @@ namespace engine
 		void setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f);
-		Vector3D<GLfloat> getPositionCamera(void) const;
-		Vector3D<GLfloat> getPositionTarget(void) const;
-		GLuint getWidth(void) const;
-		GLuint getHeight(void) const;
-		GLfloat *getProjectionMatrix(void);
-		GLfloat *getVPMatrix(void);
+		glm::vec3 getPositionCamera(void) const;
+		glm::vec3 getPositionTarget(void) const;
+		glm::mat4 getProjectionMatrix(void) const;
+		glm::mat4 getVPMatrix(void) const;
 		void position(void);
 	};
 }

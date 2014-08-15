@@ -139,24 +139,24 @@ void engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloa
 
 void engine::SkyBox::display(GBuffer *g, Camera *cam)
 {
-	GLfloat pos[16];
 	if(_program == NULL)
 	{
 		std::cerr << "You need to load a SkyBox before" << std::endl;
 		return;
 	}
 
-	matrixLoadIdentity(pos);
-	matrixTranslate(pos, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
-	matrixRotate(pos, _angle, _x, _y, _z);
-	matrixMultiply(pos, cam->getVPMatrix(), pos);
+	glm::mat4 pos;
+	pos *= glm::translate(glm::vec3(cam->getPositionCamera()));
+	if (_x || _y || _z)
+		pos *= glm::rotate(_angle * ((GLfloat)M_PI / 180), glm::vec3(_x, _y, _z));
+	pos = cam->getVPMatrix() * pos;
   
 	glDepthMask(GL_FALSE);
 	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
 	
-	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, pos);
+	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(pos));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);

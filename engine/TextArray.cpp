@@ -5,6 +5,7 @@ engine::TextArray::TextArray(void)
 	_idTexture = 0;
 	_idVAO = 0;
 	_idVBO = 0;
+	_mat = new glm::mat4;
 	_program = NULL;
 }
 
@@ -16,6 +17,8 @@ engine::TextArray::~TextArray(void)
 		glDeleteVertexArrays(1, &_idVAO);
 	if(glIsBuffer(_idVBO))
 		glDeleteBuffers(1, &_idVBO);
+	
+	delete _mat;
 
 	TTF_CloseFont(_font);
 }
@@ -85,7 +88,7 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_textureLocation = glGetUniformLocation(_program->getId(), "textTex");
 
-	matrixOrtho(_mat, 0, (GLfloat)renderer->getWidth(), 0, (GLfloat)renderer->getHeight(), -1, 1);
+	*_mat = glm::ortho(0.0f, (GLfloat)renderer->getWidth(), 0.0f, (GLfloat)renderer->getHeight(), -1.0f, 1.0f);
 }
 
 void engine::TextArray::write(const GLchar *text)
@@ -119,7 +122,7 @@ void engine::TextArray::display(void)
 	glUseProgram(_program->getId());
 	glBindVertexArray(_idVAO);
 	
-	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, _mat);
+	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(*_mat));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);

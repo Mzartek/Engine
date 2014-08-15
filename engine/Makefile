@@ -18,7 +18,7 @@ LINKER_OPTIONS= -L/c/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSD
 
 endif
 
-SRC= matrix.cpp textureLoader.cpp Object.cpp GLObject.cpp Renderer.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp Model.cpp Light.cpp DirLight.cpp SpotLight.cpp FrameBuffer.cpp ShadowMap.cpp SkyBox.cpp Screen.cpp TextArray.cpp GBuffer.cpp
+SRC= textureLoader.cpp Object.cpp GLObject.cpp Renderer.cpp Camera.cpp MovableCamera.cpp FreeCam.cpp PlayerCam.cpp ShaderProgram.cpp Model.cpp Light.cpp DirLight.cpp SpotLight.cpp FrameBuffer.cpp ShadowMap.cpp SkyBox.cpp Screen.cpp TextArray.cpp GBuffer.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 
 all:	$(OBJ)

@@ -3,8 +3,8 @@
 engine::MovableCamera::MovableCamera(void)
 {
 	_atheta = _aphi = 0;
-	_vforward = new Vector3D<GLfloat>;
-	_vleft = new Vector3D<GLfloat>;
+	_vforward = new glm::vec3;
+	_vleft = new glm::vec3;
 	_speed = 1;
 }
 
@@ -75,7 +75,12 @@ void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 	*_ptarget = *_pcamera + *_vforward;
 }
 
-engine::Vector3D<GLfloat> *engine::MovableCamera::getForward(void) const
+glm::vec3 engine::MovableCamera::getForward(void) const
 {
-	return _vforward;
+	return *_vforward;
+}
+
+glm::vec3 engine::MovableCamera::getLeft(void) const
+{
+	return *_vleft;
 }
