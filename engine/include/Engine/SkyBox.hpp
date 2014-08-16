@@ -15,10 +15,10 @@ namespace engine
 		GLuint _idVBO;
 		GLuint _idIBO;
 		GLuint _numElement;
+		glm::mat4 *_rotateMatrix;
 		ShaderProgram *_program;
 		GLint _MVPLocation;
 		GLint _textureLocation;
-		GLfloat _angle, _x, _y, _z;
 	public:
 		SkyBox(void);
 		~SkyBox(void);

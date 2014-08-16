@@ -71,34 +71,18 @@ void configModels(void)
 	GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLfloat mat_shininess[] = { 20.0f };
 
-	face->config(objectProgram);
-	face->initGLObjectArray();
-	face->createGLObject(sizeof vertex, vertex,
+	sol->config(objectProgram);
+	sol->initGLObjectArray();
+	sol->createGLObject(sizeof vertex, vertex,
 			   sizeof index, index,
 			   "resources/ornaments.jpg",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-
-	//Cubes
-	cube1->config(objectProgram);
-	cube1->initGLObjectArray();
-	cube1->loadFromFile("resources/Crate/crate.obj");
-	cube1->sortGLObject();
-
-	cube2->config(objectProgram);
-	cube2->initGLObjectMirror(cube1);
-
-	cube3->config(objectProgram);
-	cube3->initGLObjectMirror(cube1);
-
-	cube4->config(objectProgram);
-	cube4->initGLObjectMirror(cube1);
 
 	//Helicopter
 	heli->config(objectProgram);
 	heli->initGLObjectArray();
 	heli->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
 	heli->sortGLObject();
-	heli->matIdentity();
 	heli->matTranslate(0.0f, 6.0f, 0.0f);
 	heli->matScale(2, 2, 2);
 }
@@ -109,5 +93,5 @@ void configSkybox(void)
 		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
 		     "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
 			 10, skyboxProgram);
-	skybox->rotate(0, 0, 0, 0);
+	skybox->rotate(180, 1, 0, 0);
 }

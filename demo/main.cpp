@@ -6,11 +6,7 @@ GLfloat sr, sg, sb, sa;
 engine::Renderer *renderer;
 engine::FreeCam *cam;
 engine::DirLight *sun;
-engine::Model *face;
-engine::Model *cube1;
-engine::Model *cube2;
-engine::Model *cube3;
-engine::Model *cube4;
+engine::Model *sol;
 engine::Model *heli;
 engine::SkyBox *skybox;
 engine::Screen *screen;
@@ -33,21 +29,13 @@ void display(void)
 
 	// Shadow Pass
 	sun->clear();
-	face->displayShadow(sun);
-	cube1->displayShadow(sun);
-	cube2->displayShadow(sun);
-	cube3->displayShadow(sun);
-	cube4->displayShadow(sun);
+	sol->displayShadow(sun);
 	heli->displayShadow(sun);
 
 	// GLObject Pass
 	gBuffer->clear();
 	skybox->display(gBuffer, cam);
-	face->display(gBuffer, cam);
-	cube1->display(gBuffer, cam);
-	cube2->display(gBuffer, cam);
-	cube3->display(gBuffer, cam);
-	cube4->display(gBuffer, cam);
+	sol->display(gBuffer, cam);
 	heli->display(gBuffer, cam);
 
 	// Light Pass
@@ -103,11 +91,7 @@ void init(void)
 {
 	cam = new engine::FreeCam;
 	sun = new engine::DirLight;
-	face = new engine::Model;
-	cube1 = new engine::Model;
-	cube2 = new engine::Model;
-	cube3 = new engine::Model;
-	cube4 = new engine::Model;
+	sol = new engine::Model;
 	heli = new engine::Model;
 	skybox = new engine::SkyBox;
 	screen = new engine::Screen;
@@ -152,11 +136,7 @@ void kill(void)
 	delete screen;
 	delete skybox;
 	delete heli;
-	delete cube4;
-	delete cube3;
-	delete cube2;
-	delete cube1;
-	delete face;
+	delete sol;
 	delete sun;
 	delete cam;
 }
@@ -166,9 +146,9 @@ int main(int argc, char **argv)
 	renderer = new engine::Renderer;
 
 	if (argc < 3)
-		renderer->initWindow("Demo", 800, 600, GL_FALSE);
+		renderer->initWindow("Demo OpenGL", 800, 600, GL_FALSE);
 	else
-		renderer->initWindow("Demo", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
+		renderer->initWindow("Demo OpenGL", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
 	renderer->setDisplayFunc(display);
 	renderer->setIdleFunc(idle);
 	renderer->setReshapeFunc(reshape);

@@ -22,7 +22,7 @@ vec2 screenTexCoord = vec2(gl_FragCoord.x/screen.x, gl_FragCoord.y/screen.y);
 
 void main(void)
 {
-    vec4 color = texture(colorTexture, texCoord);
+    vec4 color = texture(colorTexture, vec2(texCoord.x, 1.0 - texCoord.y));
 
     if(color.a > 0.5)
     {

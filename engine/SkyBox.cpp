@@ -6,6 +6,7 @@ engine::SkyBox::SkyBox()
 	_idVAO = 0;
 	_idVBO = 0;
 	_idIBO = 0;
+	_rotateMatrix = new glm::mat4;
 	_program = NULL;
 }
 
@@ -19,6 +20,7 @@ engine::SkyBox::~SkyBox()
 		glDeleteBuffers(1, &_idVBO);
 	if(glIsBuffer(_idIBO))
 		glDeleteBuffers(1, &_idIBO);
+	delete _rotateMatrix;
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
@@ -131,24 +133,20 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 
 void engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	_angle = angle;
-	_x = x;
-	_y = y;
-	_z = z;
+	*_rotateMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
 }
 
 void engine::SkyBox::display(GBuffer *g, Camera *cam)
 {
+	glm::mat4 pos;
 	if(_program == NULL)
 	{
 		std::cerr << "You need to load a SkyBox before" << std::endl;
 		return;
 	}
 
-	glm::mat4 pos;
-	pos *= glm::translate(glm::vec3(cam->getPositionCamera()));
-	if (_x || _y || _z)
-		pos *= glm::rotate(_angle * ((GLfloat)M_PI / 180), glm::vec3(_x, _y, _z));
+	pos = glm::translate(glm::vec3(cam->getPositionCamera()));
+	pos *= *_rotateMatrix;
 	pos = cam->getVPMatrix() * pos;
   
 	glDepthMask(GL_FALSE);

@@ -99,7 +99,7 @@ void engine::Model::loadFromFile(const GLchar *file)
 	if (_tGLObject != NULL && isMirror == GL_FALSE)
 		_tGLObject->clear();
 
-	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 	if (!pScene)
 	{
 		std::cerr << "Unable to load the model: " << file << std::endl;
