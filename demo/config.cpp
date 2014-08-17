@@ -46,7 +46,6 @@ void configLights(void)
 void configScreen(void)
 {
 	screen->config(screenProgram);
-	sa = 0.0f;
 }
 
 void configModels(void)

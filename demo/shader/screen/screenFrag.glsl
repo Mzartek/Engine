@@ -14,4 +14,5 @@ void main(void)
 	uvec4 material = texture(materialTexture, screenTexCoord);	
 	
 	fragColor = vec4(0x000000FF & (ivec4(material) >> 24)) / 255;
+	fragColor *= color;
 }

@@ -1,7 +1,6 @@
 #include "config.hpp"
 
 GLboolean keyState[256];
-GLfloat sr, sg, sb, sa;
 
 engine::Renderer *renderer;
 engine::FreeCam *cam;
@@ -43,7 +42,7 @@ void display(void)
 
 	// Screen
 	renderer->clear();
-	screen->display(renderer, gBuffer, sr, sg, sb, sa);
+	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);
 
 	// Text
 	//text1->display();
@@ -115,9 +114,8 @@ void init(void)
 	configModels();
 	configSkybox();
 
-	cam->setPositionCamera(0, 1, 0);
-	cam->setInitialAngle(135, 0);
-	cam->setSpeed(0.25f);
+	cam->setPositionCamera(30, 5, 0);
+	cam->setInitialAngle(-90, 0);
 }
 
 void kill(void)

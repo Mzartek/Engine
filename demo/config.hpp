@@ -17,7 +17,6 @@
 #include <Engine/GBuffer.hpp>
 
 extern GLboolean keyState[256];
-extern GLfloat sr, sg, sb, sa;
 
 extern engine::Renderer *renderer;
 extern engine::FreeCam *cam;
