@@ -10,15 +10,11 @@ uniform vec4 matDiffuse;
 uniform vec4 matSpecular;
 uniform float matShininess;
 
-uniform uvec2 screen;
-
 in vec2 texCoord;
 in vec3 normal;
 
 layout(location = 0) out vec4 outNormal;
 layout(location = 1) out uvec4 outMaterial;
-
-vec2 screenTexCoord = vec2(gl_FragCoord.x/screen.x, gl_FragCoord.y/screen.y);
 
 void main(void)
 {
@@ -36,8 +32,8 @@ void main(void)
     }
     else
     {
-        outNormal = texture(normalTexture, screenTexCoord);
-        outMaterial = texture(materialTexture, screenTexCoord);
-		gl_FragDepth = texture(depthTexture, screenTexCoord).z;
+        outNormal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
+        outMaterial = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
+		gl_FragDepth = texelFetch(depthTexture, ivec2(gl_FragCoord.xy), 0).x;
     }
 }

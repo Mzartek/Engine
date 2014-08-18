@@ -42,7 +42,7 @@ void display(void)
 
 	// Screen
 	renderer->clear();
-	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);
+	screen->display(gBuffer, 1.0, 1.0, 1.0, 1.0);
 
 	// Text
 	//text1->display();

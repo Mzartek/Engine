@@ -14,12 +14,11 @@ namespace engine
 		ShaderProgram *_program;
 		GLint _colorLocation;
 		GLint _materialTextureLocation;
-		GLint _screenLocation;
 	public:
 		Screen();
 		~Screen();
 		void config(ShaderProgram *program);
-		void display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a);
+		void display(GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a);
 	};
 }
 

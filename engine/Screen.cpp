@@ -27,7 +27,6 @@ void engine::Screen::config(ShaderProgram *program)
 	_program = program;
 	_colorLocation = glGetUniformLocation(_program->getId(), "color");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
-	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
 	
 	if(glIsVertexArray(_idVAO))
 		glDeleteVertexArrays(1, &_idVAO);
@@ -49,7 +48,7 @@ void engine::Screen::config(ShaderProgram *program)
 
 #undef BUFFER_OFFSET
 
-void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
+void engine::Screen::display(GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
 {
 	if(_program==NULL)
 	{
@@ -67,8 +66,6 @@ void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 	glUniform1i(_materialTextureLocation, 0);
-
-	glUniform2ui(_screenLocation, renderer->getWidth(), renderer->getHeight());
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
   

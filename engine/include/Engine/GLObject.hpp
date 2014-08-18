@@ -29,7 +29,6 @@ namespace engine
 		GLint _gMatDiffuseLocation;
 		GLint _gMatSpecularLocation;
 		GLint _gMatShininessLocation;
-		GLint _gScreenLocation;
 	public:
 		GLObject(void);
 		~GLObject(void);

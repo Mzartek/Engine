@@ -40,7 +40,6 @@ void engine::GLObject::config(ShaderProgram *gProgram)
 	_gMatDiffuseLocation = glGetUniformLocation(_gProgram->getId(), "matDiffuse");
 	_gMatSpecularLocation = glGetUniformLocation(_gProgram->getId(), "matSpecular");
 	_gMatShininessLocation = glGetUniformLocation(_gProgram->getId(), "matShininess");
-	_gScreenLocation = glGetUniformLocation(_gProgram->getId(), "screen");
 }
 
 void engine::GLObject::setTexture(const GLuint &id)
@@ -154,8 +153,6 @@ void engine::GLObject::display(GBuffer *g) const
 	glUniform4fv(_gMatDiffuseLocation, 1, _matDiffuse);
 	glUniform4fv(_gMatSpecularLocation, 1, _matSpecular);
 	glUniform1fv(_gMatShininessLocation, 1, _matShininess);
-
-	glUniform2ui(_gScreenLocation, g->getWidth(), g->getHeight());
 
 	glDrawBuffers(2, g->colorAttachment);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

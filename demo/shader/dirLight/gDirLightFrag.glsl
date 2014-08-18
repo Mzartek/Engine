@@ -18,11 +18,10 @@ uniform vec3 lightDirection;
 
 layout(location = 0) out uvec4 outMaterial;
 
-vec2 screenTexCoord = gl_FragCoord.xy/screen.xy;
-
 vec3 getPosition(void)
 {
-  vec4 tmp1 = vec4(screenTexCoord * 2.0f - 1.0f, texture(depthTexture, screenTexCoord).z * 2.0f - 1.0f, 1.0f);
+  float depth = texelFetch(depthTexture, ivec2(gl_FragCoord.xy), 0).x;
+  vec4 tmp1 = vec4(gl_FragCoord.xy/screen.xy * 2.0f - 1.0f, depth * 2.0f - 1.0f, 1.0f);
   vec4 tmp2 = IVP * tmp1;
   return tmp2.xyz / tmp2.w;
 }
@@ -88,8 +87,8 @@ void main(void)
 	light l;
 
 	position = getPosition();
-	normal = texture(normalTexture, screenTexCoord);
-	material = texture(materialTexture, screenTexCoord);
+	normal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
+	material = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
 	finalColor = vec4(0x000000FF & (ivec4(material) >> 24)) / 255;
 	matAmbient = vec4(0x000000FF & (ivec4(material) >> 16)) / 255;
 	matDiffuse = vec4(0x000000FF & (ivec4(material) >> 8)) / 255;
