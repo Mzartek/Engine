@@ -15,7 +15,6 @@ namespace engine
 		// Location or Index
 		GLint _MVPLocation;
 		GLint _colorTextureLocation;
-		GLint _shadowMapLocation;
 	public:
 		ShadowMap(void);
 		~ShadowMap(void);
@@ -24,7 +23,6 @@ namespace engine
 		GLuint getProgramId(void) const;
 		GLint getMVPLocation(void) const;
 		GLint getColorTextureLocation(void) const;
-		GLint getShadowMapLocation(void) const;
 		void clear(void) const;
 	};
 }

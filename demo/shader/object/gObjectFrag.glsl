@@ -1,9 +1,6 @@
 #version 330
 
 uniform sampler2D colorTexture;
-uniform sampler2D normalTexture;
-uniform usampler2D materialTexture;
-uniform sampler2D depthTexture;
 
 uniform material
 {
@@ -37,9 +34,5 @@ void main(void)
 		gl_FragDepth = gl_FragCoord.z;
     }
     else
-    {
-        outNormal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
-        outMaterial = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
-		gl_FragDepth = texelFetch(depthTexture, ivec2(gl_FragCoord.xy), 0).x;
-    }
+		gl_FragDepth = 1.0;
 }

@@ -28,9 +28,6 @@ namespace engine
 		ShaderProgram *_gProgram;
 		// Location or Index
 		GLint _gColorTextureLocation;
-		GLint _gNormalTextureLocation;
-		GLint _gMaterialTextureLocation;
-		GLint _gDepthTextureLocation;
 		GLuint _gMaterialIndex;
 	public:
 		GLObject(void);

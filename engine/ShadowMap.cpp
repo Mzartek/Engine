@@ -20,7 +20,6 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
 
 	// Frame Buffer GLObject"
 	if(glIsFramebuffer(_idFBO))
@@ -34,6 +33,8 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	glGenTextures(1, &_idDepthTexture);
 	glBindTexture(GL_TEXTURE_2D, _idDepthTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32, _width, _height);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -67,11 +68,6 @@ GLint engine::ShadowMap::getMVPLocation(void) const
 GLint engine::ShadowMap::getColorTextureLocation(void) const
 {
 	return _colorTextureLocation;
-}
-
-GLint engine::ShadowMap::getShadowMapLocation(void) const
-{
-	return _shadowMapLocation;
 }
 
 void engine::ShadowMap::clear(void) const

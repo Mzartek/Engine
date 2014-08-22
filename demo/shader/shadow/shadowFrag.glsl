@@ -1,7 +1,6 @@
 #version 330
 
 uniform sampler2D colorTexture;
-uniform sampler2D shadowMap;
 
 in VertexData
 {
@@ -10,9 +9,9 @@ in VertexData
 
 void main()
 {
-	float transparency = texture(colorTexture, FragIn.texCoord).a;
+	float transparency = texture(colorTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y)).a;
 	if (transparency > 0.5)
 		gl_FragDepth = gl_FragCoord.z;
 	else
-		gl_FragDepth = texelFetch(shadowMap, ivec2(gl_FragCoord.x, gl_FragCoord.y), 0).z;
+		gl_FragDepth = 1.0;
 }

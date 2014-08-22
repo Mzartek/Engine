@@ -28,9 +28,6 @@ void engine::GLObject::config(ShaderProgram *gProgram)
 {
 	_gProgram = gProgram;
 	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
-	_gNormalTextureLocation = glGetUniformLocation(_gProgram->getId(), "normalTexture");
-	_gMaterialTextureLocation = glGetUniformLocation(_gProgram->getId(), "materialTexture");
-	_gDepthTextureLocation = glGetUniformLocation(_gProgram->getId(), "depthTexture");
 	_gMaterialIndex = glGetUniformBlockIndex(_gProgram->getId(), "material");
 
 	if (glIsBuffer(_idMaterialBuffer))
@@ -155,21 +152,6 @@ void engine::GLObject::display(GBuffer *g) const
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
 	glUniform1i(_gColorTextureLocation, 0);
 
-	// Normal Texture
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
-	glUniform1i(_gNormalTextureLocation, 1);
-
-	// Material Texture
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_gMaterialTextureLocation, 2);
-
-	// Depth Texture
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
-	glUniform1i(_gDepthTextureLocation, 3);
-
 	// Material
 	glBindBufferBase(GL_UNIFORM_BUFFER, _gMaterialIndex, _idMaterialBuffer);
 
@@ -201,10 +183,6 @@ void engine::GLObject::displayShadow(Light *l) const
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
 	glUniform1i(l->getShadowMap()->getColorTextureLocation(), 0);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, l->getShadowMap()->getIdDepthTexture());
-	glUniform1i(l->getShadowMap()->getShadowMapLocation(), 1);
 
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 
