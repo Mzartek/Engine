@@ -15,29 +15,32 @@ namespace engine
 		GLuint _idVAO;
 		GLuint _idVBO;
 		GLuint _idIBO;
-		GLfloat _matAmbient[4];
-		GLfloat _matDiffuse[4];
-		GLfloat _matSpecular[4];
-		GLfloat _matShininess[1];
+		GLuint _idMaterialBuffer;
+		struct material
+		{
+			glm::vec4 ambient;
+			glm::vec4 diffuse;
+			glm::vec4 specular;
+			GLfloat shininess;
+		} _material;
 		GLsizei _numElement;
+		// Do not delete it
 		ShaderProgram *_gProgram;
+		// Location or Index
+		GLint _gColorTextureLocation;
 		GLint _gNormalTextureLocation;
 		GLint _gMaterialTextureLocation;
 		GLint _gDepthTextureLocation;
-		GLint _gColorTextureLocation;
-		GLint _gMatAmbientLocation;
-		GLint _gMatDiffuseLocation;
-		GLint _gMatSpecularLocation;
-		GLint _gMatShininessLocation;
+		GLuint _gMaterialIndex;
 	public:
 		GLObject(void);
 		~GLObject(void);
 		void config(ShaderProgram *gProgram);
 		void setTexture(const GLuint &id);
-		void setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
-		void setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
-		void setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w);
-		void setShininess(const GLfloat &x);
+		void setAmbient(const glm::vec4 &ambient);
+		void setDiffuse(const glm::vec4 &diffuse);
+		void setSpecular(const glm::vec4 &specular);
+		void setShininess(const GLfloat &shininess);
 		GLfloat getTransparency(void);
 		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);

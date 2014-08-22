@@ -16,8 +16,8 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 {
 	_width = width;
 	_height = height;
-
 	_program = program;
+
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
@@ -34,10 +34,10 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	glGenTextures(1, &_idDepthTexture);
 	glBindTexture(GL_TEXTURE_2D, _idDepthTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32, _width, _height);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
 
 	glDrawBuffer(GL_NONE);

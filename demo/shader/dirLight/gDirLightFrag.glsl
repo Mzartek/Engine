@@ -30,7 +30,7 @@ float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
 {
 	if (coord.x > 1.0 || coord.x < 0.0 || coord.y > 1.0 || coord.y < 0.0)
 		return 1.0;
-	return textureProj(tex, vec4(coord.x + (offSet.x * (1.0/texSize.x)), coord.y + (offSet.y * (1.0/texSize.y)), coord.z-0.005, coord.w));
+	return texture(tex, vec3(coord.x + (offSet.x * (1.0/texSize.x)), coord.y + (offSet.y * (1.0/texSize.y)), coord.z-0.005));
 }
 
 float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
@@ -94,7 +94,7 @@ void main(void)
 	matDiffuse = vec4(0x000000FF & (ivec4(material) >> 8)) / 255;
 	matSpecular = vec4(0x000000FF & ivec4(material)) / 255;
 
-	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 3.0);
+	s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
 	l = calcDirLight(normal.xyz, camPosition - position, normal.w, s);
 	finalColor *= matAmbient + (matDiffuse * vec4(l.diff, 1.0)) + (matSpecular * vec4(l.spec, 1.0));
 	finalColor = clamp(finalColor, 0.0, 1.0);

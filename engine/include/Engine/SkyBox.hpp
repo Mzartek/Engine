@@ -16,7 +16,9 @@ namespace engine
 		GLuint _idIBO;
 		GLuint _numElement;
 		glm::mat4 *_rotateMatrix;
+		// Do not delete it
 		ShaderProgram *_program;
+		// Location or Index
 		GLint _MVPLocation;
 		GLint _textureLocation;
 	public:

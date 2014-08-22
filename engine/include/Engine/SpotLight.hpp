@@ -8,6 +8,7 @@ namespace engine
 	class DLLAPI SpotLight : public Light
 	{
 	protected:
+		// Location or Index
 		GLfloat _lightSpotCutOff;
 		GLint _lightPositionLocation;
 		GLint _lightDirectionLocation;

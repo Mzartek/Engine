@@ -114,7 +114,7 @@ void init(void)
 	configModels();
 	configSkybox();
 
-	cam->setPositionCamera(30, 5, 0);
+	cam->setPositionCamera(30, 10, 0);
 	cam->setInitialAngle(-90, 0);
 }
 

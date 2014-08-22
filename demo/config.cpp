@@ -65,10 +65,10 @@ void configModels(void)
 		0, 1, 0
 	};
 	GLuint index[] = { 0, 1, 2, 0, 2, 3 };
-	GLfloat mat_ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	GLfloat mat_diffuse[] = { 0.9f, 0.9f, 0.9f, 1.0f };
-	GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	GLfloat mat_shininess[] = { 20.0f };
+	glm::vec4 mat_ambient(0.5f, 0.5f, 0.5f, 1.0f);
+	glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
+	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
+	GLfloat mat_shininess = 20.0f;
 
 	sol->config(objectProgram);
 	sol->initGLObjectArray();

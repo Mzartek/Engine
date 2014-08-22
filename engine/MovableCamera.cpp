@@ -60,7 +60,7 @@ void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 		_aphi = 89;
 	else if (_aphi < -89)
 		_aphi = -89;
-  
+
 	GLfloat r_temp = (GLfloat)cos(_aphi*M_PI/180);
 	_vforward->y = (GLfloat)sin(_aphi*M_PI/180);
 	_vforward->z = r_temp*(GLfloat)cos(_atheta*M_PI / 180);
@@ -71,7 +71,7 @@ void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 	_vleft->z = -_vforward->x;
 
 	*_vleft /= (GLfloat)sqrt(_vleft->x*_vleft->x + _vleft->y*_vleft->y + _vleft->z*_vleft->z);
-  
+
 	*_ptarget = *_pcamera + *_vforward;
 }
 

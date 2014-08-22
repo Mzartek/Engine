@@ -25,6 +25,6 @@ void engine::FreeCam::keyboardMove(const GLboolean &f, const GLboolean &b, const
 		*_pcamera += *_vleft * _speed;
 	if(r)
 		*_pcamera -= *_vleft * _speed;
-  
+
 	*_ptarget = *_pcamera + *_vforward;
 }

@@ -10,7 +10,9 @@ namespace engine
 	{
 	private:
 		GLuint _idDepthTexture;
+		// Do not delete it
 		ShaderProgram *_program;
+		// Location or Index
 		GLint _MVPLocation;
 		GLint _colorTextureLocation;
 		GLint _shadowMapLocation;

@@ -2,11 +2,14 @@
 
 uniform sampler2D textTex;
 
-in vec2 outTexCoord;
+in VertexData
+{
+	vec2 texCoord;
+} FragIn;
 
 out vec4 fragColor;
 
 void main(void)
 {
-	fragColor = texture(textTex, outTexCoord);
+	fragColor = texture(textTex, FragIn.texCoord);
 }

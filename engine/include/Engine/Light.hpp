@@ -18,7 +18,9 @@ namespace engine
 		glm::vec3 *_lightColor;
 		glm::mat4 *_projectionMatrix;
 		glm::mat4 *_VPMatrix;
+		// Do not delete it
 		ShaderProgram *_program;
+		// Location or Index
 		GLint _normalTextureLocation;
 		GLint _materialTextureLocation;
 		GLint _depthTextureLocation;
@@ -32,7 +34,7 @@ namespace engine
 	public:
 		Light(void);
 		Light(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		virtual ~Light(void);
+		~Light(void);
 		virtual void config(ShaderProgram *program) = 0;
 		void configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow);
 		void setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z);

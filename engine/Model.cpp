@@ -58,7 +58,7 @@ void engine::Model::config(ShaderProgram *program)
 void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				 const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				 const GLchar *pathTexture,
-				 const GLfloat *ambient, const GLfloat *diffuse, const GLfloat *specular, const GLfloat *shininess)
+				 const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess)
 {
 	GLObject *newone = new GLObject;
 	GLuint texture;
@@ -67,10 +67,10 @@ void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat
 
 	newone->config(_program);
 	newone->setTexture(texture);
-	newone->setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
-	newone->setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
-	newone->setSpecular(specular[0], specular[1], specular[2], specular[3]);
-	newone->setShininess(shininess[0]);
+	newone->setAmbient(ambient);
+	newone->setDiffuse(diffuse);
+	newone->setSpecular(specular);
+	newone->setShininess(shininess);
 	newone->load(sizeVertexArray, vertexArray,
 		     sizeIndexArray, indexArray);
 
@@ -161,8 +161,8 @@ void engine::Model::loadFromFile(const GLchar *file)
 		createGLObject((GLsizei)vertices.size() * sizeof(Vertex), (GLfloat *)&vertices[0],
 			(GLsizei)indices.size() * sizeof(GLuint), &indices[0],
 			&fullPath[0],
-			(GLfloat *)&mat_ambient, (GLfloat *)&mat_diffuse, (GLfloat *)&mat_specular,
-			&mat_shininess);
+			glm::vec4(mat_ambient.r, mat_ambient.g, mat_ambient.b, mat_ambient.a), glm::vec4(mat_diffuse.r, mat_diffuse.g, mat_diffuse.b, mat_diffuse.a), glm::vec4(mat_specular.r, mat_specular.g, mat_specular.b, mat_specular.a),
+			mat_shininess);
 
 		vertices.clear();
 		indices.clear();
@@ -229,7 +229,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	// MVP Matrix
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
 
-	// Normal Matrix	
+	// Normal Matrix
 	glUniformMatrix4fv(_normalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
 
 	glUseProgram(0);

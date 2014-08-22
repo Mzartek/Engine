@@ -2,18 +2,11 @@
 
 engine::GLObject::GLObject(void)
 {
-	GLuint i;
 	_idTexture = 0;
 	_idVAO = 0;
 	_idVBO = 0;
 	_idIBO = 0;
-	for(i=0 ; i<4 ; i++)
-	{
-		_matAmbient[i]=1.0;
-		_matDiffuse[i]=1.0;
-		_matSpecular[i]=1.0;
-	}
-	_matShininess[0]=1.0;
+	_idMaterialBuffer = 0;
 	_gProgram = NULL;
 }
 
@@ -27,19 +20,24 @@ engine::GLObject::~GLObject(void)
 		glDeleteBuffers(1, &_idIBO);
 	if(glIsTexture(_idTexture))
 		glDeleteTextures(1, &_idTexture);
+	if (glIsBuffer(_idMaterialBuffer))
+		glDeleteBuffers(1, &_idMaterialBuffer);
 }
 
 void engine::GLObject::config(ShaderProgram *gProgram)
 {
 	_gProgram = gProgram;
+	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
 	_gNormalTextureLocation = glGetUniformLocation(_gProgram->getId(), "normalTexture");
 	_gMaterialTextureLocation = glGetUniformLocation(_gProgram->getId(), "materialTexture");
 	_gDepthTextureLocation = glGetUniformLocation(_gProgram->getId(), "depthTexture");
-	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
-	_gMatAmbientLocation = glGetUniformLocation(_gProgram->getId(), "matAmbient");
-	_gMatDiffuseLocation = glGetUniformLocation(_gProgram->getId(), "matDiffuse");
-	_gMatSpecularLocation = glGetUniformLocation(_gProgram->getId(), "matSpecular");
-	_gMatShininessLocation = glGetUniformLocation(_gProgram->getId(), "matShininess");
+	_gMaterialIndex = glGetUniformBlockIndex(_gProgram->getId(), "material");
+
+	if (glIsBuffer(_idMaterialBuffer))
+		glDeleteBuffers(1, &_idMaterialBuffer);
+	glGenBuffers(1, &_idMaterialBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof _material, NULL, GL_DYNAMIC_DRAW);
 }
 
 void engine::GLObject::setTexture(const GLuint &id)
@@ -49,38 +47,57 @@ void engine::GLObject::setTexture(const GLuint &id)
 	_idTexture = id;
 }
 
-void engine::GLObject::setAmbient(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
+void engine::GLObject::setAmbient(const glm::vec4 &ambient)
 {
-	_matAmbient[0] = x;
-	_matAmbient[1] = y;
-	_matAmbient[2] = z;
-	_matAmbient[3] = w;
+	if (!glIsBuffer(_idMaterialBuffer))
+	{
+		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
+		return;
+	}
+	_material.ambient = ambient;
+	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
-void engine::GLObject::setDiffuse(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
+void engine::GLObject::setDiffuse(const glm::vec4 &diffuse)
 {
-	_matDiffuse[0] = x;
-	_matDiffuse[1] = y;
-	_matDiffuse[2] = z;
-	_matDiffuse[3] = w;
+	if (!glIsBuffer(_idMaterialBuffer))
+	{
+		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
+		return;
+	}
+	_material.diffuse = diffuse;
+	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
-void engine::GLObject::setSpecular(const GLfloat &x, const GLfloat &y, const GLfloat &z, const GLfloat &w)
+void engine::GLObject::setSpecular(const glm::vec4 &specular)
 {
-	_matSpecular[0] = x;
-	_matSpecular[1] = y;
-	_matSpecular[2] = z;
-	_matSpecular[3] = w;
+	if (!glIsBuffer(_idMaterialBuffer))
+	{
+		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
+		return;
+	}
+	_material.specular = specular;
+	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
-void engine::GLObject::setShininess(const GLfloat &x)
+void engine::GLObject::setShininess(const GLfloat &shininess)
 {
-	_matShininess[0] = x;
+	if (!glIsBuffer(_idMaterialBuffer))
+	{
+		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
+		return;
+	}
+	_material.shininess = shininess;
+	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
 GLfloat engine::GLObject::getTransparency(void)
 {
-	return _matDiffuse[3];
+	return _material.diffuse.w;
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
@@ -133,26 +150,28 @@ void engine::GLObject::display(GBuffer *g) const
 	glUseProgram(_gProgram->getId());
 	glBindVertexArray(_idVAO);
 
+	// Color Texture
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
-	glUniform1i(_gNormalTextureLocation, 0);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_gMaterialTextureLocation, 1);
-
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
-	glUniform1i(_gDepthTextureLocation, 2);
-
-	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
-	glUniform1i(_gColorTextureLocation, 3);
+	glUniform1i(_gColorTextureLocation, 0);
 
-	glUniform4fv(_gMatAmbientLocation, 1, _matAmbient);
-	glUniform4fv(_gMatDiffuseLocation, 1, _matDiffuse);
-	glUniform4fv(_gMatSpecularLocation, 1, _matSpecular);
-	glUniform1fv(_gMatShininessLocation, 1, _matShininess);
+	// Normal Texture
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
+	glUniform1i(_gNormalTextureLocation, 1);
+
+	// Material Texture
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
+	glUniform1i(_gMaterialTextureLocation, 2);
+
+	// Depth Texture
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
+	glUniform1i(_gDepthTextureLocation, 3);
+
+	// Material
+	glBindBufferBase(GL_UNIFORM_BUFFER, _gMaterialIndex, _idMaterialBuffer);
 
 	glDrawBuffers(2, g->colorAttachment);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
@@ -199,9 +218,9 @@ int engine::comparGLObject(const void *p1, const void *p2)
 	GLObject **obj1 = (engine::GLObject **)p1;
 	GLObject **obj2 = (engine::GLObject **)p2;
 
-	if((*obj1)->_matDiffuse[3] < (*obj2)->_matDiffuse[3])
+	if ((*obj1)->_material.diffuse.w < (*obj2)->_material.diffuse.w)
 		return 1;
-	if((*obj1)->_matDiffuse[3] > (*obj2)->_matDiffuse[3])
+	if ((*obj1)->_material.diffuse.w > (*obj2)->_material.diffuse.w)
 		return -1;
 	return 0;
 }

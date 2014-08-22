@@ -3,11 +3,14 @@
 uniform sampler2D colorTexture;
 uniform sampler2D shadowMap;
 
-in vec2 texCoord;
+in VertexData
+{
+	vec2 texCoord;
+} FragIn;
 
 void main()
 {
-	float transparency = texture(colorTexture, texCoord).a;
+	float transparency = texture(colorTexture, FragIn.texCoord).a;
 	if (transparency > 0.5)
 		gl_FragDepth = gl_FragCoord.z;
 	else

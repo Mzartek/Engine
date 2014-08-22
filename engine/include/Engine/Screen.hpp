@@ -11,7 +11,9 @@ namespace engine
 	private:
 		GLuint _idVAO;
 		GLuint _idVBO;
+		// Do not delete it
 		ShaderProgram *_program;
+		// Location or Index
 		GLint _colorLocation;
 		GLint _materialTextureLocation;
 	public:

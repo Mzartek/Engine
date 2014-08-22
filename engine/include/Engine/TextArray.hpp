@@ -13,9 +13,12 @@ namespace engine
 		GLuint _idVAO;
 		GLuint _idVBO;
 		glm::mat4 *_mat;
+		// Do not delete it
 		ShaderProgram *_program;
+		// Location or Index
 		GLint _MVPLocation;
 		GLint _textureLocation;
+		// SDL Feature
 		TTF_Font *_font;
 		SDL_Color _color;
 	public:

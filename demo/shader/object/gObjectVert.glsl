@@ -1,18 +1,22 @@
 #version 330
 
-uniform mat4 MVP, normalMatrix;
+uniform mat4 MVP;
+uniform mat4 normalMatrix;
 
-out vec2 vtexCoord;
-out vec3 vnormal;
+layout(location = 0) in vec3 vertex;
+layout(location = 1) in vec2 texCoord;
+layout(location = 2) in vec3 normal;
 
-layout(location = 0) in vec3 vertexArray;
-layout(location = 1) in vec2 textureArray;
-layout(location = 2) in vec3 normalArray;
+out VertexData
+{
+	vec2 texCoord;
+	vec3 normal;
+} VertOut;
 
 void main(void)
 {
-	gl_Position =  MVP * vec4(vertexArray, 1.0);
+	gl_Position =  MVP * vec4(vertex, 1.0);
 
-	vtexCoord = textureArray;
-	vnormal = mat3(normalMatrix) * normalArray;
+	VertOut.texCoord = texCoord;
+	VertOut.normal = mat3(normalMatrix) * normal;
 }

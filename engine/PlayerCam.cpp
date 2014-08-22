@@ -31,6 +31,6 @@ void engine::PlayerCam::keyboardMove(const GLboolean &f, const GLboolean &b, con
 		*_pcamera += *_vleft * _speed;
 	if(r)
 		*_pcamera -= *_vleft * _speed;
-  
+
 	*_ptarget = *_pcamera + *_vforward;
 }
