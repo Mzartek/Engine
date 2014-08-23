@@ -5,6 +5,7 @@ GLboolean keyState[256];
 engine::Renderer *renderer;
 engine::FreeCam *cam;
 engine::DirLight *sun;
+engine::SpotLight *torch;
 engine::Model *sol;
 engine::Model *heli;
 engine::SkyBox *skybox;
@@ -15,7 +16,8 @@ engine::TextArray *text3;
 engine::GBuffer *gBuffer;
 
 engine::ShaderProgram *objectProgram;
-engine::ShaderProgram *lightProgram;
+engine::ShaderProgram *dirLightProgram;
+engine::ShaderProgram *spotLightProgram;
 engine::ShaderProgram *shadowProgram;
 engine::ShaderProgram *skyboxProgram;
 engine::ShaderProgram *screenProgram;
@@ -24,12 +26,16 @@ engine::ShaderProgram *textProgram;
 void display(void)
 {
 	cam->position();
-	sun->position();
+	sun->position(heli->getPosition(), 25);
+	torch->position();
 
 	// Shadow Pass
-	sun->clear();
+	/*sun->clear();
 	sol->displayShadow(sun);
-	heli->displayShadow(sun);
+	heli->displayShadow(sun);*/
+	torch->clear();
+	sol->displayShadow(torch);
+	heli->displayShadow(torch);
 
 	// GLObject Pass
 	gBuffer->clear();
@@ -38,7 +44,8 @@ void display(void)
 	heli->display(gBuffer, cam);
 
 	// Light Pass
-	sun->display(gBuffer, cam);
+	//sun->display(gBuffer, cam);
+	torch->display(gBuffer,cam);
 
 	// Screen
 	renderer->clear();
@@ -52,7 +59,6 @@ void display(void)
 
 void idle(void)
 {
-	sun->setPosition(heli->getPosition().x, heli->getPosition().y, heli->getPosition().z);
 	cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
 
 	heli->matRotate(0.1f, 0, 1, 0);
@@ -90,6 +96,7 @@ void init(void)
 {
 	cam = new engine::FreeCam;
 	sun = new engine::DirLight;
+	torch = new engine::SpotLight;
 	sol = new engine::Model;
 	heli = new engine::Model;
 	skybox = new engine::SkyBox;
@@ -100,7 +107,8 @@ void init(void)
 	gBuffer = new engine::GBuffer;
 
 	objectProgram = new engine::ShaderProgram;
-	lightProgram = new engine::ShaderProgram;
+	dirLightProgram = new engine::ShaderProgram;
+	spotLightProgram = new engine::ShaderProgram;
 	shadowProgram = new engine::ShaderProgram;
 	skyboxProgram = new engine::ShaderProgram;
 	screenProgram = new engine::ShaderProgram;
@@ -124,7 +132,8 @@ void kill(void)
 	delete screenProgram;
 	delete skyboxProgram;
 	delete shadowProgram;
-	delete lightProgram;
+	delete spotLightProgram;
+	delete dirLightProgram;
 	delete objectProgram;
 
 	delete gBuffer;
@@ -135,6 +144,7 @@ void kill(void)
 	delete skybox;
 	delete heli;
 	delete sol;
+	delete torch;
 	delete sun;
 	delete cam;
 }

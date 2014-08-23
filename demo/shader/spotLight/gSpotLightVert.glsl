@@ -1,30 +1,8 @@
 #version 330
 
-struct spotLight
+layout(location = 0) in vec2 vertex;
+
+void main(void)
 {
-  vec3 spotDirection;
-  float spotCutOff;
-  vec3 rayDir;
-  vec4 ambient;
-  vec4 diffuse;
-  vec4 specular;
-  vec4 shadowCoord;
-};
-
-uniform vec3 spotLightPosition, spotLightDirection;
-uniform float spotLightCutOff;
-uniform vec4 spotLightAmbient, spotLightDiffuse, spotLightSpecular;
-uniform mat4 spotShadowMVP;
-
-out spotLight outSpotLight;
-
-void spotLightInit(vec3 vVertex)
-{
-  outSpotLight.spotDirection = spotLightDirection;
-  outSpotLight.spotCutOff = spotLightCutOff;
-  outSpotLight.rayDir = spotLightPosition - vVertex;
-  outSpotLight.ambient = spotLightAmbient;
-  outSpotLight.diffuse = spotLightDiffuse;
-  outSpotLight.specular = spotLightSpecular;
-  outSpotLight.shadowCoord = spotShadowMVP * vec4(vertexArray, 1.0);
+	gl_Position = vec4(vertex, 0.0, 1.0);
 }

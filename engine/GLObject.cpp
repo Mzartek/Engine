@@ -34,7 +34,7 @@ void engine::GLObject::config(ShaderProgram *gProgram)
 		glDeleteBuffers(1, &_idMaterialBuffer);
 	glGenBuffers(1, &_idMaterialBuffer);
 	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof _material, NULL, GL_DYNAMIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof _material, &_material, GL_DYNAMIC_DRAW);
 }
 
 void engine::GLObject::setTexture(const GLuint &id)
@@ -46,50 +46,42 @@ void engine::GLObject::setTexture(const GLuint &id)
 
 void engine::GLObject::setAmbient(const glm::vec4 &ambient)
 {
-	if (!glIsBuffer(_idMaterialBuffer))
-	{
-		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
-		return;
-	}
 	_material.ambient = ambient;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	if (glIsBuffer(_idMaterialBuffer))
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	}
 }
 
 void engine::GLObject::setDiffuse(const glm::vec4 &diffuse)
 {
-	if (!glIsBuffer(_idMaterialBuffer))
-	{
-		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
-		return;
-	}
 	_material.diffuse = diffuse;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	if (glIsBuffer(_idMaterialBuffer))
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	}
 }
 
 void engine::GLObject::setSpecular(const glm::vec4 &specular)
 {
-	if (!glIsBuffer(_idMaterialBuffer))
-	{
-		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
-		return;
-	}
 	_material.specular = specular;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	if (glIsBuffer(_idMaterialBuffer))
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	}
 }
 
 void engine::GLObject::setShininess(const GLfloat &shininess)
 {
-	if (!glIsBuffer(_idMaterialBuffer))
-	{
-		std::cerr << "You need to config the GLObject before setting the material properties" << std::endl;
-		return;
-	}
 	_material.shininess = shininess;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	if (glIsBuffer(_idMaterialBuffer))
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
+	}
 }
 
 GLfloat engine::GLObject::getTransparency(void)
@@ -104,7 +96,7 @@ void engine::GLObject::load(const GLsizei &sizeVertexArray, const GLfloat *verte
 {
 	_numElement = sizeIndexArray/(GLsizei)sizeof(GLuint);
 
-	// Vertex Array, Vertex Buffer GLObject and Indec Buffer GLObject
+	// Vertex Array, Vertex Buffer GLObject and Index Buffer GLObject
 	if(glIsVertexArray(_idVAO))
 		glDeleteVertexArrays(1, &_idVAO);
 	glGenVertexArrays(1, &_idVAO);

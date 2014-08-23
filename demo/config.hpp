@@ -10,6 +10,7 @@
 #include <Engine/ShadowMap.hpp>
 #include <Engine/FreeCam.hpp>
 #include <Engine/DirLight.hpp>
+#include <Engine/SpotLight.hpp>
 #include <Engine/Model.hpp>
 #include <Engine/SkyBox.hpp>
 #include <Engine/Screen.hpp>
@@ -21,6 +22,7 @@ extern GLboolean keyState[256];
 extern engine::Renderer *renderer;
 extern engine::FreeCam *cam;
 extern engine::DirLight *sun;
+extern engine::SpotLight *torch;
 extern engine::Model *sol;
 extern engine::Model *heli;
 extern engine::SkyBox *skybox;
@@ -31,7 +33,8 @@ extern engine::TextArray *text3;
 extern engine::GBuffer *gBuffer;
 
 extern engine::ShaderProgram *objectProgram;
-extern engine::ShaderProgram *lightProgram;
+extern engine::ShaderProgram *dirLightProgram;
+extern engine::ShaderProgram *spotLightProgram;
 extern engine::ShaderProgram *shadowProgram;
 extern engine::ShaderProgram *skyboxProgram;
 extern engine::ShaderProgram *screenProgram;

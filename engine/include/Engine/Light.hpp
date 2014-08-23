@@ -12,42 +12,33 @@ namespace engine
 	protected:
 		GLuint _idVAO;
 		GLuint _idVBO;
-		ShadowMap *_shadow;
-		glm::vec3 *_lightPosition;
-		glm::vec3 *_lightDirection;
-		glm::vec3 *_lightColor;
-		glm::mat4 *_projectionMatrix;
+		GLuint _idLightInfoBuffer;
 		glm::mat4 *_VPMatrix;
+		ShadowMap *_shadow;
 		// Do not delete it
 		ShaderProgram *_program;
-		// Location or Index
+		// From GBuffer
 		GLint _normalTextureLocation;
 		GLint _materialTextureLocation;
 		GLint _depthTextureLocation;
+		// ShadowMap
 		GLint _shadowMapLocation;
+		// Matrix
 		GLint _shadowMatrixLocation;
+		GLint _IVPMatrixLocation;
+		// Screen Info
 		GLint _screenLocation;
-		GLint _IVPLocation;
-	    GLint _camPositionLocation;
-		GLint _lightColorLocation;
-		GLint _lightDirectionLocation;
+		// Cam Info
+		GLint _camPositionLocation;
+		// Light Info
+		GLuint _lightInfoIndex;
 	public:
 		Light(void);
-		Light(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		~Light(void);
-		virtual void config(ShaderProgram *program) = 0;
 		void configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow);
-		void setPosition(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void setDirection(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void setColor(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		ShadowMap *getShadowMap(void);
-		glm::vec3 getPosition(void) const;
-		glm::vec3 getDirection(void) const;
-		glm::vec3 getColor(void) const;
-		glm::mat4 getProjectionMatrix(void) const;
 		glm::mat4 getVPMatrix(void) const;
+		ShadowMap *getShadowMap(void);
 		void clear(void) const;
-		virtual void position(void) = 0;
 		virtual void display(GBuffer *g, Camera *cam) = 0;
 	};
 }

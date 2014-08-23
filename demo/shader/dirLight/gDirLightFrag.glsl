@@ -5,16 +5,26 @@ uniform sampler2D normalTexture;
 uniform usampler2D materialTexture;
 uniform sampler2D depthTexture;
 
-// From ShadowMap
+// ShadowMap
 uniform sampler2DShadow shadowMap;
-uniform mat4 shadowMatrix;
 
-// GLobals
+// Matrix
+uniform mat4 shadowMatrix;
+uniform mat4 IVPMatrix;
+
+// Screen Info
 uniform uvec2 screen;
-uniform mat4 IVP;
+
+// Cam Info
 uniform vec3 camPosition;
-uniform vec3 lightColor;
-uniform vec3 lightDirection;
+
+// Light info
+uniform lightInfo
+{
+	vec3 lightColor;
+	vec3 lightDirection;
+	bool shadow;
+};
 
 layout(location = 0) out uvec4 outMaterial;
 
@@ -22,7 +32,7 @@ vec3 getPosition(void)
 {
   float depth = texelFetch(depthTexture, ivec2(gl_FragCoord.xy), 0).x;
   vec4 tmp1 = vec4(gl_FragCoord.xy/screen.xy * 2.0f - 1.0f, depth * 2.0f - 1.0f, 1.0f);
-  vec4 tmp2 = IVP * tmp1;
+  vec4 tmp2 = IVPMatrix * tmp1;
   return tmp2.xyz / tmp2.w;
 }
 

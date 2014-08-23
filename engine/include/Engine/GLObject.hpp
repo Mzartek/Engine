@@ -21,7 +21,7 @@ namespace engine
 			glm::vec4 ambient;
 			glm::vec4 diffuse;
 			glm::vec4 specular;
-			GLfloat shininess;
+			GLfloat ALIGN_16 shininess;
 		} _material;
 		GLsizei _numElement;
 		// Do not delete it

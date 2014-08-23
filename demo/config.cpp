@@ -3,7 +3,8 @@
 void configShaders(void)
 {
 	objectProgram->loadProgram("shader/object/gObjectVert.glsl", NULL, NULL, "shader/object/gObjectGeom.glsl", "shader/object/gObjectFrag.glsl");
-	lightProgram->loadProgram("shader/dirLight/gDirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/gDirLightFrag.glsl");
+	dirLightProgram->loadProgram("shader/dirLight/gDirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/gDirLightFrag.glsl");
+	spotLightProgram->loadProgram("shader/spotLight/gSpotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/gSpotLightFrag.glsl");
 	shadowProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
 	skyboxProgram->loadProgram("shader/skybox/gSkyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/gSkyboxFrag.glsl");
 	screenProgram->loadProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
@@ -34,13 +35,17 @@ void configText(void)
 
 void configLights(void)
 {
-	GLfloat lightColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-
-	sun->config(lightProgram);
-	sun->setDirection(1, -1, 0);
-	sun->setColor(lightColor[0], lightColor[1], lightColor[2]);
+	sun->config(dirLightProgram);
+	sun->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	sun->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
 	sun->configShadowMap(1024, 1024, shadowProgram);
-	sun->setMatrixDimension(25);
+
+    torch->config(spotLightProgram);
+    torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+    torch->setPosition(glm::vec3(-1.0f, 20.0f, 0.0f));
+    torch->setDirection(glm::vec3(0.1f, -1.0f, 0.0f));
+    torch->setSpotCutOff(45.0f);
+    torch->configShadowMap(1024, 1024, shadowProgram);
 }
 
 void configScreen(void)
