@@ -29,23 +29,24 @@ void display(void)
 	sun->position(heli->getPosition(), 25);
 	torch->position();
 
-	// Shadow Pass
-	/*sun->clear();
-	sol->displayShadow(sun);
-	heli->displayShadow(sun);*/
-	torch->clear();
-	sol->displayShadow(torch);
-	heli->displayShadow(torch);
-
 	// GLObject Pass
 	gBuffer->clear();
 	skybox->display(gBuffer, cam);
 	sol->display(gBuffer, cam);
 	heli->display(gBuffer, cam);
 
+	// Shadow Pass
+	sun->clear();
+	sol->displayShadow(sun);
+	heli->displayShadow(sun);
+
+	torch->clear();
+	sol->displayShadow(torch);
+	heli->displayShadow(torch);
+
 	// Light Pass
 	//sun->display(gBuffer, cam);
-	torch->display(gBuffer,cam);
+	torch->display(gBuffer, cam);
 
 	// Screen
 	renderer->clear();

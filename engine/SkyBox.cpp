@@ -141,30 +141,40 @@ void engine::SkyBox::display(GBuffer *g, Camera *cam)
 	glm::mat4 pos;
 	if(_program == NULL)
 	{
-		std::cerr << "You need to load a SkyBox before" << std::endl;
-		return;
+		std::cerr << "Need to config the SkyBox before displaying" << std::endl;
+		exit(1);
+	}
+	if (g == NULL)
+	{
+		std::cerr << "Bad GBuffer" << std::endl;
+		exit(1);
+	}
+	if (cam == NULL)
+	{
+		std::cerr << "Bad Camera" << std::endl;
+		exit(1);
 	}
 
 	pos = glm::translate(glm::vec3(cam->getPositionCamera()));
 	pos *= *_rotateMatrix;
 	pos = cam->getVPMatrix() * pos;
-  
+
 	glDepthMask(GL_FALSE);
-	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 	glUseProgram(_program->getId());
-	glBindVertexArray(_idVAO);
-	
+
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(pos));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
 	glUniform1i(_textureLocation, 0);
 
-	glDrawBuffers(1, &g->colorAttachment[GBUF_MATERIAL]);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 
+	glBindVertexArray(_idVAO);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
-	glUseProgram(0);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
 	glDepthMask(GL_TRUE);
 }

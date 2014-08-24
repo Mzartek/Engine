@@ -124,35 +124,48 @@ GLfloat engine::SpotLight::getSpotCutOff(void) const
 	return _lightInfo.spotCutOff;
 }
 
+void engine::SpotLight::activateShadowMapping(const GLboolean &shadow)
+{
+	_lightInfo.withShadowMapping = shadow;
+	if (glIsBuffer(_idLightInfoBuffer))
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
+	}
+}
+
 void engine::SpotLight::position(void)
 {
-	if(_shadow==NULL)
+	if (_shadow == NULL)
 	{
-		std::cerr << "No need to position the light if you don't use shadowMapping" << std::endl;
-		return;
+		std::cerr << "Need to config the ShadowMap before positioning" << std::endl;
+		exit(1);
 	}
 
-	*_VPMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 300.0f) *
-		glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
+	*_VPMatrix = glm::perspective(_lightInfo.spotCutOff * 2 * ((GLfloat)M_PI / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 200.0f) *
+		glm::lookAt(_lightInfo.position, glm::vec3(0.0f, 0.6f, 0.0f) , glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void engine::SpotLight::display(GBuffer *g, Camera *cam)
 {
+	if (_program == NULL)
+	{
+		std::cerr << "Need to config the SpotLight before displaying" << std::endl;
+		exit(1);
+	}
 	if (g == NULL)
 	{
 		std::cerr << "Bad GBuffer" << std::endl;
-		return;
+		exit(1);
 	}
 	if (cam == NULL)
 	{
 		std::cerr << "Bad camera" << std::endl;
-		return;
+		exit(1);
 	}
 
 	glDepthMask(GL_FALSE);
-	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 	glUseProgram(_program->getId());
-	glBindVertexArray(_idVAO);
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
@@ -168,7 +181,7 @@ void engine::SpotLight::display(GBuffer *g, Camera *cam)
 	glUniform1i(_depthTextureLocation, 2);
 
 	// ShadowMap
-	if (_shadow != NULL)
+	if (_lightInfo.withShadowMapping == GL_TRUE)
 	{
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
@@ -194,12 +207,13 @@ void engine::SpotLight::display(GBuffer *g, Camera *cam)
 	// Light Info
 	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoIndex, _idLightInfoBuffer);
 
-	// Drawing
-	glDrawBuffers(1, &g->colorAttachment[GBUF_MATERIAL]);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 
+	glBindVertexArray(_idVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
-	glUseProgram(0);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
 	glDepthMask(GL_TRUE);
 }

@@ -120,7 +120,6 @@ void engine::TextArray::display(void)
 	glDepthMask(GL_FALSE);
 	glEnable(GL_BLEND);
 	glUseProgram(_program->getId());
-	glBindVertexArray(_idVAO);
 	
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(*_mat));
 
@@ -128,13 +127,12 @@ void engine::TextArray::display(void)
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
 	glUniform1i(_textureLocation, 0);
 
+	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	glBindTexture(GL_TEXTURE0, 0);
 	glBindVertexArray(0);
+
 	glUseProgram(0);
 	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
 }
 

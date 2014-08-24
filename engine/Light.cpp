@@ -42,8 +42,8 @@ void engine::Light::clear(void) const
 {
 	if(_shadow==NULL)
 	{
-		std::cerr << "No need to clear the light when you don't use shadowMapping" << std::endl;
-		return;
+		std::cerr << "Need to config the ShadowMap before clearing" << std::endl;
+		exit(1);
 	}
 	_shadow->clear();
 }

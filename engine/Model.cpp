@@ -65,7 +65,6 @@ void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat
 
 	loadTextureFromFile(pathTexture, &texture);
 
-	newone->config(_program);
 	newone->setTexture(texture);
 	newone->setAmbient(ambient);
 	newone->setDiffuse(diffuse);
@@ -213,54 +212,67 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 {
 	GLuint i;
 
-	if(_program == NULL)
+	if (_program == NULL)
 	{
-		std::cerr << "You need to configure the Model before" << std::endl;
-		return;
+		std::cerr << "Need to config the Model before displaying" << std::endl;
+		exit(1);
 	}
-	if(cam == NULL)
+	if (g == NULL)
+	{
+		std::cerr << "Bad GBuffer" << std::endl;
+		exit(1);
+	}
+	if (cam == NULL)
 	{
 		std::cerr << "Bad Camera" << std::endl;
-		return;
+		exit(1);
 	}
 
 	glUseProgram(_program->getId());
 
-	// MVP Matrix
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
-
-	// Normal Matrix
 	glUniformMatrix4fv(_normalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
 
-	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
-            (*_tGLObject)[i]->display(g);
+			(*_tGLObject)[i]->display(_program->getId());
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
 }
 
 void engine::Model::displayShadow(Light *l) const
 {
 	GLuint i;
 
+	if (_program == NULL)
+	{
+		std::cerr << "Need to config the Model before displaying Shadow" << std::endl;
+		exit(1);
+	}
 	if(l == NULL)
 	{
 		std::cerr << "Bad Light!" << std::endl;
-		return;
+		exit(1);
 	}
 	if(l->getShadowMap() == NULL)
 	{
-		std::cerr << "You need to config the ShadowMap before!" << std::endl;
-		return;
+		std::cerr << "Need to config the ShadowMap before displaying" << std::endl;
+		exit(1);
 	}
 
 	glUseProgram(l->getShadowMap()->getProgramId());
 
 	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, glm::value_ptr(l->getVPMatrix() * *_modelMatrix));
 
-	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
-            (*_tGLObject)[i]->displayShadow(l);
+			(*_tGLObject)[i]->displayShadow(l->getShadowMap()->getColorTextureLocation());
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
 }

@@ -14,6 +14,7 @@ namespace engine
 			glm::vec3 ALIGN_16 position;
 			glm::vec3 ALIGN_16 direction;
 			GLfloat spotCutOff;
+			GLint ALIGN_16 withShadowMapping;
 		} _lightInfo;
 	public:
 		SpotLight(void);
@@ -27,6 +28,7 @@ namespace engine
 		glm::vec3 getPosition(void) const;
 		glm::vec3 getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
+		void activateShadowMapping(const GLboolean &shadow);
 		void position(void);
 		void display(GBuffer *g, Camera *cam);
 	};

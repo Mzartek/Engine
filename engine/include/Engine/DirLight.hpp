@@ -12,6 +12,7 @@ namespace engine
 		{
 			glm::vec3 ALIGN_16 color;
 			glm::vec3 ALIGN_16 direction;
+			GLint withShadowMapping;
 		} _lightInfo;
 	public:
 		DirLight(void);
@@ -21,6 +22,7 @@ namespace engine
 		void setDirection(const glm::vec3 &dir);
 		glm::vec3 getColor(void) const;
 		glm::vec3 getDirection(void) const;
+		void activateShadowMapping(const GLboolean &shadow);
 		void position(const glm::vec3 &position, const GLfloat &dim);
 		void display(GBuffer *g, Camera *cam);
 	};

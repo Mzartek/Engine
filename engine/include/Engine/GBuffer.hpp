@@ -14,9 +14,9 @@ namespace engine
 	class DLLAPI GBuffer : public FrameBuffer
 	{
 	private:
+		GLenum _colorAttachment[GBUF_NUM_TEX - 1];
 		GLuint _idTexture[GBUF_NUM_TEX];
 	public:
-		GLenum colorAttachment[GBUF_NUM_TEX-1];
 		GBuffer(void);
 		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height);

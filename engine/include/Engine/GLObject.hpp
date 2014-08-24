@@ -24,15 +24,9 @@ namespace engine
 			GLfloat ALIGN_16 shininess;
 		} _material;
 		GLsizei _numElement;
-		// Do not delete it
-		ShaderProgram *_gProgram;
-		// Location or Index
-		GLint _gColorTextureLocation;
-		GLuint _gMaterialIndex;
 	public:
 		GLObject(void);
 		~GLObject(void);
-		void config(ShaderProgram *gProgram);
 		void setTexture(const GLuint &id);
 		void setAmbient(const glm::vec4 &ambient);
 		void setDiffuse(const glm::vec4 &diffuse);
@@ -41,8 +35,8 @@ namespace engine
 		GLfloat getTransparency(void);
 		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
-		void display(GBuffer *g) const;
-		void displayShadow(Light *l) const;
+		void display(const GLuint &programId) const;
+		void displayShadow(const GLint &colorLocation) const;
 	};
 
 	int comparGLObject(const void *p1, const void *p2);
