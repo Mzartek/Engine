@@ -31,6 +31,28 @@ uniform lightInfo
 layout(location = 0) out vec4 outNormal;
 layout(location = 1) out uvec4 outMaterial;
 
+struct light
+{
+    vec3 diff;
+    vec3 spec;
+};
+
+uvec4 pack(ivec4 a, ivec4 b, ivec4 c, ivec4 d)
+{
+	uvec4 res = 
+		uvec4(0xFF000000 & uvec4(a << 24)) |
+		uvec4(0x00FF0000 & (b << 16)) |
+		uvec4(0x0000FF00 & (c << 8)) |
+		uvec4(0x000000FF & d);
+
+	return res;
+}
+
+ivec4 unpack(uvec4 a, int v)
+{
+	return (0x000000FF & (ivec4(a) >> (v * 8)));
+}
+
 vec3 getPosition(void)
 {
     float depth = texelFetch(depthTexture, ivec2(gl_FragCoord.xy), 0).x;
@@ -41,9 +63,10 @@ vec3 getPosition(void)
 
 float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
 {
-	if (coord.x > 1.0 || coord.x < 0.0 || coord.y > 1.0 || coord.y < 0.0)
-		return 1.0;
-	return texture(tex, vec3(coord.x + (offSet.x * (1.0/texSize.x)), coord.y + (offSet.y * (1.0/texSize.y)), coord.z-0.005));
+	coord.x += offSet.x * (1.0/texSize.x);
+	coord.y += offSet.y * (1.0/texSize.y);
+	coord.z -= 0.005;
+	return texture(tex, vec3(coord.xyz/coord.w));
 }
 
 float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
@@ -58,12 +81,6 @@ float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
 
 	return shadow;
 }
-
-struct light
-{
-    vec3 diff;
-    vec3 spec;
-};
 
 light calcSpotLight(vec3 N, vec3 eyeVec, vec3 position, float shininess, float shadow) // N need to be normalize
 {
@@ -112,16 +129,11 @@ void main(void)
 	float s = 1.0;
 	if (withShadowMapping)
 		s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
-	light l;
-	if (withShadowMapping)
-		l = calcSpotLight(normal.xyz, camPosition - position, position, normal.w, s);
+	light l = calcSpotLight(normal.xyz, camPosition - position, position, normal.w, s);
 	finalColor *= matAmbient + (matDiffuse * vec4(l.diff, 1.0)) + (matSpecular * vec4(l.spec, 1.0));
 	finalColor = clamp(finalColor, 0.0, 1.0);
 	
 	outNormal = normal;
-	outMaterial =
-		uvec4(0xFF000000 & uvec4(ivec4(finalColor * 255) << 24)) |
-		uvec4(0x00FF0000 & (ivec4(255, 255, 255, 255) << 16)) |
-		uvec4(0x0000FF00 & (ivec4(matDiffuse * 255) << 8)) |
-		uvec4(0x000000FF & ivec4(matSpecular * 255));
+	outMaterial = pack(ivec4(finalColor * 255),
+		ivec4(255, 255, 255, 255), ivec4(matDiffuse * 255), ivec4(matSpecular * 255));
 }

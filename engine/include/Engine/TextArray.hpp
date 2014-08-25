@@ -28,7 +28,7 @@ namespace engine
 			const GLubyte &r, const GLubyte &g, const GLubyte &b,
 			const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Renderer *renderer);
 		void write(const GLchar *text);
-		void display(void);
+		void display(Renderer *renderer);
 	};
 }
 

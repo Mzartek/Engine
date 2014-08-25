@@ -102,7 +102,7 @@ void engine::Model::loadFromFile(const GLchar *file)
 	if (!pScene)
 	{
 		std::cerr << "Unable to load the model: " << file << std::endl;
-		return;
+		exit(1);
 	}
 
 	std::vector<Vertex> vertices;
@@ -229,11 +229,11 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	}
 
 	glUseProgram(_program->getId());
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
+	glViewport(0, 0, g->getWidth(), g->getHeight());
 
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
 	glUniformMatrix4fv(_normalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
-
-	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
@@ -264,10 +264,10 @@ void engine::Model::displayShadow(Light *l) const
 	}
 
 	glUseProgram(l->getShadowMap()->getProgramId());
+	glBindFramebuffer(GL_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
+	glViewport(0, 0, l->getShadowMap()->getWidth(), l->getShadowMap()->getHeight());
 
 	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, glm::value_ptr(l->getVPMatrix() * *_modelMatrix));
-
-	glBindFramebuffer(GL_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)

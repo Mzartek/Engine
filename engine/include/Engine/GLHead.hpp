@@ -8,13 +8,14 @@
 #define DLLAPI __declspec(dllimport)
 #endif
 #define _USE_MATH_DEFINES
-#define ALIGN_16 __declspec(align(16))
+#define ALIGN(X) __declspec(align(X))
+#pragma warning(disable:4324)
 #include <Windows.h>
 #include <GL/glew.h>
 #else
 #define DLLAPI
 #define GL_GLEXT_PROTOTYPES
-#define ALIGN_16 __attribute__((aligned(16)))
+#define ALIGN(X) __attribute__((aligned(X)))
 #endif
 
 #include <iostream>

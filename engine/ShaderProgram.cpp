@@ -59,7 +59,7 @@ GLuint engine::ShaderProgram::loadShader(const GLchar *filename, const GLenum &t
 
 		glDeleteShader(id);
 		delete[] log;
-		return 0;
+		exit(1);
 	}
 
 	delete[] content;
@@ -92,7 +92,7 @@ engine::ShaderProgram::~ShaderProgram(void)
 		glDeleteShader(_idFragmentShader);
 }
 
-GLint engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
+void engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
 {
 	GLchar *log;
 	GLsizei logsize;
@@ -118,26 +118,32 @@ GLint engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, co
 		exit(1);
 	}
 
-	if (vs != NULL)
+	if (vs == NULL)
 	{
-		_idVertexShader = loadShader(vs, GL_VERTEX_SHADER);
-		glAttachShader(_idProgram, _idVertexShader);
+		std::cerr << "Need a Vertex Shader for ShaderProgram" << std::endl;
+		exit(1);
 	}
+	_idVertexShader = loadShader(vs, GL_VERTEX_SHADER);
+	glAttachShader(_idProgram, _idVertexShader);
+
 	if (tcs != NULL)
 	{
 		_idTessControlShader = loadShader(tcs, GL_TESS_CONTROL_SHADER);
 		glAttachShader(_idProgram, _idTessControlShader);
 	}
+
 	if (tes != NULL)
 	{
 		_idTessEvaluationShader = loadShader(tes, GL_TESS_EVALUATION_SHADER);
 		glAttachShader(_idProgram, _idTessEvaluationShader);
 	}
+
 	if (gs != NULL)
 	{
 		_idGeometryShader = loadShader(gs, GL_GEOMETRY_SHADER);
 		glAttachShader(_idProgram, _idGeometryShader);
 	}
+
 	if (fs != NULL)
 	{
 		_idFragmentShader = loadShader(fs, GL_FRAGMENT_SHADER);
@@ -160,10 +166,8 @@ GLint engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, co
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
 		delete[] log;
-		return 0;
+		exit(1);
 	}
-
-	return 1;
 }
 
 GLuint engine::ShaderProgram::getId(void)

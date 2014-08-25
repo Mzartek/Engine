@@ -32,18 +32,14 @@ engine::Camera::~Camera(void)
 	delete _VPMatrix;
 }
 
-void engine::Camera::setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void engine::Camera::setPositionCamera(const glm::vec3 &pos)
 {
-	_pcamera->x = x;
-	_pcamera->y = y;
-	_pcamera->z = z;
+	*_pcamera = pos;
 }
 
-void engine::Camera::setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void engine::Camera::setPositionTarget(const glm::vec3 &pos)
 {
-	_ptarget->x = x;
-	_ptarget->y = y;
-	_ptarget->z = z;
+	*_ptarget = pos;
 }
 
 void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)

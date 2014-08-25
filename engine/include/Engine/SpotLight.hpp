@@ -10,11 +10,11 @@ namespace engine
 	protected:
 		struct lightInfo
 		{
-			glm::vec3 ALIGN_16 color;
-			glm::vec3 ALIGN_16 position;
-			glm::vec3 ALIGN_16 direction;
+			glm::vec3 ALIGN(16) color;
+			glm::vec3 ALIGN(16) position;
+			glm::vec3 ALIGN(16) direction;
 			GLfloat spotCutOff;
-			GLint ALIGN_16 withShadowMapping;
+			GLint ALIGN(16) withShadowMapping;
 		} _lightInfo;
 	public:
 		SpotLight(void);

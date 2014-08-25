@@ -10,8 +10,8 @@ namespace engine
 	private:
 		struct lightInfo
 		{
-			glm::vec3 ALIGN_16 color;
-			glm::vec3 ALIGN_16 direction;
+			glm::vec3 ALIGN(16) color;
+			glm::vec3 ALIGN(16) direction;
 			GLint withShadowMapping;
 		} _lightInfo;
 	public:

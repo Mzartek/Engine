@@ -12,6 +12,6 @@ out VertexData
 
 void main()
 {
-  gl_Position = MVP * vec4(vertex, 1.0);
-  VertOut.texCoord = texture;
+	gl_Position = MVP * vec4(vertex, 1.0);
+	VertOut.texCoord = texture;
 }

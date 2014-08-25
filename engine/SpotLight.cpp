@@ -142,8 +142,8 @@ void engine::SpotLight::position(void)
 		exit(1);
 	}
 
-	*_VPMatrix = glm::perspective(_lightInfo.spotCutOff * 2 * ((GLfloat)M_PI / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 200.0f) *
-		glm::lookAt(_lightInfo.position, glm::vec3(0.0f, 0.6f, 0.0f) , glm::vec3(0.0f, 1.0f, 0.0f));
+	*_VPMatrix = glm::perspective(_lightInfo.spotCutOff * 2 * ((GLfloat)M_PI / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1000.0f) *
+		glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void engine::SpotLight::display(GBuffer *g, Camera *cam)
@@ -166,6 +166,8 @@ void engine::SpotLight::display(GBuffer *g, Camera *cam)
 
 	glDepthMask(GL_FALSE);
 	glUseProgram(_program->getId());
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
+	glViewport(0, 0, g->getWidth(), g->getHeight());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
@@ -206,8 +208,6 @@ void engine::SpotLight::display(GBuffer *g, Camera *cam)
 
 	// Light Info
 	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoIndex, _idLightInfoBuffer);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

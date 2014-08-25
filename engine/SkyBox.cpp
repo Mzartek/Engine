@@ -161,14 +161,14 @@ void engine::SkyBox::display(GBuffer *g, Camera *cam)
 
 	glDepthMask(GL_FALSE);
 	glUseProgram(_program->getId());
+	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
+	glViewport(0, 0, g->getWidth(), g->getHeight());
 
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(pos));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
 	glUniform1i(_textureLocation, 0);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

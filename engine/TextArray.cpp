@@ -109,17 +109,18 @@ void engine::TextArray::write(const GLchar *text)
 	SDL_FreeSurface(t);
 }
 
-void engine::TextArray::display(void)
+void engine::TextArray::display(Renderer *renderer)
 {
 	if(_program == NULL)
 	{
-		std::cerr << "You need to configure the TextArray before" << std::endl;
-		return;
+		std::cerr << "Need to config the TextArray before displaying" << std::endl;
+		exit(1);
 	}
 
 	glDepthMask(GL_FALSE);
 	glEnable(GL_BLEND);
 	glUseProgram(_program->getId());
+	glViewport(0, 0, renderer->getWidth(), renderer->getHeight());
 	
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(*_mat));
 

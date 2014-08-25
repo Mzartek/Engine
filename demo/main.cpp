@@ -25,37 +25,29 @@ engine::ShaderProgram *textProgram;
 
 void display(void)
 {
-	cam->position();
-	sun->position(heli->getPosition(), 25);
-	torch->position();
-
-	// GLObject Pass
+	renderer->clear();
 	gBuffer->clear();
+	sun->clear();
+	torch->clear();
+
 	skybox->display(gBuffer, cam);
 	sol->display(gBuffer, cam);
 	heli->display(gBuffer, cam);
 
-	// Shadow Pass
-	sun->clear();
 	sol->displayShadow(sun);
 	heli->displayShadow(sun);
 
-	torch->clear();
 	sol->displayShadow(torch);
 	heli->displayShadow(torch);
 
-	// Light Pass
-	//sun->display(gBuffer, cam);
+	sun->display(gBuffer, cam);
 	torch->display(gBuffer, cam);
 
-	// Screen
-	renderer->clear();
-	screen->display(gBuffer, 1.0, 1.0, 1.0, 1.0);
+	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);
 
-	// Text
-	//text1->display();
-	//text2->display();
-	//text3->display();
+	//text1->display(renderer);
+	//text2->display(renderer);
+	//text3->display(renderer);
 }
 
 void idle(void)
@@ -63,11 +55,15 @@ void idle(void)
 	cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
 
 	heli->matRotate(0.1f, 0, 1, 0);
+
+	cam->position();
+	sun->position(heli->getPosition(), 25);
+	torch->position();
 }
 
 void reshape(GLuint w, GLuint h)
 {
-	cam->setPerspective(90.0f, w, h, 0.1f, 1000.f);
+	cam->setPerspective(90.0f, w, h, 0.1f, 1000.0f);
 }
 
 void keyboard(GLubyte key, GLboolean state)
@@ -123,7 +119,7 @@ void init(void)
 	configModels();
 	configSkybox();
 
-	cam->setPositionCamera(30, 10, 0);
+	cam->setPositionCamera(glm::vec3(30, 10, 0));
 	cam->setInitialAngle(-90, 0);
 }
 

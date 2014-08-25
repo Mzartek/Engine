@@ -70,7 +70,8 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
-	glDepthRange(0.0f, 1.0f);
+	glDepthRange(0.0, 1.0);
+	glClearDepth(1.0);
 
 	glDisable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -125,7 +126,7 @@ void engine::Renderer::mainLoop(void)
 	if (!_reshape || !_idle || !_display)
 	{
 		std::cerr << "You need to set the Reshape, Idle and Display Function before" << std::endl;
-		return;
+		exit(1);
 	}
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -170,6 +171,6 @@ void engine::Renderer::stopLoop(void)
 
 void engine::Renderer::clear(void)
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	glViewport(0, 0, _width, _height);
 }

@@ -48,28 +48,29 @@ void engine::Screen::config(ShaderProgram *program)
 
 #undef BUFFER_OFFSET
 
-void engine::Screen::display(GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
+void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
 {
 	if(_program==NULL)
 	{
-		std::cerr << "Can't diplay Screen without initialisation" << std::endl;
-		return;
+		std::cerr << "Need to config the Screen before displaying" << std::endl;
+		exit(1);
 	}
   
 	glDepthMask(GL_FALSE);
 	glEnable(GL_BLEND);
 	glUseProgram(_program->getId());
-	glBindVertexArray(_idVAO);
-
-	glUniform4f(_colorLocation, r, g, b, a);
+	glViewport(0, 0, renderer->getWidth(), renderer->getHeight());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 	glUniform1i(_materialTextureLocation, 0);
 
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-  
+	glUniform4f(_colorLocation, r, g, b, a);
+
+	glBindVertexArray(_idVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
 	glBindVertexArray(0);
+
 	glUseProgram(0);
 	glDisable(GL_BLEND);
 	glDepthMask(GL_TRUE);

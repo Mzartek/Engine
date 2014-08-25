@@ -16,8 +16,8 @@ namespace engine
 		Camera(void);
 		Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		~Camera(void);
-		void setPositionCamera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void setPositionTarget(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+		void setPositionCamera(const glm::vec3 &pos);
+		void setPositionTarget(const glm::vec3 &pos);
 		void setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f);
 		glm::vec3 getPositionCamera(void) const;
 		glm::vec3 getPositionTarget(void) const;

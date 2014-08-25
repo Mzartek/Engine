@@ -19,7 +19,7 @@ namespace engine
 	public:
 		ShaderProgram(void);
 		~ShaderProgram(void);
-		GLint loadProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs);
+		void loadProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs);
 		GLuint getId(void);
 	};
 }
