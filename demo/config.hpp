@@ -32,11 +32,11 @@ extern engine::TextArray *text2;
 extern engine::TextArray *text3;
 extern engine::GBuffer *gBuffer;
 
-extern engine::ShaderProgram *objectProgram;
+extern engine::ShaderProgram *gObjectProgram;
 extern engine::ShaderProgram *dirLightProgram;
 extern engine::ShaderProgram *spotLightProgram;
 extern engine::ShaderProgram *shadowProgram;
-extern engine::ShaderProgram *skyboxProgram;
+extern engine::ShaderProgram *gSkyboxProgram;
 extern engine::ShaderProgram *screenProgram;
 extern engine::ShaderProgram *textProgram;
 

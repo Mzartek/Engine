@@ -51,30 +51,31 @@ ivec4 unpack(uvec4 a, int v)
 	return (0x000000FF & (ivec4(a) >> (v * 8)));
 }
 
-vec3 getPosition(void)
+vec3 getPosition(vec2 fragCoord)
 {
-	float depth = texelFetch(depthTexture, ivec2(gl_FragCoord.xy), 0).x;
-	vec4 tmp1 = vec4(gl_FragCoord.xy/screen.xy * 2.0f - 1.0f, depth * 2.0f - 1.0f, 1.0f);
+	float depth = texelFetch(depthTexture, ivec2(fragCoord), 0).x;
+	vec4 tmp1 = vec4(fragCoord/screen * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
 	vec4 tmp2 = IVPMatrix * tmp1;
 	return tmp2.xyz / tmp2.w;
 }
 
-float lookUp(sampler2DShadow tex, vec4 coord, vec2 offSet, ivec2 texSize)
+float lookUp(vec4 coord, vec2 offSet, ivec2 texSize)
 {
 	coord.x += offSet.x * (1.0/texSize.x);
 	coord.y += offSet.y * (1.0/texSize.y);
 	coord.z -= 0.005;
-	return texture(tex, vec3(coord.xyz/coord.w));
+	return texture(shadowMap, vec3(coord.xyz/coord.w));
 }
 
-float calcShadow(sampler2DShadow tex, vec4 coord, float pcf)
+float calcShadow(vec4 coord, float pcf)
 {
 	float a, x, y, shadow = 0.0;
+	ivec2 texSize = textureSize(shadowMap, 0);
 
 	a = (pcf-1.0)/2.0;
 	for(x=-a ; x<=a ; x+=1.0)
 	  for(y=-a ; y<=a ; y+=1.0)
-		  shadow += lookUp(tex, coord, vec2(x, y), textureSize(tex, 0));
+		  shadow += lookUp(coord, vec2(x, y), texSize);
 	shadow /= (pcf*pcf);
 
 	return shadow;
@@ -108,7 +109,7 @@ light calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need
 
 void main(void)
 {
-	vec3 position = getPosition();
+	vec3 position = getPosition(gl_FragCoord.xy);
 	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
 	uvec4 material = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
 	vec4 finalColor = vec4(unpack(material, 3)) / 255;
@@ -118,7 +119,7 @@ void main(void)
 	
 	float s = 1.0;
 	if (withShadowMapping)
-		s = calcShadow(shadowMap, shadowMatrix * vec4(position, 1.0), 1.0);
+		s = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
 	light l = calcDirLight(normal.xyz, camPosition - position, normal.w, s);
 	finalColor *= matAmbient + (matDiffuse * vec4(l.diff, 1.0)) + (matSpecular * vec4(l.spec, 1.0));
 	finalColor = clamp(finalColor, 0.0, 1.0);

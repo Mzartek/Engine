@@ -2,11 +2,11 @@
 
 void configShaders(void)
 {
-	objectProgram->loadProgram("shader/object/gObjectVert.glsl", NULL, NULL, "shader/object/gObjectGeom.glsl", "shader/object/gObjectFrag.glsl");
+	gObjectProgram->loadProgram("shader/object/gObjectVert.glsl", NULL, NULL, "shader/object/gObjectGeom.glsl", "shader/object/gObjectFrag.glsl");
 	dirLightProgram->loadProgram("shader/dirLight/gDirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/gDirLightFrag.glsl");
 	spotLightProgram->loadProgram("shader/spotLight/gSpotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/gSpotLightFrag.glsl");
 	shadowProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
-	skyboxProgram->loadProgram("shader/skybox/gSkyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/gSkyboxFrag.glsl");
+	gSkyboxProgram->loadProgram("shader/skybox/gSkyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/gSkyboxFrag.glsl");
 	screenProgram->loadProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
 	textProgram->loadProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
 }
@@ -77,7 +77,7 @@ void configModels(void)
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
 	GLfloat mat_shininess = 20.0f;
 
-	sol->config(objectProgram);
+	sol->config(gObjectProgram);
 	sol->initGLObjectArray();
 	sol->createGLObject(sizeof vertex, vertex,
 			   sizeof index, index,
@@ -85,7 +85,7 @@ void configModels(void)
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	//Helicopter
-	heli->config(objectProgram);
+	heli->config(gObjectProgram);
 	heli->initGLObjectArray();
 	heli->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
 	heli->sortGLObject();
@@ -98,6 +98,6 @@ void configSkybox(void)
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
 		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
 		     "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
-			 10, skyboxProgram);
+			 10, gSkyboxProgram);
 	skybox->rotate(180, 1, 0, 0);
 }

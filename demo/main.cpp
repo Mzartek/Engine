@@ -15,11 +15,11 @@ engine::TextArray *text2;
 engine::TextArray *text3;
 engine::GBuffer *gBuffer;
 
-engine::ShaderProgram *objectProgram;
+engine::ShaderProgram *gObjectProgram;
 engine::ShaderProgram *dirLightProgram;
 engine::ShaderProgram *spotLightProgram;
 engine::ShaderProgram *shadowProgram;
-engine::ShaderProgram *skyboxProgram;
+engine::ShaderProgram *gSkyboxProgram;
 engine::ShaderProgram *screenProgram;
 engine::ShaderProgram *textProgram;
 
@@ -103,11 +103,11 @@ void init(void)
 	text3 = new engine::TextArray;
 	gBuffer = new engine::GBuffer;
 
-	objectProgram = new engine::ShaderProgram;
+	gObjectProgram = new engine::ShaderProgram;
 	dirLightProgram = new engine::ShaderProgram;
 	spotLightProgram = new engine::ShaderProgram;
 	shadowProgram = new engine::ShaderProgram;
-	skyboxProgram = new engine::ShaderProgram;
+	gSkyboxProgram = new engine::ShaderProgram;
 	screenProgram = new engine::ShaderProgram;
 	textProgram = new engine::ShaderProgram;
 
@@ -127,11 +127,11 @@ void kill(void)
 {
 	delete textProgram;
 	delete screenProgram;
-	delete skyboxProgram;
+	delete gSkyboxProgram;
 	delete shadowProgram;
 	delete spotLightProgram;
 	delete dirLightProgram;
-	delete objectProgram;
+	delete gObjectProgram;
 
 	delete gBuffer;
 	delete text3;
