@@ -136,9 +136,8 @@ void engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloa
 	*_rotateMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
 }
 
-void engine::SkyBox::display(GBuffer *g, Camera *cam)
+void engine::SkyBox::display(GBuffer *g, Camera *cam) const
 {
-	glm::mat4 pos;
 	if(_program == NULL)
 	{
 		std::cerr << "Need to config the SkyBox before displaying" << std::endl;
@@ -155,7 +154,7 @@ void engine::SkyBox::display(GBuffer *g, Camera *cam)
 		exit(1);
 	}
 
-	pos = glm::translate(glm::vec3(cam->getPositionCamera()));
+	glm::mat4 pos = glm::translate(glm::vec3(cam->getPositionCamera()));
 	pos *= *_rotateMatrix;
 	pos = cam->getVPMatrix() * pos;
 
