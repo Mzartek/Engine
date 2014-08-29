@@ -64,7 +64,14 @@ float lookUp(vec4 coord, vec2 offSet, ivec2 texSize)
 	coord.x += offSet.x * (1.0/texSize.x);
 	coord.y += offSet.y * (1.0/texSize.y);
 	coord.z -= 0.005;
-	return texture(shadowMap, vec3(coord.xyz/coord.w));
+
+	coord.x = 0.5f + (coord.x / coord.w * 0.5f);
+	coord.y = 0.5f + (coord.y / coord.w * 0.5f);
+	coord.z = 0.5f + (coord.z / coord.w * 0.5f);
+
+	if(coord.x > 1.0 || coord.x < 0.0 || coord.y > 1.0 || coord.y < 0.0)
+		return 1.0;
+	return texture(shadowMap, coord.xyz);
 }
 
 float calcShadow(vec4 coord, float pcf)
@@ -93,7 +100,7 @@ light calcDirLight(vec3 N, vec3 eyeVec, float shininess, float shadow) // N need
 	L = normalize(lightDirection);
 
 	cosTheta = dot(-L,N);
-	if(cosTheta > 0.0 && shadow != 0.0)
+	if(cosTheta > 0.0 && shadow > 0.0)
 	{
 		E = normalize(eyeVec);
 		R = reflect(L, N);

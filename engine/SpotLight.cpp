@@ -144,6 +144,15 @@ void engine::SpotLight::position(void)
 
 	*_VPMatrix = glm::perspective(_lightInfo.spotCutOff * 2 * ((GLfloat)M_PI / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1000.0f) *
 		glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
+
+	/*glm::mat4 test = glm::perspective(_lightInfo.spotCutOff * 2 * ((GLfloat)M_PI / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1000.0f);
+	std::string text =
+		std::to_string(test[0].x) + " " + std::to_string(test[0].y) + " " + std::to_string(test[0].z) + " " + std::to_string(test[0].w) + "\n" +
+		std::to_string(test[1].x) + " " + std::to_string(test[1].y) + " " + std::to_string(test[1].z) + " " + std::to_string(test[1].w) + "\n" +
+		std::to_string(test[2].x) + " " + std::to_string(test[2].y) + " " + std::to_string(test[2].z) + " " + std::to_string(test[2].w) + "\n" +
+		std::to_string(test[3].x) + " " + std::to_string(test[3].y) + " " + std::to_string(test[3].z) + " " + std::to_string(test[3].w);
+	MessageBox(NULL, text.c_str(), "GL4", MB_OK);
+	exit(0);*/
 }
 
 void engine::SpotLight::display(GBuffer *g, Camera *cam)
@@ -179,7 +188,7 @@ void engine::SpotLight::display(GBuffer *g, Camera *cam)
 	glUniform1i(_materialTextureLocation, 1);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH_STENCIL));
 	glUniform1i(_depthTextureLocation, 2);
 
 	// ShadowMap
@@ -189,12 +198,7 @@ void engine::SpotLight::display(GBuffer *g, Camera *cam)
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
 		glUniform1i(_shadowMapLocation, 3);
 
-		glm::mat4 bias;
-		bias[0] = glm::vec4(0.5f, 0.0f, 0.0f, 0.0f);
-		bias[1] = glm::vec4(0.0f, 0.5f, 0.0f, 0.0f);
-		bias[2] = glm::vec4(0.0f, 0.0f, 0.5f, 0.0f);
-		bias[3] = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, glm::value_ptr(bias * *_VPMatrix));
+		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, glm::value_ptr(*_VPMatrix));
 	}
 
 	// InverseViewProjection

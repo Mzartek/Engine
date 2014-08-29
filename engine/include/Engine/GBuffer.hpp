@@ -7,7 +7,7 @@
 #define GBUF_NUM_TEX 3
 #define GBUF_NORMAL 0
 #define GBUF_MATERIAL 1
-#define GBUF_DEPTH 2
+#define GBUF_DEPTH_STENCIL 2
 
 namespace engine
 {

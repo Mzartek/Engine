@@ -3,9 +3,6 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
-in vec2 vtexCoord[];
-in vec3 vnormal[];
-
 in VertexData
 {
 	vec2 texCoord;

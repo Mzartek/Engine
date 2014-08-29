@@ -148,7 +148,7 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	glUniform1i(_materialTextureLocation, 1);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH));
+	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH_STENCIL));
 	glUniform1i(_depthTextureLocation, 2);
 
 	// ShadowMap
@@ -158,12 +158,7 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
 		glUniform1i(_shadowMapLocation, 3);
 
-		glm::mat4 bias;
-		bias[0] = glm::vec4(0.5f, 0.0f, 0.0f, 0.0f);
-		bias[1] = glm::vec4(0.0f, 0.5f, 0.0f, 0.0f);
-		bias[2] = glm::vec4(0.0f, 0.0f, 0.5f, 0.0f);
-		bias[3] = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, glm::value_ptr(bias * *_VPMatrix));
+		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, glm::value_ptr(*_VPMatrix));
 	}
 
 	// InverseViewProjection

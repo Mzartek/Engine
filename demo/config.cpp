@@ -46,7 +46,7 @@ void configLights(void)
     torch->setPosition(glm::vec3(20.0f, 40.0f, 0.0f));
     torch->setDirection(glm::vec3(-0.5f, -1.0f, 0.0f));
     torch->setSpotCutOff(45.0f);
-	torch->activateShadowMapping(GL_FALSE);
+	torch->activateShadowMapping(GL_TRUE);
 	torch->configShadowMap(1024, 1024, shadowProgram);
 }
 
