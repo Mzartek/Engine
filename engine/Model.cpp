@@ -229,7 +229,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 	}
 
 	glUseProgram(_program->getId());
-	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
 	glViewport(0, 0, g->getWidth(), g->getHeight());
 
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
@@ -239,7 +239,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
 			(*_tGLObject)[i]->display(_program->getId());
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
 }
 
@@ -264,7 +264,7 @@ void engine::Model::displayShadow(Light *l) const
 	}
 
 	glUseProgram(l->getShadowMap()->getProgramId());
-	glBindFramebuffer(GL_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 	glViewport(0, 0, l->getShadowMap()->getWidth(), l->getShadowMap()->getHeight());
 
 	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, glm::value_ptr(l->getVPMatrix() * *_modelMatrix));
@@ -273,6 +273,6 @@ void engine::Model::displayShadow(Light *l) const
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
 			(*_tGLObject)[i]->displayShadow(l->getShadowMap()->getColorTextureLocation());
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
 }

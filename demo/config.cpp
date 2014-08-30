@@ -57,21 +57,13 @@ void configScreen(void)
 
 void configModels(void)
 {
-	GLfloat vertex[] = {
-		-500, 0, -500,
-		0, 0,//
-		0, 1, 0,
-		-500, 0, 500,
-		0, 1,//
-		0, 1, 0,
-		500, 0, 500,
-		1, 1,//
-		0, 1, 0,
-		500, 0, -500,
-		1, 0,//
-		0, 1, 0
+	engine::Vertex vertexArray[] = {
+			{ glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0) },
+			{ glm::vec3(-500, 0, 500), glm::vec2(0, 1), glm::vec3(0, 1, 0) },
+			{ glm::vec3(500, 0, 500), glm::vec2(1, 1), glm::vec3(0, 1, 0) },
+			{ glm::vec3(500, 0, -500), glm::vec2(1, 0), glm::vec3(0, 1, 0) }
 	};
-	GLuint index[] = { 0, 1, 2, 0, 2, 3 };
+	UINT index[] = { 2, 0, 1, 0, 2, 3 };
 	glm::vec4 mat_ambient(0.5f, 0.5f, 0.5f, 1.0f);
 	glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
@@ -79,7 +71,7 @@ void configModels(void)
 
 	sol->config(gObjectProgram);
 	sol->initGLObjectArray();
-	sol->createGLObject(sizeof vertex, vertex,
+	sol->createGLObject(sizeof vertexArray, (GLfloat *)vertexArray,
 			   sizeof index, index,
 			   "resources/ornaments.jpg",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);

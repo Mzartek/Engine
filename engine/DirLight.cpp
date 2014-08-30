@@ -135,7 +135,7 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 
 	glDepthMask(GL_FALSE);
 	glUseProgram(_program->getId());
-	glBindFramebuffer(GL_FRAMEBUFFER, g->getIdFBO());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
 	glViewport(0, 0, g->getWidth(), g->getHeight());
 
 	// GBuffer
@@ -177,7 +177,7 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
 	glDepthMask(GL_TRUE);
 }

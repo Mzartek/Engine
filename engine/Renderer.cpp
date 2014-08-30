@@ -71,12 +71,22 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 	glDepthRange(0.0, 1.0);
-	glClearDepth(1.0);
+
+	glDisable(GL_STENCIL_TEST);
+	glStencilFunc(GL_ALWAYS, 0, 0XFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
 	glDisable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquation(GL_FUNC_ADD);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearDepth(1.0);
+	glClearStencil(0);
 }
 
 void engine::Renderer::setDisplayFunc(void (*f) (void))
@@ -171,6 +181,6 @@ void engine::Renderer::stopLoop(void)
 
 void engine::Renderer::clear(void)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }

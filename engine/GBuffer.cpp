@@ -22,7 +22,7 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	if(glIsFramebuffer(_idFBO))
 		glDeleteFramebuffers(1, &_idFBO);
 	glGenFramebuffers(1, &_idFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 
 	// Texture
 	if(glIsTexture(_idTexture[0]))
@@ -34,26 +34,26 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, _colorAttachment[GBUF_NORMAL], GL_TEXTURE_2D, _idTexture[GBUF_NORMAL], 0);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, _colorAttachment[GBUF_NORMAL], GL_TEXTURE_2D, _idTexture[GBUF_NORMAL], 0);
 
 	// Material Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32UI, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, _colorAttachment[GBUF_MATERIAL], GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL], 0);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, _colorAttachment[GBUF_MATERIAL], GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL], 0);
 
 	// Depth Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, _width, _height);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL], 0);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL], 0);
 
 	glDrawBuffers(2, _colorAttachment);
 
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 GLuint engine::GBuffer::getIdTexture(const GLuint &num) const
@@ -79,7 +79,7 @@ void engine::GBuffer::display(Renderer *r, const GLuint &buf) const
 
 void engine::GBuffer::clear(void) const
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

@@ -25,7 +25,7 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	if(glIsFramebuffer(_idFBO))
 		glDeleteFramebuffers(1, &_idFBO);
 	glGenFramebuffers(1, &_idFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 
 	// Depth Texture
 	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -41,15 +41,15 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _idDepthTexture, 0);
 
 	glDrawBuffer(GL_NONE);
 
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 GLuint engine::ShadowMap::getIdDepthTexture(void) const
@@ -74,7 +74,7 @@ GLint engine::ShadowMap::getColorTextureLocation(void) const
 
 void engine::ShadowMap::clear(void) const
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
