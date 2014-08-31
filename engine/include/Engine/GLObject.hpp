@@ -35,7 +35,7 @@ namespace engine
 		GLfloat getTransparency(void);
 		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
-		void display(const GLuint &programId) const;
+		void display(const GLint &colorTextureLocation, const GLint &materialTextureLocation) const;
 		void displayShadow(const GLint &colorLocation) const;
 	};
 

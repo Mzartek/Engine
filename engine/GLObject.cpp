@@ -95,23 +95,25 @@ void engine::GLObject::load(const GLsizei &sizeVertexArray, const GLfloat *verte
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(3 * sizeof(GLfloat)));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(5 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(5 * sizeof(GLfloat)));
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(8 * sizeof(GLfloat)));
 
 	glBindVertexArray(0);
 }
 
 #undef BUFFER_OFFSET
 
-void engine::GLObject::display(const GLuint &programId) const
+void engine::GLObject::display(const GLint &colorTextureLocation, const GLint &materialTextureLocation) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _idTexture);
-	glUniform1i(glGetUniformLocation(programId, "colorTexture"), 0);
+	glUniform1i(colorTextureLocation, 0);
 	
-	glBindBufferBase(GL_UNIFORM_BUFFER, glGetUniformBlockIndex(programId, "material"), _idMaterialBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, materialTextureLocation, _idMaterialBuffer);
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

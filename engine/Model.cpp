@@ -53,6 +53,8 @@ void engine::Model::config(ShaderProgram *program)
 	_program = program;
 	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
 	_normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
+	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
+	_materialLocation = glGetUniformBlockIndex(_program->getId(), "material");
 }
 
 void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
@@ -98,7 +100,7 @@ void engine::Model::loadFromFile(const GLchar *file)
 	if (_tGLObject != NULL && isMirror == GL_FALSE)
 		_tGLObject->clear();
 
-	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
+	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
 	if (!pScene)
 	{
 		std::cerr << "Unable to load the model: " << file << std::endl;
@@ -110,24 +112,26 @@ void engine::Model::loadFromFile(const GLchar *file)
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 	for (i = 0; i<pScene->mNumMeshes; i++)
 	{
-		//vertices.resize(pScene->mMeshes[i]->mNumVertices);
+		// Vertex Buffer
 		for (j = 0; j<pScene->mMeshes[i]->mNumVertices; j++)
 		{
 			const aiVector3D *pPos = &(pScene->mMeshes[i]->mVertices[j]);
-			const aiVector3D *pNormal = pScene->mMeshes[i]->HasNormals() ? &(pScene->mMeshes[i]->mNormals[j]) : &Zero3D;
 			const aiVector3D *pTexCoord = pScene->mMeshes[i]->HasTextureCoords(0) ? &(pScene->mMeshes[i]->mTextureCoords[0][j]) : &Zero3D;
+			const aiVector3D *pNormal = pScene->mMeshes[i]->HasNormals() ? &(pScene->mMeshes[i]->mNormals[j]) : &Zero3D;
+			const aiVector3D *pTangent = pScene->mMeshes[i]->HasTangentsAndBitangents() ? &(pScene->mMeshes[i]->mTangents[j]) : &Zero3D;
 
 			Vertex v =
 			{
 				glm::vec3(pPos->x, pPos->y, pPos->z),
 				glm::vec2(pTexCoord->x, pTexCoord->y),
-				glm::vec3(pNormal->x, pNormal->y, pNormal->z)
+				glm::vec3(pNormal->x, pNormal->y, pNormal->z),
+				glm::vec3(pTangent->x, pTangent->y, pTangent->z),
 			};
 
 			vertices.push_back(v);
 		}
 
-		//vertices.resize(pScene->mMeshes[i]->mNumFaces * 3);
+		// Index Buffer
 		for (j = 0; j < pScene->mMeshes[i]->mNumFaces; j++)
 		{
 			indices.push_back(pScene->mMeshes[i]->mFaces[j].mIndices[0]);
@@ -237,7 +241,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
-			(*_tGLObject)[i]->display(_program->getId());
+			(*_tGLObject)[i]->display(_colorTextureLocation, _materialLocation);
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);

@@ -19,6 +19,8 @@ namespace engine
 		// Location or Index
 		GLint _MVPLocation;
 		GLint _normalMatrixLocation;
+		GLint _colorTextureLocation;
+		GLint _materialLocation;
 	public:
 		Model();
 		~Model();
