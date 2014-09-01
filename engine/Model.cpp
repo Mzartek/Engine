@@ -7,7 +7,8 @@ engine::Model::Model(void)
 {
 	_tGLObject = NULL;
 	_modelMatrix = new glm::mat4;
-	_program = NULL;
+	_gProgram = NULL;
+	_smProgram = NULL;
 }
 
 engine::Model::~Model(void)
@@ -48,13 +49,17 @@ void engine::Model::initGLObjectMirror(Model *m)
 	_tGLObject = m->_tGLObject;
 }
 
-void engine::Model::config(ShaderProgram *program)
+void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 {
-	_program = program;
-	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
-	_normalMatrixLocation = glGetUniformLocation(_program->getId(), "normalMatrix");
-	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
-	_materialLocation = glGetUniformBlockIndex(_program->getId(), "material");
+	_gProgram = gProgram;
+	_gMVPLocation = glGetUniformLocation(_gProgram->getId(), "MVP");
+	_gNormalMatrixLocation = glGetUniformLocation(_gProgram->getId(), "normalMatrix");
+	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
+	_gMaterialLocation = glGetUniformBlockIndex(_gProgram->getId(), "material");
+
+	_smProgram = smProgram;
+	_smMVPLocation = glGetUniformLocation(_smProgram->getId(), "MVP");
+	_smColorTextureLocation = glGetUniformLocation(_smProgram->getId(), "colorTexture");
 }
 
 void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
@@ -216,7 +221,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 {
 	GLuint i;
 
-	if (_program == NULL)
+	if (_gProgram == NULL)
 	{
 		std::cerr << "Need to config the Model before displaying" << std::endl;
 		exit(1);
@@ -232,16 +237,16 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 		exit(1);
 	}
 
-	glUseProgram(_program->getId());
+	glUseProgram(_gProgram->getId());
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
 	glViewport(0, 0, g->getWidth(), g->getHeight());
 
-	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
-	glUniformMatrix4fv(_normalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
+	glUniformMatrix4fv(_gMVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
+	glUniformMatrix4fv(_gNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
-			(*_tGLObject)[i]->display(_colorTextureLocation, _materialLocation);
+			(*_tGLObject)[i]->display(_gColorTextureLocation, _gMaterialLocation);
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
@@ -251,7 +256,7 @@ void engine::Model::displayShadow(Light *l) const
 {
 	GLuint i;
 
-	if (_program == NULL)
+	if (_smProgram == NULL)
 	{
 		std::cerr << "Need to config the Model before displaying Shadow" << std::endl;
 		exit(1);
@@ -267,15 +272,15 @@ void engine::Model::displayShadow(Light *l) const
 		exit(1);
 	}
 
-	glUseProgram(l->getShadowMap()->getProgramId());
+	glUseProgram(_smProgram->getId());
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
 	glViewport(0, 0, l->getShadowMap()->getWidth(), l->getShadowMap()->getHeight());
 
-	glUniformMatrix4fv(l->getShadowMap()->getMVPLocation(), 1, GL_FALSE, glm::value_ptr(l->getVPMatrix() * *_modelMatrix));
+	glUniformMatrix4fv(_smMVPLocation, 1, GL_FALSE, glm::value_ptr(l->getVPMatrix() * *_modelMatrix));
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
-			(*_tGLObject)[i]->displayShadow(l->getShadowMap()->getColorTextureLocation());
+			(*_tGLObject)[i]->displayShadow(_smColorTextureLocation);
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);

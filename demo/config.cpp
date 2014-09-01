@@ -5,7 +5,7 @@ void configShaders(void)
 	gObjectProgram->loadProgram("shader/object/gObjectVert.glsl", NULL, NULL, "shader/object/gObjectGeom.glsl", "shader/object/gObjectFrag.glsl");
 	dirLightProgram->loadProgram("shader/dirLight/gDirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/gDirLightFrag.glsl");
 	spotLightProgram->loadProgram("shader/spotLight/gSpotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/gSpotLightFrag.glsl");
-	shadowProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
+	shadowMapProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
 	gSkyboxProgram->loadProgram("shader/skybox/gSkyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/gSkyboxFrag.glsl");
 	screenProgram->loadProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
 	textProgram->loadProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
@@ -39,7 +39,7 @@ void configLights(void)
 	sun->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	sun->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
 	sun->activateShadowMapping(GL_TRUE);
-	sun->configShadowMap(1024, 1024, shadowProgram);
+	sun->configShadowMap(1024, 1024);
 
     torch->config(spotLightProgram);
     torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -47,7 +47,7 @@ void configLights(void)
     torch->setDirection(glm::vec3(-0.5f, -1.0f, 0.0f));
     torch->setSpotCutOff(45.0f);
 	torch->activateShadowMapping(GL_TRUE);
-	torch->configShadowMap(1024, 1024, shadowProgram);
+	torch->configShadowMap(1024, 1024);
 }
 
 void configScreen(void)
@@ -69,7 +69,7 @@ void configModels(void)
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
 	GLfloat mat_shininess = 20.0f;
 
-	sol->config(gObjectProgram);
+	sol->config(gObjectProgram, shadowMapProgram);
 	sol->initGLObjectArray();
 	sol->createGLObject(sizeof vertexArray, (GLfloat *)vertexArray,
 			   sizeof index, index,
@@ -77,7 +77,7 @@ void configModels(void)
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	//Helicopter
-	heli->config(gObjectProgram);
+	heli->config(gObjectProgram, shadowMapProgram);
 	heli->initGLObjectArray();
 	heli->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
 	heli->sortGLObject();

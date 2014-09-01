@@ -35,7 +35,7 @@ namespace engine
 	public:
 		Light(void);
 		~Light(void);
-		void configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow);
+		void configShadowMap(const GLuint &width, const GLuint &height);
 		glm::mat4 getVPMatrix(void) const;
 		ShadowMap *getShadowMap(void);
 		void clear(void) const;

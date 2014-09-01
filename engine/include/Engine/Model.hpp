@@ -14,19 +14,23 @@ namespace engine
 		GLboolean isMirror;
 		std::vector<GLObject *> *_tGLObject;
 		glm::mat4 *_modelMatrix;
-		// Do not delete it
-		ShaderProgram *_program;
-		// Location or Index
-		GLint _MVPLocation;
-		GLint _normalMatrixLocation;
-		GLint _colorTextureLocation;
-		GLint _materialLocation;
+		// ShaderProgram
+		ShaderProgram *_gProgram;
+		ShaderProgram *_smProgram;
+		// Geometry Location
+		GLint _gMVPLocation;
+		GLint _gNormalMatrixLocation;
+		GLint _gColorTextureLocation;
+		GLint _gMaterialLocation;
+		// ShadowMap Location
+		GLint _smMVPLocation;
+		GLint _smColorTextureLocation;
 	public:
 		Model();
 		~Model();
 		void initGLObjectArray(void);
 		void initGLObjectMirror(Model *m);
-		void config(ShaderProgram *program);
+		void config(ShaderProgram *gProgram, ShaderProgram *smProgram);
 		void createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				  const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				  const GLchar *pathTexture,

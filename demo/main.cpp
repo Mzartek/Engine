@@ -18,7 +18,7 @@ engine::GBuffer *gBuffer;
 engine::ShaderProgram *gObjectProgram;
 engine::ShaderProgram *dirLightProgram;
 engine::ShaderProgram *spotLightProgram;
-engine::ShaderProgram *shadowProgram;
+engine::ShaderProgram *shadowMapProgram;
 engine::ShaderProgram *gSkyboxProgram;
 engine::ShaderProgram *screenProgram;
 engine::ShaderProgram *textProgram;
@@ -106,7 +106,7 @@ void init(void)
 	gObjectProgram = new engine::ShaderProgram;
 	dirLightProgram = new engine::ShaderProgram;
 	spotLightProgram = new engine::ShaderProgram;
-	shadowProgram = new engine::ShaderProgram;
+	shadowMapProgram = new engine::ShaderProgram;
 	gSkyboxProgram = new engine::ShaderProgram;
 	screenProgram = new engine::ShaderProgram;
 	textProgram = new engine::ShaderProgram;
@@ -128,7 +128,7 @@ void kill(void)
 	delete textProgram;
 	delete screenProgram;
 	delete gSkyboxProgram;
-	delete shadowProgram;
+	delete shadowMapProgram;
 	delete spotLightProgram;
 	delete dirLightProgram;
 	delete gObjectProgram;

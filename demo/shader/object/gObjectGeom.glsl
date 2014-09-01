@@ -20,7 +20,7 @@ out VertexData
 void main(void)
 {
 	int i;
-	for(i = 0; i<gl_in.length(); i++)
+	for(i = 0; i<3; i++)
 	{
 		gl_Position = gl_in[i].gl_Position;
 		GeomOut.texCoord = GeomIn[i].texCoord;
@@ -29,4 +29,5 @@ void main(void)
 
 		EmitVertex();
 	}
+	EndPrimitive();
 }

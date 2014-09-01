@@ -11,12 +11,12 @@ GLchar *engine::ShaderProgram::readText(const GLchar *filename)
 		std::cerr << "Error while opening file: " << filename << std::endl;
 		exit(1);
 	}
-	//On obtient la taille du fichier
+	// Lenght of the file
 	file.seekg(0, std::ifstream::end);
 	size = (GLint)file.tellg();
 	file.seekg(0, std::ifstream::beg);
 
-	//On remplit content
+	// Add content
 	content = new char[size + 1];
 	assert(content != NULL);
 	file.read(content, size);

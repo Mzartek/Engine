@@ -20,12 +20,12 @@ engine::Light::~Light(void)
 		delete _shadow;
 }
 
-void engine::Light::configShadowMap(const GLuint &width, const GLuint &height, ShaderProgram *shadow)
+void engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
 {
 	if (_shadow != NULL)
 		delete _shadow;
 	_shadow = new ShadowMap;
-	_shadow->config(width, height, shadow);
+	_shadow->config(width, height);
 }
 
 glm::mat4 engine::Light::getVPMatrix(void) const

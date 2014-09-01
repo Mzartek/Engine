@@ -3,7 +3,6 @@
 engine::ShadowMap::ShadowMap(void)
 {
 	_idDepthTexture = 0;
-	_program = NULL;
 }
 
 engine::ShadowMap::~ShadowMap(void)
@@ -12,14 +11,10 @@ engine::ShadowMap::~ShadowMap(void)
 		glDeleteTextures(1, &_idDepthTexture);
 }
 
-void engine::ShadowMap::config(const GLuint &width, const GLuint &height, ShaderProgram *program)
+void engine::ShadowMap::config(const GLuint &width, const GLuint &height)
 {
 	_width = width;
 	_height = height;
-	_program = program;
-
-	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
-	_colorTextureLocation = glGetUniformLocation(_program->getId(), "colorTexture");
 
 	// Frame Buffer GLObject"
 	if(glIsFramebuffer(_idFBO))
@@ -55,21 +50,6 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height, Shader
 GLuint engine::ShadowMap::getIdDepthTexture(void) const
 {
 	return _idDepthTexture;
-}
-
-GLuint engine::ShadowMap::getProgramId(void) const
-{
-	return _program->getId();
-}
-
-GLint engine::ShadowMap::getMVPLocation(void) const
-{
-	return _MVPLocation;
-}
-
-GLint engine::ShadowMap::getColorTextureLocation(void) const
-{
-	return _colorTextureLocation;
 }
 
 void engine::ShadowMap::clear(void) const
