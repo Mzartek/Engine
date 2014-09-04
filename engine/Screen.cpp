@@ -27,6 +27,7 @@ void engine::Screen::config(ShaderProgram *program)
 	_program = program;
 	_colorLocation = glGetUniformLocation(_program->getId(), "color");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
+	_lightTextureLocation = glGetUniformLocation(_program->getId(), "lightTexture");
 	
 	if(glIsVertexArray(_idVAO))
 		glDeleteVertexArrays(1, &_idVAO);
@@ -48,22 +49,20 @@ void engine::Screen::config(ShaderProgram *program)
 
 #undef BUFFER_OFFSET
 
-void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
-{
-	if(_program==NULL)
-	{
-		std::cerr << "Need to config the Screen before displaying" << std::endl;
-		exit(1);
-	}
-  
+void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, LBuffer *lbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
+{  
 	glDepthMask(GL_FALSE);
-	glEnable(GL_BLEND);
+
 	glUseProgram(_program->getId());
 	glViewport(0, 0, renderer->getWidth(), renderer->getHeight());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 	glUniform1i(_materialTextureLocation, 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, lbuf->getIdTexture());
+	glUniform1i(_lightTextureLocation, 1);
 
 	glUniform4f(_colorLocation, r, g, b, a);
 
@@ -72,6 +71,6 @@ void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r
 	glBindVertexArray(0);
 
 	glUseProgram(0);
-	glDisable(GL_BLEND);
+
 	glDepthMask(GL_TRUE);
 }

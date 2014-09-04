@@ -2,7 +2,8 @@
 
 engine::GLObject::GLObject(void)
 {
-	_idTexture = 0;
+	_idColorTexture = 0;
+	_idNMTexture = 0;
 	_idVAO = 0;
 	_idVBO = 0;
 	_idIBO = 0;
@@ -23,15 +24,24 @@ engine::GLObject::~GLObject(void)
 		glDeleteBuffers(1, &_idVBO);
 	if(glIsBuffer(_idIBO))
 		glDeleteBuffers(1, &_idIBO);
-	if(glIsTexture(_idTexture))
-		glDeleteTextures(1, &_idTexture);
+	if (glIsTexture(_idColorTexture))
+		glDeleteTextures(1, &_idColorTexture);
+	if (glIsTexture(_idNMTexture))
+		glDeleteTextures(1, &_idNMTexture);
 }
 
-void engine::GLObject::setTexture(const GLuint &id)
+void engine::GLObject::setColorTexture(const GLuint &id)
 {
-	if(glIsTexture(_idTexture))
-		glDeleteTextures(1, &_idTexture);
-	_idTexture = id;
+	if (glIsTexture(_idColorTexture))
+		glDeleteTextures(1, &_idColorTexture);
+	_idColorTexture = id;
+}
+
+void engine::GLObject::setNMTexture(const GLuint &id)
+{
+	if (glIsTexture(_idNMTexture))
+		glDeleteTextures(1, &_idNMTexture);
+	_idNMTexture = id;
 }
 
 void engine::GLObject::setAmbient(const glm::vec4 &ambient)
@@ -107,11 +117,15 @@ void engine::GLObject::load(const GLsizei &sizeVertexArray, const GLfloat *verte
 
 #undef BUFFER_OFFSET
 
-void engine::GLObject::display(const GLint &colorTextureLocation, const GLint &materialTextureLocation) const
+void engine::GLObject::display(const GLint &colorTextureLocation, const GLint &nmTextureLocation, const GLint &materialTextureLocation) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _idTexture);
+	glBindTexture(GL_TEXTURE_2D, _idColorTexture);
 	glUniform1i(colorTextureLocation, 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, _idNMTexture);
+	glUniform1i(nmTextureLocation, 1);
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, materialTextureLocation, _idMaterialBuffer);
 
@@ -123,7 +137,7 @@ void engine::GLObject::display(const GLint &colorTextureLocation, const GLint &m
 void engine::GLObject::displayShadow(const GLint &colorLocation) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _idTexture);
+	glBindTexture(GL_TEXTURE_2D, _idColorTexture);
 	glUniform1i(colorLocation, 0);
 
 	glBindVertexArray(_idVAO);

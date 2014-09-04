@@ -60,16 +60,16 @@
     <None Include="shader\skybox\gSkyboxVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\dirLight\gDirLightFrag.glsl">
+    <None Include="shader\dirLight\dirLightFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\dirLight\gDirLightVert.glsl">
+    <None Include="shader\dirLight\dirLightVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\spotLight\gSpotLightFrag.glsl">
+    <None Include="shader\spotLight\spotLightFrag.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\spotLight\gSpotLightVert.glsl">
+    <None Include="shader\spotLight\spotLightVert.glsl">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

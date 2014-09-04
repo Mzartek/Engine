@@ -55,6 +55,7 @@ void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_gMVPLocation = glGetUniformLocation(_gProgram->getId(), "MVP");
 	_gNormalMatrixLocation = glGetUniformLocation(_gProgram->getId(), "normalMatrix");
 	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
+	_gNMTextureLocation = glGetUniformLocation(_gProgram->getId(), "NMTexture");
 	_gMaterialLocation = glGetUniformBlockIndex(_gProgram->getId(), "material");
 
 	_smProgram = smProgram;
@@ -64,15 +65,17 @@ void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 
 void engine::Model::createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				 const GLsizei &sizeIndexArray, const GLuint *indexArray,
-				 const GLchar *pathTexture,
+				 const GLchar *colorTexture, const GLchar *NMTexture,
 				 const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess)
 {
 	GLObject *newone = new GLObject;
-	GLuint texture;
+	GLuint colorTex, NMTex;
 
-	loadTextureFromFile(pathTexture, &texture);
+	loadTextureFromFile(colorTexture, &colorTex);
+	loadTextureFromFile(NMTexture, &NMTex);
 
-	newone->setTexture(texture);
+	newone->setColorTexture(colorTex);
+	newone->setNMTexture(NMTex);
 	newone->setAmbient(ambient);
 	newone->setDiffuse(diffuse);
 	newone->setSpecular(specular);
@@ -145,11 +148,18 @@ void engine::Model::loadFromFile(const GLchar *file)
 		}
 
 		aiString path;
-		std::string fullPath;
+		std::string dir, colorPath, NMPath;
+		dir = getDir(file);
 		if (pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
-			fullPath = getDir(file) + path.C_Str();
+		{
+			colorPath += dir + path.C_Str();
+			NMPath += dir + "NM_" + path.C_Str();
+		}
 		else
-			fullPath = "resources/none.png";
+		{
+			colorPath = "resources/none.png";
+			NMPath = "resources/NM_none.png";
+		}
 
 		aiColor4D mat_ambient;
 		aiColor4D mat_diffuse;
@@ -168,7 +178,7 @@ void engine::Model::loadFromFile(const GLchar *file)
 
 		createGLObject((GLsizei)vertices.size() * sizeof(Vertex), (GLfloat *)&vertices[0],
 			(GLsizei)indices.size() * sizeof(GLuint), &indices[0],
-			&fullPath[0],
+			colorPath.c_str(), NMPath.c_str(),
 			glm::vec4(mat_ambient.r, mat_ambient.g, mat_ambient.b, mat_ambient.a), glm::vec4(mat_diffuse.r, mat_diffuse.g, mat_diffuse.b, mat_diffuse.a), glm::vec4(mat_specular.r, mat_specular.g, mat_specular.b, mat_specular.a),
 			mat_shininess);
 
@@ -221,22 +231,6 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 {
 	GLuint i;
 
-	if (_gProgram == NULL)
-	{
-		std::cerr << "Need to config the Model before displaying" << std::endl;
-		exit(1);
-	}
-	if (g == NULL)
-	{
-		std::cerr << "Bad GBuffer" << std::endl;
-		exit(1);
-	}
-	if (cam == NULL)
-	{
-		std::cerr << "Bad Camera" << std::endl;
-		exit(1);
-	}
-
 	glUseProgram(_gProgram->getId());
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
 	glViewport(0, 0, g->getWidth(), g->getHeight());
@@ -246,7 +240,7 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 
 	for(i=0 ; i<_tGLObject->size(); i++)
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
-			(*_tGLObject)[i]->display(_gColorTextureLocation, _gMaterialLocation);
+			(*_tGLObject)[i]->display(_gColorTextureLocation, _gNMTextureLocation,_gMaterialLocation);
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
@@ -255,22 +249,6 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 void engine::Model::displayShadow(Light *l) const
 {
 	GLuint i;
-
-	if (_smProgram == NULL)
-	{
-		std::cerr << "Need to config the Model before displaying Shadow" << std::endl;
-		exit(1);
-	}
-	if(l == NULL)
-	{
-		std::cerr << "Bad Light!" << std::endl;
-		exit(1);
-	}
-	if(l->getShadowMap() == NULL)
-	{
-		std::cerr << "Need to config the ShadowMap before displaying" << std::endl;
-		exit(1);
-	}
 
 	glUseProgram(_smProgram->getId());
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());

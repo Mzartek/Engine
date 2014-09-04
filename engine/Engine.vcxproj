@@ -157,6 +157,7 @@
     <ClInclude Include="include\Engine\GBuffer.hpp" />
     <ClInclude Include="include\Engine\GLHead.hpp" />
     <ClInclude Include="include\Engine\GLObject.hpp" />
+    <ClInclude Include="include\Engine\LBuffer.hpp" />
     <ClInclude Include="include\Engine\Light.hpp" />
     <ClInclude Include="include\Engine\Model.hpp" />
     <ClInclude Include="include\Engine\MovableCamera.hpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="FreeCam.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GLObject.cpp" />
+    <ClCompile Include="LBuffer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="MovableCamera.cpp" />

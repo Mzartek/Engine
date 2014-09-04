@@ -105,51 +105,32 @@ void engine::DirLight::activateShadowMapping(const GLboolean &shadow)
 
 void engine::DirLight::position(const glm::vec3 &position, const GLfloat &dim)
 {
-	if(_shadow==NULL)
-	{
-		std::cerr << "Need to config the ShadowMap before positioning" << std::endl;
-		exit(1);
-	}
-
 	*_VPMatrix = glm::ortho(-dim, dim, -dim, dim, -dim, dim)
 		* glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void engine::DirLight::display(GBuffer *g, Camera *cam)
+void engine::DirLight::display(LBuffer *lbuf, GBuffer *gbuf, Camera *cam)
 {
-	if (_program == NULL)
-	{
-		std::cerr << "Need to config the SpotLight before displaying" << std::endl;
-		exit(1);
-	}
-	if (g == NULL)
-	{
-		std::cerr << "Bad GBuffer" << std::endl;
-		exit(1);
-	}
-	if (cam == NULL)
-	{
-		std::cerr << "Bad camera" << std::endl;
-		exit(1);
-	}
+	glDisable(GL_DEPTH);
 
-	glDepthMask(GL_FALSE);
+	glEnable(GL_BLEND);
+	glBlendFuncSeparate(GL_ONE, GL_ONE, GL_ONE, GL_ZERO);
 
 	glUseProgram(_program->getId());
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
-	glViewport(0, 0, g->getWidth(), g->getHeight());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, lbuf->getIdFBO());
+	glViewport(0, 0, lbuf->getWidth(), lbuf->getHeight());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
 	glUniform1i(_normalTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 	glUniform1i(_materialTextureLocation, 1);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, g->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 	glUniform1i(_depthTextureLocation, 2);
 
 	// ShadowMap
@@ -166,7 +147,7 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	glUniformMatrix4fv(_IVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::inverse(cam->getVPMatrix())));
 
 	// Screen
-	glUniform2ui(_screenLocation, g->getWidth(), g->getHeight());
+	glUniform2ui(_screenLocation, lbuf->getWidth(), lbuf->getHeight());
 
 	// Cam position
 	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
@@ -181,5 +162,8 @@ void engine::DirLight::display(GBuffer *g, Camera *cam)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
 
-	glDepthMask(GL_TRUE);
+	glEnable(GL_DEPTH);
+
+	glDisable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

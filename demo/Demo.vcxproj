@@ -26,8 +26,8 @@
     <ClInclude Include="config.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\dirLight\gDirLightFrag.glsl" />
-    <None Include="shader\dirLight\gDirLightVert.glsl" />
+    <None Include="shader\dirLight\dirLightFrag.glsl" />
+    <None Include="shader\dirLight\dirLightVert.glsl" />
     <None Include="shader\object\gObjectFrag.glsl" />
     <None Include="shader\object\gObjectGeom.glsl" />
     <None Include="shader\object\gObjectVert.glsl" />
@@ -37,8 +37,8 @@
     <None Include="shader\shadow\shadowVert.glsl" />
     <None Include="shader\skybox\gSkyboxFrag.glsl" />
     <None Include="shader\skybox\gSkyboxVert.glsl" />
-    <None Include="shader\spotLight\gSpotLightFrag.glsl" />
-    <None Include="shader\spotLight\gSpotLightVert.glsl" />
+    <None Include="shader\spotLight\spotLightFrag.glsl" />
+    <None Include="shader\spotLight\spotLightVert.glsl" />
     <None Include="shader\text\textFrag.glsl" />
     <None Include="shader\text\textVert.glsl" />
   </ItemGroup>

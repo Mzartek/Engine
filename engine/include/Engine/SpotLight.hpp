@@ -30,7 +30,7 @@ namespace engine
 		GLfloat getSpotCutOff(void) const;
 		void activateShadowMapping(const GLboolean &shadow);
 		void position(void);
-		void display(GBuffer *g, Camera *cam);
+		void display(LBuffer *lbuf, GBuffer *gbuf, Camera *cam);
 	};
 }
 

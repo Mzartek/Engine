@@ -21,6 +21,7 @@ namespace engine
 		GLint _gMVPLocation;
 		GLint _gNormalMatrixLocation;
 		GLint _gColorTextureLocation;
+		GLint _gNMTextureLocation;
 		GLint _gMaterialLocation;
 		// ShadowMap Location
 		GLint _smMVPLocation;
@@ -33,7 +34,7 @@ namespace engine
 		void config(ShaderProgram *gProgram, ShaderProgram *smProgram);
 		void createGLObject(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				  const GLsizei &sizeIndexArray, const GLuint *indexArray,
-				  const GLchar *pathTexture,
+				  const GLchar *colorTexture, const GLchar *NMTexture,
 				  const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);
 		void loadFromFile(const GLchar *file);
 		void sortGLObject(void);

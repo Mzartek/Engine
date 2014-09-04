@@ -13,6 +13,7 @@ out VertexData
 	vec2 texCoord;
 	vec3 normal;
 	vec3 tangent;
+	vec3 bitangent;
 } VertOut;
 
 void main(void)
@@ -22,4 +23,5 @@ void main(void)
 	VertOut.texCoord = texCoord;
 	VertOut.normal = normalize(mat3(normalMatrix) * normal);
 	VertOut.tangent = normalize(mat3(normalMatrix) * tangent);
+	VertOut.bitangent = cross(VertOut.normal, VertOut.tangent);
 }

@@ -10,10 +10,9 @@ engine::Model *sol;
 engine::Model *heli;
 engine::SkyBox *skybox;
 engine::Screen *screen;
-engine::TextArray *text1;
-engine::TextArray *text2;
-engine::TextArray *text3;
+engine::TextArray *text;
 engine::GBuffer *gBuffer;
+engine::LBuffer *lBuffer;
 
 engine::ShaderProgram *gObjectProgram;
 engine::ShaderProgram *dirLightProgram;
@@ -27,6 +26,7 @@ void display(void)
 {
 	renderer->clear();
 	gBuffer->clear();
+	lBuffer->clear();
 	sun->clear();
 	torch->clear();
 
@@ -40,14 +40,12 @@ void display(void)
 	sol->displayShadow(torch);
 	heli->displayShadow(torch);
 
-	sun->display(gBuffer, cam);
-	torch->display(gBuffer, cam);
+	sun->display(lBuffer, gBuffer, cam);
+	torch->display(lBuffer, gBuffer, cam);
 
-	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);
+	screen->display(renderer, gBuffer, lBuffer, 1.0, 1.0, 1.0, 1.0);
 
-	//text1->display(renderer);
-	//text2->display(renderer);
-	//text3->display(renderer);
+	//text->display(renderer);
 }
 
 void idle(void)
@@ -98,10 +96,9 @@ void init(void)
 	heli = new engine::Model;
 	skybox = new engine::SkyBox;
 	screen = new engine::Screen;
-	text1 = new engine::TextArray;
-	text2 = new engine::TextArray;
-	text3 = new engine::TextArray;
+	text = new engine::TextArray;
 	gBuffer = new engine::GBuffer;
+	lBuffer = new engine::LBuffer;
 
 	gObjectProgram = new engine::ShaderProgram;
 	dirLightProgram = new engine::ShaderProgram;
@@ -133,10 +130,9 @@ void kill(void)
 	delete dirLightProgram;
 	delete gObjectProgram;
 
+	delete lBuffer;
 	delete gBuffer;
-	delete text3;
-	delete text2;
-	delete text1;
+	delete text;
 	delete screen;
 	delete skybox;
 	delete heli;

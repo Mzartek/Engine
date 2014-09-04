@@ -27,10 +27,9 @@ extern engine::Model *sol;
 extern engine::Model *heli;
 extern engine::SkyBox *skybox;
 extern engine::Screen *screen;
-extern engine::TextArray *text1;
-extern engine::TextArray *text2;
-extern engine::TextArray *text3;
+extern engine::TextArray *text;
 extern engine::GBuffer *gBuffer;
+extern engine::LBuffer *lBuffer;
 
 extern engine::ShaderProgram *gObjectProgram;
 extern engine::ShaderProgram *dirLightProgram;

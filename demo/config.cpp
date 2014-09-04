@@ -3,8 +3,8 @@
 void configShaders(void)
 {
 	gObjectProgram->loadProgram("shader/object/gObjectVert.glsl", NULL, NULL, "shader/object/gObjectGeom.glsl", "shader/object/gObjectFrag.glsl");
-	dirLightProgram->loadProgram("shader/dirLight/gDirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/gDirLightFrag.glsl");
-	spotLightProgram->loadProgram("shader/spotLight/gSpotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/gSpotLightFrag.glsl");
+	dirLightProgram->loadProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
+	spotLightProgram->loadProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
 	shadowMapProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
 	gSkyboxProgram->loadProgram("shader/skybox/gSkyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/gSkyboxFrag.glsl");
 	screenProgram->loadProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
@@ -14,23 +14,16 @@ void configShaders(void)
 void configBuffers(void)
 {
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
+	lBuffer->config(renderer->getWidth(), renderer->getHeight());
 }
 
 void configText(void)
 {
-	text1->config("resources/font/SIXTY.TTF", 100,
+	text->config("resources/font/SIXTY.TTF", 100,
 		      255, 255, 255,
 			  (renderer->getWidth() / 2) - 200, (renderer->getHeight() / 2) + 100,
 			  400, 100, textProgram, renderer);
-	text1->write("Coucou!");
-	text2->config("resources/font/SIXTY.TTF", 100,
-		      255, 255, 255,
-			  (renderer->getWidth() / 2) - 200, (renderer->getHeight() / 2),
-			  400, 100, textProgram, renderer);
-	text3->config("resources/font/SIXTY.TTF", 50,
-		      255, 255, 255,
-			  (renderer->getWidth() / 2) - 200, (renderer->getHeight() / 2) - 100,
-			  400, 100, textProgram, renderer);
+	text->write("Coucou!");
 }
 
 void configLights(void)
@@ -58,12 +51,12 @@ void configScreen(void)
 void configModels(void)
 {
 	engine::Vertex vertexArray[] = {
-			{ glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0) },
-			{ glm::vec3(-500, 0, 500), glm::vec2(0, 1), glm::vec3(0, 1, 0) },
-			{ glm::vec3(500, 0, 500), glm::vec2(1, 1), glm::vec3(0, 1, 0) },
-			{ glm::vec3(500, 0, -500), glm::vec2(1, 0), glm::vec3(0, 1, 0) }
+			{ glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) },
+			{ glm::vec3(-500, 0, 500), glm::vec2(0, 1), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) },
+			{ glm::vec3(500, 0, 500), glm::vec2(1, 1), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) },
+			{ glm::vec3(500, 0, -500), glm::vec2(1, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) }
 	};
-	UINT index[] = { 2, 0, 1, 0, 2, 3 };
+	GLuint index[] = { 2, 0, 1, 0, 2, 3 };
 	glm::vec4 mat_ambient(0.5f, 0.5f, 0.5f, 1.0f);
 	glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
@@ -73,7 +66,7 @@ void configModels(void)
 	sol->initGLObjectArray();
 	sol->createGLObject(sizeof vertexArray, (GLfloat *)vertexArray,
 			   sizeof index, index,
-			   "resources/ornaments.jpg",
+			   "resources/ornaments.jpg", "resources/NM_none.png",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	//Helicopter

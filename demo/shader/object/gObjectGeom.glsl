@@ -8,6 +8,7 @@ in VertexData
 	vec2 texCoord;
 	vec3 normal;
 	vec3 tangent;
+	vec3 bitangent;
 } GeomIn[];
 
 out VertexData
@@ -15,6 +16,7 @@ out VertexData
 	vec2 texCoord;
 	vec3 normal;
 	vec3 tangent;
+	vec3 bitangent;
 } GeomOut;
 
 void main(void)
@@ -26,6 +28,7 @@ void main(void)
 		GeomOut.texCoord = GeomIn[i].texCoord;
 		GeomOut.normal = GeomIn[i].normal;
 		GeomOut.tangent = GeomIn[i].tangent;
+		GeomOut.bitangent = GeomIn[i].bitangent;
 
 		EmitVertex();
 	}

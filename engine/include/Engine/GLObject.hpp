@@ -11,7 +11,8 @@ namespace engine
 	{
 		friend int comparGLObject(const void *p1, const void *p2);
 	private:
-		GLuint _idTexture;
+		GLuint _idColorTexture;
+		GLuint _idNMTexture;
 		GLuint _idVAO;
 		GLuint _idVBO;
 		GLuint _idIBO;
@@ -27,7 +28,8 @@ namespace engine
 	public:
 		GLObject(void);
 		~GLObject(void);
-		void setTexture(const GLuint &id);
+		void setColorTexture(const GLuint &id);
+		void setNMTexture(const GLuint &id);
 		void setAmbient(const glm::vec4 &ambient);
 		void setDiffuse(const glm::vec4 &diffuse);
 		void setSpecular(const glm::vec4 &specular);
@@ -35,7 +37,7 @@ namespace engine
 		GLfloat getTransparency(void);
 		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
-		void display(const GLint &colorTextureLocation, const GLint &materialTextureLocation) const;
+		void display(const GLint &colorTextureLocation, const GLint &nmTextureLocation, const GLint &materialTextureLocation) const;
 		void displayShadow(const GLint &colorLocation) const;
 	};
 

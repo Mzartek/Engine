@@ -40,10 +40,5 @@ engine::ShadowMap *engine::Light::getShadowMap(void)
 
 void engine::Light::clear(void) const
 {
-	if(_shadow==NULL)
-	{
-		std::cerr << "Need to config the ShadowMap before clearing" << std::endl;
-		exit(1);
-	}
 	_shadow->clear();
 }

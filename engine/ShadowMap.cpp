@@ -7,7 +7,7 @@ engine::ShadowMap::ShadowMap(void)
 
 engine::ShadowMap::~ShadowMap(void)
 {
-	if(glIsTexture(_idDepthTexture))
+	if (glIsTexture(_idDepthTexture))
 		glDeleteTextures(1, &_idDepthTexture);
 }
 
