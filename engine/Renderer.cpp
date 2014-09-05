@@ -36,25 +36,20 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 		exit(1);
 	}
 
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-	SDL_GL_SetSwapInterval(1);
 
 	if(fullScreen == GL_TRUE)
 		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
 	else
 		flags = SDL_WINDOW_OPENGL;
+
 	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
-
-	if(!_idWindow)
-	{
-		std::cerr << "Can't set video mode: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		exit(1);
-	}
-
 	_idGLContext = SDL_GL_CreateContext(_idWindow);
+
+	SDL_GL_SetSwapInterval(1);
 
 #ifdef WIN32
 	if(glewInit())

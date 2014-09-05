@@ -90,7 +90,7 @@ float calcShadow(vec4 coord, float pcf)
 
 light calcSpotLight(vec3 N, vec3 eyeVec, vec3 position, float shininess, float shadow) // N need to be normalize
 {
-	vec3 L, D, E, R;
+	vec3 L, V, R, D;
 	float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle;
 	float cosTheta, spot, specular;
 	light res;
@@ -98,26 +98,22 @@ light calcSpotLight(vec3 N, vec3 eyeVec, vec3 position, float shininess, float s
 	res.diff = vec3(0.0, 0.0, 0.0);
 	res.spec = vec3(0.0, 0.0, 0.0);
 
-	L = normalize(position - lightPosition);
+	if(length(N)==0)
+		return res;
 
-	cosTheta = dot(-L,N);
-	if(cosTheta > 0.0 && shadow > 0.0)
-	{
-		D = normalize(lightDirection);
-		E = normalize(eyeVec);
-		R = reflect(L, N);
+	L = normalize(lightPosition - position);
+	V = normalize(eyeVec);
+	R = reflect(-L, N);
+	D = normalize(lightDirection);
 
-		cos_cur_angle = dot(L, D);
-		cos_outer_cone_angle = cos(radians(lightSpotCutOff));
-		cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
-		cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
-		spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
+	cos_cur_angle = dot(-L, D);
+	cos_outer_cone_angle = cos(radians(lightSpotCutOff));
+	cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
+	cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
+	spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
 
-		specular = pow(max(dot(R, E), 0.0), shininess);
-
-		res.diff += lightColor * cosTheta * spot * shadow;
-		res.spec += lightColor * specular * spot * shadow;
-	}
+	res.diff = max(dot(N, L), 0.0) * lightColor * spot * shadow;
+	res.spec = pow(max(dot(R, V), 0.0), shininess) * lightColor * spot * shadow;
 
 	return res;
 }
