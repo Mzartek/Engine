@@ -109,16 +109,11 @@ void engine::DirLight::position(const glm::vec3 &position, const GLfloat &dim)
 		* glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void engine::DirLight::display(LBuffer *lbuf, GBuffer *gbuf, Camera *cam)
+void engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 {
-	glDisable(GL_DEPTH);
-
-	glEnable(GL_BLEND);
-	glBlendFuncSeparate(GL_ONE, GL_ONE, GL_ONE, GL_ZERO);
+	gbuf->setLightConfig();
 
 	glUseProgram(_program->getId());
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, lbuf->getIdFBO());
-	glViewport(0, 0, lbuf->getWidth(), lbuf->getHeight());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
@@ -147,7 +142,7 @@ void engine::DirLight::display(LBuffer *lbuf, GBuffer *gbuf, Camera *cam)
 	glUniformMatrix4fv(_IVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::inverse(cam->getVPMatrix())));
 
 	// Screen
-	glUniform2ui(_screenLocation, lbuf->getWidth(), lbuf->getHeight());
+	glUniform2ui(_screenLocation, gbuf->getWidth(), gbuf->getHeight());
 
 	// Cam position
 	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
@@ -159,11 +154,5 @@ void engine::DirLight::display(LBuffer *lbuf, GBuffer *gbuf, Camera *cam)
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
-
-	glEnable(GL_DEPTH);
-
-	glDisable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

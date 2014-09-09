@@ -53,16 +53,16 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 	
 	GLfloat vertexArray[] = {
 		(GLfloat)x, (GLfloat)y,
-		0, 1,
-
-		(GLfloat)(x+w), (GLfloat)y,
-		1, 1,
-
-		(GLfloat)x, (GLfloat)(y+h),
 		0, 0,
 
-		(GLfloat)(x+w), (GLfloat)(y+h),
-		1, 0
+		(GLfloat)x+w, (GLfloat)y,
+		1, 0,
+
+		(GLfloat)x, (GLfloat)y+h,
+		0, 1,
+
+		(GLfloat)x+w, (GLfloat)y+h,
+		1, 1,
 	};
   
 	if(glIsVertexArray(_idVAO))

@@ -125,8 +125,8 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	glBindVertexArray(0);
 
 	_program = program;
-	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
-	_textureLocation = glGetUniformLocation(_program->getId(), "cubeMap");
+	_MVPLovation = glGetUniformLocation(_program->getId(), "MVP");
+	_cubeMapLocation = glGetUniformLocation(_program->getId(), "cubeMap");
 }
 
 #undef BUFFER_OFFSET
@@ -142,22 +142,19 @@ void engine::SkyBox::display(GBuffer *g, Camera *cam) const
 	pos *= *_rotateMatrix;
 	pos = cam->getVPMatrix() * pos;
 
-	glDepthMask(GL_FALSE);
-	glUseProgram(_program->getId());
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
-	glViewport(0, 0, g->getWidth(), g->getHeight());
+	g->setSkyboxConfig();
 
-	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(pos));
+	glUseProgram(_program->getId());
+
+	glUniformMatrix4fv(_MVPLovation, 1, GL_FALSE, glm::value_ptr(pos));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
-	glUniform1i(_textureLocation, 0);
+	glUniform1i(_cubeMapLocation, 0);
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
-	glDepthMask(GL_TRUE);
 }

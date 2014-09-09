@@ -18,9 +18,8 @@ namespace engine
 		glm::mat4 *_rotateMatrix;
 		// Do not delete it
 		ShaderProgram *_program;
-		// Location or Index
-		GLint _MVPLocation;
-		GLint _textureLocation;
+		GLint _MVPLovation;
+		GLint _cubeMapLocation;
 	public:
 		SkyBox(void);
 		~SkyBox(void);

@@ -62,23 +62,7 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glDepthMask(GL_TRUE);
 	glDepthRange(0.0, 1.0);
-
-	glDisable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 0, 0XFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-	glDisable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBlendEquation(GL_FUNC_ADD);
-
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClearDepth(1.0);
 	glClearStencil(0);
@@ -174,7 +158,27 @@ void engine::Renderer::stopLoop(void)
 	_stopLoop = true;
 }
 
-void engine::Renderer::clear(void)
+void engine::Renderer::setConfig(void) const
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
+
+	glDisable(GL_STENCIL_TEST);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquation(GL_FUNC_ADD);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+
+	glViewport(0, 0, _width, _height);
+}
+
+void engine::Renderer::clear(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);

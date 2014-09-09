@@ -4,7 +4,6 @@
 #include "ShadowMap.hpp"
 #include "Camera.hpp"
 #include "GBuffer.hpp"
-#include "LBuffer.hpp"
 
 namespace engine
 {
@@ -40,7 +39,7 @@ namespace engine
 		glm::mat4 getVPMatrix(void) const;
 		ShadowMap *getShadowMap(void);
 		void clear(void) const;
-		virtual void display(LBuffer *lbuf, GBuffer *gbuf, Camera *cam) = 0;
+		virtual void display(GBuffer *gbuf, Camera *cam) = 0;
 	};
 }
 

@@ -30,12 +30,6 @@ uniform lightInfo
 
 layout(location = 0) out vec4 outLight;
 
-struct light
-{
-    vec3 diff;
-    vec3 spec;
-};
-
 uvec4 pack(ivec4 a, ivec4 b, ivec4 c, ivec4 d)
 {
 	uvec4 res = 
@@ -88,18 +82,15 @@ float calcShadow(vec4 coord, float pcf)
 	return shadow;
 }
 
-light calcSpotLight(vec3 N, vec3 eyeVec, vec3 position, float shininess, float shadow) // N need to be normalize
+vec4 calcSpotLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 eyeVec, vec3 position, float shininess, float shadow) // N need to be normalize
 {
 	vec3 L, V, R, D;
 	float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle;
 	float cosTheta, spot, specular;
-	light res;
+	vec4 diff, spec;
 
-	res.diff = vec3(0.0, 0.0, 0.0);
-	res.spec = vec3(0.0, 0.0, 0.0);
-
-	if(length(N)==0)
-		return res;
+	diff = vec4(0.0, 0.0, 0.0, 0.0);
+	spec = vec4(0.0, 0.0, 0.0, 0.0);
 
 	L = normalize(lightPosition - position);
 	V = normalize(eyeVec);
@@ -112,10 +103,10 @@ light calcSpotLight(vec3 N, vec3 eyeVec, vec3 position, float shininess, float s
 	cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
 	spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
 
-	res.diff = max(dot(N, L), 0.0) * lightColor * spot * shadow;
-	res.spec = pow(max(dot(R, V), 0.0), shininess) * lightColor * spot * shadow;
+	diff = max(dot(N, L), 0.0) * diffColor * spot * shadow;
+	spec = pow(max(dot(R, V), 0.0), shininess) * specColor * spot * shadow;
 
-	return res;
+	return diff + spec;
 }
 
 void main(void)
@@ -123,15 +114,12 @@ void main(void)
 	vec3 position = getPosition(gl_FragCoord.xy);
 	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
 	uvec4 material = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
-	vec4 finalColor = vec4(unpack(material, 3)) / 255;
-	vec4 matAmbient = vec4(unpack(material, 2)) / 255;
-	vec4 matDiffuse = vec4(unpack(material, 1)) / 255;
-	vec4 matSpecular = vec4(unpack(material, 0)) / 255;
+
+	vec4 diffColor = (vec4(unpack(material, 1)) / 255) * vec4(lightColor, 1.0);
+	vec4 specColor = (vec4(unpack(material, 0)) / 255) * vec4(lightColor, 1.0);
 	
 	float s = 1.0;
 	if (withShadowMapping)
 		s = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
-	light l = calcSpotLight(normal.xyz, camPosition - position, position, normal.w, s);
-	
-	outLight = (matDiffuse * vec4(l.diff, 1.0)) + (matSpecular * vec4(l.spec, 1.0));
+	outLight = calcSpotLight(diffColor, specColor, normal.xyz, camPosition - position, position, normal.w, s);
 }

@@ -52,9 +52,27 @@ GLuint engine::ShadowMap::getIdDepthTexture(void) const
 	return _idDepthTexture;
 }
 
+void engine::ShadowMap::setConfig(void) const
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LESS);
+
+	glDisable(GL_STENCIL_TEST);
+
+	glDisable(GL_BLEND);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+
+	glViewport(0, 0, _width, _height);
+}
+
 void engine::ShadowMap::clear(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

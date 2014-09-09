@@ -11,5 +11,5 @@ out vec4 fragColor;
 
 void main(void)
 {
-	fragColor = texture(textTex, FragIn.texCoord);
+	fragColor = texture(textTex, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y));
 }

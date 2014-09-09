@@ -2,11 +2,12 @@
 
 void configShaders(void)
 {
-	gObjectProgram->loadProgram("shader/object/gObjectVert.glsl", NULL, NULL, "shader/object/gObjectGeom.glsl", "shader/object/gObjectFrag.glsl");
+	objectProgram->loadProgram("shader/object/objectVert.glsl", NULL, NULL, "shader/object/objectGeom.glsl", "shader/object/objectFrag.glsl");
 	dirLightProgram->loadProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
 	spotLightProgram->loadProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
 	shadowMapProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
-	gSkyboxProgram->loadProgram("shader/skybox/gSkyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/gSkyboxFrag.glsl");
+	skyboxProgram->loadProgram("shader/skybox/skyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/skyboxFrag.glsl");
+	backgroundProgram->loadProgram("shader/background/backgroundVert.glsl", NULL, NULL, NULL, "shader/background/backgroundFrag.glsl");
 	screenProgram->loadProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
 	textProgram->loadProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
 }
@@ -14,7 +15,6 @@ void configShaders(void)
 void configBuffers(void)
 {
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
-	lBuffer->config(renderer->getWidth(), renderer->getHeight());
 }
 
 void configText(void)
@@ -45,7 +45,7 @@ void configLights(void)
 
 void configScreen(void)
 {
-	screen->config(screenProgram);
+	screen->config(backgroundProgram, screenProgram);
 }
 
 void configModels(void)
@@ -62,7 +62,7 @@ void configModels(void)
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
 	GLfloat mat_shininess = 20.0f;
 
-	sol->config(gObjectProgram, shadowMapProgram);
+	sol->config(objectProgram, shadowMapProgram);
 	sol->initGLObjectArray();
 	sol->createGLObject(sizeof vertexArray, (GLfloat *)vertexArray,
 			   sizeof index, index,
@@ -70,7 +70,7 @@ void configModels(void)
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	//Helicopter
-	heli->config(gObjectProgram, shadowMapProgram);
+	heli->config(objectProgram, shadowMapProgram);
 	heli->initGLObjectArray();
 	heli->loadFromFile("resources/UH-60_Blackhawk/corps.obj");
 	heli->sortGLObject();
@@ -83,6 +83,6 @@ void configSkybox(void)
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
 		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
 		     "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
-			 10, gSkyboxProgram);
+			 10, skyboxProgram);
 	skybox->rotate(180, 1, 0, 0);
 }

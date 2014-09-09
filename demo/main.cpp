@@ -12,13 +12,13 @@ engine::SkyBox *skybox;
 engine::Screen *screen;
 engine::TextArray *text;
 engine::GBuffer *gBuffer;
-engine::LBuffer *lBuffer;
 
-engine::ShaderProgram *gObjectProgram;
+engine::ShaderProgram *objectProgram;
 engine::ShaderProgram *dirLightProgram;
 engine::ShaderProgram *spotLightProgram;
 engine::ShaderProgram *shadowMapProgram;
-engine::ShaderProgram *gSkyboxProgram;
+engine::ShaderProgram *skyboxProgram;
+engine::ShaderProgram *backgroundProgram;
 engine::ShaderProgram *screenProgram;
 engine::ShaderProgram *textProgram;
 
@@ -26,24 +26,26 @@ void display(void)
 {
 	renderer->clear();
 	gBuffer->clear();
-	lBuffer->clear();
 	sun->clear();
 	torch->clear();
 
+	// Skybox
 	skybox->display(gBuffer, cam);
-	sol->display(gBuffer, cam);
-	heli->display(gBuffer, cam);
 
+	// Shadow
 	sol->displayShadow(sun);
 	heli->displayShadow(sun);
-
 	sol->displayShadow(torch);
 	heli->displayShadow(torch);
 
-	sun->display(lBuffer, gBuffer, cam);
-	torch->display(lBuffer, gBuffer, cam);
+	// Opaque Object
+	sol->display(gBuffer, cam);
+	heli->display(gBuffer, cam);
+	//sun->display(gBuffer, cam);
+	//torch->display(gBuffer, cam);
+	screen->background(gBuffer);
 
-	screen->display(renderer, gBuffer, lBuffer, 1.0, 1.0, 1.0, 1.0);
+	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);
 
 	//text->display(renderer);
 }
@@ -98,13 +100,13 @@ void init(void)
 	screen = new engine::Screen;
 	text = new engine::TextArray;
 	gBuffer = new engine::GBuffer;
-	lBuffer = new engine::LBuffer;
 
-	gObjectProgram = new engine::ShaderProgram;
+	objectProgram = new engine::ShaderProgram;
 	dirLightProgram = new engine::ShaderProgram;
 	spotLightProgram = new engine::ShaderProgram;
 	shadowMapProgram = new engine::ShaderProgram;
-	gSkyboxProgram = new engine::ShaderProgram;
+	skyboxProgram = new engine::ShaderProgram;
+	backgroundProgram = new engine::ShaderProgram;
 	screenProgram = new engine::ShaderProgram;
 	textProgram = new engine::ShaderProgram;
 
@@ -124,13 +126,13 @@ void kill(void)
 {
 	delete textProgram;
 	delete screenProgram;
-	delete gSkyboxProgram;
+	delete backgroundProgram;
+	delete skyboxProgram;
 	delete shadowMapProgram;
 	delete spotLightProgram;
 	delete dirLightProgram;
-	delete gObjectProgram;
+	delete objectProgram;
 
-	delete lBuffer;
 	delete gBuffer;
 	delete text;
 	delete screen;

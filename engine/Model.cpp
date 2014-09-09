@@ -235,9 +235,9 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
 {
 	GLuint i;
 
+	g->setGeometryConfig();
+
 	glUseProgram(_gProgram->getId());
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g->getIdFBO());
-	glViewport(0, 0, g->getWidth(), g->getHeight());
 
 	glUniformMatrix4fv(_gMVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
 	glUniformMatrix4fv(_gNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
@@ -246,7 +246,6 @@ void engine::Model::display(GBuffer *g, Camera *cam) const
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
 			(*_tGLObject)[i]->display(_gColorTextureLocation, _gNMTextureLocation,_gMaterialLocation);
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
 }
 
@@ -254,9 +253,9 @@ void engine::Model::displayShadow(Light *l) const
 {
 	GLuint i;
 
+	l->getShadowMap()->setConfig();
+
 	glUseProgram(_smProgram->getId());
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, l->getShadowMap()->getIdFBO());
-	glViewport(0, 0, l->getShadowMap()->getWidth(), l->getShadowMap()->getHeight());
 
 	glUniformMatrix4fv(_smMVPLocation, 1, GL_FALSE, glm::value_ptr(l->getVPMatrix() * *_modelMatrix));
 
@@ -264,6 +263,5 @@ void engine::Model::displayShadow(Light *l) const
         if((*_tGLObject)[i]->getTransparency() == 1.0f)
 			(*_tGLObject)[i]->displayShadow(_smColorTextureLocation);
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glUseProgram(0);
 }

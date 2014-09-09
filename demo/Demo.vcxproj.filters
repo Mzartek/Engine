@@ -45,21 +45,6 @@
     <None Include="shader\text\textVert.glsl">
       <Filter>Shader</Filter>
     </None>
-    <None Include="shader\object\gObjectFrag.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\object\gObjectGeom.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\object\gObjectVert.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\skybox\gSkyboxFrag.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="shader\skybox\gSkyboxVert.glsl">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="shader\dirLight\dirLightFrag.glsl">
       <Filter>Shader</Filter>
     </None>
@@ -70,6 +55,27 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="shader\spotLight\spotLightVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\object\objectFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\object\objectGeom.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\object\objectVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\skybox\skyboxFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\skybox\skyboxVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\background\backgroundFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\background\backgroundVert.glsl">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

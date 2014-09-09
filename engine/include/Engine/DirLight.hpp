@@ -24,7 +24,7 @@ namespace engine
 		glm::vec3 getDirection(void) const;
 		void activateShadowMapping(const GLboolean &shadow);
 		void position(const glm::vec3 &position, const GLfloat &dim);
-		void display(LBuffer *lbuf, GBuffer *gbuf, Camera *cam);
+		void display(GBuffer *gbuf, Camera *cam);
 	};
 }
 

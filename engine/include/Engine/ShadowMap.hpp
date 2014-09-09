@@ -15,6 +15,7 @@ namespace engine
 		~ShadowMap(void);
 		void config(const GLuint &width, const GLuint &height);
 		GLuint getIdDepthTexture(void) const;
+		void setConfig(void) const;
 		void clear(void) const;
 	};
 }
