@@ -6,6 +6,7 @@ engine::TextArray::TextArray(void)
 	_idVAO = 0;
 	_idVBO = 0;
 	_mat = new glm::mat4;
+	_font = NULL;
 	_program = NULL;
 }
 
@@ -20,7 +21,8 @@ engine::TextArray::~TextArray(void)
 	
 	delete _mat;
 
-	TTF_CloseFont(_font);
+	if (_font != NULL)
+		TTF_CloseFont(_font);
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
@@ -117,10 +119,9 @@ void engine::TextArray::display(Renderer *renderer)
 		exit(1);
 	}
 
-	glDepthMask(GL_FALSE);
-	glEnable(GL_BLEND);
+	renderer->setConfig();
+
 	glUseProgram(_program->getId());
-	glViewport(0, 0, renderer->getWidth(), renderer->getHeight());
 	
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(*_mat));
 
@@ -133,8 +134,6 @@ void engine::TextArray::display(Renderer *renderer)
 	glBindVertexArray(0);
 
 	glUseProgram(0);
-	glDisable(GL_BLEND);
-	glDepthMask(GL_TRUE);
 }
 
 #undef BUFFER_OFFSET

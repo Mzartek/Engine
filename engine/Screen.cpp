@@ -73,11 +73,13 @@ void engine::Screen::background(GBuffer *gbuf)
 
 	glUseProgram(0);
 
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
 	gbuf->clearLight();
 }
 
 void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
-{ 
+{
 	renderer->setConfig();
 
 	glUseProgram(_directProgram->getId());
@@ -89,7 +91,7 @@ void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r
 	glUniform4f(_dColorLocation, r, g, b, a);
 
 	glBindVertexArray(_idVAO);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
 	glUseProgram(0);

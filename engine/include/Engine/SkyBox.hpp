@@ -28,7 +28,7 @@ namespace engine
 			const GLchar *posz, const GLchar *negz,
 			GLfloat dim, ShaderProgram *program);
 		void rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void display(GBuffer *g, Camera *cam) const;
+		void display(GBuffer *gbuf, Camera *cam) const;
 	};
 }
 

@@ -41,8 +41,15 @@ void display(void)
 	// Opaque Object
 	sol->display(gBuffer, cam);
 	heli->display(gBuffer, cam);
-	//sun->display(gBuffer, cam);
-	//torch->display(gBuffer, cam);
+	sun->display(gBuffer, cam);
+	torch->display(gBuffer, cam);
+	screen->background(gBuffer);
+
+	// Transparent Object
+	sol->displayTransparent(gBuffer, cam);
+	heli->displayTransparent(gBuffer, cam);
+	sun->display(gBuffer, cam);
+	torch->display(gBuffer, cam);
 	screen->background(gBuffer);
 
 	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);

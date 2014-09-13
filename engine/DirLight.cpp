@@ -27,7 +27,7 @@ void engine::DirLight::config(ShaderProgram *program)
 	// Cam Info
 	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
 	// Light Info
-	_lightInfoIndex = glGetUniformBlockIndex(_program->getId(), "lightInfo");
+	_lightInfoBlockIndex = glGetUniformBlockIndex(_program->getId(), "lightInfo");
 
 	if (glIsBuffer(_idLightInfoBuffer))
 		glDeleteBuffers(1, &_idLightInfoBuffer);
@@ -148,11 +148,13 @@ void engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 
 	// Light Info
-	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoIndex, _idLightInfoBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoBlockIndex, _idLightInfoBuffer);
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
 	glUseProgram(0);
+
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

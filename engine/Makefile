@@ -8,12 +8,12 @@ SYSTEM= $(shell uname)
 
 ifeq ($(SYSTEM), Linux)
 
-COMPILER_OPTIONS=  -Wall -fPIC -O3 -Iinclude
+COMPILER_OPTIONS= -std=c++11 -Wall -fPIC -O3 -Iinclude
 LINKER_OPTIONS= -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp
 
 else
 
-COMPILER_OPTIONS=  -Wall -O3  -Iinclude -I/c/MinGW/user/include -DWIN32 -DENGINE_EXPORTS
+COMPILER_OPTIONS= -std=c++11 -Wall -O3 -Iinclude -I/c/MinGW/user/include -DWIN32 -DENGINE_EXPORTS
 LINKER_OPTIONS= -L/c/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
 
 endif

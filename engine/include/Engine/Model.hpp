@@ -22,7 +22,7 @@ namespace engine
 		GLint _gNormalMatrixLocation;
 		GLint _gColorTextureLocation;
 		GLint _gNMTextureLocation;
-		GLint _gMaterialLocation;
+		GLuint _gMaterialBlockIndex;
 		// ShadowMap Location
 		GLint _smMVPLocation;
 		GLint _smColorTextureLocation;
@@ -45,7 +45,8 @@ namespace engine
 		glm::vec3 getPosition(void) const;
 		GLObject *getGLObject(const GLuint &num) const;
 		void display(GBuffer *g, Camera *cam) const;
-		void displayShadow(Light *l) const;
+		void displayTransparent(GBuffer *gbuf, Camera *cam) const;
+		void displayShadow(Light *light) const;
 	};
 }
 

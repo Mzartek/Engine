@@ -5,7 +5,7 @@ uniform sampler2D lightTexture;
 
 uniform vec4 color;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 ivec4 unpack(uvec4 a, int v)
 {

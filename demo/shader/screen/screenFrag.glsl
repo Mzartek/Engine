@@ -4,7 +4,7 @@ uniform sampler2D backgroundTexture;
 
 uniform vec4 color;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main(void)
 {

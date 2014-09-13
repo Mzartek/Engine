@@ -117,7 +117,7 @@ void engine::GLObject::load(const GLsizei &sizeVertexArray, const GLfloat *verte
 
 #undef BUFFER_OFFSET
 
-void engine::GLObject::display(const GLint &colorTextureLocation, const GLint &nmTextureLocation, const GLint &materialTextureLocation) const
+void engine::GLObject::display(const GLint &colorTextureLocation, const GLint &nmTextureLocation, const GLuint &materialBlockIndex) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _idColorTexture);
@@ -127,7 +127,7 @@ void engine::GLObject::display(const GLint &colorTextureLocation, const GLint &n
 	glBindTexture(GL_TEXTURE_2D, _idNMTexture);
 	glUniform1i(nmTextureLocation, 1);
 	
-	glBindBufferBase(GL_UNIFORM_BUFFER, materialTextureLocation, _idMaterialBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, materialBlockIndex, _idMaterialBuffer);
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

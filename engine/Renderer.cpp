@@ -36,10 +36,14 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 		exit(1);
 	}
 
-	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	if(fullScreen == GL_TRUE)
 		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
@@ -61,11 +65,6 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-
-	glDepthRange(0.0, 1.0);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glClearDepth(1.0);
-	glClearStencil(0);
 }
 
 void engine::Renderer::setDisplayFunc(void (*f) (void))
@@ -162,6 +161,8 @@ void engine::Renderer::setConfig(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
 
@@ -176,10 +177,20 @@ void engine::Renderer::setConfig(void) const
 	glFrontFace(GL_CCW);
 
 	glViewport(0, 0, _width, _height);
+	glDepthRange(0.0, 1.0);
 }
 
 void engine::Renderer::clear(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearDepth(1.0);
+	glClearStencil(0);
+
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
+	glStencilMask(0xFF);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }

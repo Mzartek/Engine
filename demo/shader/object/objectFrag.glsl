@@ -51,8 +51,7 @@ void main(void)
     if(color.a > 0.5)
     {
         outNormal = vec4(normal, shininess);
-        outMaterial = pack(ivec4(color * 255),
-			ivec4(ambient * 255), ivec4(diffuse * 255), ivec4(specular * 255));
+        outMaterial = pack(ivec4(color * 255), ivec4(ambient * 255), ivec4(diffuse * 255), ivec4(specular * 255));
 		gl_FragDepth = gl_FragCoord.z;
     }
     else

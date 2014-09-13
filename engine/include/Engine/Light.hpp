@@ -31,7 +31,7 @@ namespace engine
 		// Cam Info
 		GLint _camPositionLocation;
 		// Light Info
-		GLuint _lightInfoIndex;
+		GLuint _lightInfoBlockIndex;
 	public:
 		Light(void);
 		~Light(void);

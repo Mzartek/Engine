@@ -57,22 +57,28 @@ void engine::ShadowMap::setConfig(void) const
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
 	glDepthFunc(GL_LESS);
+	glDepthMask(GL_TRUE);
 
 	glDisable(GL_STENCIL_TEST);
 
 	glDisable(GL_BLEND);
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
+	glDisable(GL_CULL_FACE);
 
 	glViewport(0, 0, _width, _height);
+	glDepthRange(0.0, 1.0);
 }
 
 void engine::ShadowMap::clear(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+
+	glClearDepth(1.0);
+
+	glDepthMask(GL_TRUE);
+
 	glClear(GL_DEPTH_BUFFER_BIT);
+
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

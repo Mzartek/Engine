@@ -7,7 +7,7 @@ in VertexData
 	vec3 texCoord;
 } FragIn;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 uvec4 pack(ivec4 a, ivec4 b, ivec4 c, ivec4 d)
 {

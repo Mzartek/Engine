@@ -64,13 +64,13 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 		switch(testFormat(image[i]->format->format))
 		{
 		case RGB:
-			glTexImage2D(cube_map_target[i], 0, GL_RGB32F, image[i]->w, image[i]->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexImage2D(cube_map_target[i], 0, GL_RGB8, image[i]->w, image[i]->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		case BGR:
-			glTexImage2D(cube_map_target[i], 0, GL_RGB32F, image[i]->w, image[i]->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexImage2D(cube_map_target[i], 0, GL_RGB8, image[i]->w, image[i]->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		case RGBA:
-			glTexImage2D(cube_map_target[i], 0, GL_RGBA32F, image[i]->w, image[i]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexImage2D(cube_map_target[i], 0, GL_RGBA8, image[i]->w, image[i]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		default:
 			std::cerr << "Format " << image[i]->format->format << " unknown" << std::endl;
@@ -136,13 +136,13 @@ void engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloa
 	*_rotateMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
 }
 
-void engine::SkyBox::display(GBuffer *g, Camera *cam) const
+void engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
 {
 	glm::mat4 pos = glm::translate(glm::vec3(cam->getPositionCamera()));
 	pos *= *_rotateMatrix;
 	pos = cam->getVPMatrix() * pos;
 
-	g->setSkyboxConfig();
+	gbuf->setSkyboxConfig();
 
 	glUseProgram(_program->getId());
 
@@ -153,8 +153,10 @@ void engine::SkyBox::display(GBuffer *g, Camera *cam) const
 	glUniform1i(_cubeMapLocation, 0);
 
 	glBindVertexArray(_idVAO);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);	
 	glBindVertexArray(0);
 
 	glUseProgram(0);
+
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

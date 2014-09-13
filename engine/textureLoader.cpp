@@ -31,15 +31,15 @@ void engine::loadTextureFromFile(const GLchar *path, GLuint *texture)
 	switch(testFormat(image->format->format))
 	{
 	case RGB:
-		glTexStorage2D(GL_TEXTURE_2D, 9, GL_RGB32F, image->w, image->h);
+		glTexStorage2D(GL_TEXTURE_2D, 9, GL_RGB8, image->w, image->h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case BGR:
-		glTexStorage2D(GL_TEXTURE_2D, 9, GL_RGB32F, image->w, image->h);
+		glTexStorage2D(GL_TEXTURE_2D, 9, GL_RGB8, image->w, image->h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case RGBA:
-		glTexStorage2D(GL_TEXTURE_2D, 9, GL_RGBA32F, image->w, image->h);
+		glTexStorage2D(GL_TEXTURE_2D, 9, GL_RGBA8, image->w, image->h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	default:
@@ -63,15 +63,15 @@ void engine::loadTextureFromSDL_Surface(const SDL_Surface *image, GLuint *textur
 	switch(testFormat(image->format->format))
 	{
 	case RGB:
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image->w, image->h);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, image->w, image->h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case BGR:
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image->w, image->h);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, image->w, image->h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	case RGBA:
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, image->w, image->h);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, image->w, image->h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	default:
