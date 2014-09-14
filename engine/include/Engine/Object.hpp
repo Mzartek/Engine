@@ -7,7 +7,7 @@ namespace engine
 {;
 	class DLLAPI Object
 	{
-	protected:
+	private:
 		static GLint _memState;
 	public:
 		Object(void);
