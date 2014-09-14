@@ -17,7 +17,7 @@ LINKER_OPTIONS= -L../engine/lib -L/c/MinGW/user/lib -lmingw32 -lSDL2 -lSDL2main 
 
 endif
 
-SRC= main.cpp config.cpp
+SRC= src/main.cpp src/config.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 
 all:	$(OBJ) 

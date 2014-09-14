@@ -18,7 +18,6 @@ GLchar *engine::ShaderProgram::readText(const GLchar *filename)
 
 	// Add content
 	content = new char[size + 1];
-	assert(content != NULL);
 	file.read(content, size);
 	content[size] = '\0';
 
@@ -50,8 +49,6 @@ GLuint engine::ShaderProgram::loadShader(const GLchar *filename, const GLenum &t
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
 
 		log = new char[logsize + 1];
-		assert(log != NULL);
-
 		log[logsize] = '\0';
 
 		glGetShaderInfoLog(id, logsize, &logsize, log);
@@ -158,8 +155,6 @@ void engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, con
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
 
 		log = new GLchar[logsize + 1];
-		assert(log != NULL);
-
 		log[logsize] = '\0';
 
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, (char *)log);

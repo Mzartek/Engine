@@ -1,11 +1,13 @@
 #ifndef TEXT_ARRAY
 #define TEXT_ARRAY
 
-#include "ShaderProgram.hpp"
-#include "Renderer.hpp"
+#include "Object.hpp"
 
 namespace engine
 {
+	class ShaderProgram;
+	class Renderer;
+
 	class DLLAPI TextArray : public Object
 	{
 	private:

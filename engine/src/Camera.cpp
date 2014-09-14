@@ -12,18 +12,6 @@ engine::Camera::Camera(void)
 	_pcamera->z = 0;
 }
 
-engine::Camera::Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z)
-{
-	_pcamera = new glm::vec3;
-	_ptarget = new glm::vec3;
-	_projectionMatrix = new glm::mat4;
-	_VPMatrix = new glm::mat4;
-
-	_pcamera->x = x;
-	_pcamera->y = y;
-	_pcamera->z = z;
-}
-
 engine::Camera::~Camera(void)
 {
 	delete _pcamera;

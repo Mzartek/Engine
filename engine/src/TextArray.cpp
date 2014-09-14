@@ -1,4 +1,6 @@
 #include <Engine/TextArray.hpp>
+#include <Engine/ShaderProgram.hpp>
+#include <Engine/Renderer.hpp>
 
 engine::TextArray::TextArray(void)
 {

@@ -1,5 +1,5 @@
-#ifndef GL_HEAD
-#define GL_HEAD
+#ifndef ENGINE_HEAD
+#define ENGINE_HEAD
 
 #ifdef WIN32
 #ifdef ENGINE_EXPORTS
@@ -7,26 +7,22 @@
 #else
 #define DLLAPI __declspec(dllimport)
 #endif
-#define _USE_MATH_DEFINES
+#ifdef GCC
+#define ALIGN(X) __attribute__((aligned(X)))
+#else
 #define ALIGN(X) __declspec(align(X))
 #pragma warning(disable:4324)
-#include <Windows.h>
+#endif
 #include <GL/glew.h>
 #else
+#define ALIGN(X) __attribute__((aligned(X)))
 #define DLLAPI
 #define GL_GLEXT_PROTOTYPES
-#define ALIGN(X) __attribute__((aligned(X)))
 #endif
 
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <string>
-
-#include <math.h>
-#include <string.h>
-#include <ctype.h>
-#include <assert.h>
 
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
@@ -36,10 +32,9 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/matrix.hpp>
+#include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/transform.hpp>
-#include <glm/gtx/transform2.hpp>
 
 namespace engine
 {

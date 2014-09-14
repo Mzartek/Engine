@@ -9,7 +9,6 @@ namespace engine
 	{
 	public:
 		PlayerCam(void);
-		PlayerCam(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		~PlayerCam(void);
 		void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r);
 	};

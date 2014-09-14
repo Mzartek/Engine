@@ -7,7 +7,7 @@ namespace engine
 {
 	class DLLAPI SpotLight : public Light
 	{
-	protected:
+	private:
 		struct lightInfo
 		{
 			glm::vec3 ALIGN(16) color;

@@ -2,7 +2,6 @@
 #define GBUFFER
 
 #include "FrameBuffer.hpp"
-#include "Renderer.hpp"
 
 #define GBUF_NUM_TEX 5
 #define GBUF_NORMAL 0

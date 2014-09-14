@@ -9,7 +9,6 @@ namespace engine
 	{
 	public:
 		FreeCam(void);
-		FreeCam(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		~FreeCam(void);
 		void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r);
 	};

@@ -1,7 +1,7 @@
 #ifndef CAMERA
 #define CAMERA
 
-#include "ShaderProgram.hpp"
+#include "Object.hpp"
 
 namespace engine
 {
@@ -14,7 +14,6 @@ namespace engine
 		glm::mat4 *_VPMatrix;
 	public:
 		Camera(void);
-		Camera(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		~Camera(void);
 		void setPositionCamera(const glm::vec3 &pos);
 		void setPositionTarget(const glm::vec3 &pos);

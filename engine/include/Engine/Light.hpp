@@ -1,12 +1,15 @@
 #ifndef LIGHT
 #define LIGHT
 
-#include "ShadowMap.hpp"
-#include "Camera.hpp"
-#include "GBuffer.hpp"
+#include "Object.hpp"
 
 namespace engine
 {
+	class ShadowMap;
+	class ShaderProgram;
+	class GBuffer;
+	class Camera;
+
 	class DLLAPI Light : public Object
 	{
 	protected:
