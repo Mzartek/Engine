@@ -43,7 +43,7 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 
 	// Light Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_LIGHT]);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, _width, _height);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, _idTexture[GBUF_LIGHT], 0);

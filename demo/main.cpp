@@ -54,7 +54,7 @@ void display(void)
 
 	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);
 
-	//text->display(renderer);
+	//text->display(renderer
 }
 
 void idle(void)
