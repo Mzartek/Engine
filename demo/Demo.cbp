@@ -15,8 +15,8 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add option="-Wl,-rpath=../engine/bin/Debug" />
-					<Add directory="../engine/bin/Debug" />
+					<Add option="-Wl,-rpath=../Engine/bin/Debug" />
+					<Add directory="../Engine/bin/Debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -30,21 +30,18 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-Wl,-rpath=../engine/bin/Release" />
-					<Add directory="../engine/bin/Release" />
+					<Add directory="../Engine/bin/Release" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
-			<Add directory="../engine/include" />
+			<Add directory="../Engine/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lEngine" />
 		</Linker>
-		<Unit filename="config.cpp" />
-		<Unit filename="config.hpp" />
-		<Unit filename="main.cpp" />
 		<Unit filename="shader/dirLight/gDirLightFrag.glsl" />
 		<Unit filename="shader/dirLight/gDirLightVert.glsl" />
 		<Unit filename="shader/object/gObjectFrag.glsl" />
@@ -60,6 +57,9 @@
 		<Unit filename="shader/spotLight/gSpotLightVert.glsl" />
 		<Unit filename="shader/text/textFrag.glsl" />
 		<Unit filename="shader/text/textVert.glsl" />
+		<Unit filename="src/config.cpp" />
+		<Unit filename="src/config.hpp" />
+		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

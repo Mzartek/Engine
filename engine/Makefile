@@ -1,4 +1,4 @@
-# Makefile for making dll
+# Makefile for library
 
 CC= g++
 LIBNAME= Engine

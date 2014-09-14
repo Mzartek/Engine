@@ -13,7 +13,7 @@ LINKER_OPTIONS= -L../engine/lib -lEngine -Wl,-rpath=../engine/lib
 else
 
 COMPILER_OPTIONS= -std=c++11 -Wall -O3 -I../engine/include -I/c/MinGW/user/include
-LINKER_OPTIONS= -L../engine/lib -L/c/MinGW/user/lib -lmingw32 -lSDL2main -lSDL2 -lEngine
+LINKER_OPTIONS= -L../engine/lib -L/c/MinGW/user/lib -lmingw32 -lSDL2 -lSDL2main -lEngine
 
 endif
 

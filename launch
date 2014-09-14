@@ -1,3 +1,0 @@
-#!/bin/sh
-
-cd engine && make && cd ../demo && make && bin/sample $1 $2

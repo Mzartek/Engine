@@ -1,7 +1,7 @@
 #ifndef OBJECT
 #define OBJECT
 
-#include "GLHead.hpp"
+#include "EngineHead.hpp"
 
 namespace engine
 {;

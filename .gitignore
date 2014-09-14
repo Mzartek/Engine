@@ -1,13 +1,26 @@
+# Compiled Object files
+*.slo
+*.lo
 *.o
-*.so
-*.dll
-*.a
-*~
-*#
+*.obj
 
-.fuse*
-sample
-sample.exe
-Debug
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
 Release
-x64
+Debug
+
+*.sdf
