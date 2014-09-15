@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
 #include <GL/gl.h>
 #include <SDL2/SDL.h>

@@ -33,10 +33,10 @@ void display(void)
 	skybox->display(gBuffer, cam);
 
 	// Shadow
-	sol->displayShadow(sun);
-	heli->displayShadow(sun);
-	sol->displayShadow(torch);
-	heli->displayShadow(torch);
+	sol->displayShadowMap(sun);
+	heli->displayShadowMap(sun);
+	sol->displayShadowMap(torch);
+	heli->displayShadowMap(torch);
 
 	// Opaque Object
 	sol->display(gBuffer, cam);

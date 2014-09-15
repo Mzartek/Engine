@@ -14,6 +14,7 @@ namespace engine
 		GLuint _idTexture;
 		GLuint _idVAO;
 		GLuint _idVBO;
+		TTF_Font *_font;
 		glm::mat4 *_mat;
 		// Do not delete it
 		ShaderProgram *_program;
@@ -21,7 +22,6 @@ namespace engine
 		GLint _MVPLocation;
 		GLint _textureLocation;
 		// SDL Feature
-		TTF_Font *_font;
 		SDL_Color _color;
 	public:
 		TextArray(void);

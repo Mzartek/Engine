@@ -49,7 +49,7 @@ namespace engine
 		Mesh *getMesh(const GLuint &num) const;
 		void display(GBuffer *g, Camera *cam) const;
 		void displayTransparent(GBuffer *gbuf, Camera *cam) const;
-		void displayShadow(Light *light) const;
+		void displayShadowMap(Light *light) const;
 	};
 }
 

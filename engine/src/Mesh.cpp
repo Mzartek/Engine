@@ -1,46 +1,36 @@
 #include <Engine/Mesh.hpp>
 
 engine::Mesh::Mesh(void)
+	: _idColorTexture(0), _idNMTexture(0),
+	_idVAO(0), _idVBO(0), _idIBO(0)
 {
-	_idColorTexture = 0;
-	_idNMTexture = 0;
-	_idVAO = 0;
-	_idVBO = 0;
-	_idIBO = 0;
-	_idMaterialBuffer = 0;
-
 	glGenBuffers(1, &_idMaterialBuffer);
 	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof _material, NULL, GL_DYNAMIC_DRAW);
-}
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+};
 
 engine::Mesh::~Mesh(void)
 {
+	if (glIsTexture(_idColorTexture)) glDeleteTextures(1, &_idColorTexture);
+	if (glIsTexture(_idNMTexture)) glDeleteTextures(1, &_idNMTexture);
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if (glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
 	glDeleteBuffers(1, &_idMaterialBuffer);
-
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
-	if(glIsBuffer(_idIBO))
-		glDeleteBuffers(1, &_idIBO);
-	if (glIsTexture(_idColorTexture))
-		glDeleteTextures(1, &_idColorTexture);
-	if (glIsTexture(_idNMTexture))
-		glDeleteTextures(1, &_idNMTexture);
 }
 
 void engine::Mesh::setColorTexture(const GLuint &id)
 {
-	if (glIsTexture(_idColorTexture))
-		glDeleteTextures(1, &_idColorTexture);
+	if (glIsTexture(_idColorTexture)) glDeleteTextures(1, &_idColorTexture);
+
 	_idColorTexture = id;
 }
 
 void engine::Mesh::setNMTexture(const GLuint &id)
 {
-	if (glIsTexture(_idNMTexture))
-		glDeleteTextures(1, &_idNMTexture);
+	if (glIsTexture(_idNMTexture)) glDeleteTextures(1, &_idNMTexture);
+
 	_idNMTexture = id;
 }
 
@@ -82,22 +72,20 @@ GLfloat engine::Mesh::getTransparency(void)
 void engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
 {
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if (glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
+
 	_numElement = sizeIndexArray/(GLsizei)sizeof(GLuint);
 
 	// Vertex Array, Vertex Buffer Object and Index Buffer Object
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
 
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
 	glGenBuffers(1, &_idVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeVertexArray, vertexArray, GL_STATIC_DRAW);
 
-	if(glIsBuffer(_idIBO))
-		glDeleteBuffers(1, &_idIBO);
 	glGenBuffers(1, &_idIBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idIBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeIndexArray, indexArray, GL_STATIC_DRAW);

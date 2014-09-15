@@ -16,44 +16,23 @@ engine::SpotLight::~SpotLight(void)
 
 void engine::SpotLight::config(ShaderProgram *program)
 {
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if (glIsBuffer(_idLightInfoBuffer)) glDeleteBuffers(1, &_idLightInfoBuffer);
+
 	_program = program;
-	// From GBuffer
-	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
-	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
-	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
-	// ShadowMap
-	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
-	// Matrix
-	_IVPMatrixLocation = glGetUniformLocation(_program->getId(), "IVPMatrix");
-	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
-	// Screen Info
-	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
-	// Cam Info
-	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
-	// Light Info
-	_lightInfoBlockIndex = glGetUniformBlockIndex(_program->getId(), "lightInfo");
 
-	if (glIsBuffer(_idLightInfoBuffer))
-		glDeleteBuffers(1, &_idLightInfoBuffer);
-	glGenBuffers(1, &_idLightInfoBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof _lightInfo, &_lightInfo, GL_DYNAMIC_DRAW);
-
-	// Configure Layout
+	// Layout
 	GLfloat vertex[] = {
 		-1, -1,
 		1, -1,
-		-1,  1,
-		1,  1,
+		-1, 1,
+		1, 1,
 	};
 
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
 
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
 	glGenBuffers(1, &_idVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof vertex, vertex, GL_STATIC_DRAW);
@@ -63,6 +42,21 @@ void engine::SpotLight::config(ShaderProgram *program)
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
 
 	glBindVertexArray(0);
+
+	// LightInfo Buffer
+	glGenBuffers(1, &_idLightInfoBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof _lightInfo, &_lightInfo, GL_DYNAMIC_DRAW);
+
+	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
+	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
+	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
+	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
+	_IVPMatrixLocation = glGetUniformLocation(_program->getId(), "IVPMatrix");
+	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
+	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
+	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
+	_lightInfoBlockIndex = glGetUniformBlockIndex(_program->getId(), "lightInfo");
 }
 
 #undef BUFFER_OFFSET
@@ -146,7 +140,7 @@ void engine::SpotLight::position(void)
 
 void engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 {
-	gbuf->setLightConfig();
+	gbuf->setLightState();
 
 	glUseProgram(_program->getId());
 

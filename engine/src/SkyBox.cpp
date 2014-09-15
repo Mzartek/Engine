@@ -4,25 +4,17 @@
 #include <Engine/Camera.hpp>
 
 engine::SkyBox::SkyBox()
+	: _idTexture(0), _idVAO(0), _idVBO(0), _idIBO(0)
 {
-	_idTexture = 0;
-	_idVAO = 0;
-	_idVBO = 0;
-	_idIBO = 0;
 	_rotateMatrix = new glm::mat4;
-	_program = NULL;
 }
 
 engine::SkyBox::~SkyBox()
 {
-	if(glIsTexture(_idTexture))
-		glDeleteTextures(1, &_idTexture);
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
-	if(glIsBuffer(_idIBO))
-		glDeleteBuffers(1, &_idIBO);
+	if(glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
+	if(glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if(glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if(glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
 	delete _rotateMatrix;
 }
 
@@ -34,6 +26,14 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	GLfloat dim, ShaderProgram *program)
 {
 	GLuint i;
+
+	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if (glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
+
+	_program = program;
+
 	GLenum cube_map_target[] = {
 		GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
 		GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
@@ -47,8 +47,6 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	image[4] = IMG_Load(posz);
 	image[5] = IMG_Load(negz);
 
-	if(glIsTexture(_idTexture))
-		glDeleteTextures(1, &_idTexture);
 	glGenTextures(1, &_idTexture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
 
@@ -82,8 +80,6 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 		SDL_FreeSurface(image[i]);
 	}
 
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-
 	GLfloat vertexArray[] = {
 		+dim, -dim, -dim,
 		-dim, -dim, -dim,
@@ -104,19 +100,13 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	};
 	_numElement = sizeof(indexArray) / sizeof(GLuint);
 
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
 
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
 	glGenBuffers(1, &_idVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof vertexArray, vertexArray, GL_STATIC_DRAW);
 
-	if(glIsBuffer(_idIBO))
-		glDeleteBuffers(1, &_idIBO);
 	glGenBuffers(1, &_idIBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idIBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof indexArray, indexArray, GL_STATIC_DRAW);
@@ -127,7 +117,6 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 
 	glBindVertexArray(0);
 
-	_program = program;
 	_MVPLovation = glGetUniformLocation(_program->getId(), "MVP");
 	_cubeMapLocation = glGetUniformLocation(_program->getId(), "cubeMap");
 }
@@ -145,7 +134,7 @@ void engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
 	pos *= *_rotateMatrix;
 	pos = cam->getVPMatrix() * pos;
 
-	gbuf->setSkyboxConfig();
+	gbuf->setSkyboxState();
 
 	glUseProgram(_program->getId());
 

@@ -6,10 +6,6 @@ engine::Camera::Camera(void)
 	_ptarget = new glm::vec3;
 	_projectionMatrix = new glm::mat4;
 	_VPMatrix = new glm::mat4;
-
-	_pcamera->x = 0;
-	_pcamera->y = 0;
-	_pcamera->z = 0;
 }
 
 engine::Camera::~Camera(void)

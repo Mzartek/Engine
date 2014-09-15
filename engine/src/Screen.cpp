@@ -4,23 +4,26 @@
 #include <Engine/Renderer.hpp>
 
 engine::Screen::Screen()
+	: _idVAO(0), _idVBO(0)
 {
-	_backgroundProgram = NULL;
-	_directProgram = NULL;
 }
 
 engine::Screen::~Screen()
 {
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
+	if(glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if(glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
 void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
 {
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+
+	_backgroundProgram = backgroundProgram;
+	_directProgram = directProgram;
+
 	GLfloat vertex[] = {
 		-1, -1,
 		1, -1,
@@ -28,21 +31,9 @@ void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 		1,  1,
 	};
 	
-	_backgroundProgram = backgroundProgram;
-	_bMaterialTextureLocation = glGetUniformLocation(_backgroundProgram->getId(), "materialTexture");
-	_bLightTextureLocation = glGetUniformLocation(_backgroundProgram->getId(), "lightTexture");
-
-	_directProgram = directProgram;
-	_dBackgroundTextureLocation = glGetUniformLocation(_directProgram->getId(), "backgroundTexture");
-	_dColorLocation = glGetUniformLocation(_directProgram->getId(), "color");
-	
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
   
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
 	glGenBuffers(1, &_idVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof vertex, vertex, GL_STATIC_DRAW);
@@ -52,13 +43,19 @@ void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), BUFFER_OFFSET(0));
 
 	glBindVertexArray(0);
+
+	_bMaterialTextureLocation = glGetUniformLocation(_backgroundProgram->getId(), "materialTexture");
+	_bLightTextureLocation = glGetUniformLocation(_backgroundProgram->getId(), "lightTexture");
+
+	_dBackgroundTextureLocation = glGetUniformLocation(_directProgram->getId(), "backgroundTexture");
+	_dColorLocation = glGetUniformLocation(_directProgram->getId(), "color");
 }
 
 #undef BUFFER_OFFSET
 
 void engine::Screen::background(GBuffer *gbuf)
 {
-	gbuf->setBackgroundConfig();
+	gbuf->setBackgroundState();
 
 	glUseProgram(_backgroundProgram->getId());
 
@@ -83,7 +80,7 @@ void engine::Screen::background(GBuffer *gbuf)
 
 void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
 {
-	renderer->setConfig();
+	renderer->setState();
 
 	glUseProgram(_directProgram->getId());
 

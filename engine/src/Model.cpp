@@ -11,11 +11,9 @@
 #include <assimp/scene.h>
 
 engine::Model::Model(void)
+	: _tMesh(NULL)
 {
-	_tMesh = NULL;
 	_modelMatrix = new glm::mat4;
-	_gProgram = NULL;
-	_smProgram = NULL;
 }
 
 engine::Model::~Model(void)
@@ -59,13 +57,14 @@ void engine::Model::initMeshMirror(Model *m)
 void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 {
 	_gProgram = gProgram;
+	_smProgram = smProgram;
+
 	_gMVPLocation = glGetUniformLocation(_gProgram->getId(), "MVP");
 	_gNormalMatrixLocation = glGetUniformLocation(_gProgram->getId(), "normalMatrix");
 	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
 	_gNMTextureLocation = glGetUniformLocation(_gProgram->getId(), "NMTexture");
 	_gMaterialBlockIndex = glGetUniformBlockIndex(_gProgram->getId(), "material");
 
-	_smProgram = smProgram;
 	_smMVPLocation = glGetUniformLocation(_smProgram->getId(), "MVP");
 	_smColorTextureLocation = glGetUniformLocation(_smProgram->getId(), "colorTexture");
 }
@@ -242,7 +241,7 @@ void engine::Model::display(GBuffer *gbuf, Camera *cam) const
 {
 	GLuint i;
 
-	gbuf->setGeometryConfig();
+	gbuf->setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
@@ -262,7 +261,7 @@ void engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 {
 	GLuint i;
 
-	gbuf->setGeometryConfig();
+	gbuf->setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
@@ -278,11 +277,11 @@ void engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-void engine::Model::displayShadow(Light *light) const
+void engine::Model::displayShadowMap(Light *light) const
 {
 	GLuint i;
 
-	light->getShadowMap()->setConfig();
+	light->getShadowMap()->setState();
 
 	glUseProgram(_smProgram->getId());
 

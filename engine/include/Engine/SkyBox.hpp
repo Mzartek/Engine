@@ -16,12 +16,12 @@ namespace engine
 		GLuint _idVAO;
 		GLuint _idVBO;
 		GLuint _idIBO;
-		GLuint _numElement;
 		glm::mat4 *_rotateMatrix;
 		// Do not delete it
 		ShaderProgram *_program;
 		GLint _MVPLovation;
 		GLint _cubeMapLocation;
+		GLuint _numElement;
 	public:
 		SkyBox(void);
 		~SkyBox(void);

@@ -16,9 +16,9 @@ namespace engine
 		GLuint _idVBO;
 		// Location or Index
 		ShaderProgram *_backgroundProgram;
+		ShaderProgram *_directProgram;
 		GLint _bMaterialTextureLocation;
 		GLint _bLightTextureLocation;
-		ShaderProgram *_directProgram;
 		GLint _dBackgroundTextureLocation;
 		GLint _dColorLocation;
 	public:

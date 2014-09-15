@@ -157,7 +157,7 @@ void engine::Renderer::stopLoop(void)
 	_stopLoop = true;
 }
 
-void engine::Renderer::setConfig(void) const
+void engine::Renderer::setState(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 

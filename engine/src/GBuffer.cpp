@@ -2,29 +2,25 @@
 
 engine::GBuffer::GBuffer(void)
 {
-	memset(_idTexture, 0, sizeof _idTexture);
+	_idTexture[0] = 0;
 }
 
 engine::GBuffer::~GBuffer(void)
 {
-	if(glIsTexture(_idTexture[0]))
-		glDeleteTextures(GBUF_NUM_TEX, _idTexture);
+	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
 }
 
 void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 {
+	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
+
 	_width = width;
 	_height = height;
 
 	// Frame Buffer Object
-	if(glIsFramebuffer(_idFBO))
-		glDeleteFramebuffers(1, &_idFBO);
-	glGenFramebuffers(1, &_idFBO);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 
 	// Texture
-	if(glIsTexture(_idTexture[0]))
-		glDeleteTextures(GBUF_NUM_TEX, _idTexture);
 	glGenTextures(GBUF_NUM_TEX, _idTexture);
 
 	// Normal Texture
@@ -71,7 +67,7 @@ GLuint engine::GBuffer::getIdTexture(const GLuint &num) const
 	return _idTexture[num];
 }
 
-void engine::GBuffer::setSkyboxConfig(void)
+void engine::GBuffer::setSkyboxState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -96,7 +92,7 @@ void engine::GBuffer::setSkyboxConfig(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::GBuffer::setGeometryConfig(void)
+void engine::GBuffer::setGeometryState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -125,7 +121,7 @@ void engine::GBuffer::setGeometryConfig(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::GBuffer::setLightConfig(void)
+void engine::GBuffer::setLightState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -154,7 +150,7 @@ void engine::GBuffer::setLightConfig(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::GBuffer::setBackgroundConfig(void)
+void engine::GBuffer::setBackgroundState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]

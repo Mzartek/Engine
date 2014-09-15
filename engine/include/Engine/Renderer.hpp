@@ -32,7 +32,7 @@ namespace engine
 		SDL_Window *getId(void);
 		void mainLoop(void);
 		void stopLoop(void);
-		void setConfig(void) const;
+		void setState(void) const;
 		void clear(void) const;
 	};
 }

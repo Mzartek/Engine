@@ -21,10 +21,10 @@ namespace engine
 		~GBuffer(void);
 		void config(const GLuint &width, const GLuint &height);
 		GLuint getIdTexture(const GLuint &num) const;
-		void setSkyboxConfig(void);
-		void setGeometryConfig(void);
-		void setLightConfig(void);
-		void setBackgroundConfig(void);
+		void setSkyboxState(void);
+		void setGeometryState(void);
+		void setLightState(void);
+		void setBackgroundState(void);
 		void clear(void) const;
 		void clearLight(void) const;
 	};

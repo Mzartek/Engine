@@ -2,13 +2,12 @@
 
 engine::FrameBuffer::FrameBuffer(void)
 {
-	_idFBO = 0;
+	glGenFramebuffers(1, &_idFBO);
 }
 
 engine::FrameBuffer::~FrameBuffer(void)
 {
-	if(glIsFramebuffer(_idFBO))
-		glDeleteFramebuffers(1, &_idFBO);
+	glDeleteFramebuffers(1, &_idFBO);
 }
 
 GLuint engine::FrameBuffer::getWidth(void) const

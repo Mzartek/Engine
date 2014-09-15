@@ -2,30 +2,23 @@
 #include <Engine/ShadowMap.hpp>
 
 engine::Light::Light(void)
+	: _idVAO(0), _idVBO(0), _idLightInfoBuffer(0)
 {
 	_VPMatrix = new glm::mat4;
-	_shadow = NULL;
+	_shadow = new ShadowMap;
 }
 
 engine::Light::~Light(void)
 {
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
-	if (glIsBuffer(_idLightInfoBuffer))
-		glDeleteBuffers(1, &_idLightInfoBuffer);
-
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if (glIsBuffer(_idLightInfoBuffer)) glDeleteBuffers(1, &_idLightInfoBuffer);
 	delete _VPMatrix;
-	if (_shadow != NULL)
-		delete _shadow;
+	delete _shadow;
 }
 
 void engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
 {
-	if (_shadow != NULL)
-		delete _shadow;
-	_shadow = new ShadowMap;
 	_shadow->config(width, height);
 }
 

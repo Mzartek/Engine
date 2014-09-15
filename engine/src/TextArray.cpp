@@ -3,28 +3,18 @@
 #include <Engine/Renderer.hpp>
 
 engine::TextArray::TextArray(void)
+	: _idTexture(0), _idVAO(0), _idVBO(0), _font(NULL)
 {
-	_idTexture = 0;
-	_idVAO = 0;
-	_idVBO = 0;
 	_mat = new glm::mat4;
-	_font = NULL;
-	_program = NULL;
 }
 
 engine::TextArray::~TextArray(void)
 {
-	if(glIsTexture(_idTexture))
-		glDeleteTextures(1, &_idTexture);
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
-	
+	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if (_font) TTF_CloseFont(_font);
 	delete _mat;
-
-	if (_font != NULL)
-		TTF_CloseFont(_font);
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
@@ -34,6 +24,11 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 	const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Renderer *renderer)
 {
 	SDL_Surface *t;
+
+	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
+	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
+	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	if (_font) TTF_CloseFont(_font);
 	
 	_color.r = r;
 	_color.g = g;
@@ -68,14 +63,10 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 		(GLfloat)x+w, (GLfloat)y+h,
 		1, 1,
 	};
-  
-	if(glIsVertexArray(_idVAO))
-		glDeleteVertexArrays(1, &_idVAO);
+
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
   
-	if(glIsBuffer(_idVBO))
-		glDeleteBuffers(1, &_idVBO);
 	glGenBuffers(1, &_idVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof vertexArray, vertexArray, GL_STATIC_DRAW);
@@ -94,6 +85,8 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 
 	*_mat = glm::ortho(0.0f, (GLfloat)renderer->getWidth(), 0.0f, (GLfloat)renderer->getHeight(), -1.0f, 1.0f);
 }
+
+#undef BUFFER_OFFSET
 
 void engine::TextArray::write(const GLchar *text)
 {
@@ -115,13 +108,7 @@ void engine::TextArray::write(const GLchar *text)
 
 void engine::TextArray::display(Renderer *renderer)
 {
-	if(_program == NULL)
-	{
-		std::cerr << "Need to config the TextArray before displaying" << std::endl;
-		exit(1);
-	}
-
-	renderer->setConfig();
+	renderer->setState();
 
 	glUseProgram(_program->getId());
 	
@@ -137,5 +124,3 @@ void engine::TextArray::display(Renderer *renderer)
 
 	glUseProgram(0);
 }
-
-#undef BUFFER_OFFSET

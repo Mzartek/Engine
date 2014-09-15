@@ -16,25 +16,18 @@ namespace engine
 		GLuint _idVAO;
 		GLuint _idVBO;
 		GLuint _idLightInfoBuffer;
-		glm::mat4 *_VPMatrix;
-		ShadowMap *_shadow;
-		// Do not delete it
 		ShaderProgram *_program;
-		// From GBuffer
 		GLint _normalTextureLocation;
 		GLint _materialTextureLocation;
 		GLint _depthTextureLocation;
-		// ShadowMap
 		GLint _shadowMapLocation;
-		// Matrix
 		GLint _shadowMatrixLocation;
 		GLint _IVPMatrixLocation;
-		// Screen Info
 		GLint _screenLocation;
-		// Cam Info
 		GLint _camPositionLocation;
-		// Light Info
 		GLuint _lightInfoBlockIndex;
+		glm::mat4 *_VPMatrix;
+		ShadowMap *_shadow;
 	public:
 		Light(void);
 		~Light(void);
