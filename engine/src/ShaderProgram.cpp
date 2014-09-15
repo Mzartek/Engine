@@ -1,6 +1,6 @@
 #include <Engine/ShaderProgram.hpp>
 
-GLchar *engine::ShaderProgram::readText(const GLchar *filename)
+static GLchar *readText(const GLchar *filename)
 {
 	std::ifstream file(filename, std::ifstream::in | std::ifstream::binary);
 	GLchar *content;
@@ -17,7 +17,7 @@ GLchar *engine::ShaderProgram::readText(const GLchar *filename)
 	file.seekg(0, std::ifstream::beg);
 
 	// Add content
-	content = new char[size + 1];
+	content = new GLchar[size + 1];
 	file.read(content, size);
 	content[size] = '\0';
 
@@ -25,7 +25,7 @@ GLchar *engine::ShaderProgram::readText(const GLchar *filename)
 	return content;
 }
 
-GLuint engine::ShaderProgram::loadShader(const GLchar *filename, const GLenum &type)
+static GLuint loadShader(const GLchar *filename, const GLenum &type)
 {
 	GLuint id;
 	GLchar *content, *log;
@@ -48,7 +48,7 @@ GLuint engine::ShaderProgram::loadShader(const GLchar *filename, const GLenum &t
 	{
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
 
-		log = new char[logsize + 1];
+		log = new GLchar[logsize + 1];
 		log[logsize] = '\0';
 
 		glGetShaderInfoLog(id, logsize, &logsize, log);
@@ -157,7 +157,7 @@ void engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, con
 		log = new GLchar[logsize + 1];
 		log[logsize] = '\0';
 
-		glGetProgramInfoLog(_idProgram, logsize, &logsize, (char *)log);
+		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
 		delete[] log;

@@ -14,8 +14,6 @@ namespace engine
 		GLuint _idTessEvaluationShader;
 		GLuint _idGeometryShader;
 		GLuint _idFragmentShader;
-		GLchar *readText(const GLchar *filename);
-		GLuint loadShader(const GLchar *filename, const GLenum &type);
 	public:
 		ShaderProgram(void);
 		~ShaderProgram(void);
