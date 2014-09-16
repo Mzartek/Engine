@@ -12,7 +12,7 @@ LINKER_OPTIONS= -L../Engine/bin -lEngine -Wl,-rpath=../Engine/bin
 
 else
 
-COMPILER_OPTIONS= -std=c++11 -Wall -O3 -I../Engine/include -I/c/MinGW/user/include
+COMPILER_OPTIONS= -std=c++11 -Wall -O3 -I../Engine/include -I/c/MinGW/user/include -DWIN32 -DGCC
 LINKER_OPTIONS= -L../Engine/lib -L/c/MinGW/user/lib -lmingw32 -lSDL2 -lSDL2main -lEngine
 
 endif
