@@ -14,9 +14,7 @@ uniform material
 in VertexData
 {
 	vec2 texCoord;
-	vec3 normal;
-	vec3 tangent;
-	vec3 bitangent;
+	mat3 TBN;
 } FragIn;
 
 layout(location = 0) out vec4 outNormal;
@@ -33,20 +31,15 @@ uvec4 pack(ivec4 a, ivec4 b, ivec4 c, ivec4 d)
 	return res;
 }
 
-vec3 CalcBumpedNormal(vec3 normal, vec3 tangent, vec3 bitangent, vec3 bumpMapNormal)
+vec3 CalcBumpedNormal(mat3 TBN, vec3 bumpMapNormal)
 {
-	normal = normalize(normal);
-	tangent = normalize(tangent);
-	bitangent = normalize(bitangent);
-	bumpMapNormal = bumpMapNormal * 2.0 - 1.0;
-
-	return normalize(mat3(tangent, bitangent, normal) * bumpMapNormal);
+	return normalize(TBN * (bumpMapNormal * 2.0 - 1.0));
 }
 
 void main(void)
 {
     vec4 color = texture(colorTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y));
-	vec3 normal = CalcBumpedNormal(FragIn.normal, FragIn.tangent, FragIn.bitangent, texture(NMTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y)).xyz);
+	vec3 normal = CalcBumpedNormal(FragIn.TBN, texture(NMTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y)).xyz);
 
     if(color.a > 0.5)
     {

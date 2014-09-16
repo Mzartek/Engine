@@ -6,17 +6,13 @@ layout (triangle_strip, max_vertices = 3) out;
 in VertexData
 {
 	vec2 texCoord;
-	vec3 normal;
-	vec3 tangent;
-	vec3 bitangent;
+	mat3 TBN;
 } GeomIn[];
 
 out VertexData
 {
 	vec2 texCoord;
-	vec3 normal;
-	vec3 tangent;
-	vec3 bitangent;
+	mat3 TBN;
 } GeomOut;
 
 void main(void)
@@ -26,9 +22,7 @@ void main(void)
 	{
 		gl_Position = gl_in[i].gl_Position;
 		GeomOut.texCoord = GeomIn[i].texCoord;
-		GeomOut.normal = GeomIn[i].normal;
-		GeomOut.tangent = GeomIn[i].tangent;
-		GeomOut.bitangent = GeomIn[i].bitangent;
+		GeomOut.TBN = GeomIn[i].TBN;
 
 		EmitVertex();
 	}

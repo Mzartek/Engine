@@ -65,6 +65,7 @@
 		<Unit filename="include/Engine/TextArray.hpp" />
 		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/DirLight.cpp" />
+		<Unit filename="src/EngineFunctions.cpp" />
 		<Unit filename="src/FrameBuffer.cpp" />
 		<Unit filename="src/FreeCam.cpp" />
 		<Unit filename="src/GBuffer.cpp" />
@@ -81,7 +82,6 @@
 		<Unit filename="src/SkyBox.cpp" />
 		<Unit filename="src/SpotLight.cpp" />
 		<Unit filename="src/TextArray.cpp" />
-		<Unit filename="src/textureLoader.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

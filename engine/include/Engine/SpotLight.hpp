@@ -24,11 +24,11 @@ namespace engine
 		void setPosition(const glm::vec3 &pos);
 		void setDirection(const glm::vec3 &dir);
 		void setSpotCutOff(const float &spot);
+		void setShadowMapping(const GLboolean &shadow);
 		glm::vec3 getColor(void) const;
 		glm::vec3 getPosition(void) const;
 		glm::vec3 getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
-		void activateShadowMapping(const GLboolean &shadow);
 		void position(void);
 		void display(GBuffer *gbuf, Camera *cam);
 	};

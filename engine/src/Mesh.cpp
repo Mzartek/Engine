@@ -37,29 +37,21 @@ void engine::Mesh::setNMTexture(const GLuint &id)
 void engine::Mesh::setAmbient(const glm::vec4 &ambient)
 {
 	_material.ambient = ambient;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
 void engine::Mesh::setDiffuse(const glm::vec4 &diffuse)
 {
 	_material.diffuse = diffuse;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
 void engine::Mesh::setSpecular(const glm::vec4 &specular)
 {
 	_material.specular = specular;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
 void engine::Mesh::setShininess(const GLfloat &shininess)
 {
 	_material.shininess = shininess;
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _material, &_material);
 }
 
 GLfloat engine::Mesh::getTransparency(void)
@@ -115,6 +107,7 @@ void engine::Mesh::display(const GLint &colorTextureLocation, const GLint &nmTex
 	glBindTexture(GL_TEXTURE_2D, _idNMTexture);
 	glUniform1i(nmTextureLocation, 1);
 	
+	updateDynamicBuffer(_idMaterialBuffer, &_material, sizeof _material);
 	glBindBufferBase(GL_UNIFORM_BUFFER, materialBlockIndex, _idMaterialBuffer);
 
 	glBindVertexArray(_idVAO);

@@ -47,6 +47,7 @@ void engine::DirLight::config(ShaderProgram *program)
 	glGenBuffers(1, &_idLightInfoBuffer);
 	glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof _lightInfo, &_lightInfo, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
@@ -64,21 +65,16 @@ void engine::DirLight::config(ShaderProgram *program)
 void engine::DirLight::setColor(const glm::vec3 &color)
 {
 	_lightInfo.color = color;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
 }
 
 void engine::DirLight::setDirection(const glm::vec3 &dir)
 {
 	_lightInfo.direction = dir;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
+}
+
+void engine::DirLight::setShadowMapping(const GLboolean &shadow)
+{
+	_lightInfo.withShadowMapping = shadow;
 }
 
 glm::vec3 engine::DirLight::getColor(void) const
@@ -89,16 +85,6 @@ glm::vec3 engine::DirLight::getColor(void) const
 glm::vec3 engine::DirLight::getDirection(void) const
 {
 	return _lightInfo.direction;
-}
-
-void engine::DirLight::activateShadowMapping(const GLboolean &shadow)
-{
-	_lightInfo.withShadowMapping = shadow;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
 }
 
 void engine::DirLight::position(const glm::vec3 &position, const GLfloat &dim)
@@ -146,6 +132,7 @@ void engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 
 	// Light Info
+	updateDynamicBuffer(_idLightInfoBuffer, &_lightInfo, sizeof _lightInfo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoBlockIndex, _idLightInfoBuffer);
 
 	glBindVertexArray(_idVAO);

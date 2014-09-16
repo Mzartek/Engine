@@ -20,9 +20,9 @@ namespace engine
 		void config(ShaderProgram *program);
 		void setColor(const glm::vec3 &color);
 		void setDirection(const glm::vec3 &dir);
+		void setShadowMapping(const GLboolean &shadow);
 		glm::vec3 getColor(void) const;
 		glm::vec3 getDirection(void) const;
-		void activateShadowMapping(const GLboolean &shadow);
 		void position(const glm::vec3 &position, const GLfloat &dim);
 		void display(GBuffer *gbuf, Camera *cam);
 	};

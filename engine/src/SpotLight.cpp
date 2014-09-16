@@ -47,13 +47,14 @@ void engine::SpotLight::config(ShaderProgram *program)
 	glGenBuffers(1, &_idLightInfoBuffer);
 	glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof _lightInfo, &_lightInfo, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
 	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
 	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
-	_IVPMatrixLocation = glGetUniformLocation(_program->getId(), "IVPMatrix");
 	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
+	_IVPMatrixLocation = glGetUniformLocation(_program->getId(), "IVPMatrix");
 	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
 	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
 	_lightInfoBlockIndex = glGetUniformBlockIndex(_program->getId(), "lightInfo");
@@ -64,42 +65,27 @@ void engine::SpotLight::config(ShaderProgram *program)
 void engine::SpotLight::setColor(const glm::vec3 &color)
 {
 	_lightInfo.color = color;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
 }
 
 
 void engine::SpotLight::setPosition(const glm::vec3 &pos)
 {
 	_lightInfo.position = pos;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
 }
 
 void engine::SpotLight::setDirection(const glm::vec3 &dir)
 {
 	_lightInfo.direction = dir;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
 }
 
 void engine::SpotLight::setSpotCutOff(const float &spot)
 {
 	_lightInfo.spotCutOff = spot;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
+}
+
+void engine::SpotLight::setShadowMapping(const GLboolean &shadow)
+{
+	_lightInfo.withShadowMapping = shadow;
 }
 
 glm::vec3 engine::SpotLight::getColor(void) const
@@ -120,16 +106,6 @@ glm::vec3 engine::SpotLight::getDirection(void) const
 GLfloat engine::SpotLight::getSpotCutOff(void) const
 {
 	return _lightInfo.spotCutOff;
-}
-
-void engine::SpotLight::activateShadowMapping(const GLboolean &shadow)
-{
-	_lightInfo.withShadowMapping = shadow;
-	if (glIsBuffer(_idLightInfoBuffer))
-	{
-		glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof _lightInfo, &_lightInfo);
-	}
 }
 
 void engine::SpotLight::position(void)
@@ -177,6 +153,7 @@ void engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 
 	// Light Info
+	updateDynamicBuffer(_idLightInfoBuffer, &_lightInfo, sizeof _lightInfo);
 	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoBlockIndex, _idLightInfoBuffer);
 
 	glBindVertexArray(_idVAO);

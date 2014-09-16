@@ -120,7 +120,7 @@
     <ClCompile Include="src\SkyBox.cpp" />
     <ClCompile Include="src\SpotLight.cpp" />
     <ClCompile Include="src\TextArray.cpp" />
-    <ClCompile Include="src\textureLoader.cpp" />
+    <ClCompile Include="src\EngineFunctions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

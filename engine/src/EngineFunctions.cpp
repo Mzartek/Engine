@@ -83,3 +83,10 @@ void engine::loadTextureFromSDL_Surface(const SDL_Surface *image, GLuint *textur
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
+
+void engine::updateDynamicBuffer(const GLuint &buffer, const GLvoid *data, const GLsizeiptr &size)
+{
+	glBindBuffer(GL_UNIFORM_BUFFER, buffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, size, data);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}

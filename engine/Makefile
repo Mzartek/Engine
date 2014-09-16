@@ -18,12 +18,12 @@ LINKER_OPTIONS= -L/c/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSD
 
 endif
 
-SRC= src/textureLoader.cpp src/Object.cpp src/Mesh.cpp src/Renderer.cpp src/Camera.cpp src/MovableCamera.cpp src/FreeCam.cpp src/PlayerCam.cpp src/ShaderProgram.cpp src/Model.cpp src/Light.cpp src/DirLight.cpp src/SpotLight.cpp src/FrameBuffer.cpp src/ShadowMap.cpp src/SkyBox.cpp src/Screen.cpp src/TextArray.cpp src/GBuffer.cpp
+SRC= src/EngineFunctions.cpp src/Object.cpp src/Mesh.cpp src/Renderer.cpp src/Camera.cpp src/MovableCamera.cpp src/FreeCam.cpp src/PlayerCam.cpp src/ShaderProgram.cpp src/Model.cpp src/Light.cpp src/DirLight.cpp src/SpotLight.cpp src/FrameBuffer.cpp src/ShadowMap.cpp src/SkyBox.cpp src/Screen.cpp src/TextArray.cpp src/GBuffer.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 
 all:	$(OBJ)
 ifeq ($(SYSTEM), Linux)
-	$(CC) -shared $^ -o $(DIR)lib$(LIBNAME).so $(LINKER_OPTIONS)
+	$(CC) -shared $^ -o $(BIN)lib$(LIBNAME).so $(LINKER_OPTIONS)
 else
 	$(CC) -shared $^ -o $(BIN)$(LIBNAME).dll $(LINKER_OPTIONS)
 endif
@@ -34,7 +34,7 @@ obj/%.o:	%.cpp
 clean:	
 	rm -f $(OBJ)
 	rm -f *~
+	rm -f src/*~
 	rm -f include/Engine/*~
-	rm -f *#
-	rm -f $(DIR)lib$(LIBNAME).so
+	rm -f $(BIN)lib$(LIBNAME).so
 	rm -f $(BIN)$(LIBNAME).dll $(DIR)lib$(LIBNAME).a
