@@ -84,9 +84,13 @@ void engine::loadTextureFromSDL_Surface(const SDL_Surface *image, GLuint *textur
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-void engine::updateDynamicBuffer(const GLuint &buffer, const GLvoid *data, const GLsizeiptr &size)
+void engine::updateDynamicBuffer(const GLuint &buffer, const void *data, const size_t &size)
 {
+	void *mappedResource;
+
 	glBindBuffer(GL_UNIFORM_BUFFER, buffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, size, data);
+	mappedResource = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
+	memcpy(mappedResource, data, size);
+	glUnmapBuffer(GL_UNIFORM_BUFFER);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

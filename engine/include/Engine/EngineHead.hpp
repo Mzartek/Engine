@@ -51,7 +51,7 @@ namespace engine
 	extern DLLAPI pixelFormat testFormat(const GLuint &f);
 	extern DLLAPI void loadTextureFromFile(const GLchar *path, GLuint *texture);
 	extern DLLAPI void loadTextureFromSDL_Surface(const SDL_Surface *image, GLuint *texture);
-	extern DLLAPI void updateDynamicBuffer(const GLuint &buffer, const GLvoid *data, const GLsizeiptr &size);
+	extern DLLAPI void updateDynamicBuffer(const GLuint &buffer, const void *data, const size_t &size);
 }
 
 #endif
