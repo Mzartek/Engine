@@ -19,7 +19,7 @@ engine::Model::Model(void)
 engine::Model::~Model(void)
 {
 	GLuint i;
-	if (_tMesh != NULL && isMirror == GL_FALSE)
+	if (_tMesh != NULL && isMirror != GL_TRUE)
 	{
 		for (i = 0; i<_tMesh->size(); i++)
 			delete (*_tMesh)[i];
@@ -31,7 +31,7 @@ engine::Model::~Model(void)
 void engine::Model::initMeshArray(void)
 {
 	GLuint i;
-	if (_tMesh != NULL && isMirror == GL_FALSE)
+	if (_tMesh != NULL && isMirror != GL_TRUE)
 	{
 		for (i = 0; i<_tMesh->size(); i++)
 			delete (*_tMesh)[i];
@@ -44,7 +44,7 @@ void engine::Model::initMeshArray(void)
 void engine::Model::initMeshMirror(Model *m)
 {
 	GLuint i;
-	if (_tMesh != NULL && isMirror == GL_FALSE)
+	if (_tMesh != NULL && isMirror != GL_TRUE)
 	{
 		for (i = 0; i<_tMesh->size(); i++)
 			delete (*_tMesh)[i];
@@ -69,19 +69,15 @@ void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_smColorTextureLocation = glGetUniformLocation(_smProgram->getId(), "colorTexture");
 }
 
-void engine::Model::createMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+void engine::Model::addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				 const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				 const GLchar *colorTexture, const GLchar *NMTexture,
 				 const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess)
 {
 	Mesh *newone = new Mesh;
-	GLuint colorTex, NMTex;
 
-	loadTextureFromFile(colorTexture, &colorTex);
-	loadTextureFromFile(NMTexture, &NMTex);
-
-	newone->setColorTexture(colorTex);
-	newone->setNMTexture(NMTex);
+	newone->setColorTexture(colorTexture);
+	newone->setNMTexture(NMTexture);
 	newone->setAmbient(ambient);
 	newone->setDiffuse(diffuse);
 	newone->setSpecular(specular);
@@ -111,8 +107,14 @@ void engine::Model::loadFromFile(const GLchar *file)
 	Assimp::Importer Importer;
 	GLuint i, j;
 
-	if (_tMesh != NULL && isMirror == GL_FALSE)
-		_tMesh->clear();
+	if (_tMesh == NULL || isMirror == GL_TRUE)
+	{
+		std::cerr << "Error Model configuration" << std::endl;
+		exit(1);
+	}
+	for (i = 0; i<_tMesh->size(); i++)
+		delete (*_tMesh)[i];
+	_tMesh->clear();
 
 	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
 	if (!pScene)
@@ -121,7 +123,7 @@ void engine::Model::loadFromFile(const GLchar *file)
 		exit(1);
 	}
 
-	std::vector<Vertex> vertices;
+	std::vector<GLfloat> vertices;
 	std::vector<GLuint> indices;
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 	const aiVector3D *pPos;
@@ -138,15 +140,10 @@ void engine::Model::loadFromFile(const GLchar *file)
 			pNormal = pScene->mMeshes[i]->HasNormals() ? &(pScene->mMeshes[i]->mNormals[j]) : &Zero3D;
 			pTangent = pScene->mMeshes[i]->HasTangentsAndBitangents() ? &(pScene->mMeshes[i]->mTangents[j]) : &Zero3D;
 
-			Vertex v =
-			{
-				glm::vec3(pPos->x, pPos->y, pPos->z),
-				glm::vec2(pTexCoord->x, pTexCoord->y),
-				glm::vec3(pNormal->x, pNormal->y, pNormal->z),
-				glm::vec3(pTangent->x, pTangent->y, pTangent->z),
-			};
-
-			vertices.push_back(v);
+			vertices.push_back(pPos->x), vertices.push_back(pPos->y), vertices.push_back(pPos->z);
+			vertices.push_back(pTexCoord->x), vertices.push_back(pTexCoord->y);
+			vertices.push_back(pNormal->x), vertices.push_back(pNormal->y), vertices.push_back(pNormal->z);
+			vertices.push_back(pTangent->x), vertices.push_back(pTangent->y), vertices.push_back(pTangent->z);
 		}
 
 		// Index Buffer
@@ -186,7 +183,7 @@ void engine::Model::loadFromFile(const GLchar *file)
 		mat_diffuse.a = opacity;
 		mat_specular.a = opacity;
 
-		createMesh((GLsizei)vertices.size() * sizeof(Vertex), (GLfloat *)&vertices[0],
+		this->addMesh((GLsizei)vertices.size() * sizeof(GLfloat), &vertices[0],
 			(GLsizei)indices.size() * sizeof(GLuint), &indices[0],
 			colorPath.c_str(), NMPath.c_str(),
 			glm::vec4(mat_ambient.r, mat_ambient.g, mat_ambient.b, mat_ambient.a), glm::vec4(mat_diffuse.r, mat_diffuse.g, mat_diffuse.b, mat_diffuse.a), glm::vec4(mat_specular.r, mat_specular.g, mat_specular.b, mat_specular.a),

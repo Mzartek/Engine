@@ -2,7 +2,6 @@
 
 engine::ShadowMap::ShadowMap(void)
 {
-	_idDepthTexture = 0;
 }
 
 engine::ShadowMap::~ShadowMap(void)
@@ -12,17 +11,18 @@ engine::ShadowMap::~ShadowMap(void)
 
 void engine::ShadowMap::config(const GLuint &width, const GLuint &height)
 {
-	if (glIsTexture(_idDepthTexture)) glDeleteTextures(1, &_idDepthTexture);
+	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
 
 	_width = width;
 	_height = height;
+
+	if (glIsTexture(_idDepthTexture)) glDeleteTextures(1, &_idDepthTexture);
+	glGenTextures(1, &_idDepthTexture);
 
 	// Frame Buffer Object"
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 
 	// Depth Texture
-	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-	glGenTextures(1, &_idDepthTexture);
 	glBindTexture(GL_TEXTURE_2D, _idDepthTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);

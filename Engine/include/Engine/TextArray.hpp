@@ -5,16 +5,18 @@
 
 namespace engine
 {
+	class Texture;
+	class Buffer;
 	class ShaderProgram;
 	class Renderer;
 
 	class DLLAPI TextArray : public Object
 	{
 	private:
-		GLuint _idTexture;
-		GLuint _idVAO;
-		GLuint _idVBO;
 		TTF_Font *_font;
+		Texture *_texture;
+		GLuint _idVAO;
+		Buffer *_vertexBuffer;
 		glm::mat4 *_mat;
 		// Do not delete it
 		ShaderProgram *_program;

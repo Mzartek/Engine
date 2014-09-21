@@ -44,6 +44,7 @@
 			<Add option="-lm" />
 			<Add option="-lassimp" />
 		</Linker>
+		<Unit filename="include/Engine/Buffer.hpp" />
 		<Unit filename="include/Engine/Camera.hpp" />
 		<Unit filename="include/Engine/DirLight.hpp" />
 		<Unit filename="include/Engine/EngineHead.hpp" />
@@ -63,9 +64,10 @@
 		<Unit filename="include/Engine/SkyBox.hpp" />
 		<Unit filename="include/Engine/SpotLight.hpp" />
 		<Unit filename="include/Engine/TextArray.hpp" />
+		<Unit filename="include/Engine/Texture.hpp" />
+		<Unit filename="src/Buffer.cpp" />
 		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/DirLight.cpp" />
-		<Unit filename="src/EngineFunctions.cpp" />
 		<Unit filename="src/FrameBuffer.cpp" />
 		<Unit filename="src/FreeCam.cpp" />
 		<Unit filename="src/GBuffer.cpp" />
@@ -82,6 +84,7 @@
 		<Unit filename="src/SkyBox.cpp" />
 		<Unit filename="src/SpotLight.cpp" />
 		<Unit filename="src/TextArray.cpp" />
+		<Unit filename="src/Texture.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

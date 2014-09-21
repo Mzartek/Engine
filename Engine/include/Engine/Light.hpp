@@ -5,6 +5,7 @@
 
 namespace engine
 {
+	class Buffer;
 	class ShadowMap;
 	class ShaderProgram;
 	class GBuffer;
@@ -14,8 +15,8 @@ namespace engine
 	{
 	protected:
 		GLuint _idVAO;
-		GLuint _idVBO;
-		GLuint _idLightInfoBuffer;
+		Buffer *_vertexBuffer;
+		Buffer *_lightInfoBuffer;
 		ShaderProgram *_program;
 		GLint _normalTextureLocation;
 		GLint _materialTextureLocation;

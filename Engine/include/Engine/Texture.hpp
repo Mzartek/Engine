@@ -1,0 +1,25 @@
+#ifndef TEXTURE
+#define TEXTURE
+
+#include "Object.hpp"
+
+namespace engine
+{
+	class DLLAPI Texture : public Object
+	{
+	private:
+		GLuint _idTexture;
+	public:
+		Texture(void);
+		~Texture(void);
+		GLuint getId(void);
+		void load2DTextureFromFile(const GLchar *path);
+		void load2DTextureFromSDL_Surface(const SDL_Surface *surface);
+		void loadCubeTextureFromFiles(
+			const GLchar *posx, const GLchar *negx,
+			const GLchar *posy, const GLchar *negy,
+			const GLchar *posz, const GLchar *negz);
+	};
+}
+
+#endif

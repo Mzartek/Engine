@@ -34,7 +34,7 @@ void configLights(void)
 	sun->setShadowMapping(GL_TRUE);
 	sun->configShadowMap(1024, 1024);
 
-    torch->config(spotLightProgram);
+	torch->config(spotLightProgram);
     torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
     torch->setPosition(glm::vec3(20.0f, 40.0f, 0.0f));
     torch->setDirection(glm::vec3(-0.5f, -1.0f, 0.0f));
@@ -50,11 +50,12 @@ void configScreen(void)
 
 void configModels(void)
 {
-	engine::Vertex vertexArray[] = {
-			{ glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) },
-			{ glm::vec3(-500, 0, 500), glm::vec2(0, 1), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) },
-			{ glm::vec3(500, 0, 500), glm::vec2(1, 1), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) },
-			{ glm::vec3(500, 0, -500), glm::vec2(1, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) }
+	GLfloat vertexArray[] = 
+	{
+			-500, 0, -500, 0, 0, 0, 1, 0, 1, 0, 0,
+			-500, 0, 500, 0, 1, 0, 1, 0, 1, 0, 0,
+			500, 0, 500, 1, 1, 0, 1, 0, 1, 0, 0,
+			500, 0, -500, 1, 0, 0, 1, 0, 1, 0, 0
 	};
 	GLuint index[] = { 2, 0, 1, 0, 2, 3 };
 	glm::vec4 mat_ambient(0.5f, 0.5f, 0.5f, 1.0f);
@@ -64,7 +65,7 @@ void configModels(void)
 
 	sol->config(objectProgram, shadowMapProgram);
 	sol->initMeshArray();
-	sol->createMesh(sizeof vertexArray, (GLfloat *)vertexArray,
+	sol->addMesh(sizeof vertexArray, vertexArray,
 			   sizeof index, index,
 			   "resources/ornaments.jpg", "resources/NM_none.png",
 			   mat_ambient, mat_diffuse, mat_specular, mat_shininess);
@@ -81,8 +82,8 @@ void configModels(void)
 void configSkybox(void)
 {
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
-		     "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
-		     "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
-			 10, skyboxProgram);
+		"resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
+		"resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg",
+		10, skyboxProgram);
 	skybox->rotate(180, 1, 0, 0);
 }

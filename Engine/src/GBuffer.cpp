@@ -2,7 +2,6 @@
 
 engine::GBuffer::GBuffer(void)
 {
-	_idTexture[0] = 0;
 }
 
 engine::GBuffer::~GBuffer(void)
@@ -12,16 +11,14 @@ engine::GBuffer::~GBuffer(void)
 
 void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 {
-	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
-
 	_width = width;
 	_height = height;
 
+	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
+	glGenTextures(GBUF_NUM_TEX, _idTexture);
+
 	// Frame Buffer Object
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
-
-	// Texture
-	glGenTextures(GBUF_NUM_TEX, _idTexture);
 
 	// Normal Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_NORMAL]);

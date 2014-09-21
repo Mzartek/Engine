@@ -5,6 +5,7 @@
 
 namespace engine
 {
+	class Buffer;
 	class ShaderProgram;
 	class GBuffer;
 	class Renderer;
@@ -13,7 +14,7 @@ namespace engine
 	{
 	private:
 		GLuint _idVAO;
-		GLuint _idVBO;
+		Buffer *_vertexBuffer;
 		// Location or Index
 		ShaderProgram *_backgroundProgram;
 		ShaderProgram *_directProgram;

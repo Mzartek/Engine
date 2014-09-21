@@ -5,6 +5,8 @@
 
 namespace engine
 {
+	class Texture;
+	class Buffer;
 	class ShaderProgram;
 	class GBuffer;
 	class Camera;
@@ -12,10 +14,10 @@ namespace engine
 	class DLLAPI SkyBox : public Object
 	{
 	private:
-		GLuint _idTexture;
+		Texture *_cubeTexture;
 		GLuint _idVAO;
-		GLuint _idVBO;
-		GLuint _idIBO;
+		Buffer *_vertexBuffer;
+		Buffer *_indexBuffer;
 		glm::mat4 *_rotateMatrix;
 		// Do not delete it
 		ShaderProgram *_program;

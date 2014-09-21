@@ -5,16 +5,20 @@
 
 namespace engine
 {
+	class Texture;
+	class Buffer;
+
 	class DLLAPI Mesh : public Object
 	{
 		friend int comparMesh(const void *p1, const void *p2);
+
 	private:
-		GLuint _idColorTexture;
-		GLuint _idNMTexture;
+		Texture *_colorTexture;
+		Texture *_NMTexture;
 		GLuint _idVAO;
-		GLuint _idVBO;
-		GLuint _idIBO;
-		GLuint _idMaterialBuffer;
+		Buffer *_vertexBuffer;
+		Buffer *_indexBuffer;
+		Buffer *_materialBuffer;
 		struct material
 		{
 			glm::vec4 ambient;
@@ -26,8 +30,8 @@ namespace engine
 	public:
 		Mesh(void);
 		~Mesh(void);
-		void setColorTexture(const GLuint &id);
-		void setNMTexture(const GLuint &id);
+		void setColorTexture(const GLchar *path);
+		void setNMTexture(const GLchar *path);
 		void setAmbient(const glm::vec4 &ambient);
 		void setDiffuse(const glm::vec4 &diffuse);
 		void setSpecular(const glm::vec4 &specular);

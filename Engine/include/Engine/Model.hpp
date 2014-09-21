@@ -35,7 +35,7 @@ namespace engine
 		void initMeshArray(void);
 		void initMeshMirror(Model *m);
 		void config(ShaderProgram *gProgram, ShaderProgram *smProgram);
-		void createMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+		void addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				  const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				  const GLchar *colorTexture, const GLchar *NMTexture,
 				  const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);

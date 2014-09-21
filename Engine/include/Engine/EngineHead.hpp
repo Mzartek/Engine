@@ -37,21 +37,4 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace engine
-{
-	typedef struct Vertex
-	{
-		glm::vec3 position;
-		glm::vec2 texCoord;
-		glm::vec3 normal;
-		glm::vec3 tangent;
-	} Vertex;
-
-	enum pixelFormat {UNKNOWN, RGB, BGR, RGBA};
-	extern DLLAPI pixelFormat testFormat(const GLuint &f);
-	extern DLLAPI void loadTextureFromFile(const GLchar *path, GLuint *texture);
-	extern DLLAPI void loadTextureFromSDL_Surface(const SDL_Surface *image, GLuint *texture);
-	extern DLLAPI void updateDynamicBuffer(const GLuint &buffer, const void *data, const size_t &size);
-}
-
 #endif

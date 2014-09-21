@@ -1,20 +1,25 @@
 #include <Engine/SkyBox.hpp>
+#include <Engine/Texture.hpp>
+#include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
 
 engine::SkyBox::SkyBox()
-	: _idTexture(0), _idVAO(0), _idVBO(0), _idIBO(0)
 {
+	_cubeTexture = new Texture;
+	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer = new Buffer;
+	_indexBuffer = new Buffer;
 	_rotateMatrix = new glm::mat4;
 }
 
 engine::SkyBox::~SkyBox()
 {
-	if(glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
-	if(glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if(glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
-	if(glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
+	delete _cubeTexture;
+	glDeleteVertexArrays(1, &_idVAO);
+	delete _vertexBuffer;
+	delete _indexBuffer;
 	delete _rotateMatrix;
 }
 
@@ -25,60 +30,9 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	const GLchar *posz, const GLchar *negz,
 	GLfloat dim, ShaderProgram *program)
 {
-	GLuint i;
-
-	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
-	if (glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
-
 	_program = program;
 
-	GLenum cube_map_target[] = {
-		GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-		GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-		GL_TEXTURE_CUBE_MAP_POSITIVE_Z, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
-	};
-	SDL_Surface *image[6];
-	image[0] = IMG_Load(posx);
-	image[1] = IMG_Load(negx);
-	image[2] = IMG_Load(posy);
-	image[3] = IMG_Load(negy);
-	image[4] = IMG_Load(posz);
-	image[5] = IMG_Load(negz);
-
-	glGenTextures(1, &_idTexture);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
-
-	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	for(i=0 ; i<6 ; i++)
-	{
-		if(image[i]==NULL)
-		{
-			std::cerr << "Error while loading image" << std::endl;
-			exit(1);
-		}
-		switch(testFormat(image[i]->format->format))
-		{
-		case RGB:
-			glTexImage2D(cube_map_target[i], 0, GL_RGB8, image[i]->w, image[i]->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image[i]->pixels);
-			break;
-		case BGR:
-			glTexImage2D(cube_map_target[i], 0, GL_RGB8, image[i]->w, image[i]->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image[i]->pixels);
-			break;
-		case RGBA:
-			glTexImage2D(cube_map_target[i], 0, GL_RGBA8, image[i]->w, image[i]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]->pixels);
-			break;
-		default:
-			std::cerr << "Format " << image[i]->format->format << " unknown" << std::endl;
-			break;
-		}
-		SDL_FreeSurface(image[i]);
-	}
+	_cubeTexture->loadCubeTextureFromFiles(posx, negx, posy, negy, posz, negz);
 
 	GLfloat vertexArray[] = {
 		+dim, -dim, -dim,
@@ -100,16 +54,13 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	};
 	_numElement = sizeof(indexArray) / sizeof(GLuint);
 
-	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeof vertexArray, GL_STATIC_DRAW);
+	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeof indexArray, GL_STATIC_DRAW);
+
 	glBindVertexArray(_idVAO);
 
-	glGenBuffers(1, &_idVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof vertexArray, vertexArray, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &_idIBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idIBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof indexArray, indexArray, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer->getId());
 
 	glEnableVertexAttribArray(0);
 
@@ -141,11 +92,11 @@ void engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
 	glUniformMatrix4fv(_MVPLovation, 1, GL_FALSE, glm::value_ptr(pos));
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeTexture->getId());
 	glUniform1i(_cubeMapLocation, 0);
 
 	glBindVertexArray(_idVAO);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);	
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 	glUseProgram(0);

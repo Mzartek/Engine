@@ -1,18 +1,21 @@
 #include <Engine/Light.hpp>
+#include <Engine/Buffer.hpp>
 #include <Engine/ShadowMap.hpp>
 
 engine::Light::Light(void)
-	: _idVAO(0), _idVBO(0), _idLightInfoBuffer(0)
 {
+	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer = new Buffer;
+	_lightInfoBuffer = new Buffer;
 	_VPMatrix = new glm::mat4;
 	_shadow = new ShadowMap;
 }
 
 engine::Light::~Light(void)
 {
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
-	if (glIsBuffer(_idLightInfoBuffer)) glDeleteBuffers(1, &_idLightInfoBuffer);
+	glDeleteVertexArrays(1, &_idVAO);
+	delete _vertexBuffer;
+	delete _lightInfoBuffer;
 	delete _VPMatrix;
 	delete _shadow;
 }

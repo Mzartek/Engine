@@ -51,7 +51,17 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 		flags = SDL_WINDOW_OPENGL;
 
 	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
+	if (_idWindow == NULL)
+	{
+		std::cerr << "Error while creating Window: " << SDL_GetError();
+		exit(1);
+	}
 	_idGLContext = SDL_GL_CreateContext(_idWindow);
+	if (_idGLContext == NULL)
+	{
+		std::cerr << "Error while creating Context: " << SDL_GetError();
+		exit(1);
+	}
 
 	SDL_GL_SetSwapInterval(1);
 

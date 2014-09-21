@@ -1,19 +1,24 @@
 #include <Engine/TextArray.hpp>
+#include <Engine/Texture.hpp>
+#include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/Renderer.hpp>
 
 engine::TextArray::TextArray(void)
-	: _idTexture(0), _idVAO(0), _idVBO(0), _font(NULL)
+	: _font(NULL)
 {
+	_texture = new Texture;
+	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer = new Buffer;
 	_mat = new glm::mat4;
 }
 
 engine::TextArray::~TextArray(void)
 {
-	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
 	if (_font) TTF_CloseFont(_font);
+	delete _texture;
+	glDeleteVertexArrays(1, &_idVAO);
+	delete _vertexBuffer;
 	delete _mat;
 }
 
@@ -25,9 +30,6 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 {
 	SDL_Surface *t;
 
-	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
 	if (_font) TTF_CloseFont(_font);
 	
 	_color.r = r;
@@ -47,7 +49,7 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 		std::cerr << "Error while creating RenderText" << std::endl;
 		exit(1);
 	}
-	loadTextureFromSDL_Surface(t, &_idTexture);
+	_texture->load2DTextureFromSDL_Surface(t);
 	SDL_FreeSurface(t);
 	
 	GLfloat vertexArray[] = {
@@ -63,13 +65,11 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 		(GLfloat)x+w, (GLfloat)y+h,
 		1, 1,
 	};
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeof vertexArray, GL_STATIC_DRAW);
 
-	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
   
-	glGenBuffers(1, &_idVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof vertexArray, vertexArray, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
   
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -98,10 +98,7 @@ void engine::TextArray::write(const GLchar *text)
 		std::cerr << "Error while creating RenderText" << std::endl;
 		exit(1);
 	}
-	
-	if(glIsTexture(_idTexture))
-		glDeleteTextures(1, &_idTexture);
-	loadTextureFromSDL_Surface(t, &_idTexture);
+	_texture->load2DTextureFromSDL_Surface(t);
 	
 	SDL_FreeSurface(t);
 }
@@ -115,7 +112,7 @@ void engine::TextArray::display(Renderer *renderer)
 	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(*_mat));
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _idTexture);
+	glBindTexture(GL_TEXTURE_2D, _texture->getId());
 	glUniform1i(_textureLocation, 0);
 
 	glBindVertexArray(_idVAO);

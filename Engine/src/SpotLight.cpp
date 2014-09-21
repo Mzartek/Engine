@@ -1,6 +1,7 @@
 #include <Engine/SpotLight.hpp>
-#include <Engine/ShaderProgram.hpp>
+#include <Engine/Buffer.hpp>
 #include <Engine/ShadowMap.hpp>
+#include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
 
@@ -16,10 +17,6 @@ engine::SpotLight::~SpotLight(void)
 
 void engine::SpotLight::config(ShaderProgram *program)
 {
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
-	if (glIsBuffer(_idLightInfoBuffer)) glDeleteBuffers(1, &_idLightInfoBuffer);
-
 	_program = program;
 
 	// Layout
@@ -29,13 +26,11 @@ void engine::SpotLight::config(ShaderProgram *program)
 		-1, 1,
 		1, 1,
 	};
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
 
-	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
 
-	glGenBuffers(1, &_idVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof vertex, vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 
 	glEnableVertexAttribArray(0);
 
@@ -44,10 +39,7 @@ void engine::SpotLight::config(ShaderProgram *program)
 	glBindVertexArray(0);
 
 	// LightInfo Buffer
-	glGenBuffers(1, &_idLightInfoBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, _idLightInfoBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof _lightInfo, &_lightInfo, GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
 	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
@@ -153,8 +145,8 @@ void engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 
 	// Light Info
-	updateDynamicBuffer(_idLightInfoBuffer, &_lightInfo, sizeof _lightInfo);
-	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoBlockIndex, _idLightInfoBuffer);
+	_lightInfoBuffer->updateStoreMap(&_lightInfo);
+	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoBlockIndex, _lightInfoBuffer->getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

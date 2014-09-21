@@ -1,26 +1,25 @@
 #include <Engine/Screen.hpp>
+#include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Renderer.hpp>
 
 engine::Screen::Screen()
-	: _idVAO(0), _idVBO(0)
 {
+	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer = new Buffer;
 }
 
 engine::Screen::~Screen()
 {
-	if(glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if(glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
+	glDeleteVertexArrays(1, &_idVAO);
+	delete _vertexBuffer;
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
 void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
 {
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
-
 	_backgroundProgram = backgroundProgram;
 	_directProgram = directProgram;
 
@@ -30,13 +29,11 @@ void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 		-1,  1,
 		1,  1,
 	};
-	
-	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
+
 	glBindVertexArray(_idVAO);
   
-	glGenBuffers(1, &_idVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof vertex, vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
   
 	glEnableVertexAttribArray(0);
 	

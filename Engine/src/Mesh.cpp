@@ -1,37 +1,37 @@
 #include <Engine/Mesh.hpp>
+#include <Engine/Texture.hpp>
+#include <Engine/Buffer.hpp>
 
 engine::Mesh::Mesh(void)
-	: _idColorTexture(0), _idNMTexture(0),
-	_idVAO(0), _idVBO(0), _idIBO(0)
 {
-	glGenBuffers(1, &_idMaterialBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, _idMaterialBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof _material, NULL, GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	_colorTexture = new Texture;
+	_NMTexture = new Texture;
+	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer = new Buffer;
+	_indexBuffer = new Buffer;
+	_materialBuffer = new Buffer;
+
+	_materialBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _material, GL_DYNAMIC_DRAW);
 };
 
 engine::Mesh::~Mesh(void)
 {
-	if (glIsTexture(_idColorTexture)) glDeleteTextures(1, &_idColorTexture);
-	if (glIsTexture(_idNMTexture)) glDeleteTextures(1, &_idNMTexture);
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
-	if (glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
-	glDeleteBuffers(1, &_idMaterialBuffer);
+	delete _colorTexture;
+	delete _NMTexture;
+	glDeleteVertexArrays(1, &_idVAO);
+	delete _vertexBuffer;
+	delete _indexBuffer;
+	delete _materialBuffer;
 }
 
-void engine::Mesh::setColorTexture(const GLuint &id)
+void engine::Mesh::setColorTexture(const GLchar *path)
 {
-	if (glIsTexture(_idColorTexture)) glDeleteTextures(1, &_idColorTexture);
-
-	_idColorTexture = id;
+	_colorTexture->load2DTextureFromFile(path);
 }
 
-void engine::Mesh::setNMTexture(const GLuint &id)
+void engine::Mesh::setNMTexture(const GLchar *path)
 {
-	if (glIsTexture(_idNMTexture)) glDeleteTextures(1, &_idNMTexture);
-
-	_idNMTexture = id;
+	_NMTexture->load2DTextureFromFile(path);
 }
 
 void engine::Mesh::setAmbient(const glm::vec4 &ambient)
@@ -64,23 +64,15 @@ GLfloat engine::Mesh::getTransparency(void)
 void engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
 {
-	if (glIsVertexArray(_idVAO)) glDeleteVertexArrays(1, &_idVAO);
-	if (glIsBuffer(_idVBO)) glDeleteBuffers(1, &_idVBO);
-	if (glIsBuffer(_idIBO)) glDeleteBuffers(1, &_idIBO);
-
 	_numElement = sizeIndexArray/(GLsizei)sizeof(GLuint);
 
-	// Vertex Array, Vertex Buffer Object and Index Buffer Object
-	glGenVertexArrays(1, &_idVAO);
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeVertexArray, GL_STATIC_DRAW);
+	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeIndexArray, GL_STATIC_DRAW);
+
 	glBindVertexArray(_idVAO);
 
-	glGenBuffers(1, &_idVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _idVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeVertexArray, vertexArray, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &_idIBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _idIBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeIndexArray, indexArray, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer->getId());
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -100,15 +92,15 @@ void engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArr
 void engine::Mesh::display(const GLint &colorTextureLocation, const GLint &nmTextureLocation, const GLuint &materialBlockIndex) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _idColorTexture);
+	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
 	glUniform1i(colorTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _idNMTexture);
+	glBindTexture(GL_TEXTURE_2D, _NMTexture->getId());
 	glUniform1i(nmTextureLocation, 1);
-	
-	updateDynamicBuffer(_idMaterialBuffer, &_material, sizeof _material);
-	glBindBufferBase(GL_UNIFORM_BUFFER, materialBlockIndex, _idMaterialBuffer);
+
+	_materialBuffer->updateStoreMap(&_material);
+	glBindBufferBase(GL_UNIFORM_BUFFER, materialBlockIndex, _materialBuffer->getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
@@ -118,7 +110,7 @@ void engine::Mesh::display(const GLint &colorTextureLocation, const GLint &nmTex
 void engine::Mesh::displayShadow(const GLint &colorLocation) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _idColorTexture);
+	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
 	glUniform1i(colorLocation, 0);
 
 	glBindVertexArray(_idVAO);
