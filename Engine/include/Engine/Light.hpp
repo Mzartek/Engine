@@ -16,17 +16,12 @@ namespace engine
 	protected:
 		GLuint _idVAO;
 		Buffer *_vertexBuffer;
+		Buffer *_shadowMatrixBuffer;
+		Buffer *_IVPMatrixBuffer;
+		Buffer *_screenBuffer;
+		Buffer *_cameraBuffer;
 		Buffer *_lightInfoBuffer;
 		ShaderProgram *_program;
-		GLint _normalTextureLocation;
-		GLint _materialTextureLocation;
-		GLint _depthTextureLocation;
-		GLint _shadowMapLocation;
-		GLint _shadowMatrixLocation;
-		GLint _IVPMatrixLocation;
-		GLint _screenLocation;
-		GLint _camPositionLocation;
-		GLuint _lightInfoBlockIndex;
 		glm::mat4 *_VPMatrix;
 		ShadowMap *_shadow;
 	public:

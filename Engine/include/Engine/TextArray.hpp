@@ -17,13 +17,9 @@ namespace engine
 		Texture *_texture;
 		GLuint _idVAO;
 		Buffer *_vertexBuffer;
+		Buffer *_MVPMatrixBuffer;
 		glm::mat4 *_mat;
-		// Do not delete it
 		ShaderProgram *_program;
-		// Location or Index
-		GLint _MVPLocation;
-		GLint _textureLocation;
-		// SDL Feature
 		SDL_Color _color;
 	public:
 		TextArray(void);

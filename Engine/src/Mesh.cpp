@@ -64,54 +64,47 @@ GLfloat engine::Mesh::getTransparency(void)
 void engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
 {
-	_numElement = sizeIndexArray/(GLsizei)sizeof(GLuint);
+	_numElement = sizeIndexArray/sizeof(GLuint);
 
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeVertexArray, GL_STATIC_DRAW);
 	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeIndexArray, GL_STATIC_DRAW);
 
 	glBindVertexArray(_idVAO);
-
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer->getId());
-
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
-
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(0));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(3 * sizeof(GLfloat)));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(5 * sizeof(GLfloat)));
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(8 * sizeof(GLfloat)));
-
 	glBindVertexArray(0);
 }
 
 #undef BUFFER_OFFSET
 
-void engine::Mesh::display(const GLint &colorTextureLocation, const GLint &nmTextureLocation, const GLuint &materialBlockIndex) const
+void engine::Mesh::display(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
-	glUniform1i(colorTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, _NMTexture->getId());
-	glUniform1i(nmTextureLocation, 1);
 
 	_materialBuffer->updateStoreMap(&_material);
-	glBindBufferBase(GL_UNIFORM_BUFFER, materialBlockIndex, _materialBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _materialBuffer->getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
-void engine::Mesh::displayShadow(const GLint &colorLocation) const
+void engine::Mesh::displayShadow(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
-	glUniform1i(colorLocation, 0);
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

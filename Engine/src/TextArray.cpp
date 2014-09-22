@@ -10,6 +10,7 @@ engine::TextArray::TextArray(void)
 	_texture = new Texture;
 	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
+	_MVPMatrixBuffer = new Buffer;
 	_mat = new glm::mat4;
 }
 
@@ -19,6 +20,7 @@ engine::TextArray::~TextArray(void)
 	delete _texture;
 	glDeleteVertexArrays(1, &_idVAO);
 	delete _vertexBuffer;
+	delete _MVPMatrixBuffer;
 	delete _mat;
 }
 
@@ -29,6 +31,8 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 	const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Renderer *renderer)
 {
 	SDL_Surface *t;
+
+	_program = program;
 
 	if (_font) TTF_CloseFont(_font);
 	
@@ -66,22 +70,19 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeof vertexArray, GL_STATIC_DRAW);
+	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
 
-	glBindVertexArray(_idVAO);
-  
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
-  
+	glBindVertexArray(_idVAO);  
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());  
 	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-  
+	glEnableVertexAttribArray(1);  
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(0));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), BUFFER_OFFSET(2*sizeof(GLfloat)));
-	
 	glBindVertexArray(0);
 
-	_program = program;
-	_MVPLocation = glGetUniformLocation(_program->getId(), "MVP");
-	_textureLocation = glGetUniformLocation(_program->getId(), "textTex");
+	glUseProgram(_program->getId());
+	glUniform1i(glGetUniformLocation(_program->getId(), "textTex"), 0);
+	glUseProgram(0);
 
 	*_mat = glm::ortho(0.0f, (GLfloat)renderer->getWidth(), 0.0f, (GLfloat)renderer->getHeight(), -1.0f, 1.0f);
 }
@@ -108,12 +109,12 @@ void engine::TextArray::display(Renderer *renderer)
 	renderer->setState();
 
 	glUseProgram(_program->getId());
-	
-	glUniformMatrix4fv(_MVPLocation, 1, GL_FALSE, glm::value_ptr(*_mat));
+
+	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(*_mat));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _texture->getId());
-	glUniform1i(_textureLocation, 0);
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

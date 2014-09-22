@@ -1,8 +1,11 @@
-#version 330
+#version 440
 
 uniform sampler2D backgroundTexture;
 
-uniform vec4 color;
+layout(binding = 0) uniform colorBuffer
+{
+	vec4 color;
+};
 
 layout(location = 0) out vec4 fragColor;
 

@@ -1,6 +1,9 @@
-#version 330
+#version 440
 
-uniform mat4 MVP;
+layout(binding = 0) uniform MVPMatrixBuffer
+{
+	mat4 MVP;
+};
 
 layout(location = 0) in vec3 vertex;
 

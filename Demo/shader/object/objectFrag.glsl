@@ -1,13 +1,13 @@
-#version 330
+#version 440
 
 uniform sampler2D colorTexture;
 uniform sampler2D NMTexture;
 
-uniform material
+layout(binding = 2) uniform materialBuffer
 {
-	vec4 ambient;
-	vec4 diffuse;
-	vec4 specular;
+	vec4 matAmbient;
+	vec4 matDiffuse;
+	vec4 matSpecular;
 	float shininess;
 };
 
@@ -19,17 +19,6 @@ in VertexData
 
 layout(location = 0) out vec4 outNormal;
 layout(location = 1) out uvec4 outMaterial;
-
-uvec4 pack(ivec4 a, ivec4 b, ivec4 c, ivec4 d)
-{
-	uvec4 res =
-		uvec4(0xFF000000 & uvec4(a << 24)) |
-		uvec4(0x00FF0000 & (b << 16)) |
-		uvec4(0x0000FF00 & (c << 8)) |
-		uvec4(0x000000FF & d);
-
-	return res;
-}
 
 vec3 CalcBumpedNormal(mat3 TBN, vec3 bumpMapNormal)
 {
@@ -44,7 +33,10 @@ void main(void)
     if(color.a > 0.5)
     {
         outNormal = vec4(normal, shininess);
-        outMaterial = pack(ivec4(color * 255), ivec4(ambient * 255), ivec4(diffuse * 255), ivec4(specular * 255));
+		outMaterial.x = packUnorm4x8(color);
+		outMaterial.y = packUnorm4x8(matAmbient);
+		outMaterial.z = packUnorm4x8(matDiffuse);
+		outMaterial.w = packUnorm4x8(matSpecular);
 		gl_FragDepth = gl_FragCoord.z;
     }
     else

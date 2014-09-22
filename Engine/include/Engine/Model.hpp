@@ -6,6 +6,7 @@
 namespace engine
 {
 	class Mesh;
+	class Buffer;
 	class ShaderProgram;
 	class GBuffer;
 	class Camera;
@@ -16,19 +17,11 @@ namespace engine
 	private:
 		GLboolean isMirror;
 		std::vector<Mesh *> *_tMesh;
+		Buffer *_MVPMatrixBuffer;
+		Buffer *_normalMatrixBuffer;
 		glm::mat4 *_modelMatrix;
-		// ShaderProgram
 		ShaderProgram *_gProgram;
 		ShaderProgram *_smProgram;
-		// Geometry Location
-		GLint _gMVPLocation;
-		GLint _gNormalMatrixLocation;
-		GLint _gColorTextureLocation;
-		GLint _gNMTextureLocation;
-		GLuint _gMaterialBlockIndex;
-		// ShadowMap Location
-		GLint _smMVPLocation;
-		GLint _smColorTextureLocation;
 	public:
 		Model();
 		~Model();

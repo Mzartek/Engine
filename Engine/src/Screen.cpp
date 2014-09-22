@@ -8,12 +8,14 @@ engine::Screen::Screen()
 {
 	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
+	_colorBuffer = new Buffer;
 }
 
 engine::Screen::~Screen()
 {
 	glDeleteVertexArrays(1, &_idVAO);
 	delete _vertexBuffer;
+	delete _colorBuffer;
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
@@ -23,6 +25,7 @@ void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 	_backgroundProgram = backgroundProgram;
 	_directProgram = directProgram;
 
+	// Create Vertex Buffer
 	GLfloat vertex[] = {
 		-1, -1,
 		1, -1,
@@ -31,21 +34,23 @@ void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
 
-	glBindVertexArray(_idVAO);
-  
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
-  
-	glEnableVertexAttribArray(0);
-	
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), BUFFER_OFFSET(0));
+	// Create Color Buffer
+	_colorBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::vec4, GL_DYNAMIC_DRAW);
 
+	glBindVertexArray(_idVAO);  
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());  
+	glEnableVertexAttribArray(0);	
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), BUFFER_OFFSET(0));
 	glBindVertexArray(0);
 
-	_bMaterialTextureLocation = glGetUniformLocation(_backgroundProgram->getId(), "materialTexture");
-	_bLightTextureLocation = glGetUniformLocation(_backgroundProgram->getId(), "lightTexture");
+	glUseProgram(_backgroundProgram->getId());
+	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "materialTexture"), 0);
+	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "lightTexture"), 1);
+	glUseProgram(0);
 
-	_dBackgroundTextureLocation = glGetUniformLocation(_directProgram->getId(), "backgroundTexture");
-	_dColorLocation = glGetUniformLocation(_directProgram->getId(), "color");
+	glUseProgram(_directProgram->getId());
+	glUniform1i(glGetUniformLocation(_directProgram->getId(), "backgroundTexture"), 0);
+	glUseProgram(0);
 }
 
 #undef BUFFER_OFFSET
@@ -58,11 +63,9 @@ void engine::Screen::background(GBuffer *gbuf)
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_bMaterialTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_LIGHT));
-	glUniform1i(_bLightTextureLocation, 1);
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -83,9 +86,10 @@ void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_BACKGROUND));
-	glUniform1i(_dBackgroundTextureLocation, 0);
 
-	glUniform4f(_dColorLocation, r, g, b, a);
+	glm::vec4 color(r, g, b, a);
+	_colorBuffer->updateStoreMap(glm::value_ptr(color));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer->getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -25,6 +25,15 @@ void engine::Buffer::createStore(const GLenum &target, const GLvoid *data, const
 	_target = target;
 	_size = size;
 
+	if (_target == GL_UNIFORM_BUFFER)
+	{
+		if ((size % 16) != 0)
+		{
+			std::cerr << "Need a power of 16 for Uniform Buffer" << std::endl;
+			exit(1);
+		}
+	}
+
 	if (glIsBuffer(_idBuffer)) glDeleteBuffers(1, &_idBuffer);
 	glGenBuffers(1, &_idBuffer);
 	glBindBuffer(_target, _idBuffer);

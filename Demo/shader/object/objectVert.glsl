@@ -1,7 +1,14 @@
-#version 330
+#version 440
 
-uniform mat4 MVP;
-uniform mat4 normalMatrix;
+layout(binding = 0) uniform MVPMatrixBuffer
+{
+	mat4 MVP;
+};
+
+layout(binding = 1) uniform normalMatrixBuffer
+{
+	mat4 normalMatrix;
+};
 
 layout(location = 0) in vec3 vertex;
 layout(location = 1) in vec2 texCoord;

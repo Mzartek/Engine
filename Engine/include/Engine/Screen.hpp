@@ -15,13 +15,9 @@ namespace engine
 	private:
 		GLuint _idVAO;
 		Buffer *_vertexBuffer;
-		// Location or Index
+		Buffer *_colorBuffer;
 		ShaderProgram *_backgroundProgram;
 		ShaderProgram *_directProgram;
-		GLint _bMaterialTextureLocation;
-		GLint _bLightTextureLocation;
-		GLint _dBackgroundTextureLocation;
-		GLint _dColorLocation;
 	public:
 		Screen();
 		~Screen();

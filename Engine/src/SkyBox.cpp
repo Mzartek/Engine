@@ -11,6 +11,7 @@ engine::SkyBox::SkyBox()
 	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
 	_indexBuffer = new Buffer;
+	_MVPMatrixBuffer = new Buffer;
 	_rotateMatrix = new glm::mat4;
 }
 
@@ -20,6 +21,7 @@ engine::SkyBox::~SkyBox()
 	glDeleteVertexArrays(1, &_idVAO);
 	delete _vertexBuffer;
 	delete _indexBuffer;
+	delete _MVPMatrixBuffer;
 	delete _rotateMatrix;
 }
 
@@ -56,20 +58,18 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeof vertexArray, GL_STATIC_DRAW);
 	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeof indexArray, GL_STATIC_DRAW);
+	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_idVAO);
-
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer->getId());
-
 	glEnableVertexAttribArray(0);
-
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(3*sizeof(GLfloat)), BUFFER_OFFSET(0));
-
 	glBindVertexArray(0);
 
-	_MVPLovation = glGetUniformLocation(_program->getId(), "MVP");
-	_cubeMapLocation = glGetUniformLocation(_program->getId(), "cubeMap");
+	glUseProgram(_program->getId());
+	glUniform1i(glGetUniformLocation(_program->getId(), "cubeMap"), 0);
+	glUseProgram(0);
 }
 
 #undef BUFFER_OFFSET
@@ -89,11 +89,11 @@ void engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
 
 	glUseProgram(_program->getId());
 
-	glUniformMatrix4fv(_MVPLovation, 1, GL_FALSE, glm::value_ptr(pos));
+	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(pos));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeTexture->getId());
-	glUniform1i(_cubeMapLocation, 0);
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

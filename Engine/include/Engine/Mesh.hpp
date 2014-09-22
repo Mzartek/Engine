@@ -39,8 +39,8 @@ namespace engine
 		GLfloat getTransparency(void);
 		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
-		void display(const GLint &colorTextureLocation, const GLint &nmTextureLocation, const GLuint &materialBlockIndex) const;
-		void displayShadow(const GLint &colorLocation) const;
+		void display(void) const;
+		void displayShadow(void) const;
 	};
 
 	int comparMesh(const void *p1, const void *p2);

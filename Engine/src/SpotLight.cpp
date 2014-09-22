@@ -27,29 +27,24 @@ void engine::SpotLight::config(ShaderProgram *program)
 		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
-
-	glBindVertexArray(_idVAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
-
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
-
-	glBindVertexArray(0);
-
-	// LightInfo Buffer
+	_shadowMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
+	_IVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
+	_screenBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
-	_normalTextureLocation = glGetUniformLocation(_program->getId(), "normalTexture");
-	_materialTextureLocation = glGetUniformLocation(_program->getId(), "materialTexture");
-	_depthTextureLocation = glGetUniformLocation(_program->getId(), "depthTexture");
-	_shadowMapLocation = glGetUniformLocation(_program->getId(), "shadowMap");
-	_shadowMatrixLocation = glGetUniformLocation(_program->getId(), "shadowMatrix");
-	_IVPMatrixLocation = glGetUniformLocation(_program->getId(), "IVPMatrix");
-	_screenLocation = glGetUniformLocation(_program->getId(), "screen");
-	_camPositionLocation = glGetUniformLocation(_program->getId(), "camPosition");
-	_lightInfoBlockIndex = glGetUniformBlockIndex(_program->getId(), "lightInfo");
+	glBindVertexArray(_idVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glBindVertexArray(0);
+
+	glUseProgram(_program->getId());
+	glUniform1i(glGetUniformLocation(_program->getId(), "normalTexture"), 0);
+	glUniform1i(glGetUniformLocation(_program->getId(), "materialTexture"), 1);
+	glUniform1i(glGetUniformLocation(_program->getId(), "depthTexture"), 2);
+	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap"), 3);
+	glUseProgram(0);
 }
 
 #undef BUFFER_OFFSET
@@ -115,38 +110,32 @@ void engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
-	glUniform1i(_normalTextureLocation, 0);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
-	glUniform1i(_materialTextureLocation, 1);
 
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
-	glUniform1i(_depthTextureLocation, 2);
 
 	// ShadowMap
 	if (_lightInfo.withShadowMapping == GL_TRUE)
 	{
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
-		glUniform1i(_shadowMapLocation, 3);
 
-		glUniformMatrix4fv(_shadowMatrixLocation, 1, GL_FALSE, glm::value_ptr(*_VPMatrix));
+		_shadowMatrixBuffer->updateStoreMap(_VPMatrix);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _shadowMatrixBuffer->getId());
 	}
 
-	// InverseViewProjection
-	glUniformMatrix4fv(_IVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::inverse(cam->getVPMatrix())));
-
-	// Screen
-	glUniform2ui(_screenLocation, gbuf->getWidth(), gbuf->getHeight());
-
-	// Cam position
-	glUniform3f(_camPositionLocation, cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
-
-	// Light Info
+	_IVPMatrixBuffer->updateStoreMap(glm::value_ptr(glm::inverse(cam->getVPMatrix())));
+	_screenBuffer->updateStoreMap(glm::value_ptr(glm::uvec2(gbuf->getWidth(), gbuf->getHeight())));
+	_cameraBuffer->updateStoreMap(glm::value_ptr(glm::vec3(cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z)));
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);
-	glBindBufferBase(GL_UNIFORM_BUFFER, _lightInfoBlockIndex, _lightInfoBuffer->getId());
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _IVPMatrixBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _screenBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 3, _cameraBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 4, _lightInfoBuffer->getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

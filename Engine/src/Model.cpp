@@ -1,5 +1,6 @@
 #include <Engine/Model.hpp>
 #include <Engine/Mesh.hpp>
+#include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
@@ -13,6 +14,8 @@
 engine::Model::Model(void)
 	: _tMesh(NULL)
 {
+	_MVPMatrixBuffer = new Buffer;
+	_normalMatrixBuffer = new Buffer;
 	_modelMatrix = new glm::mat4;
 }
 
@@ -25,6 +28,8 @@ engine::Model::~Model(void)
 			delete (*_tMesh)[i];
 		delete _tMesh;
 	}
+	delete _MVPMatrixBuffer;
+	delete _normalMatrixBuffer;
 	delete _modelMatrix;
 }
 
@@ -59,14 +64,17 @@ void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_gProgram = gProgram;
 	_smProgram = smProgram;
 
-	_gMVPLocation = glGetUniformLocation(_gProgram->getId(), "MVP");
-	_gNormalMatrixLocation = glGetUniformLocation(_gProgram->getId(), "normalMatrix");
-	_gColorTextureLocation = glGetUniformLocation(_gProgram->getId(), "colorTexture");
-	_gNMTextureLocation = glGetUniformLocation(_gProgram->getId(), "NMTexture");
-	_gMaterialBlockIndex = glGetUniformBlockIndex(_gProgram->getId(), "material");
+	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
+	_normalMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
 
-	_smMVPLocation = glGetUniformLocation(_smProgram->getId(), "MVP");
-	_smColorTextureLocation = glGetUniformLocation(_smProgram->getId(), "colorTexture");
+	glUseProgram(_gProgram->getId());
+	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
+	glUniform1i(glGetUniformLocation(_gProgram->getId(), "NMTexture"), 1);
+	glUseProgram(0);
+
+	glUseProgram(_smProgram->getId());
+	glUniform1i(glGetUniformLocation(_smProgram->getId(), "colorTexture"), 0);
+	glUseProgram(0);
 }
 
 void engine::Model::addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
@@ -242,12 +250,14 @@ void engine::Model::display(GBuffer *gbuf, Camera *cam) const
 
 	glUseProgram(_gProgram->getId());
 
-	glUniformMatrix4fv(_gMVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
-	glUniformMatrix4fv(_gNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
+	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
+	_normalMatrixBuffer->updateStoreMap(glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _normalMatrixBuffer->getId());
 
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
-			(*_tMesh)[i]->display(_gColorTextureLocation, _gNMTextureLocation, _gMaterialBlockIndex);
+			(*_tMesh)[i]->display();
 
 	glUseProgram(0);
 
@@ -262,12 +272,14 @@ void engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 
 	glUseProgram(_gProgram->getId());
 
-	glUniformMatrix4fv(_gMVPLocation, 1, GL_FALSE, glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
-	glUniformMatrix4fv(_gNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
+	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
+	_normalMatrixBuffer->updateStoreMap(glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _normalMatrixBuffer->getId());
 
 	for (i = 0; i<_tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() != 1.0f)
-			(*_tMesh)[i]->display(_gColorTextureLocation, _gNMTextureLocation, _gMaterialBlockIndex);
+			(*_tMesh)[i]->display();
 
 	glUseProgram(0);
 
@@ -282,11 +294,12 @@ void engine::Model::displayShadowMap(Light *light) const
 
 	glUseProgram(_smProgram->getId());
 
-	glUniformMatrix4fv(_smMVPLocation, 1, GL_FALSE, glm::value_ptr(light->getVPMatrix() * *_modelMatrix));
+	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(light->getVPMatrix() * *_modelMatrix));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
 
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
-			(*_tMesh)[i]->displayShadow(_smColorTextureLocation);
+			(*_tMesh)[i]->displayShadow();
 
 	glUseProgram(0);
 

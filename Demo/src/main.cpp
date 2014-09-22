@@ -32,7 +32,7 @@ void display(void)
 	// Skybox
 	skybox->display(gBuffer, cam);
 
-	// Shadow
+	// Shadow Map
 	sol->displayShadowMap(sun);
 	heli->displayShadowMap(sun);
 	sol->displayShadowMap(torch);
@@ -52,7 +52,7 @@ void display(void)
 	torch->display(gBuffer, cam);
 	screen->background(gBuffer);
 
-	screen->display(renderer, gBuffer, 1.0, 1.0, 1.0, 1.0);
+	screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
 	//text->display(renderer);
 }

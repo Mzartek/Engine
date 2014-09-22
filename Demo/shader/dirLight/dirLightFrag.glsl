@@ -1,4 +1,4 @@
-#version 330
+#version 440
 
 // From GBuffer
 uniform sampler2D normalTexture;
@@ -8,18 +8,27 @@ uniform sampler2D depthTexture;
 // ShadowMap
 uniform sampler2DShadow shadowMap;
 
-// Matrix
-uniform mat4 shadowMatrix;
-uniform mat4 IVPMatrix;
+layout(binding = 0) uniform shadowMatrixBuffer
+{
+	mat4 shadowMatrix;
+};
 
-// Screen Info
-uniform uvec2 screen;
+layout(binding = 1) uniform IVPMatrixBuffer
+{
+	mat4 IVPMatrix;
+};
 
-// Cam Info
-uniform vec3 camPosition;
+layout(binding = 2) uniform screenBuffer
+{
+	uvec2 screen;
+};
 
-// Light info
-uniform lightInfo
+layout(binding = 3) uniform cameraBuffer
+{
+	vec3 camPosition;
+};
+
+layout(binding = 4) uniform lightInfo
 {
 	vec3 lightColor;
 	vec3 lightDirection;
@@ -27,22 +36,6 @@ uniform lightInfo
 };
 
 layout(location = 0) out vec4 outLight;
-
-uvec4 pack(ivec4 a, ivec4 b, ivec4 c, ivec4 d)
-{
-	uvec4 res = 
-		uvec4(0xFF000000 & uvec4(a << 24)) |
-		uvec4(0x00FF0000 & (b << 16)) |
-		uvec4(0x0000FF00 & (c << 8)) |
-		uvec4(0x000000FF & d);
-
-	return res;
-}
-
-ivec4 unpack(uvec4 a, int v)
-{
-	return (0x000000FF & (ivec4(a) >> (v * 8)));
-}
 
 vec3 getPosition(vec2 fragCoord)
 {
@@ -104,8 +97,8 @@ void main(void)
 	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
 	uvec4 material = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
 
-	vec4 diffColor = (vec4(unpack(material, 1)) / 255) * vec4(lightColor, 1.0);
-	vec4 specColor = (vec4(unpack(material, 0)) / 255) * vec4(lightColor, 1.0);
+	vec4 diffColor = unpackUnorm4x8(material.z) * vec4(lightColor, 1.0);
+	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);
 	
 	float s = 1.0;
 	if (withShadowMapping)

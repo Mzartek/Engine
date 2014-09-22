@@ -18,11 +18,9 @@ namespace engine
 		GLuint _idVAO;
 		Buffer *_vertexBuffer;
 		Buffer *_indexBuffer;
+		Buffer *_MVPMatrixBuffer;
 		glm::mat4 *_rotateMatrix;
-		// Do not delete it
 		ShaderProgram *_program;
-		GLint _MVPLovation;
-		GLint _cubeMapLocation;
 		GLuint _numElement;
 	public:
 		SkyBox(void);
