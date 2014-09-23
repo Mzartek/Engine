@@ -1,18 +1,13 @@
 #include <Engine/Renderer.hpp>
 
 engine::Renderer::Renderer(void)
+	: _idWindow(NULL), _idGLContext(NULL),
+	_display(NULL), _idle(NULL), _reshape(NULL), _keyboard(NULL), _mouseMove(NULL)
 {
-	_display = NULL;
-	_idle = NULL;
-	_reshape = NULL;
-	_keyboard = NULL;
-	_mouseMove = NULL;
 }
 
 engine::Renderer::~Renderer(void)
 {
-	SDL_GL_DeleteContext(_idGLContext);
-	SDL_DestroyWindow(_idWindow);
 	TTF_Quit();
 	SDL_Quit();
 }
@@ -134,25 +129,27 @@ void engine::Renderer::mainLoop(void)
 	_reshape(_width, _height);
 	while (!_stopLoop)
 	{
-		while(SDL_PollEvent(&event))
-			switch(event.type)
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
 			{
 			case SDL_QUIT:
 				_stopLoop = true;
 				break;
 			case SDL_KEYDOWN:
-				if(_keyboard)
+				if (_keyboard)
 					_keyboard((GLubyte)event.key.keysym.scancode, (GLubyte)event.key.state);
 				break;
 			case SDL_KEYUP:
-				if(_keyboard)
+				if (_keyboard)
 					_keyboard((GLubyte)event.key.keysym.scancode, (GLubyte)event.key.state);
 				break;
 			case SDL_MOUSEMOTION:
-				if(_mouseMove)
+				if (_mouseMove)
 					_mouseMove(event.motion.xrel, event.motion.yrel);
 				break;
 			}
+		}
 
 		_idle();
 		_display();
