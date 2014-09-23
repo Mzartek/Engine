@@ -11,6 +11,8 @@ engine::Renderer::Renderer(void)
 
 engine::Renderer::~Renderer(void)
 {
+	SDL_GL_DeleteContext(_idGLContext);
+	SDL_DestroyWindow(_idWindow);
 	TTF_Quit();
 	SDL_Quit();
 }
@@ -157,9 +159,6 @@ void engine::Renderer::mainLoop(void)
 
 		SDL_GL_SwapWindow(_idWindow);
 	}
-
-	SDL_GL_DeleteContext(_idGLContext);
-	SDL_DestroyWindow(_idWindow);
 }
 
 void engine::Renderer::stopLoop(void)
