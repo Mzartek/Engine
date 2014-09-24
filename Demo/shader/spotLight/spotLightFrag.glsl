@@ -41,8 +41,8 @@ layout(location = 0) out vec4 outLight;
 
 vec3 getPosition(vec2 fragCoord)
 {
-	float depth = texelFetch(depthTexture, ivec2(fragCoord), 0).x;
-	vec4 tmp1 = vec4(fragCoord/screen * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
+	float depth = texelFetch(depthTexture, ivec2(fragCoord), 0).x * 2.0 - 1.0;
+	vec4 tmp1 = vec4(fragCoord/screen * 2.0 - 1.0, depth, 1.0);
 	vec4 tmp2 = IVPMatrix * tmp1;
 	return tmp2.xyz / tmp2.w;
 }

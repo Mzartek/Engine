@@ -27,8 +27,8 @@ void engine::DirLight::config(ShaderProgram *program)
 		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
-	_shadowMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
-	_IVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
+	_shadowMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_IVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 	_screenBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);

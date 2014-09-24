@@ -16,8 +16,6 @@ namespace engine
 		void (*_display) (void);
 		void (*_idle) (void);
 		void (*_reshape) (GLuint, GLuint);
-		void (*_keyboard) (GLubyte, GLboolean);
-		void (*_mouseMove) (GLint, GLint);
 	public:
 		Renderer(void);
 		~Renderer(void);
@@ -25,8 +23,6 @@ namespace engine
 		void setDisplayFunc(void (*f) (void));
 		void setIdleFunc(void (*f) (void));
 		void setReshapeFunc(void (*f) (GLuint, GLuint));
-		void setKeyboardFunc(void (*f) (GLubyte, GLboolean));
-		void setMouseMoveFunc(void (*f) (GLint, GLint));
 		GLuint getWidth(void);
 		GLuint getHeight(void);
 		SDL_Window *getId(void);

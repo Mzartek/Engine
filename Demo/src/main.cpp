@@ -1,8 +1,7 @@
 #include "config.hpp"
 
-GLboolean keyState[256];
-
 engine::Renderer *renderer;
+engine::Input *input;
 engine::FreeCam *cam;
 engine::DirLight *sun;
 engine::SpotLight *torch;
@@ -34,20 +33,20 @@ void display(void)
 
 	// Shadow Map
 	sol->displayShadowMap(sun);
-	heli->displayShadowMap(sun);
+	//heli->displayShadowMap(sun);
 	sol->displayShadowMap(torch);
-	heli->displayShadowMap(torch);
+	//heli->displayShadowMap(torch);
 
 	// Opaque Object
 	sol->display(gBuffer, cam);
-	heli->display(gBuffer, cam);
+	//heli->display(gBuffer, cam);
 	sun->display(gBuffer, cam);
 	torch->display(gBuffer, cam);
 	screen->background(gBuffer);
 
 	// Transparent Object
 	sol->displayTransparent(gBuffer, cam);
-	heli->displayTransparent(gBuffer, cam);
+	//heli->displayTransparent(gBuffer, cam);
 	sun->display(gBuffer, cam);
 	torch->display(gBuffer, cam);
 	screen->background(gBuffer);
@@ -59,7 +58,18 @@ void display(void)
 
 void idle(void)
 {
-	cam->keyboardMove(keyState[26], keyState[22], keyState[4], keyState[7]);
+	input->refresh();
+	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
+		renderer->stopLoop();
+	cam->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
+	cam->mouseMove(input->getMouseRelX(), input->getMouseRelY());
+	if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT))
+		cam->setSpeed(0.05f);
+	else
+		cam->setSpeed(0.5f);
+
+	if (input->getMouseState(SDL_BUTTON_LEFT))
+		cam->setSpeed(10.0f);
 
 	heli->matRotate(0.1f, 0, 1, 0);
 
@@ -71,29 +81,6 @@ void idle(void)
 void reshape(GLuint w, GLuint h)
 {
 	cam->setPerspective(90.0f, w, h, 0.1f, 1000.0f);
-}
-
-void keyboard(GLubyte key, GLboolean state)
-{
-	keyState[key] = state;
-
-	if(keyState[MAJ]==GL_TRUE)
-		cam->setSpeed(0.05f);
-	else
-		cam->setSpeed(0.25f);
-
-	if (state)
-		switch (key)
-		{
-		case ESC:
-			renderer->stopLoop();
-			break;
-		}
-}
-
-void mouseMove(GLint xrel, GLint yrel)
-{
-	cam->mouseMove(xrel, yrel);
 }
 
 void init(void)
@@ -154,6 +141,7 @@ void kill(void)
 int main(int argc, char **argv)
 {
 	renderer = new engine::Renderer;
+	input = new engine::Input;
 
 	if (argc < 3)
 		renderer->initWindow("Demo OpenGL", 800, 600, GL_FALSE);
@@ -162,8 +150,6 @@ int main(int argc, char **argv)
 	renderer->setDisplayFunc(display);
 	renderer->setIdleFunc(idle);
 	renderer->setReshapeFunc(reshape);
-	renderer->setKeyboardFunc(keyboard);
-	renderer->setMouseMoveFunc(mouseMove);
 
 	init();
 
@@ -172,6 +158,8 @@ int main(int argc, char **argv)
 	kill();
 
 	delete renderer;
+	delete input;
+
 	std::cout << "MemState " << engine::Object::getMemoryState() << std::endl;
 	engine::Object::saveMemoryInfo("memLost.txt");
 	return 0;

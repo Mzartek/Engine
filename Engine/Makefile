@@ -18,7 +18,7 @@ LINKER_OPTIONS= -L/c/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSD
 
 endif
 
-SRC= src/Object.cpp src/Mesh.cpp src/Renderer.cpp src/Camera.cpp src/MovableCamera.cpp src/FreeCam.cpp src/PlayerCam.cpp src/ShaderProgram.cpp src/Model.cpp src/Light.cpp src/DirLight.cpp src/SpotLight.cpp src/FrameBuffer.cpp src/ShadowMap.cpp src/SkyBox.cpp src/Screen.cpp src/TextArray.cpp src/GBuffer.cpp src/Buffer.cpp src/Texture.cpp
+SRC= src/Object.cpp src/Mesh.cpp src/Renderer.cpp src/Camera.cpp src/MovableCamera.cpp src/FreeCam.cpp src/PlayerCam.cpp src/ShaderProgram.cpp src/Model.cpp src/Light.cpp src/DirLight.cpp src/SpotLight.cpp src/FrameBuffer.cpp src/ShadowMap.cpp src/SkyBox.cpp src/Screen.cpp src/TextArray.cpp src/GBuffer.cpp src/Buffer.cpp src/Texture.cpp src/Input.cpp
 OBJ= $(SRC:%.cpp=obj/%.o)
 
 all:	$(OBJ)

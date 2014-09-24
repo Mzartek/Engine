@@ -64,8 +64,8 @@ void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_gProgram = gProgram;
 	_smProgram = smProgram;
 
-	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
-	_normalMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
+	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_normalMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);

@@ -2,7 +2,7 @@
 
 engine::Renderer::Renderer(void)
 	: _idWindow(NULL), _idGLContext(NULL),
-	_display(NULL), _idle(NULL), _reshape(NULL), _keyboard(NULL), _mouseMove(NULL)
+	_display(NULL), _idle(NULL), _reshape(NULL)
 {
 }
 
@@ -39,7 +39,6 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	if(fullScreen == GL_TRUE)
@@ -89,16 +88,6 @@ void engine::Renderer::setReshapeFunc(void (*f) (GLuint, GLuint))
 	_reshape = f;
 }
 
-void engine::Renderer::setKeyboardFunc(void (*f) (GLubyte, GLboolean))
-{
-	_keyboard = f;
-}
-
-void engine::Renderer::setMouseMoveFunc(void (*f) (GLint, GLint))
-{
-	_mouseMove = f;
-}
-
 GLuint engine::Renderer::getWidth(void)
 {
 	return _width;
@@ -135,18 +124,6 @@ void engine::Renderer::mainLoop(void)
 			{
 			case SDL_QUIT:
 				_stopLoop = true;
-				break;
-			case SDL_KEYDOWN:
-				if (_keyboard)
-					_keyboard((GLubyte)event.key.keysym.scancode, (GLubyte)event.key.state);
-				break;
-			case SDL_KEYUP:
-				if (_keyboard)
-					_keyboard((GLubyte)event.key.keysym.scancode, (GLubyte)event.key.state);
-				break;
-			case SDL_MOUSEMOTION:
-				if (_mouseMove)
-					_mouseMove(event.motion.xrel, event.motion.yrel);
 				break;
 			}
 		}

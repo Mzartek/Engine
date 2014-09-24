@@ -70,7 +70,7 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeof vertexArray, GL_STATIC_DRAW);
-	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::mat4, GL_DYNAMIC_DRAW);
+	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_idVAO);  
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());  

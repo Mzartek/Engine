@@ -9,7 +9,7 @@ in VertexData
 
 void main()
 {
-	float transparency = texture(colorTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y)).a;
+	float transparency = texture(colorTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y)).w;
 	if (transparency > 0.5)
 		gl_FragDepth = gl_FragCoord.z;
 	else

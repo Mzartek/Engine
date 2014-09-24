@@ -35,7 +35,7 @@ void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
 
 	// Create Color Buffer
-	_colorBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof glm::vec4, GL_DYNAMIC_DRAW);
+	_colorBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_idVAO);  
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());  

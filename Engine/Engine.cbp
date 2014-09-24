@@ -51,6 +51,7 @@
 		<Unit filename="include/Engine/FrameBuffer.hpp" />
 		<Unit filename="include/Engine/FreeCam.hpp" />
 		<Unit filename="include/Engine/GBuffer.hpp" />
+		<Unit filename="include/Engine/Input.hpp" />
 		<Unit filename="include/Engine/Light.hpp" />
 		<Unit filename="include/Engine/Mesh.hpp" />
 		<Unit filename="include/Engine/Model.hpp" />
@@ -71,6 +72,7 @@
 		<Unit filename="src/FrameBuffer.cpp" />
 		<Unit filename="src/FreeCam.cpp" />
 		<Unit filename="src/GBuffer.cpp" />
+		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/Light.cpp" />
 		<Unit filename="src/Mesh.cpp" />
 		<Unit filename="src/Model.cpp" />

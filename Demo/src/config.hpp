@@ -5,6 +5,7 @@
 #define MAJ 225
 
 #include <Engine/Renderer.hpp>
+#include <Engine/Input.hpp>
 #include <Engine/FreeCam.hpp>
 #include <Engine/DirLight.hpp>
 #include <Engine/SpotLight.hpp>
@@ -18,6 +19,7 @@
 extern GLboolean keyState[256];
 
 extern engine::Renderer *renderer;
+extern engine::Input *input;
 extern engine::FreeCam *cam;
 extern engine::DirLight *sun;
 extern engine::SpotLight *torch;

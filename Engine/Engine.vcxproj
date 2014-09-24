@@ -88,6 +88,7 @@
     <ClInclude Include="include\Engine\FreeCam.hpp" />
     <ClInclude Include="include\Engine\GBuffer.hpp" />
     <ClInclude Include="include\Engine\EngineHead.hpp" />
+    <ClInclude Include="include\Engine\Input.hpp" />
     <ClInclude Include="include\Engine\Mesh.hpp" />
     <ClInclude Include="include\Engine\Light.hpp" />
     <ClInclude Include="include\Engine\Model.hpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\FreeCam.cpp" />
     <ClCompile Include="src\GBuffer.cpp" />
+    <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\Model.cpp" />
