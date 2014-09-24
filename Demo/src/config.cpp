@@ -5,6 +5,7 @@ void configShaders(void)
 	objectProgram->loadProgram("shader/object/objectVert.glsl", NULL, NULL, "shader/object/objectGeom.glsl", "shader/object/objectFrag.glsl");
 	dirLightProgram->loadProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
 	spotLightProgram->loadProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
+	vLightProgram->loadProgram("shader/vLight/vLightVert.glsl", NULL, NULL, NULL, "shader/vLight/vLightFrag.glsl");
 	shadowMapProgram->loadProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
 	skyboxProgram->loadProgram("shader/skybox/skyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/skyboxFrag.glsl");
 	backgroundProgram->loadProgram("shader/background/backgroundVert.glsl", NULL, NULL, NULL, "shader/background/backgroundFrag.glsl");

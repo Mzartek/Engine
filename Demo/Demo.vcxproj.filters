@@ -65,6 +65,12 @@
     <None Include="shader\background\backgroundVert.glsl">
       <Filter>Shader</Filter>
     </None>
+    <None Include="shader\vLight\vLightVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\vLight\vLightFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp">

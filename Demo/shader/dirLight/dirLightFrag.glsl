@@ -73,21 +73,11 @@ float calcShadow(vec4 coord, float pcf)
 	return shadow;
 }
 
-vec4 calcDirLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 eyeVec, float shininess, float shadow) // N need to be normalize
+vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, vec3 V, float shininess)
 {
-	vec3 L, V, R;
-	vec4 diff, spec;
-
-	diff = vec4(0.0, 0.0, 0.0, 0.0);
-	spec = vec4(0.0, 0.0, 0.0, 0.0);
-
-	L = normalize(-lightDirection);
-	V = normalize(eyeVec);
-	R = reflect(-L, N);
-
-	diff = max(dot(N, L), 0.0) * diffColor * shadow;
-	spec = pow(max(dot(R, V), 0.0), shininess) * specColor * shadow;
-
+	vec3 R = reflect(-L, N);
+	vec4 diff = max(dot(N, L), 0.0) * diffColor;
+	vec4 spec = pow(max(dot(R, V), 0.0), shininess) * specColor;
 	return diff + spec;
 }
 
@@ -100,8 +90,8 @@ void main(void)
 	vec4 diffColor = unpackUnorm4x8(material.z) * vec4(lightColor, 1.0);
 	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);
 	
-	float s = 1.0;
+	float shadow = 1.0;
 	if (withShadowMapping)
-		s = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
-	outLight = calcDirLight(diffColor, specColor, normal.xyz, camPosition - position, normal.w, s);
+		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
+	outLight = calcLight(diffColor, specColor, normal.xyz, normalize(-lightDirection), normalize(camPosition - position), normal.w) * shadow;
 }

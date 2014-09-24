@@ -75,30 +75,11 @@ float calcShadow(vec4 coord, float pcf)
 	return shadow;
 }
 
-vec4 calcSpotLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 eyeVec, vec3 position, float shininess, float shadow) // N need to be normalize
+vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, vec3 V, float shininess)
 {
-	vec3 L, V, R, D;
-	float cos_cur_angle, cos_inner_cone_angle, cos_outer_cone_angle, cos_inner_minus_outer_angle;
-	float cosTheta, spot, specular;
-	vec4 diff, spec;
-
-	diff = vec4(0.0, 0.0, 0.0, 0.0);
-	spec = vec4(0.0, 0.0, 0.0, 0.0);
-
-	L = normalize(lightPosition - position);
-	V = normalize(eyeVec);
-	R = reflect(-L, N);
-	D = normalize(lightDirection);
-
-	cos_cur_angle = dot(-L, D);
-	cos_outer_cone_angle = cos(radians(lightSpotCutOff));
-	cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
-	cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
-	spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
-
-	diff = max(dot(N, L), 0.0) * diffColor * spot * shadow;
-	spec = pow(max(dot(R, V), 0.0), shininess) * specColor * spot * shadow;
-
+	vec3 R = reflect(-L, N);
+	vec4 diff = max(dot(N, L), 0.0) * diffColor;
+	vec4 spec = pow(max(dot(R, V), 0.0), shininess) * specColor;
 	return diff + spec;
 }
 
@@ -111,8 +92,14 @@ void main(void)
 	vec4 diffColor = unpackUnorm4x8(material.z) * vec4(lightColor, 1.0);
 	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);
 	
-	float s = 1.0;
+	float shadow = 1.0;
 	if (withShadowMapping)
-		s = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
-	outLight = calcSpotLight(diffColor, specColor, normal.xyz, camPosition - position, position, normal.w, s);
+		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
+	vec3 L = normalize(lightPosition - position);
+	float cos_cur_angle = dot(-L, normalize(lightDirection));
+	float cos_outer_cone_angle = cos(radians(lightSpotCutOff));
+	float cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
+	float cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
+	float spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
+	outLight = calcLight(diffColor, specColor, normal.xyz, L, normalize(camPosition - position), normal.w) * shadow * spot;
 }

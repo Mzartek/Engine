@@ -15,6 +15,7 @@ engine::GBuffer *gBuffer;
 engine::ShaderProgram *objectProgram;
 engine::ShaderProgram *dirLightProgram;
 engine::ShaderProgram *spotLightProgram;
+engine::ShaderProgram *vLightProgram;
 engine::ShaderProgram *shadowMapProgram;
 engine::ShaderProgram *skyboxProgram;
 engine::ShaderProgram *backgroundProgram;
@@ -33,20 +34,20 @@ void display(void)
 
 	// Shadow Map
 	sol->displayShadowMap(sun);
-	//heli->displayShadowMap(sun);
+	heli->displayShadowMap(sun);
 	sol->displayShadowMap(torch);
-	//heli->displayShadowMap(torch);
+	heli->displayShadowMap(torch);
 
 	// Opaque Object
 	sol->display(gBuffer, cam);
-	//heli->display(gBuffer, cam);
+	heli->display(gBuffer, cam);
 	sun->display(gBuffer, cam);
 	torch->display(gBuffer, cam);
 	screen->background(gBuffer);
 
 	// Transparent Object
 	sol->displayTransparent(gBuffer, cam);
-	//heli->displayTransparent(gBuffer, cam);
+	heli->displayTransparent(gBuffer, cam);
 	sun->display(gBuffer, cam);
 	torch->display(gBuffer, cam);
 	screen->background(gBuffer);
@@ -98,6 +99,7 @@ void init(void)
 	objectProgram = new engine::ShaderProgram;
 	dirLightProgram = new engine::ShaderProgram;
 	spotLightProgram = new engine::ShaderProgram;
+	vLightProgram = new engine::ShaderProgram;
 	shadowMapProgram = new engine::ShaderProgram;
 	skyboxProgram = new engine::ShaderProgram;
 	backgroundProgram = new engine::ShaderProgram;
@@ -123,6 +125,7 @@ void kill(void)
 	delete backgroundProgram;
 	delete skyboxProgram;
 	delete shadowMapProgram;
+	delete vLightProgram;
 	delete spotLightProgram;
 	delete dirLightProgram;
 	delete objectProgram;
@@ -144,7 +147,7 @@ int main(int argc, char **argv)
 	input = new engine::Input;
 
 	if (argc < 3)
-		renderer->initWindow("Demo OpenGL", 800, 600, GL_FALSE);
+		renderer->initWindow("Demo OpenGL", 1680, 1050, GL_FALSE);
 	else
 		renderer->initWindow("Demo OpenGL", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
 	renderer->setDisplayFunc(display);
