@@ -70,7 +70,7 @@ void idle(void)
 		cam->setSpeed(0.5f);
 
 	if (input->getMouseState(SDL_BUTTON_LEFT))
-		cam->setSpeed(10.0f);
+		cam->setSpeed(5.0f);
 
 	heli->matRotate(0.1f, 0, 1, 0);
 
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 	input = new engine::Input;
 
 	if (argc < 3)
-		renderer->initWindow("Demo OpenGL", 1680, 1050, GL_FALSE);
+		renderer->initWindow("Demo OpenGL", 800, 600, GL_FALSE);
 	else
 		renderer->initWindow("Demo OpenGL", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
 	renderer->setDisplayFunc(display);

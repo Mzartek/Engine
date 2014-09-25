@@ -59,7 +59,8 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 		exit(1);
 	}
 
-	SDL_GL_SetSwapInterval(1);
+	SDL_GL_SetSwapInterval(0);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 #ifdef WIN32
 	if(glewInit())
@@ -106,6 +107,7 @@ SDL_Window *engine::Renderer::getId(void)
 void engine::Renderer::mainLoop(void)
 {
 	SDL_Event event;
+	long long lastTime, limit = 1000 / 60;
 
 	if (!_reshape || !_idle || !_display)
 	{
@@ -113,9 +115,9 @@ void engine::Renderer::mainLoop(void)
 		exit(1);
 	}
 
-	SDL_SetRelativeMouseMode(SDL_TRUE);
 	_stopLoop = false;
 	_reshape(_width, _height);
+	lastTime = SDL_GetTicks();
 	while (!_stopLoop)
 	{
 		while (SDL_PollEvent(&event))
@@ -127,11 +129,13 @@ void engine::Renderer::mainLoop(void)
 				break;
 			}
 		}
-
-		_idle();
+		if ((SDL_GetTicks() - lastTime) > limit)
+		{
+			_idle();
+			lastTime = SDL_GetTicks();
+		}
 		_display();
-
-		SDL_GL_SwapWindow(_idWindow);
+		SDL_GL_SwapWindow(_idWindow); 
 	}
 }
 

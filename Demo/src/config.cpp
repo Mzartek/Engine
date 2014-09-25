@@ -32,7 +32,7 @@ void configLights(void)
 	sun->config(dirLightProgram);
 	sun->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	sun->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
-	sun->setShadowMapping(GL_TRUE);
+	sun->setShadowMapping(GL_FALSE);
 	sun->configShadowMap(1024, 1024);
 
 	torch->config(spotLightProgram);
@@ -40,7 +40,7 @@ void configLights(void)
     torch->setPosition(glm::vec3(20.0f, 40.0f, 0.0f));
     torch->setDirection(glm::vec3(-0.5f, -1.0f, 0.0f));
     torch->setSpotCutOff(45.0f);
-	torch->setShadowMapping(GL_TRUE);
+	torch->setShadowMapping(GL_FALSE);
 	torch->configShadowMap(1024, 1024);
 }
 
