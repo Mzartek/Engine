@@ -53,11 +53,6 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 		exit(1);
 	}
 	_idGLContext = SDL_GL_CreateContext(_idWindow);
-	if (_idGLContext == NULL)
-	{
-		std::cerr << "Error while creating Context: " << SDL_GetError();
-		exit(1);
-	}
 
 	SDL_GL_SetSwapInterval(0);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -74,7 +69,7 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
-void engine::Renderer::setDisplayFunc(void (*f) (void))
+void engine::Renderer::setDisplayFunc(void(*f) (GLfloat))
 {
 	_display = f;
 }
@@ -107,7 +102,9 @@ SDL_Window *engine::Renderer::getId(void)
 void engine::Renderer::mainLoop(void)
 {
 	SDL_Event event;
-	long long lastTime, limit = 1000 / 60;
+	long long currentTime, newTime, frameTime;
+	long long accumulator = 0;
+	long long dt = 16;
 
 	if (!_reshape || !_idle || !_display)
 	{
@@ -117,7 +114,7 @@ void engine::Renderer::mainLoop(void)
 
 	_stopLoop = false;
 	_reshape(_width, _height);
-	lastTime = SDL_GetTicks();
+	currentTime = SDL_GetTicks();
 	while (!_stopLoop)
 	{
 		while (SDL_PollEvent(&event))
@@ -129,12 +126,12 @@ void engine::Renderer::mainLoop(void)
 				break;
 			}
 		}
-		if ((SDL_GetTicks() - lastTime) > limit)
-		{
+		newTime = SDL_GetTicks();
+		frameTime = newTime - currentTime;
+		currentTime = newTime;
+		for (accumulator += frameTime; accumulator >= dt; accumulator -= dt)
 			_idle();
-			lastTime = SDL_GetTicks();
-		}
-		_display();
+		_display((GLfloat)accumulator/dt);
 		SDL_GL_SwapWindow(_idWindow); 
 	}
 }

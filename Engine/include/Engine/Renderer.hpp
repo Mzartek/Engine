@@ -13,14 +13,14 @@ namespace engine
 		GLuint _height;
 		SDL_Window *_idWindow;
 		SDL_GLContext _idGLContext;
-		void (*_display) (void);
+		void(*_display) (GLfloat);
 		void (*_idle) (void);
 		void (*_reshape) (GLuint, GLuint);
 	public:
 		Renderer(void);
 		~Renderer(void);
 		void initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen);
-		void setDisplayFunc(void (*f) (void));
+		void setDisplayFunc(void(*f) (GLfloat));
 		void setIdleFunc(void (*f) (void));
 		void setReshapeFunc(void (*f) (GLuint, GLuint));
 		GLuint getWidth(void);

@@ -22,7 +22,7 @@ engine::ShaderProgram *backgroundProgram;
 engine::ShaderProgram *screenProgram;
 engine::ShaderProgram *textProgram;
 
-void display(void)
+void display(GLfloat state)
 {
 	renderer->clear();
 	gBuffer->clear();
