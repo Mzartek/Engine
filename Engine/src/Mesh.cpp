@@ -2,7 +2,7 @@
 #include <Engine/Texture.hpp>
 #include <Engine/Buffer.hpp>
 
-engine::Mesh::Mesh(void)
+Engine::Mesh::Mesh(void)
 {
 	_colorTexture = new Texture;
 	_NMTexture = new Texture;
@@ -14,7 +14,7 @@ engine::Mesh::Mesh(void)
 	_materialBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _material, GL_DYNAMIC_DRAW);
 };
 
-engine::Mesh::~Mesh(void)
+Engine::Mesh::~Mesh(void)
 {
 	delete _colorTexture;
 	delete _NMTexture;
@@ -24,44 +24,44 @@ engine::Mesh::~Mesh(void)
 	delete _materialBuffer;
 }
 
-void engine::Mesh::setColorTexture(const GLchar *path)
+void Engine::Mesh::setColorTexture(const GLchar *path)
 {
 	_colorTexture->load2DTextureFromFile(path);
 }
 
-void engine::Mesh::setNMTexture(const GLchar *path)
+void Engine::Mesh::setNMTexture(const GLchar *path)
 {
 	_NMTexture->load2DTextureFromFile(path);
 }
 
-void engine::Mesh::setAmbient(const glm::vec4 &ambient)
+void Engine::Mesh::setAmbient(const glm::vec4 &ambient)
 {
 	_material.ambient = ambient;
 }
 
-void engine::Mesh::setDiffuse(const glm::vec4 &diffuse)
+void Engine::Mesh::setDiffuse(const glm::vec4 &diffuse)
 {
 	_material.diffuse = diffuse;
 }
 
-void engine::Mesh::setSpecular(const glm::vec4 &specular)
+void Engine::Mesh::setSpecular(const glm::vec4 &specular)
 {
 	_material.specular = specular;
 }
 
-void engine::Mesh::setShininess(const GLfloat &shininess)
+void Engine::Mesh::setShininess(const GLfloat &shininess)
 {
 	_material.shininess = shininess;
 }
 
-GLfloat engine::Mesh::getTransparency(void)
+GLfloat Engine::Mesh::getTransparency(void)
 {
 	return _material.diffuse.w;
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+void Engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
 {
 	_numElement = sizeIndexArray/sizeof(GLuint);
@@ -85,7 +85,7 @@ void engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArr
 
 #undef BUFFER_OFFSET
 
-void engine::Mesh::display(void) const
+void Engine::Mesh::display(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
@@ -101,7 +101,7 @@ void engine::Mesh::display(void) const
 	glBindVertexArray(0);
 }
 
-void engine::Mesh::displayShadow(void) const
+void Engine::Mesh::displayShadow(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
@@ -111,10 +111,10 @@ void engine::Mesh::displayShadow(void) const
 	glBindVertexArray(0);
 }
 
-int engine::comparMesh(const void *p1, const void *p2)
+int Engine::comparMesh(const void *p1, const void *p2)
 {
-	Mesh **obj1 = (engine::Mesh **)p1;
-	Mesh **obj2 = (engine::Mesh **)p2;
+	Mesh **obj1 = (Engine::Mesh **)p1;
+	Mesh **obj2 = (Engine::Mesh **)p2;
 
 	if ((*obj1)->_material.diffuse.w < (*obj2)->_material.diffuse.w)
 		return 1;

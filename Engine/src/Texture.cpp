@@ -19,22 +19,22 @@ static pixelFormat testFormat(const GLuint &f)
 	}
 }
 
-engine::Texture::Texture(void)
+Engine::Texture::Texture(void)
 	: _idTexture(0)
 {
 }
 
-engine::Texture::~Texture(void)
+Engine::Texture::~Texture(void)
 {
 	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
 }
 
-GLuint engine::Texture::getId(void)
+GLuint Engine::Texture::getId(void)
 {
 	return _idTexture;
 }
 
-void engine::Texture::load2DTextureFromFile(const GLchar *path)
+void Engine::Texture::load2DTextureFromFile(const GLchar *path)
 {
 	SDL_Surface *image = IMG_Load(&path[0]);
 	if (image == NULL)
@@ -76,7 +76,7 @@ void engine::Texture::load2DTextureFromFile(const GLchar *path)
 	SDL_FreeSurface(image);
 }
 
-void engine::Texture::load2DTextureFromSDL_Surface(const SDL_Surface *surface)
+void Engine::Texture::load2DTextureFromSDL_Surface(const SDL_Surface *surface)
 {
 	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
 	glGenTextures(1, &_idTexture);
@@ -108,7 +108,7 @@ void engine::Texture::load2DTextureFromSDL_Surface(const SDL_Surface *surface)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void engine::Texture::loadCubeTextureFromFiles(
+void Engine::Texture::loadCubeTextureFromFiles(
 	const GLchar *posx, const GLchar *negx,
 	const GLchar *posy, const GLchar *negy,
 	const GLchar *posz, const GLchar *negz)

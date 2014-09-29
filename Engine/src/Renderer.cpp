@@ -1,18 +1,18 @@
 #include <Engine/Renderer.hpp>
 
-engine::Renderer::Renderer(void)
+Engine::Renderer::Renderer(void)
 	: _idWindow(NULL), _idGLContext(NULL),
 	_display(NULL), _idle(NULL), _reshape(NULL)
 {
 }
 
-engine::Renderer::~Renderer(void)
+Engine::Renderer::~Renderer(void)
 {
 	TTF_Quit();
 	SDL_Quit();
 }
 
-void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
+void Engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
 {
 	Uint32 flags;
 
@@ -69,37 +69,37 @@ void engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
-void engine::Renderer::setDisplayFunc(void(*f) (GLfloat))
+void Engine::Renderer::setDisplayFunc(void(*f) (GLfloat))
 {
 	_display = f;
 }
 
-void engine::Renderer::setIdleFunc(void (*f) (void))
+void Engine::Renderer::setIdleFunc(void (*f) (void))
 {
 	_idle = f;
 }
 
-void engine::Renderer::setReshapeFunc(void (*f) (GLuint, GLuint))
+void Engine::Renderer::setReshapeFunc(void (*f) (GLuint, GLuint))
 {
 	_reshape = f;
 }
 
-GLuint engine::Renderer::getWidth(void)
+GLuint Engine::Renderer::getWidth(void)
 {
 	return _width;
 }
 
-GLuint engine::Renderer::getHeight(void)
+GLuint Engine::Renderer::getHeight(void)
 {
 	return _height;
 }
 
-SDL_Window *engine::Renderer::getId(void)
+SDL_Window *Engine::Renderer::getId(void)
 {
 	return _idWindow;
 }
 
-void engine::Renderer::mainLoop(void)
+void Engine::Renderer::mainLoop(void)
 {
 	SDL_Event event;
 	long long currentTime, newTime, frameTime;
@@ -136,12 +136,12 @@ void engine::Renderer::mainLoop(void)
 	}
 }
 
-void engine::Renderer::stopLoop(void)
+void Engine::Renderer::stopLoop(void)
 {
 	_stopLoop = true;
 }
 
-void engine::Renderer::setState(void) const
+void Engine::Renderer::setState(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
@@ -164,7 +164,7 @@ void engine::Renderer::setState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::Renderer::clear(void) const
+void Engine::Renderer::clear(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 

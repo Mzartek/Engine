@@ -1,26 +1,26 @@
 #include "config.hpp"
 
-engine::Renderer *renderer;
-engine::Input *input;
-engine::FreeCam *cam;
-engine::DirLight *sun;
-engine::SpotLight *torch;
-engine::Model *sol;
-engine::Model *heli;
-engine::SkyBox *skybox;
-engine::Screen *screen;
-engine::TextArray *text;
-engine::GBuffer *gBuffer;
+Engine::Renderer *renderer;
+Engine::Input *input;
+Engine::FreeCam *cam;
+Engine::DirLight *sun;
+Engine::SpotLight *torch;
+Engine::Model *sol;
+Engine::Model *heli;
+Engine::SkyBox *skybox;
+Engine::Screen *screen;
+Engine::TextArray *text;
+Engine::GBuffer *gBuffer;
 
-engine::ShaderProgram *objectProgram;
-engine::ShaderProgram *dirLightProgram;
-engine::ShaderProgram *spotLightProgram;
-engine::ShaderProgram *vLightProgram;
-engine::ShaderProgram *shadowMapProgram;
-engine::ShaderProgram *skyboxProgram;
-engine::ShaderProgram *backgroundProgram;
-engine::ShaderProgram *screenProgram;
-engine::ShaderProgram *textProgram;
+Engine::ShaderProgram *objectProgram;
+Engine::ShaderProgram *dirLightProgram;
+Engine::ShaderProgram *spotLightProgram;
+Engine::ShaderProgram *vLightProgram;
+Engine::ShaderProgram *shadowMapProgram;
+Engine::ShaderProgram *skyboxProgram;
+Engine::ShaderProgram *backgroundProgram;
+Engine::ShaderProgram *screenProgram;
+Engine::ShaderProgram *textProgram;
 
 void display(GLfloat state)
 {
@@ -86,25 +86,25 @@ void reshape(GLuint w, GLuint h)
 
 void init(void)
 {
-	cam = new engine::FreeCam;
-	sun = new engine::DirLight;
-	torch = new engine::SpotLight;
-	sol = new engine::Model;
-	heli = new engine::Model;
-	skybox = new engine::SkyBox;
-	screen = new engine::Screen;
-	text = new engine::TextArray;
-	gBuffer = new engine::GBuffer;
+	cam = new Engine::FreeCam;
+	sun = new Engine::DirLight;
+	torch = new Engine::SpotLight;
+	sol = new Engine::Model;
+	heli = new Engine::Model;
+	skybox = new Engine::SkyBox;
+	screen = new Engine::Screen;
+	text = new Engine::TextArray;
+	gBuffer = new Engine::GBuffer;
 
-	objectProgram = new engine::ShaderProgram;
-	dirLightProgram = new engine::ShaderProgram;
-	spotLightProgram = new engine::ShaderProgram;
-	vLightProgram = new engine::ShaderProgram;
-	shadowMapProgram = new engine::ShaderProgram;
-	skyboxProgram = new engine::ShaderProgram;
-	backgroundProgram = new engine::ShaderProgram;
-	screenProgram = new engine::ShaderProgram;
-	textProgram = new engine::ShaderProgram;
+	objectProgram = new Engine::ShaderProgram;
+	dirLightProgram = new Engine::ShaderProgram;
+	spotLightProgram = new Engine::ShaderProgram;
+	vLightProgram = new Engine::ShaderProgram;
+	shadowMapProgram = new Engine::ShaderProgram;
+	skyboxProgram = new Engine::ShaderProgram;
+	backgroundProgram = new Engine::ShaderProgram;
+	screenProgram = new Engine::ShaderProgram;
+	textProgram = new Engine::ShaderProgram;
 
 	configShaders();
 	configBuffers();
@@ -143,8 +143,8 @@ void kill(void)
 
 int main(int argc, char **argv)
 {
-	renderer = new engine::Renderer;
-	input = new engine::Input;
+	renderer = new Engine::Renderer;
+	input = new Engine::Input;
 
 	if (argc < 3)
 		renderer->initWindow("Demo OpenGL", 800, 600, GL_FALSE);
@@ -163,7 +163,7 @@ int main(int argc, char **argv)
 	delete renderer;
 	delete input;
 
-	std::cout << "MemState " << engine::Object::getMemoryState() << std::endl;
-	engine::Object::saveMemoryInfo("memLost.txt");
+	std::cout << "MemState " << Engine::Object::getMemoryState() << std::endl;
+	Engine::Object::saveMemoryInfo("memLost.txt");
 	return 0;
 }

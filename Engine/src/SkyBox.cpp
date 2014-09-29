@@ -5,7 +5,7 @@
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
 
-engine::SkyBox::SkyBox()
+Engine::SkyBox::SkyBox(void)
 {
 	_cubeTexture = new Texture;
 	glGenVertexArrays(1, &_idVAO);
@@ -15,7 +15,7 @@ engine::SkyBox::SkyBox()
 	_rotateMatrix = new glm::mat4;
 }
 
-engine::SkyBox::~SkyBox()
+Engine::SkyBox::~SkyBox(void)
 {
 	delete _cubeTexture;
 	glDeleteVertexArrays(1, &_idVAO);
@@ -27,7 +27,7 @@ engine::SkyBox::~SkyBox()
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
+void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	const GLchar *posy, const GLchar *negy,
 	const GLchar *posz, const GLchar *negz,
 	GLfloat dim, ShaderProgram *program)
@@ -74,12 +74,12 @@ void engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 
 #undef BUFFER_OFFSET
 
-void engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
 	*_rotateMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
 }
 
-void engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
+void Engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
 {
 	glm::mat4 pos = glm::translate(glm::vec3(cam->getPositionCamera()));
 	pos *= *_rotateMatrix;

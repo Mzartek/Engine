@@ -5,17 +5,17 @@
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
 
-engine::SpotLight::SpotLight(void)
+Engine::SpotLight::SpotLight(void)
 {
 }
 
-engine::SpotLight::~SpotLight(void)
+Engine::SpotLight::~SpotLight(void)
 {
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::SpotLight::config(ShaderProgram *program)
+void Engine::SpotLight::config(ShaderProgram *program)
 {
 	_program = program;
 
@@ -49,59 +49,59 @@ void engine::SpotLight::config(ShaderProgram *program)
 
 #undef BUFFER_OFFSET
 
-void engine::SpotLight::setColor(const glm::vec3 &color)
+void Engine::SpotLight::setColor(const glm::vec3 &color)
 {
 	_lightInfo.color = color;
 }
 
 
-void engine::SpotLight::setPosition(const glm::vec3 &pos)
+void Engine::SpotLight::setPosition(const glm::vec3 &pos)
 {
 	_lightInfo.position = pos;
 }
 
-void engine::SpotLight::setDirection(const glm::vec3 &dir)
+void Engine::SpotLight::setDirection(const glm::vec3 &dir)
 {
 	_lightInfo.direction = dir;
 }
 
-void engine::SpotLight::setSpotCutOff(const float &spot)
+void Engine::SpotLight::setSpotCutOff(const float &spot)
 {
 	_lightInfo.spotCutOff = spot;
 }
 
-void engine::SpotLight::setShadowMapping(const GLboolean &shadow)
+void Engine::SpotLight::setShadowMapping(const GLboolean &shadow)
 {
 	_lightInfo.withShadowMapping = shadow;
 }
 
-glm::vec3 engine::SpotLight::getColor(void) const
+glm::vec3 Engine::SpotLight::getColor(void) const
 {
 	return _lightInfo.color;
 }
 
-glm::vec3 engine::SpotLight::getPosition(void) const
+glm::vec3 Engine::SpotLight::getPosition(void) const
 {
 	return _lightInfo.position;
 }
 
-glm::vec3 engine::SpotLight::getDirection(void) const
+glm::vec3 Engine::SpotLight::getDirection(void) const
 {
 	return _lightInfo.direction;
 }
 
-GLfloat engine::SpotLight::getSpotCutOff(void) const
+GLfloat Engine::SpotLight::getSpotCutOff(void) const
 {
 	return _lightInfo.spotCutOff;
 }
 
-void engine::SpotLight::position(void)
+void Engine::SpotLight::position(void)
 {
 	*_VPMatrix = glm::perspective(_lightInfo.spotCutOff * 2 * ((GLfloat)M_PI / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1000.0f) *
 		glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
+void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 {
 	gbuf->setLightState();
 

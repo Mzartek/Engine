@@ -1,19 +1,19 @@
 #include <Engine/MovableCamera.hpp>
 
-engine::MovableCamera::MovableCamera(void)
+Engine::MovableCamera::MovableCamera(void)
 	: _speed(1), _atheta(0), _aphi(0)
 {
 	_vforward = new glm::vec3;
 	_vleft = new glm::vec3;
 }
 
-engine::MovableCamera::~MovableCamera(void)
+Engine::MovableCamera::~MovableCamera(void)
 {
 	delete _vforward;
 	delete _vleft;
 }
 
-void engine::MovableCamera::setInitialAngle(const GLfloat &t, const GLfloat &p)
+void Engine::MovableCamera::setInitialAngle(const GLfloat &t, const GLfloat &p)
 {
 	_atheta = t;
 	_aphi = p;
@@ -40,22 +40,22 @@ void engine::MovableCamera::setInitialAngle(const GLfloat &t, const GLfloat &p)
 	*_ptarget = *_pcamera + *_vforward;
 }
 
-void engine::MovableCamera::setSpeed(const GLfloat &v)
+void Engine::MovableCamera::setSpeed(const GLfloat &v)
 {
 	_speed = v;
 }
 
-glm::vec3 engine::MovableCamera::getForward(void) const
+glm::vec3 Engine::MovableCamera::getForward(void) const
 {
 	return *_vforward;
 }
 
-glm::vec3 engine::MovableCamera::getLeft(void) const
+glm::vec3 Engine::MovableCamera::getLeft(void) const
 {
 	return *_vleft;
 }
 
-void engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
+void Engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 {
 	_atheta -= (GLfloat)xrel;
 	_aphi -= (GLfloat)yrel;

@@ -2,7 +2,7 @@
 #include <Engine/Buffer.hpp>
 #include <Engine/ShadowMap.hpp>
 
-engine::Light::Light(void)
+Engine::Light::Light(void)
 {
 	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
@@ -15,7 +15,7 @@ engine::Light::Light(void)
 	_shadow = new ShadowMap;
 }
 
-engine::Light::~Light(void)
+Engine::Light::~Light(void)
 {
 	glDeleteVertexArrays(1, &_idVAO);
 	delete _vertexBuffer;
@@ -28,22 +28,22 @@ engine::Light::~Light(void)
 	delete _shadow;
 }
 
-void engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
+void Engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
 {
 	_shadow->config(width, height);
 }
 
-glm::mat4 engine::Light::getVPMatrix(void) const
+glm::mat4 Engine::Light::getVPMatrix(void) const
 {
 	return *_VPMatrix;
 }
 
-engine::ShadowMap *engine::Light::getShadowMap(void)
+Engine::ShadowMap *Engine::Light::getShadowMap(void)
 {
 	return _shadow;
 }
 
-void engine::Light::clear(void) const
+void Engine::Light::clear(void) const
 {
 	_shadow->clear();
 }

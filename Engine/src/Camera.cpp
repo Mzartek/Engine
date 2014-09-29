@@ -1,6 +1,6 @@
 #include <Engine/Camera.hpp>
 
-engine::Camera::Camera(void)
+Engine::Camera::Camera(void)
 {
 	_pcamera = new glm::vec3;
 	_ptarget = new glm::vec3;
@@ -8,7 +8,7 @@ engine::Camera::Camera(void)
 	_VPMatrix = new glm::mat4;
 }
 
-engine::Camera::~Camera(void)
+Engine::Camera::~Camera(void)
 {
 	delete _pcamera;
 	delete _ptarget;
@@ -16,42 +16,42 @@ engine::Camera::~Camera(void)
 	delete _VPMatrix;
 }
 
-void engine::Camera::setPositionCamera(const glm::vec3 &pos)
+void Engine::Camera::setPositionCamera(const glm::vec3 &pos)
 {
 	*_pcamera = pos;
 }
 
-void engine::Camera::setPositionTarget(const glm::vec3 &pos)
+void Engine::Camera::setPositionTarget(const glm::vec3 &pos)
 {
 	*_ptarget = pos;
 }
 
-void engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)
+void Engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)
 {
 	*_projectionMatrix = glm::perspective(fov * ((GLfloat)M_PI / 180), (GLfloat)width / height, n, f);
 }
 
-glm::vec3 engine::Camera::getPositionCamera(void) const
+glm::vec3 Engine::Camera::getPositionCamera(void) const
 {
 	return *_pcamera;
 }
 
-glm::vec3 engine::Camera::getPositionTarget(void) const
+glm::vec3 Engine::Camera::getPositionTarget(void) const
 {
 	return *_ptarget;
 }
 
-glm::mat4 engine::Camera::getProjectionMatrix(void) const
+glm::mat4 Engine::Camera::getProjectionMatrix(void) const
 {
 	return *_projectionMatrix;
 }
 
-glm::mat4 engine::Camera::getVPMatrix(void) const
+glm::mat4 Engine::Camera::getVPMatrix(void) const
 {
 	return *_VPMatrix;
 }
 
-void engine::Camera::position(void)
+void Engine::Camera::position(void)
 {
 	*_VPMatrix = *_projectionMatrix * glm::lookAt(*_pcamera, *_ptarget, glm::vec3(0.0f, 1.0f, 0.0f));
 }

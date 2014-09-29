@@ -1,15 +1,15 @@
 #include <Engine/ShadowMap.hpp>
 
-engine::ShadowMap::ShadowMap(void)
+Engine::ShadowMap::ShadowMap(void)
 {
 }
 
-engine::ShadowMap::~ShadowMap(void)
+Engine::ShadowMap::~ShadowMap(void)
 {
 	if (glIsTexture(_idDepthTexture)) glDeleteTextures(1, &_idDepthTexture);
 }
 
-void engine::ShadowMap::config(const GLuint &width, const GLuint &height)
+void Engine::ShadowMap::config(const GLuint &width, const GLuint &height)
 {
 	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
 
@@ -42,12 +42,12 @@ void engine::ShadowMap::config(const GLuint &width, const GLuint &height)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-GLuint engine::ShadowMap::getIdDepthTexture(void) const
+GLuint Engine::ShadowMap::getIdDepthTexture(void) const
 {
 	return _idDepthTexture;
 }
 
-void engine::ShadowMap::setState(void) const
+void Engine::ShadowMap::setState(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 
@@ -65,7 +65,7 @@ void engine::ShadowMap::setState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::ShadowMap::clear(void) const
+void Engine::ShadowMap::clear(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 

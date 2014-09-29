@@ -4,14 +4,14 @@
 #include <Engine/GBuffer.hpp>
 #include <Engine/Renderer.hpp>
 
-engine::Screen::Screen()
+Engine::Screen::Screen(void)
 {
 	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
 	_colorBuffer = new Buffer;
 }
 
-engine::Screen::~Screen()
+Engine::Screen::~Screen(void)
 {
 	glDeleteVertexArrays(1, &_idVAO);
 	delete _vertexBuffer;
@@ -20,7 +20,7 @@ engine::Screen::~Screen()
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
+void Engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
 {
 	_backgroundProgram = backgroundProgram;
 	_directProgram = directProgram;
@@ -55,7 +55,7 @@ void engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 
 #undef BUFFER_OFFSET
 
-void engine::Screen::background(GBuffer *gbuf)
+void Engine::Screen::background(GBuffer *gbuf)
 {
 	gbuf->setBackgroundState();
 
@@ -78,7 +78,7 @@ void engine::Screen::background(GBuffer *gbuf)
 	gbuf->clearLight();
 }
 
-void engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
+void Engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
 {
 	renderer->setState();
 

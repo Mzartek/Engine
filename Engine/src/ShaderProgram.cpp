@@ -63,12 +63,12 @@ static GLuint loadShader(const GLchar *filename, const GLenum &type)
 	return id;
 }
 
-engine::ShaderProgram::ShaderProgram(void)
+Engine::ShaderProgram::ShaderProgram(void)
 	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
 {
 }
 
-engine::ShaderProgram::~ShaderProgram(void)
+Engine::ShaderProgram::~ShaderProgram(void)
 {
 	if (glIsProgram(_idProgram)) glDeleteProgram(_idProgram);
 	if (glIsShader(_idVertexShader)) glDeleteShader(_idVertexShader);
@@ -78,7 +78,7 @@ engine::ShaderProgram::~ShaderProgram(void)
 	if (glIsShader(_idFragmentShader)) glDeleteShader(_idFragmentShader);
 }
 
-void engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
+void Engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
 {
 	GLchar *log;
 	GLsizei logsize;
@@ -172,7 +172,7 @@ void engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, con
 	}
 }
 
-GLuint engine::ShaderProgram::getId(void)
+GLuint Engine::ShaderProgram::getId(void)
 {
 	return _idProgram;
 }

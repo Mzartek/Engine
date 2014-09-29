@@ -3,8 +3,8 @@
 
 #include "EngineHead.hpp"
 
-namespace engine
-{;
+namespace Engine
+{
 	class DLLAPI Object
 	{
 	private:

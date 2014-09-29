@@ -1,15 +1,15 @@
 #include <Engine/GBuffer.hpp>
 
-engine::GBuffer::GBuffer(void)
+Engine::GBuffer::GBuffer(void)
 {
 }
 
-engine::GBuffer::~GBuffer(void)
+Engine::GBuffer::~GBuffer(void)
 {
 	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
 }
 
-void engine::GBuffer::config(const GLuint &width, const GLuint &height)
+void Engine::GBuffer::config(const GLuint &width, const GLuint &height)
 {
 	_width = width;
 	_height = height;
@@ -59,12 +59,12 @@ void engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-GLuint engine::GBuffer::getIdTexture(const GLuint &num) const
+GLuint Engine::GBuffer::getIdTexture(const GLuint &num) const
 {
 	return _idTexture[num];
 }
 
-void engine::GBuffer::setSkyboxState(void)
+void Engine::GBuffer::setSkyboxState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -89,7 +89,7 @@ void engine::GBuffer::setSkyboxState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::GBuffer::setGeometryState(void)
+void Engine::GBuffer::setGeometryState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -118,7 +118,7 @@ void engine::GBuffer::setGeometryState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::GBuffer::setLightState(void)
+void Engine::GBuffer::setLightState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -147,7 +147,7 @@ void engine::GBuffer::setLightState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::GBuffer::setBackgroundState(void)
+void Engine::GBuffer::setBackgroundState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -176,7 +176,7 @@ void engine::GBuffer::setBackgroundState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void engine::GBuffer::clear(void) const
+void Engine::GBuffer::clear(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]
@@ -201,7 +201,7 @@ void engine::GBuffer::clear(void) const
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-void engine::GBuffer::clearLight(void) const
+void Engine::GBuffer::clearLight(void) const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
 	const GLenum colorAttachment[]

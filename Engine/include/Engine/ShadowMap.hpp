@@ -3,7 +3,7 @@
 
 #include "FrameBuffer.hpp"
 
-namespace engine
+namespace Engine
 {
 	class DLLAPI ShadowMap : public FrameBuffer
 	{

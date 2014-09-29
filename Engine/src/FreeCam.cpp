@@ -1,14 +1,14 @@
 #include <Engine/FreeCam.hpp>
 
-engine::FreeCam::FreeCam(void)
+Engine::FreeCam::FreeCam(void)
 {
 }
 
-engine::FreeCam::~FreeCam(void)
+Engine::FreeCam::~FreeCam(void)
 {
 }
 
-void engine::FreeCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r)
+void Engine::FreeCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r)
 {
 	if(f)
 		*_pcamera += *_vforward * _speed;

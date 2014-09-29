@@ -5,17 +5,17 @@
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
 
-engine::DirLight::DirLight(void)
+Engine::DirLight::DirLight(void)
 {
 }
 
-engine::DirLight::~DirLight(void)
+Engine::DirLight::~DirLight(void)
 {
 }
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::DirLight::config(ShaderProgram *program)
+void Engine::DirLight::config(ShaderProgram *program)
 {
 	_program = program;
 
@@ -49,38 +49,38 @@ void engine::DirLight::config(ShaderProgram *program)
 
 #undef BUFFER_OFFSET
 
-void engine::DirLight::setColor(const glm::vec3 &color)
+void Engine::DirLight::setColor(const glm::vec3 &color)
 {
 	_lightInfo.color = color;
 }
 
-void engine::DirLight::setDirection(const glm::vec3 &dir)
+void Engine::DirLight::setDirection(const glm::vec3 &dir)
 {
 	_lightInfo.direction = dir;
 }
 
-void engine::DirLight::setShadowMapping(const GLboolean &shadow)
+void Engine::DirLight::setShadowMapping(const GLboolean &shadow)
 {
 	_lightInfo.withShadowMapping = shadow;
 }
 
-glm::vec3 engine::DirLight::getColor(void) const
+glm::vec3 Engine::DirLight::getColor(void) const
 {
 	return _lightInfo.color;
 }
 
-glm::vec3 engine::DirLight::getDirection(void) const
+glm::vec3 Engine::DirLight::getDirection(void) const
 {
 	return _lightInfo.direction;
 }
 
-void engine::DirLight::position(const glm::vec3 &position, const GLfloat &dim)
+void Engine::DirLight::position(const glm::vec3 &position, const GLfloat &dim)
 {
 	*_VPMatrix = glm::ortho(-dim, dim, -dim, dim, -dim, dim)
 		* glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void engine::DirLight::display(GBuffer *gbuf, Camera *cam)
+void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 {
 	gbuf->setLightState();
 

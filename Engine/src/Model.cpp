@@ -11,7 +11,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
-engine::Model::Model(void)
+Engine::Model::Model(void)
 	: _tMesh(NULL)
 {
 	_MVPMatrixBuffer = new Buffer;
@@ -19,7 +19,7 @@ engine::Model::Model(void)
 	_modelMatrix = new glm::mat4;
 }
 
-engine::Model::~Model(void)
+Engine::Model::~Model(void)
 {
 	GLuint i;
 	if (_tMesh != NULL && isMirror != GL_TRUE)
@@ -33,7 +33,7 @@ engine::Model::~Model(void)
 	delete _modelMatrix;
 }
 
-void engine::Model::initMeshArray(void)
+void Engine::Model::initMeshArray(void)
 {
 	GLuint i;
 	if (_tMesh != NULL && isMirror != GL_TRUE)
@@ -46,7 +46,7 @@ void engine::Model::initMeshArray(void)
 	_tMesh = new std::vector<Mesh *>;
 }
 
-void engine::Model::initMeshMirror(Model *m)
+void Engine::Model::initMeshMirror(Model *m)
 {
 	GLuint i;
 	if (_tMesh != NULL && isMirror != GL_TRUE)
@@ -59,7 +59,7 @@ void engine::Model::initMeshMirror(Model *m)
 	_tMesh = m->_tMesh;
 }
 
-void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
+void Engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 {
 	_gProgram = gProgram;
 	_smProgram = smProgram;
@@ -77,7 +77,7 @@ void engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	glUseProgram(0);
 }
 
-void engine::Model::addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
+void Engine::Model::addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				 const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				 const GLchar *colorTexture, const GLchar *NMTexture,
 				 const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess)
@@ -110,7 +110,7 @@ static std::string getDir(const GLchar *file)
 	return path;
 }
 
-void engine::Model::loadFromFile(const GLchar *file)
+void Engine::Model::loadFromFile(const GLchar *file)
 {
 	Assimp::Importer Importer;
 	GLuint i, j;
@@ -200,37 +200,37 @@ void engine::Model::loadFromFile(const GLchar *file)
 	}
 }
 
-void engine::Model::sortMesh(void)
+void Engine::Model::sortMesh(void)
 {
 	qsort(&(*_tMesh)[0], _tMesh->size(), sizeof (*_tMesh)[0], comparMesh);
 }
 
-void engine::Model::matIdentity(void)
+void Engine::Model::matIdentity(void)
 {
 	*_modelMatrix = glm::mat4(1.0f);
 }
 
-void engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
 	*_modelMatrix *= glm::translate(glm::vec3(x, y, z));
 }
 
-void engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
 	*_modelMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
 }
 
-void engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
 	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
 }
 
-glm::vec3 engine::Model::getPosition(void) const
+glm::vec3 Engine::Model::getPosition(void) const
 {
 	return glm::vec3((*_modelMatrix)[0][3], (*_modelMatrix)[1][3], (*_modelMatrix)[2][3]);
 }
 
-engine::Mesh *engine::Model::getMesh(const GLuint &num) const
+Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
 {
 	if(num>=_tMesh->size())
 	{
@@ -240,7 +240,7 @@ engine::Mesh *engine::Model::getMesh(const GLuint &num) const
 	return (*_tMesh)[num];
 }
 
-void engine::Model::display(GBuffer *gbuf, Camera *cam) const
+void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
 {
 	GLuint i;
 
@@ -262,7 +262,7 @@ void engine::Model::display(GBuffer *gbuf, Camera *cam) const
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-void engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
+void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 {
 	GLuint i;
 
@@ -284,7 +284,7 @@ void engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-void engine::Model::displayShadowMap(Light *light) const
+void Engine::Model::displayShadowMap(Light *light) const
 {
 	GLuint i;
 

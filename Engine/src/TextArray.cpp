@@ -4,7 +4,7 @@
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/Renderer.hpp>
 
-engine::TextArray::TextArray(void)
+Engine::TextArray::TextArray(void)
 	: _font(NULL)
 {
 	_texture = new Texture;
@@ -14,7 +14,7 @@ engine::TextArray::TextArray(void)
 	_mat = new glm::mat4;
 }
 
-engine::TextArray::~TextArray(void)
+Engine::TextArray::~TextArray(void)
 {
 	if (_font) TTF_CloseFont(_font);
 	delete _texture;
@@ -26,7 +26,7 @@ engine::TextArray::~TextArray(void)
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 
-void engine::TextArray::config(const GLchar *font, const GLuint &size,
+void Engine::TextArray::config(const GLchar *font, const GLuint &size,
 	const GLubyte &r, const GLubyte &g, const GLubyte &b,
 	const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Renderer *renderer)
 {
@@ -89,7 +89,7 @@ void engine::TextArray::config(const GLchar *font, const GLuint &size,
 
 #undef BUFFER_OFFSET
 
-void engine::TextArray::write(const GLchar *text)
+void Engine::TextArray::write(const GLchar *text)
 {
 	SDL_Surface *t;
 	
@@ -104,7 +104,7 @@ void engine::TextArray::write(const GLchar *text)
 	SDL_FreeSurface(t);
 }
 
-void engine::TextArray::display(Renderer *renderer)
+void Engine::TextArray::display(Renderer *renderer)
 {
 	renderer->setState();
 

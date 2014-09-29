@@ -10,7 +10,7 @@
 #define GBUF_BACKGROUND 3
 #define GBUF_DEPTH_STENCIL 4
 
-namespace engine
+namespace Engine
 {
 	class DLLAPI GBuffer : public FrameBuffer
 	{
