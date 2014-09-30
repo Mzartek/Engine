@@ -28,6 +28,34 @@ Engine::Light::~Light(void)
 	delete _shadow;
 }
 
+#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
+
+void Engine::Light::config(ShaderProgram *program)
+{
+	_program = program;
+
+	// Layout
+	GLfloat vertex[] = {
+		-1, -1,
+		1, -1,
+		-1, 1,
+		1, 1,
+	};
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
+	_shadowMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_IVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_screenBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
+
+	glBindVertexArray(_idVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glBindVertexArray(0);
+}
+
+#undef BUFFER_OFFSET
+
 void Engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
 {
 	_shadow->config(width, height);

@@ -11,10 +11,9 @@ Engine::ShadowMap::~ShadowMap(void)
 
 void Engine::ShadowMap::config(const GLuint &width, const GLuint &height)
 {
-	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+	FrameBuffer::config(width, height);
 
-	_width = width;
-	_height = height;
+	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
 
 	if (glIsTexture(_idDepthTexture)) glDeleteTextures(1, &_idDepthTexture);
 	glGenTextures(1, &_idDepthTexture);

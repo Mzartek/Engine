@@ -70,8 +70,6 @@ void Engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "NMTexture"), 1);
-	glUseProgram(0);
-
 	glUseProgram(_smProgram->getId());
 	glUniform1i(glGetUniformLocation(_smProgram->getId(), "colorTexture"), 0);
 	glUseProgram(0);

@@ -1,18 +1,9 @@
 #include <Engine/Renderer.hpp>
 
-Engine::Renderer::Renderer(void)
-	: _idWindow(NULL), _idGLContext(NULL),
-	_display(NULL), _idle(NULL), _reshape(NULL)
-{
-}
+Engine::GameLoop::GameLoop(void){}
+Engine::GameLoop::~GameLoop(void){}
 
-Engine::Renderer::~Renderer(void)
-{
-	TTF_Quit();
-	SDL_Quit();
-}
-
-void Engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
+Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
 {
 	Uint32 flags;
 
@@ -41,24 +32,24 @@ void Engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	if(fullScreen == GL_TRUE)
+	if (fullScreen == GL_TRUE)
 		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
 	else
 		flags = SDL_WINDOW_OPENGL;
 
-	_idWindow = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
-	if (_idWindow == NULL)
+	_Window = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
+	if (_Window == NULL)
 	{
 		std::cerr << "Error while creating Window: " << SDL_GetError();
 		exit(1);
 	}
-	_idGLContext = SDL_GL_CreateContext(_idWindow);
+	_GLContext = SDL_GL_CreateContext(_Window);
 
 	SDL_GL_SetSwapInterval(0);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 #ifdef WIN32
-	if(glewInit())
+	if (glewInit())
 	{
 		std::cerr << "Error init GLEW" << std::endl;
 		exit(1);
@@ -69,19 +60,10 @@ void Engine::Renderer::initWindow(const GLchar *title, const GLint &w, const GLi
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
-void Engine::Renderer::setDisplayFunc(void(*f) (GLfloat))
+Engine::Renderer::~Renderer(void)
 {
-	_display = f;
-}
-
-void Engine::Renderer::setIdleFunc(void (*f) (void))
-{
-	_idle = f;
-}
-
-void Engine::Renderer::setReshapeFunc(void (*f) (GLuint, GLuint))
-{
-	_reshape = f;
+	TTF_Quit();
+	SDL_Quit();
 }
 
 GLuint Engine::Renderer::getWidth(void)
@@ -94,26 +76,26 @@ GLuint Engine::Renderer::getHeight(void)
 	return _height;
 }
 
-SDL_Window *Engine::Renderer::getId(void)
+SDL_Window *Engine::Renderer::getWindow(void)
 {
-	return _idWindow;
+	return _Window;
 }
 
-void Engine::Renderer::mainLoop(void)
+void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 {
 	SDL_Event event;
 	long long currentTime, newTime, frameTime;
 	long long accumulator = 0;
 	long long dt = 16;
 
-	if (!_reshape || !_idle || !_display)
+	if (gameLoop == NULL)
 	{
-		std::cerr << "You need to set the Reshape, Idle and Display Function before" << std::endl;
+		std::cerr << "Wrong GameLoop" << std::endl;
 		exit(1);
 	}
 
 	_stopLoop = false;
-	_reshape(_width, _height);
+	gameLoop->reshape(_width, _height);
 	currentTime = SDL_GetTicks();
 	while (!_stopLoop)
 	{
@@ -130,9 +112,9 @@ void Engine::Renderer::mainLoop(void)
 		frameTime = newTime - currentTime;
 		currentTime = newTime;
 		for (accumulator += frameTime; accumulator >= dt; accumulator -= dt)
-			_idle();
-		_display((GLfloat)accumulator/dt);
-		SDL_GL_SwapWindow(_idWindow); 
+			gameLoop->idle();
+		gameLoop->display((GLfloat)accumulator / dt);
+		SDL_GL_SwapWindow(_Window); 
 	}
 }
 

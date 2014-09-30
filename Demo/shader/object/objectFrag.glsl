@@ -1,6 +1,6 @@
 #version 440
 
-uniform sampler2D colorTexture;
+uniform sampler2D colorTexture ;
 uniform sampler2D NMTexture;
 
 layout(binding = 2) uniform materialBuffer

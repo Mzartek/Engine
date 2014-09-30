@@ -11,8 +11,7 @@ Engine::GBuffer::~GBuffer(void)
 
 void Engine::GBuffer::config(const GLuint &width, const GLuint &height)
 {
-	_width = width;
-	_height = height;
+	FrameBuffer::config(width, height);
 
 	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
 	glGenTextures(GBUF_NUM_TEX, _idTexture);

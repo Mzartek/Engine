@@ -2,27 +2,8 @@
 
 Engine::Renderer *renderer;
 Engine::Input *input;
-Engine::FreeCam *cam;
-Engine::DirLight *sun;
-Engine::SpotLight *torch;
-Engine::Model *sol;
-Engine::Model *heli;
-Engine::SkyBox *skybox;
-Engine::Screen *screen;
-Engine::TextArray *text;
-Engine::GBuffer *gBuffer;
 
-Engine::ShaderProgram *objectProgram;
-Engine::ShaderProgram *dirLightProgram;
-Engine::ShaderProgram *spotLightProgram;
-Engine::ShaderProgram *vLightProgram;
-Engine::ShaderProgram *shadowMapProgram;
-Engine::ShaderProgram *skyboxProgram;
-Engine::ShaderProgram *backgroundProgram;
-Engine::ShaderProgram *screenProgram;
-Engine::ShaderProgram *textProgram;
-
-void display(GLfloat state)
+void GameManager::display(GLfloat state)
 {
 	renderer->clear();
 	gBuffer->clear();
@@ -54,10 +35,10 @@ void display(GLfloat state)
 
 	screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
-	//text->display(renderer);
+	text->display(renderer);
 }
 
-void idle(void)
+void GameManager::idle(void)
 {
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
@@ -79,91 +60,25 @@ void idle(void)
 	torch->position();
 }
 
-void reshape(GLuint w, GLuint h)
+void GameManager::reshape(GLuint w, GLuint h)
 {
 	cam->setPerspective(90.0f, w, h, 0.1f, 1000.0f);
 }
 
-void init(void)
+int main(int argc, char *argv[])
 {
-	cam = new Engine::FreeCam;
-	sun = new Engine::DirLight;
-	torch = new Engine::SpotLight;
-	sol = new Engine::Model;
-	heli = new Engine::Model;
-	skybox = new Engine::SkyBox;
-	screen = new Engine::Screen;
-	text = new Engine::TextArray;
-	gBuffer = new Engine::GBuffer;
-
-	objectProgram = new Engine::ShaderProgram;
-	dirLightProgram = new Engine::ShaderProgram;
-	spotLightProgram = new Engine::ShaderProgram;
-	vLightProgram = new Engine::ShaderProgram;
-	shadowMapProgram = new Engine::ShaderProgram;
-	skyboxProgram = new Engine::ShaderProgram;
-	backgroundProgram = new Engine::ShaderProgram;
-	screenProgram = new Engine::ShaderProgram;
-	textProgram = new Engine::ShaderProgram;
-
-	configShaders();
-	configBuffers();
-	configText();
-	configLights();
-	configScreen();
-	configModels();
-	configSkybox();
-
-	cam->setPositionCamera(glm::vec3(30, 10, 0));
-	cam->setInitialAngle(-90, 0);
-}
-
-void kill(void)
-{
-	delete textProgram;
-	delete screenProgram;
-	delete backgroundProgram;
-	delete skyboxProgram;
-	delete shadowMapProgram;
-	delete vLightProgram;
-	delete spotLightProgram;
-	delete dirLightProgram;
-	delete objectProgram;
-
-	delete gBuffer;
-	delete text;
-	delete screen;
-	delete skybox;
-	delete heli;
-	delete sol;
-	delete torch;
-	delete sun;
-	delete cam;
-}
-
-int main(int argc, char **argv)
-{
-	renderer = new Engine::Renderer;
+	renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
 	input = new Engine::Input;
+	
+	GameManager *game = new GameManager;
+	renderer->mainLoop(game);
+	delete game;
 
-	if (argc < 3)
-		renderer->initWindow("Demo OpenGL", 800, 600, GL_FALSE);
-	else
-		renderer->initWindow("Demo OpenGL", atoi(argv[1]), atoi(argv[2]), GL_FALSE);
-	renderer->setDisplayFunc(display);
-	renderer->setIdleFunc(idle);
-	renderer->setReshapeFunc(reshape);
-
-	init();
-
-	renderer->mainLoop();
-
-	kill();
-
-	delete renderer;
 	delete input;
+	delete renderer;
 
 	std::cout << "MemState " << Engine::Object::getMemoryState() << std::endl;
 	Engine::Object::saveMemoryInfo("memLost.txt");
+
 	return 0;
 }

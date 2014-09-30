@@ -46,8 +46,6 @@ void Engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *dir
 	glUseProgram(_backgroundProgram->getId());
 	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "materialTexture"), 0);
 	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "lightTexture"), 1);
-	glUseProgram(0);
-
 	glUseProgram(_directProgram->getId());
 	glUniform1i(glGetUniformLocation(_directProgram->getId(), "backgroundTexture"), 0);
 	glUseProgram(0);
