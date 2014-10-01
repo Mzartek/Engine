@@ -1,6 +1,8 @@
 #ifndef SKYBOX
 #define SKYBOX
 
+#define SKYBOX_DIM 10
+
 #include "Object.hpp"
 
 namespace Engine
@@ -15,20 +17,19 @@ namespace Engine
 	{
 	private:
 		Texture *_cubeTexture;
-		GLuint _idVAO;
 		Buffer *_vertexBuffer;
 		Buffer *_indexBuffer;
 		Buffer *_MVPMatrixBuffer;
 		glm::mat4 *_rotateMatrix;
 		ShaderProgram *_program;
+		GLuint _idVAO;
 		GLuint _numElement;
 	public:
-		SkyBox(void);
+		SkyBox(ShaderProgram *program);
 		~SkyBox(void);
 		void load(const GLchar *posx, const GLchar *negx,
 			const GLchar *posy, const GLchar *negy,
-			const GLchar *posz, const GLchar *negz,
-			GLfloat dim, ShaderProgram *program);
+			const GLchar *posz, const GLchar *negz);
 		void rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void display(GBuffer *gbuf, Camera *cam) const;
 	};

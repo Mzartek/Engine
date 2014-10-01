@@ -5,48 +5,27 @@
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
 
-Engine::SkyBox::SkyBox(void)
+Engine::SkyBox::SkyBox(ShaderProgram *program)
 {
 	_cubeTexture = new Texture;
-	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
 	_indexBuffer = new Buffer;
 	_MVPMatrixBuffer = new Buffer;
 	_rotateMatrix = new glm::mat4;
-}
 
-Engine::SkyBox::~SkyBox(void)
-{
-	delete _cubeTexture;
-	glDeleteVertexArrays(1, &_idVAO);
-	delete _vertexBuffer;
-	delete _indexBuffer;
-	delete _MVPMatrixBuffer;
-	delete _rotateMatrix;
-}
-
-#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
-
-void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
-	const GLchar *posy, const GLchar *negy,
-	const GLchar *posz, const GLchar *negz,
-	GLfloat dim, ShaderProgram *program)
-{
-	_program = program;
-
-	_cubeTexture->loadCubeTextureFromFiles(posx, negx, posy, negy, posz, negz);
-
-	GLfloat vertexArray[] = {
-		+dim, -dim, -dim,
-		-dim, -dim, -dim,
-		-dim, -dim, +dim,
-		+dim, -dim, +dim,
-		+dim, +dim, -dim,
-		-dim, +dim, -dim,
-		-dim, +dim, +dim,
-		+dim, +dim, +dim
+	GLfloat vertexArray[] =
+	{
+		+SKYBOX_DIM, -SKYBOX_DIM, -SKYBOX_DIM,
+		-SKYBOX_DIM, -SKYBOX_DIM, -SKYBOX_DIM,
+		-SKYBOX_DIM, -SKYBOX_DIM, +SKYBOX_DIM,
+		+SKYBOX_DIM, -SKYBOX_DIM, +SKYBOX_DIM,
+		+SKYBOX_DIM, +SKYBOX_DIM, -SKYBOX_DIM,
+		-SKYBOX_DIM, +SKYBOX_DIM, -SKYBOX_DIM,
+		-SKYBOX_DIM, +SKYBOX_DIM, +SKYBOX_DIM,
+		+SKYBOX_DIM, +SKYBOX_DIM, +SKYBOX_DIM
 	};
-	GLuint indexArray[] = {
+	GLuint indexArray[] =
+	{
 		0, 1, 2, 0, 2, 3,
 		4, 7, 6, 4, 6, 5,
 		0, 4, 5, 0, 5, 1,
@@ -54,25 +33,41 @@ void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 		1, 5, 6, 1, 6, 2,
 		0, 3, 7, 0, 7, 4
 	};
-	_numElement = sizeof(indexArray) / sizeof(GLuint);
-
+	_numElement = sizeof indexArray / sizeof(GLuint);
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeof vertexArray, GL_STATIC_DRAW);
 	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeof indexArray, GL_STATIC_DRAW);
 	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 
+	_program = program;
+	glUseProgram(_program->getId());
+	glUniform1i(glGetUniformLocation(_program->getId(), "cubeMap"), 0);
+	glUseProgram(0);
+
+	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer->getId());
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(3*sizeof(GLfloat)), BUFFER_OFFSET(0));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GLsizei(3 * sizeof(GLfloat)), BUFFER_OFFSET(0));
 	glBindVertexArray(0);
-
-	glUseProgram(_program->getId());
-	glUniform1i(glGetUniformLocation(_program->getId(), "cubeMap"), 0);
-	glUseProgram(0);
 }
 
-#undef BUFFER_OFFSET
+Engine::SkyBox::~SkyBox(void)
+{
+	delete _cubeTexture;
+	delete _vertexBuffer;
+	delete _indexBuffer;
+	delete _MVPMatrixBuffer;
+	delete _rotateMatrix;
+	glDeleteVertexArrays(1, &_idVAO);
+}
+
+void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
+	const GLchar *posy, const GLchar *negy,
+	const GLchar *posz, const GLchar *negz)
+{
+	_cubeTexture->loadCubeTextureFromFiles(posx, negx, posy, negy, posz, negz);
+}
 
 void Engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {

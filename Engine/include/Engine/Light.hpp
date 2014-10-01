@@ -14,7 +14,6 @@ namespace Engine
 	class DLLAPI Light : public Object
 	{
 	protected:
-		GLuint _idVAO;
 		Buffer *_vertexBuffer;
 		Buffer *_shadowMatrixBuffer;
 		Buffer *_IVPMatrixBuffer;
@@ -22,12 +21,12 @@ namespace Engine
 		Buffer *_cameraBuffer;
 		Buffer *_lightInfoBuffer;
 		ShaderProgram *_program;
-		glm::mat4 *_VPMatrix;
+		GLuint _idVAO;
 		ShadowMap *_shadow;
+		glm::mat4 *_VPMatrix;
 	public:
 		Light(void);
 		~Light(void);
-		virtual void config(ShaderProgram *program);
 		void configShadowMap(const GLuint &width, const GLuint &height);
 		glm::mat4 getVPMatrix(void) const;
 		ShadowMap *getShadowMap(void);

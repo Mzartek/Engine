@@ -6,22 +6,23 @@ Engine::Mesh::Mesh(void)
 {
 	_colorTexture = new Texture;
 	_NMTexture = new Texture;
-	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
 	_indexBuffer = new Buffer;
 	_materialBuffer = new Buffer;
 
 	_materialBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _material, GL_DYNAMIC_DRAW);
+
+	glGenVertexArrays(1, &_idVAO);
 };
 
 Engine::Mesh::~Mesh(void)
 {
 	delete _colorTexture;
 	delete _NMTexture;
-	glDeleteVertexArrays(1, &_idVAO);
 	delete _vertexBuffer;
 	delete _indexBuffer;
 	delete _materialBuffer;
+	glDeleteVertexArrays(1, &_idVAO);
 }
 
 void Engine::Mesh::setColorTexture(const GLchar *path)
@@ -59,8 +60,6 @@ GLfloat Engine::Mesh::getTransparency(void)
 	return _material.diffuse.w;
 }
 
-#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
-
 void Engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
 {
@@ -82,8 +81,6 @@ void Engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArr
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(8 * sizeof(GLfloat)));
 	glBindVertexArray(0);
 }
-
-#undef BUFFER_OFFSET
 
 void Engine::Mesh::display(void) const
 {

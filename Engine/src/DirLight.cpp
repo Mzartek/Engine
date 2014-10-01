@@ -5,25 +5,29 @@
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
 
-Engine::DirLight::DirLight(void)
+Engine::DirLight::DirLight(ShaderProgram *program)
 {
-}
-
-Engine::DirLight::~DirLight(void)
-{
-}
-
-void Engine::DirLight::config(ShaderProgram *program)
-{
-	Light::config(program);
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
+	_program = program;
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "normalTexture"), 0);
 	glUniform1i(glGetUniformLocation(_program->getId(), "materialTexture"), 1);
 	glUniform1i(glGetUniformLocation(_program->getId(), "depthTexture"), 2);
 	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap"), 3);
 	glUseProgram(0);
+
+	glGenVertexArrays(1, &_idVAO);
+	glBindVertexArray(_idVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glBindVertexArray(0);
+}
+
+Engine::DirLight::~DirLight(void)
+{
+	glDeleteVertexArrays(1, &_idVAO);
 }
 
 void Engine::DirLight::setColor(const glm::vec3 &color)

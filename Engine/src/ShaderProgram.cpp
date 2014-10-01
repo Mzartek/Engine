@@ -63,57 +63,12 @@ static GLuint loadShader(const GLchar *filename, const GLenum &type)
 	return id;
 }
 
-Engine::ShaderProgram::ShaderProgram(void)
+Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
 	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
-{
-}
-
-Engine::ShaderProgram::~ShaderProgram(void)
-{
-	if (glIsProgram(_idProgram)) glDeleteProgram(_idProgram);
-	if (glIsShader(_idVertexShader)) glDeleteShader(_idVertexShader);
-	if (glIsShader(_idTessControlShader)) glDeleteShader(_idTessControlShader);
-	if (glIsShader(_idTessEvaluationShader)) glDeleteShader(_idTessEvaluationShader);
-	if (glIsShader(_idGeometryShader)) glDeleteShader(_idGeometryShader);
-	if (glIsShader(_idFragmentShader)) glDeleteShader(_idFragmentShader);
-}
-
-void Engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
 {
 	GLchar *log;
 	GLsizei logsize;
 	GLint status;
-
-	if (glIsProgram(_idProgram))
-	{
-		glDeleteProgram(_idProgram);
-		_idProgram = 0;
-	}
-	if (glIsShader(_idVertexShader))
-	{
-		glDeleteShader(_idVertexShader);
-		_idVertexShader = 0;
-	}
-	if (glIsShader(_idTessControlShader))
-	{
-		glDeleteShader(_idTessControlShader);
-		_idTessControlShader = 0;
-	}
-	if (glIsShader(_idTessEvaluationShader))
-	{
-		glDeleteShader(_idTessEvaluationShader);
-		_idTessEvaluationShader = 0;
-	}
-	if (glIsShader(_idGeometryShader))
-	{
-		glDeleteShader(_idGeometryShader);
-		_idGeometryShader = 0;
-	}
-	if (glIsShader(_idFragmentShader))
-	{
-		glDeleteShader(_idFragmentShader);
-		_idFragmentShader = 0;
-	}
 
 	_idProgram = glCreateProgram();
 	if (_idProgram == 0)
@@ -157,7 +112,7 @@ void Engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, con
 	glLinkProgram(_idProgram);
 
 	glGetProgramiv(_idProgram, GL_LINK_STATUS, &status);
-	if(status != GL_TRUE)
+	if (status != GL_TRUE)
 	{
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
 
@@ -170,6 +125,16 @@ void Engine::ShaderProgram::loadProgram(const GLchar *vs, const GLchar *tcs, con
 		delete[] log;
 		exit(1);
 	}
+}
+
+Engine::ShaderProgram::~ShaderProgram(void)
+{
+	if (glIsProgram(_idProgram)) glDeleteProgram(_idProgram);
+	if (glIsShader(_idVertexShader)) glDeleteShader(_idVertexShader);
+	if (glIsShader(_idTessControlShader)) glDeleteShader(_idTessControlShader);
+	if (glIsShader(_idTessEvaluationShader)) glDeleteShader(_idTessEvaluationShader);
+	if (glIsShader(_idGeometryShader)) glDeleteShader(_idGeometryShader);
+	if (glIsShader(_idFragmentShader)) glDeleteShader(_idFragmentShader);
 }
 
 GLuint Engine::ShaderProgram::getId(void)

@@ -4,38 +4,17 @@
 
 Engine::Light::Light(void)
 {
-	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
 	_shadowMatrixBuffer = new Buffer;
 	_IVPMatrixBuffer = new Buffer;
 	_screenBuffer = new Buffer;
 	_cameraBuffer = new Buffer;
 	_lightInfoBuffer = new Buffer;
-	_VPMatrix = new glm::mat4;
 	_shadow = new ShadowMap;
-}
+	_VPMatrix = new glm::mat4;
 
-Engine::Light::~Light(void)
-{
-	glDeleteVertexArrays(1, &_idVAO);
-	delete _vertexBuffer;
-	delete _shadowMatrixBuffer;
-	delete _IVPMatrixBuffer;
-	delete _screenBuffer;
-	delete _cameraBuffer;
-	delete _lightInfoBuffer;
-	delete _VPMatrix;
-	delete _shadow;
-}
-
-#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
-
-void Engine::Light::config(ShaderProgram *program)
-{
-	_program = program;
-
-	// Layout
-	GLfloat vertex[] = {
+	GLfloat vertex[] = 
+	{
 		-1, -1,
 		1, -1,
 		-1, 1,
@@ -46,12 +25,18 @@ void Engine::Light::config(ShaderProgram *program)
 	_IVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 	_screenBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 16, GL_DYNAMIC_DRAW);
+}
 
-	glBindVertexArray(_idVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
-	glBindVertexArray(0);
+Engine::Light::~Light(void)
+{
+	delete _vertexBuffer;
+	delete _shadowMatrixBuffer;
+	delete _IVPMatrixBuffer;
+	delete _screenBuffer;
+	delete _cameraBuffer;
+	delete _lightInfoBuffer;
+	delete _shadow;
+	delete _VPMatrix;
 }
 
 #undef BUFFER_OFFSET

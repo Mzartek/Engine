@@ -23,11 +23,10 @@ namespace Engine
 		ShaderProgram *_gProgram;
 		ShaderProgram *_smProgram;
 	public:
-		Model(void);
+		Model(ShaderProgram *gProgram, ShaderProgram *smProgram);
 		~Model(void);
 		void initMeshArray(void);
 		void initMeshMirror(Model *m);
-		void config(ShaderProgram *gProgram, ShaderProgram *smProgram);
 		void addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
 				  const GLsizei &sizeIndexArray, const GLuint *indexArray,
 				  const GLchar *colorTexture, const GLchar *NMTexture,

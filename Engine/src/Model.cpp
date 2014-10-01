@@ -11,12 +11,24 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
-Engine::Model::Model(void)
+Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: _tMesh(NULL)
 {
 	_MVPMatrixBuffer = new Buffer;
 	_normalMatrixBuffer = new Buffer;
 	_modelMatrix = new glm::mat4;
+
+	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_normalMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+
+	_gProgram = gProgram;
+	_smProgram = smProgram;
+	glUseProgram(_gProgram->getId());
+	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
+	glUniform1i(glGetUniformLocation(_gProgram->getId(), "NMTexture"), 1);
+	glUseProgram(_smProgram->getId());
+	glUniform1i(glGetUniformLocation(_smProgram->getId(), "colorTexture"), 0);
+	glUseProgram(0);
 }
 
 Engine::Model::~Model(void)
@@ -57,22 +69,6 @@ void Engine::Model::initMeshMirror(Model *m)
 	}
 	isMirror = GL_TRUE;
 	_tMesh = m->_tMesh;
-}
-
-void Engine::Model::config(ShaderProgram *gProgram, ShaderProgram *smProgram)
-{
-	_gProgram = gProgram;
-	_smProgram = smProgram;
-
-	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
-	_normalMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
-
-	glUseProgram(_gProgram->getId());
-	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
-	glUniform1i(glGetUniformLocation(_gProgram->getId(), "NMTexture"), 1);
-	glUseProgram(_smProgram->getId());
-	glUniform1i(glGetUniformLocation(_smProgram->getId(), "colorTexture"), 0);
-	glUseProgram(0);
 }
 
 void Engine::Model::addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,

@@ -13,15 +13,14 @@ namespace Engine
 	class DLLAPI Screen : public Object
 	{
 	private:
-		GLuint _idVAO;
 		Buffer *_vertexBuffer;
 		Buffer *_colorBuffer;
 		ShaderProgram *_backgroundProgram;
 		ShaderProgram *_directProgram;
+		GLuint _idVAO;
 	public:
-		Screen(void);
+		Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram);
 		~Screen(void);
-		void config(ShaderProgram *backgroundProgram, ShaderProgram *directProgram);
 		void background(GBuffer *gbuf);
 		void display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a);
 	};

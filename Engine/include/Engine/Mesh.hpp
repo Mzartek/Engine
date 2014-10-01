@@ -15,7 +15,6 @@ namespace Engine
 	private:
 		Texture *_colorTexture;
 		Texture *_NMTexture;
-		GLuint _idVAO;
 		Buffer *_vertexBuffer;
 		Buffer *_indexBuffer;
 		Buffer *_materialBuffer;
@@ -26,6 +25,7 @@ namespace Engine
 			glm::vec4 specular;
 			GLfloat ALIGN(16) shininess;
 		} _material;
+		GLuint _idVAO;
 		GLsizei _numElement;
 	public:
 		Mesh(void);

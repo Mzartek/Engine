@@ -1,8 +1,5 @@
 #include "config.hpp"
 
-Engine::Renderer *renderer;
-Engine::Input *input;
-
 void GameManager::display(GLfloat state)
 {
 	renderer->clear();
@@ -65,15 +62,20 @@ void GameManager::reshape(GLuint w, GLuint h)
 	cam->setPerspective(90.0f, w, h, 0.1f, 1000.0f);
 }
 
+void GameManager::launch(void)
+{
+	renderer->mainLoop(this);
+}
+
 int main(int argc, char *argv[])
 {
-	renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
-	input = new Engine::Input;
+	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
+	Engine::Input *input = new Engine::Input;
+	GameManager *game = new GameManager(renderer, input);
 	
-	GameManager *game = new GameManager;
-	renderer->mainLoop(game);
+	game->launch();
+	
 	delete game;
-
 	delete input;
 	delete renderer;
 

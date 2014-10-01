@@ -15,9 +15,8 @@ namespace Engine
 			GLint withShadowMapping;
 		} _lightInfo;
 	public:
-		DirLight(void);
+		DirLight(ShaderProgram *program);
 		~DirLight(void);
-		void config(ShaderProgram *program);
 		void setColor(const glm::vec3 &color);
 		void setDirection(const glm::vec3 &dir);
 		void setShadowMapping(const GLboolean &shadow);

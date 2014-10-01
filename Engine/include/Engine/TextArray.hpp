@@ -15,19 +15,17 @@ namespace Engine
 	private:
 		TTF_Font *_font;
 		Texture *_texture;
-		GLuint _idVAO;
 		Buffer *_vertexBuffer;
 		Buffer *_MVPMatrixBuffer;
 		glm::mat4 *_mat;
 		ShaderProgram *_program;
+		GLuint _idVAO;
 		SDL_Color _color;
 	public:
-		TextArray(void);
+		TextArray(ShaderProgram *program);
 		~TextArray(void);
-		void config(const GLchar *font, const GLuint &size,
-			const GLubyte &r, const GLubyte &g, const GLubyte &b,
-			const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, ShaderProgram *program, Renderer *renderer);
-		void write(const GLchar *text);
+		void setFont(const GLchar *font, const GLuint &size, const GLubyte &r, const GLubyte &g, const GLubyte &b);
+		void writeScreen(const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, Renderer *renderer, const GLchar *text);
 		void display(Renderer *renderer);
 	};
 }

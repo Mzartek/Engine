@@ -17,9 +17,8 @@ namespace Engine
 			GLint ALIGN(16) withShadowMapping;
 		} _lightInfo;
 	public:
-		SpotLight(void);
+		SpotLight(ShaderProgram *program);
 		~SpotLight(void);
-		void config(ShaderProgram *program);
 		void setColor(const glm::vec3 &color);
 		void setPosition(const glm::vec3 &pos);
 		void setDirection(const glm::vec3 &dir);

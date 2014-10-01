@@ -4,54 +4,43 @@
 #include <Engine/GBuffer.hpp>
 #include <Engine/Renderer.hpp>
 
-Engine::Screen::Screen(void)
+Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
 {
-	glGenVertexArrays(1, &_idVAO);
 	_vertexBuffer = new Buffer;
 	_colorBuffer = new Buffer;
-}
 
-Engine::Screen::~Screen(void)
-{
-	glDeleteVertexArrays(1, &_idVAO);
-	delete _vertexBuffer;
-	delete _colorBuffer;
-}
-
-#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
-
-void Engine::Screen::config(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
-{
-	_backgroundProgram = backgroundProgram;
-	_directProgram = directProgram;
-
-	// Create Vertex Buffer
 	GLfloat vertex[] = {
 		-1, -1,
 		1, -1,
-		-1,  1,
-		1,  1,
+		-1, 1,
+		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
-
-	// Create Color Buffer
 	_colorBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
 
-	glBindVertexArray(_idVAO);  
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());  
-	glEnableVertexAttribArray(0);	
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), BUFFER_OFFSET(0));
-	glBindVertexArray(0);
-
+	_backgroundProgram = backgroundProgram;
+	_directProgram = directProgram;
 	glUseProgram(_backgroundProgram->getId());
 	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "materialTexture"), 0);
 	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "lightTexture"), 1);
 	glUseProgram(_directProgram->getId());
 	glUniform1i(glGetUniformLocation(_directProgram->getId(), "backgroundTexture"), 0);
 	glUseProgram(0);
+
+	glGenVertexArrays(1, &_idVAO);
+	glBindVertexArray(_idVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glBindVertexArray(0);
 }
 
-#undef BUFFER_OFFSET
+Engine::Screen::~Screen(void)
+{
+	delete _vertexBuffer;
+	delete _colorBuffer;
+	glDeleteVertexArrays(1, &_idVAO);
+}
 
 void Engine::Screen::background(GBuffer *gbuf)
 {
