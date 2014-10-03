@@ -2,37 +2,60 @@
 
 CC= g++
 NAME= Demo
-DIR= bin/
+DIR_DEBUG= bin/Debug/
+DIR_RELEASE= bin/Release/
 SYSTEM= $(shell uname)
 
 ifeq ($(SYSTEM), Linux)
 
-COMPILER_OPTIONS= -std=c++11 -Wall -O3 -I../Engine/include
-LINKER_OPTIONS= -L../Engine/bin -lEngine -Wl,-rpath=../Engine/bin
+COMPILER_OPTIONS_DEBUG= -std=c++11 -Wall -g -I../Engine/include
+COMPILER_OPTIONS_RELEASE= -std=c++11 -Wall -O3 -I../Engine/include
+LINKER_OPTIONS_DEBUG= -L../Engine/bin/Debug -lEngine -Wl,-rpath=../Engine/bin/Debug
+LINKER_OPTIONS_RELEASE= -L../Engine/bin/Release -lEngine -Wl,-rpath=../Engine/bin/Release
 
 else
 
-COMPILER_OPTIONS= -std=c++11 -Wall -O3 -I../Engine/include -I/c/MinGW/user/include -DWIN32 -DGCC
-LINKER_OPTIONS= -L../Engine/lib -L/c/MinGW/user/lib -lmingw32 -lSDL2 -lSDL2main -lEngine
+COMPILER_OPTIONS_DEBUG= -std=c++11 -Wall -g -I../Engine/include -I/MinGW/user/include -DWIN32 -DGCC
+COMPILER_OPTIONS_RELEASE= -std=c++11 -Wall -O3 -I../Engine/include -I/MinGW/user/include -DWIN32 -DGCC
+LINKER_OPTIONS_DEBUG= -L../Engine/bin/Debug -L/MinGW/user/lib -lmingw32 -lSDL2main -lSDL2 -lEngine
+LINKER_OPTIONS_RELEASE= -L../Engine/bin/Release -L/MinGW/user/lib -lmingw32 -lSDL2main -lSDL2 -lEngine
 
 endif
 
 SRC= src/main.cpp src/config.cpp
-OBJ= $(SRC:%.cpp=obj/%.o)
+OBJ_DEBUG= $(SRC:%.cpp=obj/Debug/%.o)
+OBJ_RELEASE= $(SRC:%.cpp=obj/Release/%.o)
 
-all:	$(OBJ) 
+Debug:	$(OBJ_DEBUG)
 ifeq ($(SYSTEM), Linux)
-	$(CC) $^ -o $(DIR)$(NAME).out $(LINKER_OPTIONS)
+	$(CC) $^ -o $(DIR_DEBUG)$(NAME) $(LINKER_OPTIONS_DEBUG)
 else
-	$(CC) $^ -o $(DIR)$(NAME) $(LINKER_OPTIONS)
+	$(CC) $^ -o $(DIR_DEBUG)$(NAME) $(LINKER_OPTIONS_DEBUG)
 endif
 
-obj/%.o:	%.cpp
-	$(CC) $(COMPILER_OPTIONS) -c $^ -o $@
+Release:	$(OBJ_RELEASE)
+ifeq ($(SYSTEM), Linux)
+	$(CC) $^ -o $(DIR_RELEASE)$(NAME) $(LINKER_OPTIONS_RELEASE)
+else
+	$(CC) $^ -o $(DIR_RELEASE)$(NAME) $(LINKER_OPTIONS_RELEASE)
+endif
 
-clean:	
-	rm -f $(OBJ)
+obj/Debug/%.o:	%.cpp
+	$(CC) $(COMPILER_OPTIONS_DEBUG) -c $^ -o $@
+
+obj/Release/%.o:	%.cpp
+	$(CC) $(COMPILER_OPTIONS_RELEASE) -c $^ -o $@
+
+cleanDebug:
+	rm -f $(OBJ_DEBUG)
 	rm -f *~
 	rm -f src/*~
-	rm -f $(DIR)$(NAME).out
-	rm -f $(DIR)$(NAME).exe
+	rm -f $(DIR_DEBUG)$(NAME)
+	rm -f $(DIR_DEBUG)$(NAME).exe
+
+cleanRelease:
+	rm -f $(OBJ_RELEASE)
+	rm -f *~
+	rm -f src/*~
+	rm -f $(DIR_RELEASE)$(NAME)
+	rm -f $(DIR_RELEASE)$(NAME).exe

@@ -13,7 +13,6 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cerr << "Error init SDL: " << SDL_GetError() << std::endl;
-		SDL_Quit();
 		exit(1);
 	}
 
@@ -94,7 +93,7 @@ void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 		exit(1);
 	}
 
-	_stopLoop = false;
+	_stopLoop = GL_FALSE;
 	gameLoop->reshape(_width, _height);
 	currentTime = SDL_GetTicks();
 	while (!_stopLoop)
@@ -104,7 +103,7 @@ void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 			switch (event.type)
 			{
 			case SDL_QUIT:
-				_stopLoop = true;
+				_stopLoop = GL_TRUE;
 				break;
 			}
 		}
@@ -120,7 +119,7 @@ void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 
 void Engine::Renderer::stopLoop(void)
 {
-	_stopLoop = true;
+	_stopLoop = GL_TRUE;
 }
 
 void Engine::Renderer::setState(void) const
