@@ -50,11 +50,8 @@ void Engine::Buffer::updateStoreSub(const GLvoid *data)
 
 void Engine::Buffer::updateStoreMap(const GLvoid *data)
 {
-	void *mappedResource;
-
 	glBindBuffer(_target, _idBuffer);
-	mappedResource = glMapBuffer(_target, GL_WRITE_ONLY);
-	memcpy(mappedResource, data, _size);
+	memcpy(glMapBuffer(_target, GL_WRITE_ONLY), data, _size);
 	glUnmapBuffer(_target);
 	glBindBuffer(_target, 0);
 }
