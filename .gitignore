@@ -24,4 +24,5 @@ Release
 Debug
 memLost.txt
 
+*.layout
 *.sdf
