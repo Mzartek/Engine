@@ -25,4 +25,6 @@ Debug
 memLost.txt
 
 *.layout
+*.depend
 *.sdf
+*.suo
