@@ -9,6 +9,7 @@
 #endif
 #ifdef GCC
 #define ALIGN(X) __attribute__((aligned(X)))
+#define _GNU_SOURCE
 #else
 #define ALIGN(X) __declspec(align(X))
 #pragma warning(disable:4324)
