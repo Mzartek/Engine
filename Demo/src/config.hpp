@@ -1,11 +1,13 @@
 #ifndef CONFIG
 #define CONFIG
 
+#include <ctime>
+
 #include <Engine/Renderer.hpp>
 #include <Engine/Input.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
-#include <Engine/FreeCam.hpp>
+#include <Engine/PlayerCam.hpp>
 #include <Engine/SkyBox.hpp>
 #include <Engine/Model.hpp>
 #include <Engine/DirLight.hpp>
@@ -29,14 +31,17 @@ private:
 	Engine::ShaderProgram *textProgram;
 
 	Engine::GBuffer *gBuffer;
-	Engine::FreeCam *cam;
+	Engine::PlayerCam *cam;
 	Engine::SkyBox *skybox;
 	Engine::Model *sol;
-	Engine::Model *heli;
-	Engine::DirLight *sun;
+	std::vector<Engine::Model *> *cepe;
+	std::vector<Engine::Model *> *phalloide;
+	std::vector<Engine::Model *> *satan;
 	Engine::SpotLight *torch;
 	Engine::Screen *screen;
 	Engine::TextArray *text;
+	void configSol(void);
+	void configChamp(void);
 public:
 	GameManager(Engine::Renderer *r, Engine::Input *i);
 	~GameManager(void);
