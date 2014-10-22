@@ -54,8 +54,6 @@ void Engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	
 	if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 GLuint Engine::GBuffer::getIdTexture(const GLuint &num) const
@@ -196,8 +194,6 @@ void Engine::GBuffer::clear(void) const
 	glStencilMask(0xFF);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 void Engine::GBuffer::clearLight(void) const
@@ -214,6 +210,4 @@ void Engine::GBuffer::clearLight(void) const
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

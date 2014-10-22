@@ -37,8 +37,6 @@ void Engine::ShadowMap::config(const GLuint &width, const GLuint &height)
 
 	if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 GLuint Engine::ShadowMap::getIdDepthTexture(void) const
@@ -73,6 +71,4 @@ void Engine::ShadowMap::clear(void) const
 	glDepthMask(GL_TRUE);
 
 	glClear(GL_DEPTH_BUFFER_BIT);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

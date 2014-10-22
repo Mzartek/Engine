@@ -25,15 +25,12 @@ Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directPr
 	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "lightTexture"), 1);
 	glUseProgram(_directProgram->getId());
 	glUniform1i(glGetUniformLocation(_directProgram->getId(), "backgroundTexture"), 0);
-	glUseProgram(0);
 
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 }
 
 Engine::Screen::~Screen(void)
@@ -57,11 +54,6 @@ void Engine::Screen::background(GBuffer *gbuf)
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-
-	glUseProgram(0);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
 	gbuf->clearLight();
 }
@@ -81,7 +73,4 @@ void Engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-
-	glUseProgram(0);
 }

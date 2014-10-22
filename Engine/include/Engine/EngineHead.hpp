@@ -16,9 +16,10 @@
 #endif
 #include <GL/glew.h>
 #else
-#define ALIGN(X) __attribute__((aligned(X)))
 #define DLLAPI
+#define ALIGN(X) __attribute__((aligned(X)))
 #define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
 #endif
 
 #include <iostream>
@@ -26,7 +27,6 @@
 #include <vector>
 #include <string>
 
-#include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>

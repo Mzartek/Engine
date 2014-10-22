@@ -38,14 +38,12 @@ void Engine::Buffer::createStore(const GLenum &target, const GLvoid *data, const
 	glGenBuffers(1, &_idBuffer);
 	glBindBuffer(_target, _idBuffer);
 	glBufferData(_target, _size, data, usage);
-	glBindBuffer(_target, 0);
 }
 
 void Engine::Buffer::updateStoreSub(const GLvoid *data)
 {
 	glBindBuffer(_target, _idBuffer);
 	glBufferSubData(_target, 0, _size, data);
-	glBindBuffer(_target, 0);
 }
 
 void Engine::Buffer::updateStoreMap(const GLvoid *data)
@@ -53,5 +51,4 @@ void Engine::Buffer::updateStoreMap(const GLvoid *data)
 	glBindBuffer(_target, _idBuffer);
 	memcpy(glMapBuffer(_target, GL_WRITE_ONLY), data, _size);
 	glUnmapBuffer(_target);
-	glBindBuffer(_target, 0);
 }

@@ -72,7 +72,6 @@ void Engine::Texture::load2DTextureFromFile(const GLchar *path)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
 	SDL_FreeSurface(image);
 }
 
@@ -104,8 +103,6 @@ void Engine::Texture::load2DTextureFromSDL_Surface(const SDL_Surface *surface)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Engine::Texture::loadCubeTextureFromFiles(
@@ -160,5 +157,4 @@ void Engine::Texture::loadCubeTextureFromFiles(
 
 		SDL_FreeSurface(image[i]);
 	}
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }

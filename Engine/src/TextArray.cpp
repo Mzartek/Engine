@@ -18,7 +18,6 @@ Engine::TextArray::TextArray(ShaderProgram *program)
 	_program = program;
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "textTex"), 0);
-	glUseProgram(0);
 
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
@@ -27,8 +26,6 @@ Engine::TextArray::TextArray(ShaderProgram *program)
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(0));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(2 * sizeof(GLfloat)));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 }
 
 Engine::TextArray::~TextArray(void)
@@ -94,7 +91,4 @@ void Engine::TextArray::display(Renderer *renderer)
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-
-	glUseProgram(0);
 }

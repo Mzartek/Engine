@@ -28,7 +28,6 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "NMTexture"), 1);
 	glUseProgram(_smProgram->getId());
 	glUniform1i(glGetUniformLocation(_smProgram->getId(), "colorTexture"), 0);
-	glUseProgram(0);
 }
 
 Engine::Model::~Model(void)
@@ -250,10 +249,6 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
 			(*_tMesh)[i]->display();
-
-	glUseProgram(0);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
@@ -272,10 +267,6 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 	for (i = 0; i<_tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() != 1.0f)
 			(*_tMesh)[i]->display();
-
-	glUseProgram(0);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 void Engine::Model::displayShadowMap(Light *light) const
@@ -292,8 +283,4 @@ void Engine::Model::displayShadowMap(Light *light) const
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
 			(*_tMesh)[i]->displayShadow();
-
-	glUseProgram(0);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

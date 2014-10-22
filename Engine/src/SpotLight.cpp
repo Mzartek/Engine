@@ -15,15 +15,12 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 	glUniform1i(glGetUniformLocation(_program->getId(), "materialTexture"), 1);
 	glUniform1i(glGetUniformLocation(_program->getId(), "depthTexture"), 2);
 	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap"), 3);
-	glUseProgram(0);
 
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 }
 
 Engine::SpotLight::~SpotLight(void)
@@ -120,9 +117,4 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-
-	glUseProgram(0);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

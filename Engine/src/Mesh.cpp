@@ -79,8 +79,6 @@ void Engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArr
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(3 * sizeof(GLfloat)));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(5 * sizeof(GLfloat)));
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), BUFFER_OFFSET(8 * sizeof(GLfloat)));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 }
 
 void Engine::Mesh::display(void) const
@@ -96,7 +94,6 @@ void Engine::Mesh::display(void) const
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
 }
 
 void Engine::Mesh::displayShadow(void) const
@@ -106,7 +103,6 @@ void Engine::Mesh::displayShadow(void) const
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
 }
 
 int Engine::comparMesh(const void *p1, const void *p2)

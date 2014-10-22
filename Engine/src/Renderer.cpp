@@ -23,6 +23,9 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 		exit(1);
 	}
 
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
@@ -48,13 +51,15 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 #ifdef WIN32
-	if (glewInit())
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
 	{
-		std::cerr << "Error init GLEW" << std::endl;
+		std::cerr << "Error init GLEW: " << glewGetErrorString(err) << std::endl;
 		exit(1);
 	}
+	std::cout << "GLEW version: " << glewGetString(GLEW_VERSION) << std::endl;
 #endif
-
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
