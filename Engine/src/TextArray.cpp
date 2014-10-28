@@ -77,6 +77,15 @@ void Engine::TextArray::writeScreen(const GLuint &x, const GLuint &y, const GLui
 	*_mat = glm::ortho(0.0f, (GLfloat)renderer->getWidth(), 0.0f, (GLfloat)renderer->getHeight(), -1.0f, 1.0f);
 }
 
+void Engine::TextArray::writeScreen(const GLchar *text)
+{
+	SDL_Surface *t;
+
+	t = TTF_RenderText_Blended(_font, &text[0], _color);
+	_texture->load2DTextureFromSDL_Surface(t);
+	SDL_FreeSurface(t);
+}
+
 void Engine::TextArray::display(Renderer *renderer)
 {
 	renderer->setState();

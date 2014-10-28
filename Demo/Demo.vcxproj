@@ -32,11 +32,21 @@
     <None Include="shader\vLight\vLightVert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Cepe.hpp" />
+    <ClInclude Include="src\Mushroom.hpp" />
     <ClInclude Include="src\config.hpp" />
+    <ClInclude Include="src\Player.hpp" />
+    <ClInclude Include="src\Phalloide.hpp" />
+    <ClInclude Include="src\Satan.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Cepe.cpp" />
+    <ClCompile Include="src\Mushroom.cpp" />
     <ClCompile Include="src\config.cpp" />
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Phalloide.cpp" />
+    <ClCompile Include="src\Satan.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{24F43546-9599-4386-AD14-5D12D8FD9A6F}</ProjectGuid>

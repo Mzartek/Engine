@@ -15,6 +15,11 @@
 #include <Engine/Screen.hpp>
 #include <Engine/TextArray.hpp>
 
+#include "Player.hpp"
+#include "Cepe.hpp"
+#include "Phalloide.hpp"
+#include "Satan.hpp"
+
 class GameManager : public Engine::GameLoop
 {
 private:
@@ -31,12 +36,15 @@ private:
 	Engine::ShaderProgram *textProgram;
 
 	Engine::GBuffer *gBuffer;
-	Engine::PlayerCam *cam;
+	Player *player;
 	Engine::SkyBox *skybox;
 	Engine::Model *sol;
-	std::vector<Engine::Model *> *cepe;
-	std::vector<Engine::Model *> *phalloide;
-	std::vector<Engine::Model *> *satan;
+	Cepe *model_cepe;
+	Phalloide *model_phalloide;
+	Satan *model_satan;
+	std::vector<Cepe *> *vector_cepe;
+	std::vector<Phalloide *> *vector_phalloide;
+	std::vector<Satan *> *vector_satan;
 	Engine::SpotLight *torch;
 	Engine::Screen *screen;
 	Engine::TextArray *text;

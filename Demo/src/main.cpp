@@ -9,57 +9,105 @@ void GameManager::display(GLfloat state)
 	torch->clear();
 
 	// Skybox
-	skybox->display(gBuffer, cam);
+	skybox->display(gBuffer, player->getCamera());
 
 	// Shadow Map
 	sol->displayShadowMap(torch);
 
 	// Opaque Object
-	sol->display(gBuffer, cam);
-	for (i = 0; i < satan->size(); i++)
-	{
-		(*cepe)[i]->display(gBuffer, cam);
-		(*phalloide)[i]->display(gBuffer, cam);
-		(*satan)[i]->display(gBuffer, cam);
-	}
-	torch->display(gBuffer, cam);
+	sol->display(gBuffer, player->getCamera());
+
+	for (i = 0; i < vector_cepe->size(); i++)
+		(*vector_cepe)[i]->display(gBuffer, player->getCamera());
+
+	for (i = 0; i < vector_phalloide->size(); i++)
+		(*vector_phalloide)[i]->display(gBuffer, player->getCamera());
+
+	for (i = 0; i < vector_satan->size(); i++)
+		(*vector_satan)[i]->display(gBuffer, player->getCamera());
+
+	torch->display(gBuffer, player->getCamera());
 	screen->background(gBuffer);
 
 	// Transparent Object
-	sol->displayTransparent(gBuffer, cam);
-	torch->display(gBuffer, cam);
+	sol->displayTransparent(gBuffer, player->getCamera());
+	torch->display(gBuffer, player->getCamera());
 	screen->background(gBuffer);
 
-	screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+	if (player->isAlive())
+		screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+	else
+		screen->display(renderer, gBuffer, 1.0f, 0.5f, 0.5f, 1.0f);
 
-	//text->display(renderer);
+	text->display(renderer);
 }
 
 void GameManager::idle(void)
 {
+	GLuint i;
+
+	//Input control
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
 		renderer->stopLoop();
-	cam->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
-	cam->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 	if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT))
-		cam->setSpeed(0.05f);
+		player->getCamera()->setSpeed(0.05f);
 	else
-		cam->setSpeed(0.25f);
-
+		player->getCamera()->setSpeed(0.25f);
 	if (input->getMouseState(SDL_BUTTON_LEFT))
-		cam->setSpeed(5.0f);
+		player->getCamera()->setSpeed(5.0f);
+ 
+	// Mushroom manager
+	for (i = 0; i < vector_cepe->size(); i++)
+	{
+		if (glm::length(player->getCamera()->getPositionCamera() - (*vector_cepe)[i]->getPosition()) < 5)
+		{
+			player->eatMushroom((*vector_cepe)[i]);
+			delete (*vector_cepe)[i];
+			vector_cepe->erase(vector_cepe->begin() + i);
+			text->writeScreen(std::to_string(player->getLife()).c_str());
+		}
+	}
 
-	torch->setPosition(cam->getPositionCamera());
-	torch->setDirection(cam->getForward());
+	for (i = 0; i < vector_phalloide->size(); i++)
+	{
+		if (glm::length(player->getCamera()->getPositionCamera() - (*vector_phalloide)[i]->getPosition()) < 5)
+		{
+			player->eatMushroom((*vector_phalloide)[i]);
+			delete (*vector_phalloide)[i];
+			vector_phalloide->erase(vector_phalloide->begin() + i);
+			text->writeScreen(std::to_string(player->getLife()).c_str());
+		}
+	}
 
-	cam->position();
-	torch->position();
+	for (i = 0; i < vector_satan->size(); i++)
+	{
+		if (glm::length(player->getCamera()->getPositionCamera() - (*vector_satan)[i]->getPosition()) < 5)
+		{
+			player->eatMushroom((*vector_satan)[i]);
+			delete (*vector_satan)[i];
+			vector_satan->erase(vector_satan->begin() + i);
+			text->writeScreen(std::to_string(player->getLife()).c_str());
+		}
+	}
+
+	// Player control
+	if (player->isAlive())
+	{
+		player->getCamera()->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
+		player->getCamera()->mouseMove(input->getMouseRelX(), input->getMouseRelY());
+
+		torch->setPosition(player->getCamera()->getPositionCamera());
+		torch->setDirection(player->getCamera()->getForward());
+
+		player->getCamera()->position();
+		torch->position();
+	}
 }
 
 void GameManager::reshape(GLuint w, GLuint h)
 {
-	cam->setPerspective(90.0f, w, h, 0.1f, 1000.0f);
+	player->getCamera()->setPerspective(90.0f, w, h, 0.1f, 1000.0f);
 }
 
 void GameManager::launch(void)

@@ -220,7 +220,7 @@ void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &
 
 glm::vec3 Engine::Model::getPosition(void) const
 {
-	return glm::vec3((*_modelMatrix)[0][3], (*_modelMatrix)[1][3], (*_modelMatrix)[2][3]);
+	return glm::vec3((*_modelMatrix)[3][0], (*_modelMatrix)[3][1], (*_modelMatrix)[3][2]);
 }
 
 Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const

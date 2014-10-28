@@ -59,6 +59,16 @@
 		<Unit filename="shader/spotLight/gSpotLightVert.glsl" />
 		<Unit filename="shader/text/textFrag.glsl" />
 		<Unit filename="shader/text/textVert.glsl" />
+		<Unit filename="src/Cepe.cpp" />
+		<Unit filename="src/Cepe.hpp" />
+		<Unit filename="src/Mushroom.cpp" />
+		<Unit filename="src/Mushroom.hpp" />
+		<Unit filename="src/Phalloide.cpp" />
+		<Unit filename="src/Phalloide.hpp" />
+		<Unit filename="src/Player.cpp" />
+		<Unit filename="src/Player.hpp" />
+		<Unit filename="src/Satan.cpp" />
+		<Unit filename="src/Satan.hpp" />
 		<Unit filename="src/config.cpp" />
 		<Unit filename="src/config.hpp" />
 		<Unit filename="src/main.cpp" />

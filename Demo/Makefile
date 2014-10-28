@@ -22,7 +22,7 @@ LINKER_OPTIONS_RELEASE= -L../Engine/bin/Release -L/MinGW/user/lib -lmingw32 -lSD
 
 endif
 
-SRC= src/main.cpp src/config.cpp
+SRC= src/main.cpp src/config.cpp src/Mushroom.cpp src/Cepe.cpp src/Phalloide.cpp src/Satan.cpp src/Player.cpp
 OBJ_DEBUG= $(SRC:%.cpp=obj/Debug/%.o)
 OBJ_RELEASE= $(SRC:%.cpp=obj/Release/%.o)
 
