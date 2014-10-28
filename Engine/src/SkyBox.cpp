@@ -69,7 +69,7 @@ void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 
 void Engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	*_rotateMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
+	*_rotateMatrix *= glm::rotate(angle * (glm::pi<GLfloat>() / 180), glm::vec3(x, y, z));
 }
 
 void Engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const

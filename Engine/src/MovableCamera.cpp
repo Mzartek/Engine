@@ -27,10 +27,10 @@ void Engine::MovableCamera::setInitialAngle(const GLfloat &t, const GLfloat &p)
 	else if (_aphi < -89)
 		_aphi = -89;
 
-	GLfloat tmp = (GLfloat)cos(_aphi*M_PI / 180);
-	_vforward->x = tmp*(GLfloat)sin(_atheta*M_PI / 180);
-	_vforward->y = (GLfloat)sin(_aphi*M_PI / 180);
-	_vforward->z = tmp*(GLfloat)cos(_atheta*M_PI / 180);
+	GLfloat tmp = (GLfloat)cos(_aphi*glm::pi<GLfloat>() / 180);
+	_vforward->x = tmp*(GLfloat)sin(_atheta*glm::pi<GLfloat>() / 180);
+	_vforward->y = (GLfloat)sin(_aphi*glm::pi<GLfloat>() / 180);
+	_vforward->z = tmp*(GLfloat)cos(_atheta*glm::pi<GLfloat>() / 180);
 
 	_vleft->x = _vforward->z;
 	_vleft->y = 0;
@@ -69,10 +69,10 @@ void Engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 	else if (_aphi < -89)
 		_aphi = -89;
 
-	GLfloat tmp = (GLfloat)cos(_aphi*M_PI / 180);
-	_vforward->x = tmp*(GLfloat)sin(_atheta*M_PI / 180);
-	_vforward->y = (GLfloat)sin(_aphi*M_PI / 180);
-	_vforward->z = tmp*(GLfloat)cos(_atheta*M_PI / 180);
+	GLfloat tmp = (GLfloat)cos(_aphi*glm::pi<GLfloat>() / 180);
+	_vforward->x = tmp*(GLfloat)sin(_atheta*glm::pi<GLfloat>() / 180);
+	_vforward->y = (GLfloat)sin(_aphi*glm::pi<GLfloat>() / 180);
+	_vforward->z = tmp*(GLfloat)cos(_atheta*glm::pi<GLfloat>() / 180);
 
 	_vleft->x = _vforward->z;
 	_vleft->y = 0;

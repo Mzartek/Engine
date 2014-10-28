@@ -210,7 +210,7 @@ void Engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLflo
 
 void Engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	*_modelMatrix *= glm::rotate(angle * ((GLfloat)M_PI / 180), glm::vec3(x, y, z));
+	*_modelMatrix *= glm::rotate(angle * (glm::pi<GLfloat>() / 180), glm::vec3(x, y, z));
 }
 
 void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
