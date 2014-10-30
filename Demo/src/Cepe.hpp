@@ -3,8 +3,6 @@
 
 #include "Mushroom.hpp"
 
-class Engine::ShaderProgram;
-
 class Cepe : public Mushroom
 {
 public:
@@ -13,4 +11,4 @@ public:
 	~Cepe(void);
 };
 
-#endif CEPE
+#endif

@@ -3,8 +3,6 @@
 
 #include "Mushroom.hpp"
 
-class Engine::ShaderProgram;
-
 class Satan : public Mushroom
 {
 public:
@@ -13,4 +11,4 @@ public:
 	~Satan(void);
 };
 
-#endif SATAN
+#endif

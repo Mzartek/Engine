@@ -3,8 +3,6 @@
 
 #include "Mushroom.hpp"
 
-class Engine::ShaderProgram;
-
 class Phalloide : public Mushroom
 {
 public:
@@ -13,4 +11,4 @@ public:
 	~Phalloide(void);
 };
 
-#endif PHALLOIDE
+#endif

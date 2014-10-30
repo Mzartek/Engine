@@ -21,4 +21,4 @@ public:
 	bool isAlive(void);
 };
 
-#endif JOUEUR
+#endif
