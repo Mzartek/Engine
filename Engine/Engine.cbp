@@ -3,7 +3,6 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="Engine" />
-		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -42,7 +41,6 @@
 			<Add option="-lSDL2" />
 			<Add option="-lSDL2_image" />
 			<Add option="-lSDL2_ttf" />
-			<Add option="-lm" />
 			<Add option="-lassimp" />
 		</Linker>
 		<Unit filename="Makefile" />

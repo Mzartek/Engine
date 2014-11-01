@@ -20,9 +20,15 @@
 *.out
 *.app
 
-Release
-Debug
 memLost.txt
+
+*.log
+*.tlog
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.lastbuildstate
 
 *.layout
 *.depend
