@@ -1,12 +1,8 @@
 #version 440
 
-layout(binding = 0) uniform MVPMatrixBuffer
+layout(binding = 0) uniform matrixBuffer
 {
 	mat4 MVP;
-};
-
-layout(binding = 1) uniform normalMatrixBuffer
-{
 	mat4 normalMatrix;
 };
 

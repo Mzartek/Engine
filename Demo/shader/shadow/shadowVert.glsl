@@ -1,8 +1,9 @@
 #version 440
 
-layout (binding = 0) uniform MVPMatrixBuffer
+layout (binding = 0) uniform matrixBuffer
 {
 	mat4 MVP;
+	mat4 normalMatrix;
 };
 
 layout(location = 0) in vec3 vertex;

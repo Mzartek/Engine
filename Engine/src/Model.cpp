@@ -14,12 +14,10 @@
 Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: _tMesh(NULL)
 {
-	_MVPMatrixBuffer = new Buffer;
-	_normalMatrixBuffer = new Buffer;
+	_matrixBuffer = new Buffer;
 	_modelMatrix = new glm::mat4;
 
-	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
-	_normalMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 2 * sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 
 	_gProgram = gProgram;
 	_smProgram = smProgram;
@@ -39,8 +37,7 @@ Engine::Model::~Model(void)
 			delete (*_tMesh)[i];
 		delete _tMesh;
 	}
-	delete _MVPMatrixBuffer;
-	delete _normalMatrixBuffer;
+	delete _matrixBuffer;
 	delete _modelMatrix;
 }
 
@@ -241,10 +238,15 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
 
 	glUseProgram(_gProgram->getId());
 
-	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
-	_normalMatrixBuffer->updateStoreMap(glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _normalMatrixBuffer->getId());
+	struct
+	{
+        glm::mat4 MVP;
+        glm::mat4 normal;
+	} matrix;
+	matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
+	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
+	_matrixBuffer->updateStoreMap(&matrix);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
@@ -259,10 +261,15 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 
 	glUseProgram(_gProgram->getId());
 
-	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(cam->getVPMatrix() * *_modelMatrix));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
-	_normalMatrixBuffer->updateStoreMap(glm::value_ptr(glm::transpose(glm::inverse(*_modelMatrix))));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _normalMatrixBuffer->getId());
+	struct
+	{
+        glm::mat4 MVP;
+        glm::mat4 normal;
+	} matrix;
+	matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
+	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
+	_matrixBuffer->updateStoreMap(&matrix);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
 	for (i = 0; i<_tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() != 1.0f)
@@ -277,8 +284,15 @@ void Engine::Model::displayShadowMap(Light *light) const
 
 	glUseProgram(_smProgram->getId());
 
-	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(light->getVPMatrix() * *_modelMatrix));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
+	struct
+	{
+        glm::mat4 MVP;
+        glm::mat4 normal;
+	} matrix;
+	matrix.MVP = light->getVPMatrix() * *_modelMatrix;
+	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
+	_matrixBuffer->updateStoreMap(&matrix);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)

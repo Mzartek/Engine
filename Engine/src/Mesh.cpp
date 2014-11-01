@@ -90,7 +90,7 @@ void Engine::Mesh::display(void) const
 	glBindTexture(GL_TEXTURE_2D, _NMTexture->getId());
 
 	_materialBuffer->updateStoreMap(&_material);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _materialBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _materialBuffer->getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);

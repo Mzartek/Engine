@@ -3,7 +3,7 @@
 uniform sampler2D colorTexture ;
 uniform sampler2D NMTexture;
 
-layout(binding = 2) uniform materialBuffer
+layout(binding = 1) uniform materialBuffer
 {
 	vec4 matAmbient;
 	vec4 matDiffuse;

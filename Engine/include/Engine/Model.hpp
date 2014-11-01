@@ -17,8 +17,7 @@ namespace Engine
 	private:
 		GLboolean isMirror;
 		std::vector<Mesh *> *_tMesh;
-		Buffer *_MVPMatrixBuffer;
-		Buffer *_normalMatrixBuffer;
+		Buffer *_matrixBuffer;
 		glm::mat4 *_modelMatrix;
 		ShaderProgram *_gProgram;
 		ShaderProgram *_smProgram;
