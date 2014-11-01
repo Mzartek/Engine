@@ -29,6 +29,7 @@ memLost.txt
 *.idb
 *.exp
 *.lastbuildstate
+*.metagen
 
 *.layout
 *.depend
