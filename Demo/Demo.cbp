@@ -47,8 +47,6 @@
 		<Unit filename="shader/background/backgroundVert.glsl" />
 		<Unit filename="shader/dirLight/dirLightFrag.glsl" />
 		<Unit filename="shader/dirLight/dirLightVert.glsl" />
-		<Unit filename="shader/dirLight/gDirLightFrag.glsl" />
-		<Unit filename="shader/dirLight/gDirLightVert.glsl" />
 		<Unit filename="shader/object/objectFrag.glsl" />
 		<Unit filename="shader/object/objectGeom.glsl" />
 		<Unit filename="shader/object/objectVert.glsl" />
@@ -56,12 +54,8 @@
 		<Unit filename="shader/screen/screenVert.glsl" />
 		<Unit filename="shader/shadow/shadowFrag.glsl" />
 		<Unit filename="shader/shadow/shadowVert.glsl" />
-		<Unit filename="shader/skybox/gSkyboxFrag.glsl" />
-		<Unit filename="shader/skybox/gSkyboxVert.glsl" />
 		<Unit filename="shader/skybox/skyboxFrag.glsl" />
 		<Unit filename="shader/skybox/skyboxVert.glsl" />
-		<Unit filename="shader/spotLight/gSpotLightFrag.glsl" />
-		<Unit filename="shader/spotLight/gSpotLightVert.glsl" />
 		<Unit filename="shader/spotLight/spotLightFrag.glsl" />
 		<Unit filename="shader/spotLight/spotLightVert.glsl" />
 		<Unit filename="shader/text/textFrag.glsl" />
