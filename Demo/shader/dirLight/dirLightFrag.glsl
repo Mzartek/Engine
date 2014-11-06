@@ -8,27 +8,15 @@ uniform sampler2D depthTexture;
 // ShadowMap
 uniform sampler2DShadow shadowMap;
 
-layout(binding = 0) uniform shadowMatrixBuffer
+layout(binding = 0) uniform mainInfoBuffer
 {
 	mat4 shadowMatrix;
-};
-
-layout(binding = 1) uniform IVPMatrixBuffer
-{
 	mat4 IVPMatrix;
-};
-
-layout(binding = 2) uniform screenBuffer
-{
 	uvec2 screen;
-};
-
-layout(binding = 3) uniform cameraBuffer
-{
 	vec3 camPosition;
 };
 
-layout(binding = 4) uniform lightInfo
+layout(binding = 1) uniform lightInfoBuffer
 {
 	vec3 lightColor;
 	vec3 lightDirection;

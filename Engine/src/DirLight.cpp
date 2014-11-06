@@ -75,25 +75,31 @@ void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
+	struct
+	{
+		glm::mat4 shadowMatrix;
+		glm::mat4 IVPMatrix;
+		glm::uvec2 ALIGN(16) screen;
+		glm::vec3 ALIGN(16) camPosition;
+	} mainInfo;
+
 	// ShadowMap
 	if (_lightInfo.withShadowMapping == GL_TRUE)
 	{
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
 
-		_shadowMatrixBuffer->updateStoreMap(_VPMatrix);
-		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _shadowMatrixBuffer->getId());
+		mainInfo.shadowMatrix = *_VPMatrix;
 	}
+	mainInfo.IVPMatrix = glm::inverse(cam->getVPMatrix());
+	mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
+	mainInfo.camPosition = glm::vec3(cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 
-	_IVPMatrixBuffer->updateStoreMap(glm::value_ptr(glm::inverse(cam->getVPMatrix())));
-	_screenBuffer->updateStoreMap(glm::value_ptr(glm::uvec2(gbuf->getWidth(), gbuf->getHeight())));
-	_cameraBuffer->updateStoreMap(glm::value_ptr(glm::vec3(cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z)));
+	_mainInfoBuffer->updateStoreMap(&mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _IVPMatrixBuffer->getId());
-	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _screenBuffer->getId());
-	glBindBufferBase(GL_UNIFORM_BUFFER, 3, _cameraBuffer->getId());
-	glBindBufferBase(GL_UNIFORM_BUFFER, 4, _lightInfoBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

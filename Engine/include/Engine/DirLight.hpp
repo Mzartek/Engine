@@ -8,7 +8,7 @@ namespace Engine
 	class DLLAPI DirLight : public Light
 	{
 	private:
-		struct lightInfo
+		struct
 		{
 			glm::vec3 ALIGN(16) color;
 			glm::vec3 ALIGN(16) direction;

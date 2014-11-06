@@ -5,6 +5,7 @@ Engine::Camera::Camera(void)
 	_pcamera = new glm::vec3;
 	_ptarget = new glm::vec3;
 	_projectionMatrix = new glm::mat4;
+	_viewMatrix = new glm::mat4;
 	_VPMatrix = new glm::mat4;
 }
 
@@ -13,6 +14,7 @@ Engine::Camera::~Camera(void)
 	delete _pcamera;
 	delete _ptarget;
 	delete _projectionMatrix;
+	delete _viewMatrix;
 	delete _VPMatrix;
 }
 
@@ -46,6 +48,11 @@ glm::mat4 Engine::Camera::getProjectionMatrix(void) const
 	return *_projectionMatrix;
 }
 
+glm::mat4 Engine::Camera::getViewMatrix(void) const
+{
+	return *_viewMatrix;
+}
+
 glm::mat4 Engine::Camera::getVPMatrix(void) const
 {
 	return *_VPMatrix;
@@ -53,5 +60,6 @@ glm::mat4 Engine::Camera::getVPMatrix(void) const
 
 void Engine::Camera::position(void)
 {
-	*_VPMatrix = *_projectionMatrix * glm::lookAt(*_pcamera, *_ptarget, glm::vec3(0.0f, 1.0f, 0.0f));
+	*_viewMatrix = glm::lookAt(*_pcamera, *_ptarget, glm::vec3(0.0f, 1.0f, 0.0f));
+	*_VPMatrix = *_projectionMatrix * *_viewMatrix;
 }

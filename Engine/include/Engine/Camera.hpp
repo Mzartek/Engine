@@ -11,6 +11,7 @@ namespace Engine
 		glm::vec3 *_pcamera;
 		glm::vec3 *_ptarget;
 		glm::mat4 *_projectionMatrix;
+		glm::mat4 *_viewMatrix;
 		glm::mat4 *_VPMatrix;
 	public:
 		Camera(void);
@@ -21,6 +22,7 @@ namespace Engine
 		glm::vec3 getPositionCamera(void) const;
 		glm::vec3 getPositionTarget(void) const;
 		glm::mat4 getProjectionMatrix(void) const;
+		glm::mat4 getViewMatrix(void) const;
 		glm::mat4 getVPMatrix(void) const;
 		void position(void);
 	};

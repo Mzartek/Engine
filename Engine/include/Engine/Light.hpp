@@ -15,10 +15,7 @@ namespace Engine
 	{
 	protected:
 		Buffer *_vertexBuffer;
-		Buffer *_shadowMatrixBuffer;
-		Buffer *_IVPMatrixBuffer;
-		Buffer *_screenBuffer;
-		Buffer *_cameraBuffer;
+		Buffer *_mainInfoBuffer;
 		Buffer *_lightInfoBuffer;
 		ShaderProgram *_program;
 		GLuint _idVAO;
