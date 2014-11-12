@@ -12,8 +12,6 @@ void GameManager::display(GLfloat state)
     skybox->display(gBuffer, player->getCamera());
 
     // Shadow Map
-    sol->displayShadowMap(torch);
-
     for (i = 0; i < vector_cepe->size(); i++)
         (*vector_cepe)[i]->displayShadowMap(torch);
 

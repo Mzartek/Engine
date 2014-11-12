@@ -16,7 +16,7 @@ Mushroom::Mushroom(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smPro
 	glm::vec4 mat_ambient(0.2f, 0.2f, 0.2f, 1.0f);
 	glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
-	GLfloat mat_shininess = 20.0f;
+	GLfloat mat_shininess = 128.0f;
 
 	this->initMeshArray();
 	this->addMesh(sizeof vertexArray, vertexArray, sizeof index, index, texture, "resources/NM_none.png", mat_ambient, mat_diffuse, mat_specular, mat_shininess);

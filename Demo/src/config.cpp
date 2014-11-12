@@ -20,7 +20,7 @@ void GameManager::configSol(void)
 	glm::vec4 mat_ambient(0.2f, 0.2f, 0.2f, 1.0f);
 	glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
-	GLfloat mat_shininess = 20.0f;
+	GLfloat mat_shininess = 8.0f;
 
 	sol->initMeshArray();
 	sol->addMesh(sizeof vertexArray, vertexArray,

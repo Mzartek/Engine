@@ -5,29 +5,21 @@ uniform sampler2D normalTexture;
 uniform usampler2D materialTexture;
 uniform sampler2D depthTexture;
 
-layout(binding = 0) uniform IVPMatrixBuffer
+layout(binding = 0) uniform mainInfoBuffer
 {
 	mat4 IVPMatrix;
-};
-
-layout(binding = 1) uniform screenBuffer
-{
 	uvec2 screen;
-};
-
-layout(binding = 2) uniform cameraBuffer
-{
 	vec3 camPosition;
 };
 
-layout(binding = 3) uniform vDirLightInfo
+layout(binding = 1) uniform vDirLightInfo
 {
 	vec3 dlColor[20];
 	vec3 dlDirection[20];
 	uint numDirLight;
 };
 
-layout(binding = 4) uniform vSpotLightInfo
+layout(binding = 2) uniform vSpotLightInfo
 {
 	vec3 slColor[20];
 	vec3 slPosition[20];

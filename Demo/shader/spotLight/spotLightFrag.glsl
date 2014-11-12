@@ -63,11 +63,11 @@ float calcShadow(vec4 coord, float pcf)
 	return shadow;
 }
 
-vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, float shininess)
+vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, vec3 V, float shininess)
 {
-        vec3 R = reflect(-L, N);
+	vec3 R = reflect(-L, N);
 	vec4 diff = max(dot(N, L), 0.0) * diffColor;
-	vec4 spec = pow(max(dot(R, N), 0.0), shininess) * specColor;
+	vec4 spec = pow(max(dot(R, V), 0.0), shininess) * specColor;
 	return diff + spec;
 }
 
@@ -89,5 +89,5 @@ void main(void)
 	float cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
 	float cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
 	float spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
-	outLight = calcLight(diffColor, specColor, normal.xyz, L, normal.w) * shadow * spot;
+	outLight = calcLight(diffColor, specColor, normal.xyz, L, normalize(camPosition - position), normal.w) * shadow * spot;
 }
