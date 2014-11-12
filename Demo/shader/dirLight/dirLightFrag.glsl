@@ -61,11 +61,11 @@ float calcShadow(vec4 coord, float pcf)
 	return shadow;
 }
 
-vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, vec3 V, float shininess)
+vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, float shininess)
 {
-	vec3 R = reflect(-L, N);
+        vec3 R = reflect(-L, N);
 	vec4 diff = max(dot(N, L), 0.0) * diffColor;
-	vec4 spec = pow(max(dot(R, V), 0.0), shininess) * specColor;
+	vec4 spec = pow(max(dot(R, N), 0.0), shininess) * specColor;
 	return diff + spec;
 }
 
@@ -81,5 +81,5 @@ void main(void)
 	float shadow = 1.0;
 	if (withShadowMapping)
 		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
-	outLight = calcLight(diffColor, specColor, normal.xyz, normalize(-lightDirection), normalize(camPosition - position), normal.w) * shadow;
+	outLight = calcLight(diffColor, specColor, normal.xyz, normalize(-lightDirection), normal.w) * shadow;
 }
