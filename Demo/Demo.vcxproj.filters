@@ -71,6 +71,15 @@
     <None Include="shader\vLight\vLightFrag.glsl">
       <Filter>Shader</Filter>
     </None>
+    <None Include="shader\mushroom\mushroomFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\mushroom\mushroomGeom.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\mushroom\mushroomVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp">

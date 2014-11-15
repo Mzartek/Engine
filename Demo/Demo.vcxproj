@@ -15,6 +15,9 @@
     <None Include="shader\background\backgroundVert.glsl" />
     <None Include="shader\dirLight\dirLightFrag.glsl" />
     <None Include="shader\dirLight\dirLightVert.glsl" />
+    <None Include="shader\mushroom\mushroomFrag.glsl" />
+    <None Include="shader\mushroom\mushroomGeom.glsl" />
+    <None Include="shader\mushroom\mushroomVert.glsl" />
     <None Include="shader\object\objectFrag.glsl" />
     <None Include="shader\object\objectGeom.glsl" />
     <None Include="shader\object\objectVert.glsl" />

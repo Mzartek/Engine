@@ -8,9 +8,9 @@ Engine::Light::Light(void)
 	_mainInfoBuffer = new Buffer;
 	_lightInfoBuffer = new Buffer;
 	_shadow = new ShadowMap;
-	_VPMatrix = new glm::mat4;
 	_projectionMatrix = new glm::mat4;
 	_viewMatrix = new glm::mat4;
+	_VPMatrix = new glm::mat4;
 
 	GLfloat vertex[] =
 	{
@@ -29,9 +29,9 @@ Engine::Light::~Light(void)
 	delete _mainInfoBuffer;
 	delete _lightInfoBuffer;
 	delete _shadow;
-	delete _VPMatrix;
 	delete _projectionMatrix;
 	delete _viewMatrix;
+	delete _VPMatrix;
 }
 
 #undef BUFFER_OFFSET
