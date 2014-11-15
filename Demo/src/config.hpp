@@ -28,6 +28,7 @@ private:
 
 	Engine::ShaderProgram *skyboxProgram;
 	Engine::ShaderProgram *objectProgram;
+	Engine::ShaderProgram *mushroomProgram;
 	Engine::ShaderProgram *dirLightProgram;
 	Engine::ShaderProgram *spotLightProgram;
 	Engine::ShaderProgram *shadowMapProgram;

@@ -42,11 +42,13 @@
 		<Linker>
 			<Add option="-lEngine" />
 		</Linker>
-		<Unit filename="Makefile" />
 		<Unit filename="shader/background/backgroundFrag.glsl" />
 		<Unit filename="shader/background/backgroundVert.glsl" />
 		<Unit filename="shader/dirLight/dirLightFrag.glsl" />
 		<Unit filename="shader/dirLight/dirLightVert.glsl" />
+		<Unit filename="shader/mushroom/mushroomFrag.glsl" />
+		<Unit filename="shader/mushroom/mushroomGeom.glsl" />
+		<Unit filename="shader/mushroom/mushroomVert.glsl" />
 		<Unit filename="shader/object/objectFrag.glsl" />
 		<Unit filename="shader/object/objectGeom.glsl" />
 		<Unit filename="shader/object/objectVert.glsl" />

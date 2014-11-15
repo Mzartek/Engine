@@ -36,9 +36,9 @@ void GameManager::configChamp(void)
 	Phalloide *phalloide_tmp;
 	Satan *satan_tmp;
 
-	model_cepe = new Cepe(objectProgram, shadowMapProgram);
-	model_phalloide = new Phalloide(objectProgram, shadowMapProgram);
-	model_satan = new Satan(objectProgram, shadowMapProgram);
+	model_cepe = new Cepe(mushroomProgram, shadowMapProgram);
+	model_phalloide = new Phalloide(mushroomProgram, shadowMapProgram);
+	model_satan = new Satan(mushroomProgram, shadowMapProgram);
 
 	for (GLuint i = 1; i < 20; i++)
 	{
@@ -63,6 +63,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 
 	skyboxProgram = new Engine::ShaderProgram("shader/skybox/skyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/skyboxFrag.glsl");
 	objectProgram = new Engine::ShaderProgram("shader/object/objectVert.glsl", NULL, NULL, "shader/object/objectGeom.glsl", "shader/object/objectFrag.glsl");
+	mushroomProgram = new Engine::ShaderProgram("shader/mushroom/mushroomVert.glsl", NULL, NULL, "shader/mushroom/mushroomGeom.glsl", "shader/mushroom/mushroomFrag.glsl");
 	dirLightProgram = new Engine::ShaderProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
 	spotLightProgram = new Engine::ShaderProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
 	shadowMapProgram = new Engine::ShaderProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
@@ -92,7 +93,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
 		"resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
 		"resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg");
-	skybox->rotate(180, 1, 0, 0);
+	skybox->rotate(glm::pi<GLfloat>(), 1, 0, 0);
 
 	// Model config
 	configSol();
@@ -106,7 +107,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	// Text config
 	text->setFont("resources/font/SIXTY.TTF", 100, 255, 255, 0);
 	text->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
-		renderer->getWidth() / 10, renderer->getHeight() / 10, 
+		renderer->getWidth() / 10, renderer->getHeight() / 10,
 		renderer, std::to_string(player->getLife()).c_str());
 }
 
@@ -141,5 +142,6 @@ GameManager::~GameManager(void)
 	delete spotLightProgram;
 	delete dirLightProgram;
 	delete objectProgram;
+	delete mushroomProgram;
 	delete skyboxProgram;
 }

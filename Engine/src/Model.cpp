@@ -15,9 +15,11 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: _tMesh(NULL)
 {
 	_matrixBuffer = new Buffer;
+    _cameraBuffer = new Buffer;
 	_modelMatrix = new glm::mat4;
 
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 2 * sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 5 * sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 2 * sizeof(glm::vec4), GL_DYNAMIC_DRAW);
 
 	_gProgram = gProgram;
 	_smProgram = smProgram;
@@ -38,6 +40,7 @@ Engine::Model::~Model(void)
 		delete _tMesh;
 	}
 	delete _matrixBuffer;
+	delete _cameraBuffer;
 	delete _modelMatrix;
 }
 
@@ -207,7 +210,7 @@ void Engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLflo
 
 void Engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
 {
-	*_modelMatrix *= glm::rotate(angle * (glm::pi<GLfloat>() / 180), glm::vec3(x, y, z));
+	*_modelMatrix *= glm::rotate(angle, glm::vec3(x, y, z));
 }
 
 void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
@@ -241,12 +244,28 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
 	struct
 	{
         glm::mat4 MVP;
+        glm::mat4 projection;
+        glm::mat4 view;
+        glm::mat4 model;
         glm::mat4 normal;
 	} matrix;
 	matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
+	matrix.projection = cam->getProjectionMatrix();
+	matrix.view = cam->getViewMatrix();
+	matrix.model = *_modelMatrix;
 	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
 	_matrixBuffer->updateStoreMap(&matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+	struct
+	{
+        glm::vec3 ALIGN(16) position;
+        glm::vec3 ALIGN(16) target;
+	} camera;
+	camera.position = cam->getPositionCamera();
+	camera.target = cam->getPositionTarget();
+	_cameraBuffer->updateStoreMap(&camera);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
@@ -264,12 +283,28 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 	struct
 	{
         glm::mat4 MVP;
+        glm::mat4 projection;
+        glm::mat4 view;
+        glm::mat4 model;
         glm::mat4 normal;
 	} matrix;
 	matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
+	matrix.projection = cam->getProjectionMatrix();
+	matrix.view = cam->getViewMatrix();
+	matrix.model = *_modelMatrix;
 	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
 	_matrixBuffer->updateStoreMap(&matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+	struct
+	{
+        glm::vec3 ALIGN(16) position;
+        glm::vec3 ALIGN(16) target;
+	} camera;
+	camera.position = cam->getPositionCamera();
+	camera.target = cam->getPositionTarget();
+	_cameraBuffer->updateStoreMap(&camera);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
 	for (i = 0; i<_tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() != 1.0f)
@@ -287,9 +322,15 @@ void Engine::Model::displayShadowMap(Light *light) const
 	struct
 	{
         glm::mat4 MVP;
+        glm::mat4 projection;
+        glm::mat4 view;
+        glm::mat4 model;
         glm::mat4 normal;
 	} matrix;
 	matrix.MVP = light->getVPMatrix() * *_modelMatrix;
+	matrix.projection = light->getProjectionMatrix();
+	matrix.view = light->getViewMatrix();
+	matrix.model = *_modelMatrix;
 	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
 	_matrixBuffer->updateStoreMap(&matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());

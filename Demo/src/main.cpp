@@ -11,16 +11,6 @@ void GameManager::display(GLfloat state)
     // Skybox
     skybox->display(gBuffer, player->getCamera());
 
-    // Shadow Map
-    for (i = 0; i < vector_cepe->size(); i++)
-        (*vector_cepe)[i]->displayShadowMap(torch);
-
-    for (i = 0; i < vector_phalloide->size(); i++)
-        (*vector_phalloide)[i]->displayShadowMap(torch);
-
-    for (i = 0; i < vector_satan->size(); i++)
-        (*vector_satan)[i]->displayShadowMap(torch);
-
     // Opaque Object
     sol->display(gBuffer, player->getCamera());
 
@@ -67,7 +57,7 @@ void GameManager::idle(void)
         player->getCamera()->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 
         torch->setPosition(player->getCamera()->getPositionCamera() - glm::vec3(0.0f, 1.0f, 0.0f));
-        torch->setDirection(player->getCamera()->getForward());
+        torch->setDirection(player->getCamera()->getVectorForward());
 
         player->getCamera()->position();
         torch->position();

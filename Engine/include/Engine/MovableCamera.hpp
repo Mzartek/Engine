@@ -18,8 +18,8 @@ namespace Engine
 		~MovableCamera(void);
 		void setInitialAngle(const GLfloat &t, const GLfloat &p);
 		void setSpeed(const GLfloat &v);
-		glm::vec3 getForward(void) const;
-		glm::vec3 getLeft(void) const;
+		glm::vec3 getVectorForward(void) const;
+		glm::vec3 getVectorLeft(void) const;
 		void mouseMove(const GLint &xrel, const GLint &yrel);
 		virtual void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) = 0;
 	};

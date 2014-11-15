@@ -3,6 +3,9 @@
 layout (binding = 0) uniform matrixBuffer
 {
 	mat4 MVP;
+	mat4 projectionMatrix;
+	mat4 viewMatrix;
+	mat4 modelMatrix;
 	mat4 normalMatrix;
 };
 

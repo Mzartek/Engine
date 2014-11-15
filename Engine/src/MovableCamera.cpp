@@ -45,12 +45,12 @@ void Engine::MovableCamera::setSpeed(const GLfloat &v)
 	_speed = v;
 }
 
-glm::vec3 Engine::MovableCamera::getForward(void) const
+glm::vec3 Engine::MovableCamera::getVectorForward(void) const
 {
 	return *_vforward;
 }
 
-glm::vec3 Engine::MovableCamera::getLeft(void) const
+glm::vec3 Engine::MovableCamera::getVectorLeft(void) const
 {
 	return *_vleft;
 }

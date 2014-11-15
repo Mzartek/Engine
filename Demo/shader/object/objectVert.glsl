@@ -1,8 +1,11 @@
 #version 440
 
-layout(binding = 0) uniform matrixBuffer
+layout (binding = 0) uniform matrixBuffer
 {
 	mat4 MVP;
+	mat4 projectionMatrix;
+	mat4 viewMatrix;
+	mat4 modelMatrix;
 	mat4 normalMatrix;
 };
 
@@ -19,7 +22,7 @@ out VertexData
 
 void main(void)
 {
-	gl_Position =  MVP * vec4(vertex, 1.0);
+	gl_Position = MVP * vec4(vertex, 1.0);
 
 	vec3 N = mat3(normalMatrix) * normal;
 	vec3 T = mat3(normalMatrix) * tangent;

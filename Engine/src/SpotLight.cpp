@@ -75,8 +75,9 @@ GLfloat Engine::SpotLight::getSpotCutOff(void) const
 
 void Engine::SpotLight::position(void)
 {
-	*_VPMatrix = glm::perspective(_lightInfo.spotCutOff * 2 * (glm::pi<GLfloat>() / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1000.0f) *
-		glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
+    *_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2 * (glm::pi<GLfloat>() / 180), (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1000.0f);
+    *_viewMatrix = glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
+	*_VPMatrix =  *_projectionMatrix * *_viewMatrix;
 }
 
 void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)

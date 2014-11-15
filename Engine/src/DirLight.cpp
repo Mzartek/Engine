@@ -55,8 +55,9 @@ glm::vec3 Engine::DirLight::getDirection(void) const
 
 void Engine::DirLight::position(const glm::vec3 &position, const GLfloat &dim)
 {
-	*_VPMatrix = glm::ortho(-dim, dim, -dim, dim, -dim, dim)
-		* glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
+    *_projectionMatrix = glm::ortho(-dim, dim, -dim, dim, -dim, dim);
+    *_viewMatrix = glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
+	*_VPMatrix = *_projectionMatrix * *_viewMatrix;
 }
 
 void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)

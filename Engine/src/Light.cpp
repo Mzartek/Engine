@@ -9,8 +9,10 @@ Engine::Light::Light(void)
 	_lightInfoBuffer = new Buffer;
 	_shadow = new ShadowMap;
 	_VPMatrix = new glm::mat4;
+	_projectionMatrix = new glm::mat4;
+	_viewMatrix = new glm::mat4;
 
-	GLfloat vertex[] = 
+	GLfloat vertex[] =
 	{
 		-1, -1,
 		1, -1,
@@ -28,6 +30,8 @@ Engine::Light::~Light(void)
 	delete _lightInfoBuffer;
 	delete _shadow;
 	delete _VPMatrix;
+	delete _projectionMatrix;
+	delete _viewMatrix;
 }
 
 #undef BUFFER_OFFSET
@@ -35,6 +39,16 @@ Engine::Light::~Light(void)
 void Engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
 {
 	_shadow->config(width, height);
+}
+
+glm::mat4 Engine::Light::getProjectionMatrix(void) const
+{
+	return *_projectionMatrix;
+}
+
+glm::mat4 Engine::Light::getViewMatrix(void) const
+{
+	return *_viewMatrix;
 }
 
 glm::mat4 Engine::Light::getVPMatrix(void) const

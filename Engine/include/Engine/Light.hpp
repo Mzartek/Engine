@@ -20,11 +20,15 @@ namespace Engine
 		ShaderProgram *_program;
 		GLuint _idVAO;
 		ShadowMap *_shadow;
+		glm::mat4 *_projectionMatrix;
+		glm::mat4 *_viewMatrix;
 		glm::mat4 *_VPMatrix;
 	public:
 		Light(void);
 		~Light(void);
 		void configShadowMap(const GLuint &width, const GLuint &height);
+		glm::mat4 getProjectionMatrix(void) const;
+		glm::mat4 getViewMatrix(void) const;
 		glm::mat4 getVPMatrix(void) const;
 		ShadowMap *getShadowMap(void);
 		void clear(void) const;
