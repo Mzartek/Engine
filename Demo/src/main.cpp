@@ -100,7 +100,7 @@ void GameManager::idle(void)
 
 void GameManager::reshape(GLuint w, GLuint h)
 {
-    player->getCamera()->setPerspective(90.0f, w, h, 0.1f, 1000.0f);
+	player->getCamera()->setPerspective(glm::pi<GLfloat>() / 2, w, h, 0.1f, 1000.0f);
 }
 
 void GameManager::launch(void)

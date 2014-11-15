@@ -18,19 +18,10 @@ void Engine::MovableCamera::setInitialAngle(const GLfloat &t, const GLfloat &p)
 	_atheta = t;
 	_aphi = p;
 
-	if (_atheta > 360)
-		_atheta -= 360;
-	else if (_atheta < -360)
-		_atheta += 360;
-	if (_aphi > 89)
-		_aphi = 89;
-	else if (_aphi < -89)
-		_aphi = -89;
-
-	GLfloat tmp = (GLfloat)cos(_aphi*glm::pi<GLfloat>() / 180);
-	_vforward->x = tmp*(GLfloat)sin(_atheta*glm::pi<GLfloat>() / 180);
-	_vforward->y = (GLfloat)sin(_aphi*glm::pi<GLfloat>() / 180);
-	_vforward->z = tmp*(GLfloat)cos(_atheta*glm::pi<GLfloat>() / 180);
+	GLfloat tmp = cos(_aphi);
+	_vforward->x = tmp * sin(_atheta);
+	_vforward->y = sin(_aphi);
+	_vforward->z = tmp * cos(_atheta);
 
 	_vleft->x = _vforward->z;
 	_vleft->y = 0;
@@ -57,22 +48,13 @@ glm::vec3 Engine::MovableCamera::getVectorLeft(void) const
 
 void Engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 {
-	_atheta -= (GLfloat)xrel;
-	_aphi -= (GLfloat)yrel;
+	_atheta -= (GLfloat)xrel * glm::pi<GLfloat>() / 180;
+	_aphi -= (GLfloat)yrel * glm::pi<GLfloat>() / 180;
 
-	if (_atheta > 360)
-		_atheta -= 360;
-	else if (_atheta < -360)
-		_atheta += 360;
-	if (_aphi > 89)
-		_aphi = 89;
-	else if (_aphi < -89)
-		_aphi = -89;
-
-	GLfloat tmp = (GLfloat)cos(_aphi*glm::pi<GLfloat>() / 180);
-	_vforward->x = tmp*(GLfloat)sin(_atheta*glm::pi<GLfloat>() / 180);
-	_vforward->y = (GLfloat)sin(_aphi*glm::pi<GLfloat>() / 180);
-	_vforward->z = tmp*(GLfloat)cos(_atheta*glm::pi<GLfloat>() / 180);
+	GLfloat tmp = cos(_aphi);
+	_vforward->x = tmp * sin(_atheta);
+	_vforward->y = sin(_aphi);
+	_vforward->z = tmp * cos(_atheta);
 
 	_vleft->x = _vforward->z;
 	_vleft->y = 0;

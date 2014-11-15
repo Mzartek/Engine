@@ -30,7 +30,7 @@ void Engine::Camera::setPositionTarget(const glm::vec3 &pos)
 
 void Engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)
 {
-	*_projectionMatrix = glm::perspective(fov * (glm::pi<GLfloat>() / 180), (GLfloat)width / height, n, f);
+	*_projectionMatrix = glm::perspective(fov, (GLfloat)width / height, n, f);
 }
 
 glm::vec3 Engine::Camera::getPositionCamera(void) const

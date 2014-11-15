@@ -85,7 +85,7 @@ void main(void)
 		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
 	vec3 L = normalize(lightPosition - position);
 	float cos_cur_angle = dot(-L, normalize(lightDirection));
-	float cos_outer_cone_angle = cos(radians(lightSpotCutOff));
+	float cos_outer_cone_angle = cos(lightSpotCutOff);
 	float cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
 	float cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
 	float spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);

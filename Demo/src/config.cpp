@@ -87,7 +87,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 
 	// Camera config
 	player->getCamera()->setPositionCamera(glm::vec3(30, 5, 0));
-	player->getCamera()->setInitialAngle(-90, 0);
+	player->getCamera()->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
 
 	// Skybox config
 	skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
@@ -100,7 +100,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	configChamp();
 
 	torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	torch->setSpotCutOff(45.0f);
+	torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
 	torch->setShadowMapping(GL_TRUE);
 	torch->configShadowMap(1024, 1024);
 
