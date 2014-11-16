@@ -18,6 +18,9 @@ void Engine::MovableCamera::setInitialAngle(const GLfloat &t, const GLfloat &p)
 	_atheta = t;
 	_aphi = p;
 
+	if (_aphi >= glm::pi<GLfloat>() / 2) _aphi = 89.0f * glm::pi<GLfloat>() / 180;
+	else if (_aphi <= -glm::pi<GLfloat>() / 2) _aphi = -89.0f * glm::pi<GLfloat>() / 180;
+
 	GLfloat tmp = cos(_aphi);
 	_vforward->x = tmp * sin(_atheta);
 	_vforward->y = sin(_aphi);
@@ -50,6 +53,9 @@ void Engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
 {
 	_atheta -= (GLfloat)xrel * glm::pi<GLfloat>() / 180;
 	_aphi -= (GLfloat)yrel * glm::pi<GLfloat>() / 180;
+
+	if (_aphi >= glm::pi<GLfloat>() / 2) _aphi = 89.0f * glm::pi<GLfloat>() / 180;
+	else if (_aphi <= -glm::pi<GLfloat>() / 2) _aphi = -89.0f * glm::pi<GLfloat>() / 180;
 
 	GLfloat tmp = cos(_aphi);
 	_vforward->x = tmp * sin(_atheta);
