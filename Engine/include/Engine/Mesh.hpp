@@ -44,7 +44,6 @@ namespace Engine
 	};
 
 	int comparMesh(const void *p1, const void *p2);
-
 }
 
 
