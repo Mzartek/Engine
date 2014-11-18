@@ -1,5 +1,5 @@
-#ifndef ENGINE_HEAD
-#define ENGINE_HEAD
+#ifndef ENGINE_HEADER
+#define ENGINE_HEADER
 
 #ifdef WIN32
 #ifdef ENGINE_EXPORTS

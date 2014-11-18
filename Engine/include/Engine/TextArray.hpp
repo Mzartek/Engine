@@ -1,5 +1,5 @@
-#ifndef TEXT_ARRAY
-#define TEXT_ARRAY
+#ifndef TEXTARRAY_HEADER
+#define TEXTARRAY_HEADER
 
 #include "Object.hpp"
 
