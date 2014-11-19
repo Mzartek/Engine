@@ -1,10 +1,11 @@
 #include <Engine/Particles.hpp>
+#include <Engine/ShaderProgram.hpp>
 
 Engine::Particles::Particles(ShaderProgram *program)
+	: _numElement(0)
 {
 	_program = program;
 
-	_numElement = 0;
 	glGenVertexArrays(1, &_idVAO);
 }
 

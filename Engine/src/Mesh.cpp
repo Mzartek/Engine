@@ -3,6 +3,7 @@
 #include <Engine/Buffer.hpp>
 
 Engine::Mesh::Mesh(void)
+	: _numElement(0)
 {
 	_colorTexture = new Texture;
 	_NMTexture = new Texture;
