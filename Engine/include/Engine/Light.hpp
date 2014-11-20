@@ -24,7 +24,7 @@ namespace Engine
 		glm::mat4 *_viewMatrix;
 		glm::mat4 *_VPMatrix;
 	public:
-		Light(void);
+		Light(ShaderProgram *program);
 		~Light(void);
 		void configShadowMap(const GLuint &width, const GLuint &height);
 		glm::mat4 getProjectionMatrix(void) const;

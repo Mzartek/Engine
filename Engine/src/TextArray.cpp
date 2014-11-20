@@ -5,7 +5,7 @@
 #include <Engine/Renderer.hpp>
 
 Engine::TextArray::TextArray(ShaderProgram *program)
-	: _font(NULL)
+	: _font(NULL), _program(program)
 {
 	_texture = new Texture;
 	_vertexBuffer = new Buffer;
@@ -15,7 +15,6 @@ Engine::TextArray::TextArray(ShaderProgram *program)
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, NULL, 64, GL_STATIC_DRAW);
 	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 
-	_program = program;
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "textTex"), 0);
 

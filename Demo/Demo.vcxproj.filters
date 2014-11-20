@@ -80,6 +80,15 @@
     <None Include="shader\mushroom\mushroomVert.glsl">
       <Filter>Shader</Filter>
     </None>
+    <None Include="shader\rainParticles\rainFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\rainParticles\rainGeom.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\rainParticles\rainVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp">

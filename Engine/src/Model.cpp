@@ -12,7 +12,7 @@
 #include <assimp/scene.h>
 
 Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
-	: _tMesh(NULL)
+	: _tMesh(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_matrixBuffer = new Buffer;
     _cameraBuffer = new Buffer;
@@ -21,8 +21,6 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 5 * sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 2 * sizeof(glm::vec4), GL_DYNAMIC_DRAW);
 
-	_gProgram = gProgram;
-	_smProgram = smProgram;
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "NMTexture"), 1);

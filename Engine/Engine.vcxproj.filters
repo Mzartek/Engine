@@ -74,10 +74,10 @@
     <ClInclude Include="include\Engine\Input.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Particles.hpp">
+    <ClInclude Include="include\Engine\SkyBox.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\SkyBox.hpp">
+    <ClInclude Include="include\Engine\ParticlesManager.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -145,7 +145,7 @@
     <ClCompile Include="src\Input.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="src\Particles.cpp">
+    <ClCompile Include="src\ParticlesManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

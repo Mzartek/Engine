@@ -2,7 +2,8 @@
 #include <Engine/Buffer.hpp>
 #include <Engine/ShadowMap.hpp>
 
-Engine::Light::Light(void)
+Engine::Light::Light(ShaderProgram *program)
+	: _program(program)
 {
 	_vertexBuffer = new Buffer;
 	_mainInfoBuffer = new Buffer;

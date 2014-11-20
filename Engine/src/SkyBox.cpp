@@ -6,6 +6,7 @@
 #include <Engine/Camera.hpp>
 
 Engine::SkyBox::SkyBox(ShaderProgram *program)
+	: _program(program)
 {
 	_cubeTexture = new Texture;
 	_vertexBuffer = new Buffer;
@@ -38,7 +39,6 @@ Engine::SkyBox::SkyBox(ShaderProgram *program)
 	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeof indexArray, GL_STATIC_DRAW);
 	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 
-	_program = program;
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "cubeMap"), 0);
 

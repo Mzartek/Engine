@@ -6,10 +6,10 @@
 #include <Engine/Camera.hpp>
 
 Engine::SpotLight::SpotLight(ShaderProgram *program)
+	: Light(program)
 {
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
-	_program = program;
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "normalTexture"), 0);
 	glUniform1i(glGetUniformLocation(_program->getId(), "materialTexture"), 1);

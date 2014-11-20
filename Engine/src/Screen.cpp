@@ -5,6 +5,7 @@
 #include <Engine/Renderer.hpp>
 
 Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
+	: _backgroundProgram(backgroundProgram), _directProgram(directProgram)
 {
 	_vertexBuffer = new Buffer;
 	_colorBuffer = new Buffer;
@@ -18,8 +19,6 @@ Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directPr
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
 	_colorBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
 
-	_backgroundProgram = backgroundProgram;
-	_directProgram = directProgram;
 	glUseProgram(_backgroundProgram->getId());
 	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "materialTexture"), 0);
 	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "lightTexture"), 1);

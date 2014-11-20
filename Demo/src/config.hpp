@@ -32,6 +32,7 @@ private:
 	Engine::ShaderProgram *dirLightProgram;
 	Engine::ShaderProgram *spotLightProgram;
 	Engine::ShaderProgram *shadowMapProgram;
+	Engine::ShaderProgram *rainProgram;
 	Engine::ShaderProgram *backgroundProgram;
 	Engine::ShaderProgram *screenProgram;
 	Engine::ShaderProgram *textProgram;
