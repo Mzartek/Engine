@@ -1,4 +1,4 @@
-#include "Engine/Texture.hpp"
+#include <Engine/Texture.hpp>
 
 enum pixelFormat { UNKNOWN, RGB, BGR, RGBA };
 
