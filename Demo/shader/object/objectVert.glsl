@@ -30,8 +30,8 @@ void main(void)
 {
 	gl_Position = MVP * vec4(vertex, 1.0);
 
-	vec3 N = mat3(normalMatrix) * normal;
-	vec3 T = mat3(normalMatrix) * tangent;
+	vec3 N = (normalMatrix * vec4(normal, 0.0)).xyz;
+	vec3 T = (normalMatrix * vec4(tangent, 0.0)).xyz;
 	vec3 B = cross(N, T);
 
 	VertOut.texCoord = texCoord;
