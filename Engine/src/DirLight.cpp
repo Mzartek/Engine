@@ -92,7 +92,7 @@ void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 
 		mainInfo.shadowMatrix = *_VPMatrix;
 	}
-	mainInfo.IVPMatrix = glm::inverse(cam->getVPMatrix());
+	mainInfo.IVPMatrix = cam->getIVPMatrix();
 	mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
 	mainInfo.camPosition = glm::vec3(cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
 

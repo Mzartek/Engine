@@ -27,6 +27,7 @@ void GameManager::configSol(void)
 		sizeof index, index,
 		"resources/pre-project/feuilles.png", "resources/NM_none.png",
 		mat_ambient, mat_diffuse, mat_specular, mat_shininess);
+	sol->genMatNormal();
 }
 
 inline

@@ -20,6 +20,7 @@ namespace Engine
 		Buffer *_matrixBuffer;
 		Buffer *_cameraBuffer;
 		glm::mat4 *_modelMatrix;
+		glm::mat4 *_normalMatrix;
 		ShaderProgram *_gProgram;
 		ShaderProgram *_smProgram;
 	public:
@@ -37,6 +38,7 @@ namespace Engine
 		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+		void genMatNormal(void);
 		glm::vec3 getPosition(void) const;
 		Mesh *getMesh(const GLuint &num) const;
 		void display(GBuffer *g, Camera *cam) const;

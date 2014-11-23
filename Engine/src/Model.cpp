@@ -17,6 +17,7 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_matrixBuffer = new Buffer;
     _cameraBuffer = new Buffer;
 	_modelMatrix = new glm::mat4;
+	_normalMatrix = new glm::mat4;
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 5 * sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 2 * sizeof(glm::vec4), GL_DYNAMIC_DRAW);
@@ -40,6 +41,7 @@ Engine::Model::~Model(void)
 	delete _matrixBuffer;
 	delete _cameraBuffer;
 	delete _modelMatrix;
+	delete _normalMatrix;
 }
 
 void Engine::Model::initMeshArray(void)
@@ -216,6 +218,11 @@ void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &
 	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
 }
 
+void Engine::Model::genMatNormal(void)
+{
+	*_normalMatrix = glm::transpose(glm::inverse(*_modelMatrix));
+}
+
 glm::vec3 Engine::Model::getPosition(void) const
 {
 	return glm::vec3((*_modelMatrix)[3][0], (*_modelMatrix)[3][1], (*_modelMatrix)[3][2]);
@@ -251,7 +258,7 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
 	matrix.projection = cam->getProjectionMatrix();
 	matrix.view = cam->getViewMatrix();
 	matrix.model = *_modelMatrix;
-	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
+	matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -290,7 +297,7 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 	matrix.projection = cam->getProjectionMatrix();
 	matrix.view = cam->getViewMatrix();
 	matrix.model = *_modelMatrix;
-	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
+	matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -329,7 +336,7 @@ void Engine::Model::displayShadowMap(Light *light) const
 	matrix.projection = light->getProjectionMatrix();
 	matrix.view = light->getViewMatrix();
 	matrix.model = *_modelMatrix;
-	matrix.normal = glm::transpose(glm::inverse(*_modelMatrix));
+	matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
