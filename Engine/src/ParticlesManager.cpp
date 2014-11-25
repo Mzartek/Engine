@@ -4,6 +4,7 @@
 #include <Engine/Buffer.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
+#include <Engine/Renderer.hpp>
 
 Engine::ParticlesManager::ParticlesManager(ShaderProgram *program)
 	: _program(program), _numElement(0)
@@ -31,26 +32,38 @@ Engine::ParticlesManager::~ParticlesManager(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
+void Engine::ParticlesManager::setPosition(const glm::vec3 &pos)
+{
+    *_modelMatrix = glm::translate(pos);
+}
+
 void Engine::ParticlesManager::setTexture(const GLchar *path)
 {
 	_colorTexture->load2DTextureFromFile(path);
 }
 
-void Engine::ParticlesManager::setParticles(const GLfloat *particles, const GLsizei &numParticles)
+void Engine::ParticlesManager::setParticles(const Particle *particles, const GLsizei &numParticles)
 {
 	_numElement = numParticles;
 
-	_vertexBuffer->createStore(GL_ARRAY_BUFFER, particles, numParticles * 3 * sizeof(GLfloat), GL_STATIC_DRAW);
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, particles, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(3 * sizeof(GLfloat)));
+}
+
+void Engine::ParticlesManager::updateParticles(const Particle *particles)
+{
+    _vertexBuffer->updateStoreMap(particles);
 }
 
 void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam) const
 {
-	gbuf->setBackgroundState();
+	gbuf->setGeometryState();
 
 	glUseProgram(_program->getId());
 
@@ -68,7 +81,7 @@ void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam) const
 	_matrixBuffer->updateStoreMap(&matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	glActiveTexture(0);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
 
 	glBindVertexArray(_idVAO);

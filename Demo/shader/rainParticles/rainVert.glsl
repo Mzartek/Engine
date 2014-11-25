@@ -1,14 +1,7 @@
 #version 440
 
-layout (binding = 0) uniform matrixBuffer
-{
-	mat4 MVP;
-	mat4 projectionMatrix;
-	mat4 viewMatrix;
-	mat4 modelMatrix;
-};
-
 layout(location = 0) in vec3 particle;
+layout(location = 1) in float life;
 
 out VertexData
 {
@@ -17,5 +10,7 @@ out VertexData
 
 void main(void)
 {
-	VertOut.particle = MVP * vec4(particle, 1.0);
+    float test = (100 - life) * 100 / 100;
+    vec4 direction = vec4(0, -test, 0, 0);
+	VertOut.particle = vec4(particle.x, particle.y, particle.z, 1.0) + direction;
 }

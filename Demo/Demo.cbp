@@ -52,6 +52,9 @@
 		<Unit filename="shader/object/objectFrag.glsl" />
 		<Unit filename="shader/object/objectGeom.glsl" />
 		<Unit filename="shader/object/objectVert.glsl" />
+		<Unit filename="shader/rainParticles/rainFrag.glsl" />
+		<Unit filename="shader/rainParticles/rainGeom.glsl" />
+		<Unit filename="shader/rainParticles/rainVert.glsl" />
 		<Unit filename="shader/screen/screenFrag.glsl" />
 		<Unit filename="shader/screen/screenVert.glsl" />
 		<Unit filename="shader/shadow/shadowFrag.glsl" />

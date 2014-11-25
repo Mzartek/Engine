@@ -12,6 +12,7 @@
 #include <Engine/Model.hpp>
 #include <Engine/DirLight.hpp>
 #include <Engine/SpotLight.hpp>
+#include <Engine/ParticlesManager.hpp>
 #include <Engine/Screen.hpp>
 #include <Engine/TextArray.hpp>
 
@@ -48,10 +49,14 @@ private:
 	std::vector<Phalloide *> *vector_phalloide;
 	std::vector<Satan *> *vector_satan;
 	Engine::SpotLight *torch;
+	std::vector<Engine::Particle> *rainParticles;
+	Engine::ParticlesManager *particlesManager;
 	Engine::Screen *screen;
 	Engine::TextArray *text;
 	void configSol(void);
 	void configChamp(void);
+	void configRainParticles(void);
+	void updateRainParticles(void);
 public:
 	GameManager(Engine::Renderer *r, Engine::Input *i);
 	~GameManager(void);

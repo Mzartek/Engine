@@ -57,6 +57,20 @@ void GameManager::configChamp(void)
 	}
 }
 
+inline
+void GameManager::configRainParticles(void)
+{
+    int numParticle = 600;
+    rainParticles->resize(numParticle);
+    for(int i = 0; i < numParticle; i++)
+    {
+        (*rainParticles)[i].pos = glm::vec3(rand()%40 - 20, 50, rand()%40 - 20);
+        (*rainParticles)[i].life = (GLfloat)(rand()%100);
+    }
+    particlesManager->setTexture("resources/pre-project/goutte.png");
+	particlesManager->setParticles(rainParticles->data(), rainParticles->size());
+}
+
 GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 {
 	renderer = r;
@@ -81,6 +95,8 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	vector_phalloide = new std::vector<Phalloide *>;
 	vector_satan = new std::vector<Satan *>;
 	torch = new Engine::SpotLight(spotLightProgram);
+	rainParticles = new std::vector<Engine::Particle>;
+	particlesManager = new Engine::ParticlesManager(rainProgram);
 	screen = new Engine::Screen(backgroundProgram, screenProgram);
 	text = new Engine::TextArray(textProgram);
 
@@ -106,6 +122,9 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	torch->setShadowMapping(GL_TRUE);
 	torch->configShadowMap(1024, 1024);
 
+	// ParticlesManager config
+	configRainParticles();
+
 	// Text config
 	text->setFont("resources/font/SIXTY.TTF", 100, 255, 255, 0);
 	text->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
@@ -119,6 +138,8 @@ GameManager::~GameManager(void)
 
 	delete text;
 	delete screen;
+	delete particlesManager;
+	delete rainParticles;
 	delete torch;
 	for (i = 0; i < vector_satan->size(); i++)
 		delete (*vector_satan)[i];
