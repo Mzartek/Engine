@@ -20,6 +20,9 @@
 *.out
 *.app
 
+# Depend
+*.d
+
 memLost.txt
 
 *.log

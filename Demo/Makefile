@@ -1,7 +1,7 @@
 # Makefile for demo
 
 CC= g++
-NAME= Demo
+NAME= Demo.out
 DIR= bin/
 SYSTEM= $(shell uname)
 
