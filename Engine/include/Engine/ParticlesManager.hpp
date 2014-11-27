@@ -22,20 +22,22 @@ namespace Engine
 	class DLLAPI ParticlesManager : public Object
 	{
 	protected:
-		ShaderProgram *_program;
-		GLuint _idVAO;
+		ShaderProgram *_physicsProgram;
+		ShaderProgram *_displayProgram;
+		GLuint _idTFO;
+		bool _activeVertex;
 		glm::mat4 *_modelMatrix;
 		Texture *_colorTexture;
 		Buffer *_matrixBuffer;
-		Buffer *_vertexBuffer;
+		Buffer *_vertexBuffer[2];
 		GLsizei _numElement;
 	public:
-		ParticlesManager(ShaderProgram *program);
+		ParticlesManager(ShaderProgram *physicsProgram, ShaderProgram *displayProgram);
 		~ParticlesManager(void);
 		void setPosition(const glm::vec3 &pos);
 		void setTexture(const GLchar *path);
 		void setParticles(const Particle *particles, const GLsizei &numParticles);
-		void updateParticles(const Particle *particles);
+		void updateParticles(void);
 		void display(GBuffer *gbuf, Camera *cam) const;
 	};
 }

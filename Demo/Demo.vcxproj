@@ -21,6 +21,7 @@
     <None Include="shader\object\objectFrag.glsl" />
     <None Include="shader\object\objectGeom.glsl" />
     <None Include="shader\object\objectVert.glsl" />
+    <None Include="shader\rainParticles\rainPhysics.glsl" />
     <None Include="shader\rainParticles\rainFrag.glsl" />
     <None Include="shader\rainParticles\rainGeom.glsl" />
     <None Include="shader\rainParticles\rainVert.glsl" />

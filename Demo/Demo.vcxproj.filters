@@ -89,6 +89,9 @@
     <None Include="shader\rainParticles\rainVert.glsl">
       <Filter>Shader</Filter>
     </None>
+    <None Include="shader\rainParticles\rainPhysics.glsl">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp">

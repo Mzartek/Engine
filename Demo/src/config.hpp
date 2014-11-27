@@ -33,6 +33,7 @@ private:
 	Engine::ShaderProgram *dirLightProgram;
 	Engine::ShaderProgram *spotLightProgram;
 	Engine::ShaderProgram *shadowMapProgram;
+	Engine::ShaderProgram *physicsRainProgram;
 	Engine::ShaderProgram *rainProgram;
 	Engine::ShaderProgram *backgroundProgram;
 	Engine::ShaderProgram *screenProgram;
@@ -49,8 +50,7 @@ private:
 	std::vector<Phalloide *> *vector_phalloide;
 	std::vector<Satan *> *vector_satan;
 	Engine::SpotLight *torch;
-	std::vector<Engine::Particle> *rainParticles;
-	Engine::ParticlesManager *particlesManager;
+	Engine::ParticlesManager *rainManager;
 	Engine::Screen *screen;
 	Engine::TextArray *text;
 	void configSol(void);

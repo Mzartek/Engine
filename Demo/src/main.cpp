@@ -1,22 +1,5 @@
 #include "config.hpp"
 
-inline
-void GameManager::updateRainParticles(void)
-{
-    glm::vec3 camPosition = player->getCamera()->getPositionCamera();
-
-    for (unsigned int i = 0; i < rainParticles->size(); i++)
-    {
-        (*rainParticles)[i].life -= 1;
-        if ((*rainParticles)[i].life <= 0)
-        {
-            (*rainParticles)[i].pos = glm::vec3(camPosition.x + rand()%80 - 40, 50, camPosition.z + rand()%80 - 40);
-            (*rainParticles)[i].life = 100;
-        }
-    }
-    particlesManager->updateParticles(rainParticles->data());
-}
-
 void GameManager::display(GLfloat state)
 {
     GLuint i;
@@ -40,7 +23,7 @@ void GameManager::display(GLfloat state)
     for (i = 0; i < vector_satan->size(); i++)
         (*vector_satan)[i]->display(gBuffer, player->getCamera());
 
-    particlesManager->display(gBuffer, player->getCamera());
+	rainManager->display(gBuffer, player->getCamera());
     torch->display(gBuffer, player->getCamera());
     screen->background(gBuffer);
 
@@ -54,7 +37,7 @@ void GameManager::display(GLfloat state)
     else
         screen->display(renderer, gBuffer, 1.0f, 0.5f, 0.5f, 1.0f);
 
-    text->display(renderer);
+	text->display(renderer);
 }
 
 void GameManager::idle(void)
@@ -78,7 +61,7 @@ void GameManager::idle(void)
         torch->setPosition(player->getCamera()->getPositionCamera() - glm::vec3(0.0f, 1.0f, 0.0f));
         torch->setDirection(player->getCamera()->getVectorForward());
 
-        //updateRainParticles();
+		rainManager->updateParticles();
 
         player->getCamera()->position();
         torch->position();
@@ -116,7 +99,7 @@ void GameManager::idle(void)
             vector_satan->erase(vector_satan->begin() + i);
             text->writeScreen(std::to_string(player->getLife()).c_str());
         }
-    }
+	}
 }
 
 void GameManager::reshape(GLuint w, GLuint h)
