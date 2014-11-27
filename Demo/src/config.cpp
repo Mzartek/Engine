@@ -60,11 +60,12 @@ void GameManager::configChamp(void)
 inline
 void GameManager::configRainParticles(void)
 {
-     int numParticle = 1000   ;
+     int numParticle = 100000;
      rainParticles->resize(numParticle);
      for(int i = 0; i < numParticle; i++)
      {
 	  (*rainParticles)[i].pos = glm::vec3(rand()%40 - 20, 50, rand()%40 - 20);
+	  (*rainParticles)[i].dir = glm::vec3(0, -1, 1);
 	  (*rainParticles)[i].life = (GLfloat)(rand()%100);
      }
      particlesManager->setTexture("resources/pre-project/goutte.png");

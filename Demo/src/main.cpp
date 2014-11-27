@@ -78,7 +78,7 @@ void GameManager::idle(void)
         torch->setPosition(player->getCamera()->getPositionCamera() - glm::vec3(0.0f, 1.0f, 0.0f));
         torch->setDirection(player->getCamera()->getVectorForward());
 
-        updateRainParticles();
+        //updateRainParticles();
 
         player->getCamera()->position();
         torch->position();
