@@ -83,11 +83,13 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      dirLightProgram = new Engine::ShaderProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
      spotLightProgram = new Engine::ShaderProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
      shadowMapProgram = new Engine::ShaderProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
-	 physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL);
-     rainProgram = new Engine::ShaderProgram("shader/rainParticles/rainVert.glsl", NULL, NULL, "shader/rainParticles/rainGeom.glsl", "shader/rainParticles/rainFrag.glsl");
+	 displayRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainVert.glsl", NULL, NULL, "shader/rainParticles/rainGeom.glsl", "shader/rainParticles/rainFrag.glsl");
      backgroundProgram = new Engine::ShaderProgram("shader/background/backgroundVert.glsl", NULL, NULL, NULL, "shader/background/backgroundFrag.glsl");
      screenProgram = new Engine::ShaderProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
-     textProgram = new Engine::ShaderProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
+	 textProgram = new Engine::ShaderProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
+
+	 const GLchar *varyings[] = { "outPosition", "outDirection", "outLife" };
+	 physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL, varyings, 3);
 
      gBuffer = new Engine::GBuffer;
      player = new Player;
@@ -97,7 +99,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      vector_phalloide = new std::vector<Phalloide *>;
      vector_satan = new std::vector<Satan *>;
      torch = new Engine::SpotLight(spotLightProgram);
-	 rainManager = new Engine::ParticlesManager(physicsRainProgram, rainProgram);
+	 rainManager = new Engine::ParticlesManager(physicsRainProgram, displayRainProgram);
      screen = new Engine::Screen(backgroundProgram, screenProgram);
      text = new Engine::TextArray(textProgram);
 
@@ -158,11 +160,12 @@ GameManager::~GameManager(void)
      delete player;
      delete gBuffer;
 
+	 delete physicsRainProgram;
+
      delete textProgram;
      delete screenProgram;
      delete backgroundProgram;
-     delete rainProgram;
-	 delete physicsRainProgram;
+	 delete displayRainProgram;
      delete shadowMapProgram;
      delete spotLightProgram;
      delete dirLightProgram;

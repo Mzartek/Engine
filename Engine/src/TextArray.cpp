@@ -25,6 +25,7 @@ Engine::TextArray::TextArray(ShaderProgram *program)
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(0));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(2 * sizeof(GLfloat)));
+	glBindVertexArray(0);
 }
 
 Engine::TextArray::~TextArray(void)
@@ -99,4 +100,5 @@ void Engine::TextArray::display(Renderer *renderer)
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
 }

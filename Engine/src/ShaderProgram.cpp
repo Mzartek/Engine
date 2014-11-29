@@ -63,7 +63,7 @@ static GLuint loadShader(const GLchar *filename, const GLenum &type)
 	return id;
 }
 
-Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
+Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, const GLsizei count)
 	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
 {
 	GLchar *log;
@@ -108,6 +108,8 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 		_idFragmentShader = loadShader(fs, GL_FRAGMENT_SHADER);
 		glAttachShader(_idProgram, _idFragmentShader);
 	}
+
+	if (varyings != NULL) glTransformFeedbackVaryings(_idProgram, count, varyings, GL_INTERLEAVED_ATTRIBS);
 
 	glLinkProgram(_idProgram);
 

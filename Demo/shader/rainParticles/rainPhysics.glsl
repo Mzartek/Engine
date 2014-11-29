@@ -10,7 +10,16 @@ out float outLife;
 
 void main(void)
 {
-	outPosition = position;
-	outDirection = direction;
-	outLife = life - 1;
+	if(life <= 0)
+	{
+		outPosition = vec3(position.x, 50, position.z);
+		outDirection = vec3(0, -1, 0);
+		outLife = 100;
+	}
+	else
+	{
+		outPosition = position;
+		outDirection = direction;
+		outLife = life - 1;
+	}
 }

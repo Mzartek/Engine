@@ -33,11 +33,12 @@ private:
 	Engine::ShaderProgram *dirLightProgram;
 	Engine::ShaderProgram *spotLightProgram;
 	Engine::ShaderProgram *shadowMapProgram;
-	Engine::ShaderProgram *physicsRainProgram;
-	Engine::ShaderProgram *rainProgram;
+	Engine::ShaderProgram *displayRainProgram;
 	Engine::ShaderProgram *backgroundProgram;
 	Engine::ShaderProgram *screenProgram;
 	Engine::ShaderProgram *textProgram;
+
+	Engine::ShaderProgram *physicsRainProgram;
 
 	Engine::GBuffer *gBuffer;
 	Player *player;

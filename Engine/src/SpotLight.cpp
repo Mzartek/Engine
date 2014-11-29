@@ -21,6 +21,7 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glBindVertexArray(0);
 }
 
 Engine::SpotLight::~SpotLight(void)
@@ -124,4 +125,5 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
 }

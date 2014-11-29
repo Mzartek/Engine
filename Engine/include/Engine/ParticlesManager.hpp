@@ -25,10 +25,11 @@ namespace Engine
 		ShaderProgram *_physicsProgram;
 		ShaderProgram *_displayProgram;
 		GLuint _idTFO;
-		bool _activeVertex;
+		GLuint _idVAO;
 		glm::mat4 *_modelMatrix;
 		Texture *_colorTexture;
 		Buffer *_matrixBuffer;
+		Buffer *_cameraBuffer;
 		Buffer *_vertexBuffer[2];
 		GLsizei _numElement;
 	public:

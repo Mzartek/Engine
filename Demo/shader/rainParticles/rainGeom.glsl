@@ -8,10 +8,16 @@ layout (binding = 0) uniform matrixBuffer
      mat4 modelMatrix;
 };
 
-layout (points) in;
-		layout (triangle_strip, max_vertices = 4) out;
+layout (binding = 1) uniform cameraBuffer
+{
+    vec3 camPosition;
+    vec3 camTarget;
+};
 
-		in VertexData
+layout (points) in;
+layout (triangle_strip, max_vertices = 4) out;
+
+in VertexData
 {
      vec4 particle;
 } GeomIn[];
@@ -29,9 +35,9 @@ void main(void)
 
      mat4 finalMatrix = modelMatrix;
      
-     finalMatrix[3][0] = particle.x;
-     finalMatrix[3][1] = particle.y;
-     finalMatrix[3][2] = particle.z;
+     finalMatrix[3][0] = camPosition.x + particle.x;
+     finalMatrix[3][1] = camPosition.y + particle.y;
+     finalMatrix[3][2] = camPosition.z + particle.z;
 
      finalMatrix = viewMatrix * finalMatrix;
      

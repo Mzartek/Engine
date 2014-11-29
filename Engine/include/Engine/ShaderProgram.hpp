@@ -15,7 +15,7 @@ namespace Engine
 		GLuint _idGeometryShader;
 		GLuint _idFragmentShader;
 	public:
-		ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs);
+		ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings = NULL, const GLsizei count = 0);
 		~ShaderProgram(void);
 		GLuint getId(void);
 	};

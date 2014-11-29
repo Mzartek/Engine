@@ -30,6 +30,7 @@ Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directPr
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glBindVertexArray(0);
 }
 
 Engine::Screen::~Screen(void)
@@ -53,6 +54,7 @@ void Engine::Screen::background(GBuffer *gbuf)
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
 
 	gbuf->clearLight();
 }
@@ -72,4 +74,5 @@ void Engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
 }
