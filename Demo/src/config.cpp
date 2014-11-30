@@ -17,7 +17,7 @@ void GameManager::configSol(void)
 	       500, 0, -500, 50, 0, 0, 1, 0, 1, 0, 0
 	  };
      GLuint index[] = { 2, 0, 1, 0, 2, 3 };
-     glm::vec4 mat_ambient(0.2f, 0.2f, 0.2f, 1.0f);
+	 glm::vec4 mat_ambient(0.1f, 0.1f, 0.1f, 1.0f);
      glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
      glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
      GLfloat mat_shininess = 8.0f;
@@ -55,6 +55,16 @@ void GameManager::configChamp(void)
 	  this->vector_phalloide->push_back(phalloide_tmp);
 	  this->vector_satan->push_back(satan_tmp);
      }
+}
+
+inline
+void GameManager::configTree(void)
+{
+	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
+	model_tree->initMeshArray();
+	model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+	model_tree->matRotate(-glm::pi<GLfloat>() / 2, 1, 0, 0);
+	model_tree->matScale(5, 5, 5);
 }
 
 inline
@@ -97,7 +107,8 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      sol = new Engine::Model(objectProgram, shadowMapProgram);
      vector_cepe = new std::vector<Cepe *>;
      vector_phalloide = new std::vector<Phalloide *>;
-     vector_satan = new std::vector<Satan *>;
+	 vector_satan = new std::vector<Satan *>;
+	 moon = new Engine::DirLight(dirLightProgram);
      torch = new Engine::SpotLight(spotLightProgram);
 	 rainManager = new Engine::ParticlesManager(physicsRainProgram, displayRainProgram);
      screen = new Engine::Screen(backgroundProgram, screenProgram);
@@ -111,19 +122,25 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      player->getCamera()->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
 
      // Skybox config
-     skybox->load("resources/Skybox/rightred2.jpg", "resources/Skybox/leftred2.jpg",
-		  "resources/Skybox/topred2.jpg", "resources/Skybox/botred2.jpg",
-		  "resources/Skybox/frontred2.jpg", "resources/Skybox/backred2.jpg");
+     skybox->load("resources/Skybox/nnksky01_right.jpg", "resources/Skybox/nnksky01_left.jpg",
+		  "resources/Skybox/nnksky01_top.jpg", "resources/Skybox/nnksky01_bottom.jpg",
+		  "resources/Skybox/nnksky01_front.jpg", "resources/Skybox/nnksky01_back.jpg");
      skybox->rotate(glm::pi<GLfloat>(), 1, 0, 0);
 
      // Model config
      configSol();
      configChamp();
+	 configTree();
+
+	 moon->setColor(glm::vec3(0.1f, 0.2f, 0.3f));
+	 moon->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
+	 moon->setShadowMapping(GL_TRUE);
+	 moon->configShadowMap(1024, 1024);
 
      torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
      torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
      torch->setShadowMapping(GL_TRUE);
-     torch->configShadowMap(1024, 1024);
+	 torch->configShadowMap(1024, 1024);
 
      // ParticlesManager config
      configRainParticles();
@@ -142,16 +159,18 @@ GameManager::~GameManager(void)
      delete text;
      delete screen;
 	 delete rainManager;
-     delete torch;
+	 delete torch;
+	 delete moon;
      for (i = 0; i < vector_satan->size(); i++)
-	  delete (*vector_satan)[i];
+		 delete (*vector_satan)[i];
      for (i = 0; i < vector_phalloide->size(); i++)
-	  delete (*vector_phalloide)[i];
+		 delete (*vector_phalloide)[i];
      for (i = 0; i < vector_cepe->size(); i++)
-	  delete (*vector_cepe)[i];
+		 delete (*vector_cepe)[i];
      delete vector_satan;
      delete vector_phalloide;
-     delete vector_cepe;
+	 delete vector_cepe;
+	 delete model_tree;
      delete model_satan;
      delete model_phalloide;
      delete model_cepe;

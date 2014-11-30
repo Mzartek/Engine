@@ -6,10 +6,15 @@ void GameManager::display(GLfloat state)
 
     renderer->clear();
     gBuffer->clear();
+	moon->clear();
     torch->clear();
 
     // Skybox
     skybox->display(gBuffer, player->getCamera());
+
+	// ShadowMap
+	model_tree->displayShadowMap(moon);
+	model_tree->displayShadowMap(torch);
 
     // Opaque Object
     sol->display(gBuffer, player->getCamera());
@@ -21,16 +26,20 @@ void GameManager::display(GLfloat state)
         (*vector_phalloide)[i]->display(gBuffer, player->getCamera());
 
     for (i = 0; i < vector_satan->size(); i++)
-        (*vector_satan)[i]->display(gBuffer, player->getCamera());
+		(*vector_satan)[i]->display(gBuffer, player->getCamera());
 
-	rainManager->display(gBuffer, player->getCamera());
+	model_tree->display(gBuffer, player->getCamera());
+	moon->display(gBuffer, player->getCamera());
     torch->display(gBuffer, player->getCamera());
     screen->background(gBuffer);
 
     // Transparent Object
     sol->displayTransparent(gBuffer, player->getCamera());
     torch->display(gBuffer, player->getCamera());
-    screen->background(gBuffer);
+	screen->background(gBuffer);
+
+	// Particles
+	rainManager->display(gBuffer, player->getCamera());
 
     if (player->isAlive())
         screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
@@ -60,10 +69,11 @@ void GameManager::idle(void)
 
         torch->setPosition(player->getCamera()->getPositionCamera() - glm::vec3(0.0f, 1.0f, 0.0f));
         torch->setDirection(player->getCamera()->getVectorForward());
-
+		
 		rainManager->updateParticles();
 
-        player->getCamera()->position();
+		player->getCamera()->position();
+		moon->position(glm::vec3(0, 0, 0), 100);
         torch->position();
     }
 

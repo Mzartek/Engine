@@ -34,5 +34,5 @@ void main(void)
 		gl_FragDepth = gl_FragCoord.z;
     }
     else
-		gl_FragDepth = 1.0;
+		discard;
 }

@@ -47,9 +47,11 @@ private:
 	Cepe *model_cepe;
 	Phalloide *model_phalloide;
 	Satan *model_satan;
+	Engine::Model *model_tree;
 	std::vector<Cepe *> *vector_cepe;
 	std::vector<Phalloide *> *vector_phalloide;
 	std::vector<Satan *> *vector_satan;
+	Engine::DirLight *moon;
 	Engine::SpotLight *torch;
 	Engine::ParticlesManager *rainManager;
 	Engine::Screen *screen;
@@ -57,6 +59,7 @@ private:
 	void configSol(void);
 	void configChamp(void);
 	void configRainParticles(void);
+	void configTree(void);
 	void updateRainParticles(void);
 public:
 	GameManager(Engine::Renderer *r, Engine::Input *i);

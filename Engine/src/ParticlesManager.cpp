@@ -21,6 +21,7 @@ Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, Shader
 
 	glUseProgram(displayProgram->getId());
 	glUniform1i(glGetUniformLocation(displayProgram->getId(), "colorTexture"), 0);
+	glUniform1i(glGetUniformLocation(displayProgram->getId(), "depthTexture"), 1);
 
 	glGenTransformFeedbacks(1, &_idTFO);
 	glGenVertexArrays(1, &_idVAO);
@@ -92,7 +93,7 @@ void Engine::ParticlesManager::updateParticles(void)
 
 void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam) const
 {
-	gbuf->setGeometryState();
+	gbuf->setParticlesState();
 
 	glUseProgram(_displayProgram->getId());
 
@@ -122,6 +123,9 @@ void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam) const
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer[0]->getId());

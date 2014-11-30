@@ -144,6 +144,33 @@ void Engine::GBuffer::setLightState(void)
 	glDepthRange(0.0, 1.0);
 }
 
+void Engine::GBuffer::setParticlesState(void)
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+	const GLenum colorAttachment[]
+	{
+		GL_COLOR_ATTACHMENT3,
+	};
+	glDrawBuffers(1, colorAttachment);
+
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
+
+	glDisable(GL_STENCIL_TEST);
+	glStencilMask(0xFF);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquation(GL_FUNC_ADD);
+
+	glDisable(GL_CULL_FACE);
+
+	glViewport(0, 0, _width, _height);
+	glDepthRange(0.0, 1.0);
+}
+
 void Engine::GBuffer::setBackgroundState(void)
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);

@@ -1,5 +1,7 @@
 ﻿#version 440
 
+uniform sampler2D depthTexture;
+
 layout (binding = 0) uniform matrixBuffer
 {
      mat4 MVP;
@@ -30,12 +32,23 @@ out VertexData
 void main(void)
 {
      vec4 particle = GeomIn[0].particle;
+	 vec4 position;
      float xdim = 0.2;
      float ydim = 1.0;
+	 float theta = radians(22.5);
+	 float depth;
 
      mat4 finalMatrix = modelMatrix;
      
-     finalMatrix[3][0] = camPosition.x + particle.x;
+     finalMatrix[0][0] = cos(theta);
+     finalMatrix[0][1] = sin(theta);
+     finalMatrix[0][2] = 0;
+     
+     finalMatrix[1][0] = -sin(theta);
+     finalMatrix[1][1] = cos(theta);
+     finalMatrix[1][2] = 0;
+     
+     finalMatrix[3][0] = camPosition.x + particle.x - 25;
      finalMatrix[3][1] = camPosition.y + particle.y;
      finalMatrix[3][2] = camPosition.z + particle.z;
 
@@ -51,6 +64,7 @@ void main(void)
 
      finalMatrix = projectionMatrix * finalMatrix;
 
+	 position = finalMatrix * vec4(-xdim, -ydim, 0, 1);
      gl_Position = finalMatrix * vec4(-xdim, -ydim, 0, 1);
      GeomOut.texCoord = vec2(1, 1);
      EmitVertex();

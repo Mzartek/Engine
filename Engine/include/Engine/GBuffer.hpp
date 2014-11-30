@@ -24,6 +24,7 @@ namespace Engine
 		void setSkyboxState(void);
 		void setGeometryState(void);
 		void setLightState(void);
+		void setParticlesState(void);
 		void setBackgroundState(void);
 		void clear(void) const;
 		void clearLight(void) const;
