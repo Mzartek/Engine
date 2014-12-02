@@ -9,12 +9,12 @@ static GLfloat getRandomPosition(void)
 inline
 void GameManager::configSol(void)
 {
-     GLfloat vertexArray[] =
-	  {
-	       -500, 0, -500, 0, 0, 0, 1, 0, 1, 0, 0,
-	       -500, 0, 500, 0, 50, 0, 1, 0, 1, 0, 0,
-	       500, 0, 500, 50, 50, 0, 1, 0, 1, 0, 0,
-	       500, 0, -500, 50, 0, 0, 1, 0, 1, 0, 0
+     Engine::Vertex vertexArray[] =
+	 {
+		 glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+		 glm::vec3(-500, 0, 500), glm::vec2(0, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+		 glm::vec3(500, 0, 500), glm::vec2(50, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+		 glm::vec3(500, 0, -500), glm::vec2(50, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
 	  };
      GLuint index[] = { 2, 0, 1, 0, 2, 3 };
 	 glm::vec4 mat_ambient(0.1f, 0.1f, 0.1f, 1.0f);
@@ -23,8 +23,8 @@ void GameManager::configSol(void)
      GLfloat mat_shininess = 8.0f;
 
      sol->initMeshArray();
-     sol->addMesh(sizeof vertexArray, vertexArray,
-		  sizeof index, index,
+     sol->addMesh(sizeof vertexArray / sizeof(Engine::Vertex), vertexArray,
+		  sizeof index / sizeof(GLuint), index,
 		  "resources/pre-project/feuilles.png", "resources/NM_none.png",
 		  mat_ambient, mat_diffuse, mat_specular, mat_shininess);
      sol->genMatNormal();

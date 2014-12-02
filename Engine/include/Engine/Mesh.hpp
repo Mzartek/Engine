@@ -8,6 +8,14 @@ namespace Engine
 	class Texture;
 	class Buffer;
 
+	struct Vertex
+	{
+		glm::vec3 position;
+		glm::vec2 texCoord;
+		glm::vec3 normal;
+		glm::vec3 tangent;
+	};
+
 	class DLLAPI Mesh : public Object
 	{
 		friend int comparMesh(const void *p1, const void *p2);
@@ -37,8 +45,8 @@ namespace Engine
 		void setSpecular(const glm::vec4 &specular);
 		void setShininess(const GLfloat &shininess);
 		GLfloat getTransparency(void);
-		void load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
-			  const GLsizei &sizeIndexArray, const GLuint *indexArray);
+		void load(const GLsizei &numVertex, const Vertex *vertexArray,
+			  const GLsizei &numIndex, const GLuint *indexArray);
 		void display(void) const;
 		void displayShadow(void) const;
 	};

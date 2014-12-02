@@ -10,6 +10,7 @@
 #include <Engine/PlayerCam.hpp>
 #include <Engine/SkyBox.hpp>
 #include <Engine/Model.hpp>
+#include <Engine/Mesh.hpp>
 #include <Engine/DirLight.hpp>
 #include <Engine/SpotLight.hpp>
 #include <Engine/ParticlesManager.hpp>

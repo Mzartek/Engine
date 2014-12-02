@@ -5,6 +5,7 @@
 
 namespace Engine
 {
+	struct Vertex;
 	class Mesh;
 	class Buffer;
 	class ShaderProgram;
@@ -28,8 +29,8 @@ namespace Engine
 		~Model(void);
 		void initMeshArray(void);
 		void initMeshMirror(Model *m);
-		void addMesh(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
-				  const GLsizei &sizeIndexArray, const GLuint *indexArray,
+		void addMesh(const GLsizei &numVertex, const Vertex *vertexArray,
+				  const GLsizei &numIndex, const GLuint *indexArray,
 				  const GLchar *colorTexture, const GLchar *NMTexture,
 				  const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);
 		void loadFromFile(const GLchar *file);

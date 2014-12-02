@@ -61,13 +61,13 @@ GLfloat Engine::Mesh::getTransparency(void)
 	return _material.diffuse.w;
 }
 
-void Engine::Mesh::load(const GLsizei &sizeVertexArray, const GLfloat *vertexArray,
-			  const GLsizei &sizeIndexArray, const GLuint *indexArray)
+void Engine::Mesh::load(const GLsizei &numVertex, const Vertex *vertexArray,
+	const GLsizei &numIndex, const GLuint *indexArray)
 {
-	_numElement = sizeIndexArray/sizeof(GLuint);
+	_numElement = numIndex;
 
-	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeVertexArray, GL_STATIC_DRAW);
-	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeIndexArray, GL_STATIC_DRAW);
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, numVertex * sizeof *vertexArray, GL_STATIC_DRAW);
+	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, numIndex * sizeof *indexArray, GL_STATIC_DRAW);
 
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
