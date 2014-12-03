@@ -10,14 +10,14 @@ inline
 void GameManager::configSol(void)
 {
      Engine::Vertex vertexArray[] =
-	 {
-		 glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		 glm::vec3(-500, 0, 500), glm::vec2(0, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		 glm::vec3(500, 0, 500), glm::vec2(50, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		 glm::vec3(500, 0, -500), glm::vec2(50, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+	  {
+	       glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+	       glm::vec3(-500, 0, 500), glm::vec2(0, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+	       glm::vec3(500, 0, 500), glm::vec2(50, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+	       glm::vec3(500, 0, -500), glm::vec2(50, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
 	  };
      GLuint index[] = { 2, 0, 1, 0, 2, 3 };
-	 glm::vec4 mat_ambient(0.1f, 0.1f, 0.1f, 1.0f);
+     glm::vec4 mat_ambient(0.1f, 0.1f, 0.1f, 1.0f);
      glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
      glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
      GLfloat mat_shininess = 8.0f;
@@ -60,26 +60,26 @@ void GameManager::configChamp(void)
 inline
 void GameManager::configTree(void)
 {
-	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
-	model_tree->initMeshArray();
-	model_tree->loadFromFile("./resources/tree/Tree1.3ds");
-	model_tree->matRotate(-glm::pi<GLfloat>() / 2, 1, 0, 0);
-	model_tree->matScale(5, 5, 5);
+     model_tree = new Engine::Model(objectProgram, shadowMapProgram);
+     model_tree->initMeshArray();
+     model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+     model_tree->matRotate(-glm::pi<GLfloat>() / 2, 1, 0, 0);
+     model_tree->matScale(5, 5, 5);
 }
 
 inline
 void GameManager::configRainParticles(void)
 {
-	int numParticle = 1000;
-	std::vector<Engine::Particle> rainParticles(numParticle);
-    for(int i = 0; i < numParticle; i++)
-	{
-		rainParticles[i].pos = glm::vec3(rand() % 40 - 20, 50, rand() % 40 - 20);
-		rainParticles[i].dir = glm::vec3(0, -1, 0);
-		rainParticles[i].life = (GLfloat)(rand() % 100);
-    }
-    rainManager->setTexture("resources/pre-project/goutte.png");
-	rainManager->setParticles(rainParticles.data(), rainParticles.size());
+     int numParticle = 1000;
+     std::vector<Engine::Particle> rainParticles(numParticle);
+     for(int i = 0; i < numParticle; i++)
+     {
+	  rainParticles[i].pos = glm::vec3(rand() % 40 - 20, 50, rand() % 40 - 20);
+	  rainParticles[i].dir = glm::vec3(0, -1, 0);
+	  rainParticles[i].life = (GLfloat)(rand() % 100);
+     }
+     rainManager->setTexture("resources/pre-project/goutte.png");
+     rainManager->setParticles(rainParticles.data(), rainParticles.size());
 }
 
 GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
@@ -93,13 +93,13 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      dirLightProgram = new Engine::ShaderProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
      spotLightProgram = new Engine::ShaderProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
      shadowMapProgram = new Engine::ShaderProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
-	 displayRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainVert.glsl", NULL, NULL, "shader/rainParticles/rainGeom.glsl", "shader/rainParticles/rainFrag.glsl");
+     displayRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainVert.glsl", NULL, NULL, "shader/rainParticles/rainGeom.glsl", "shader/rainParticles/rainFrag.glsl");
      backgroundProgram = new Engine::ShaderProgram("shader/background/backgroundVert.glsl", NULL, NULL, NULL, "shader/background/backgroundFrag.glsl");
      screenProgram = new Engine::ShaderProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
-	 textProgram = new Engine::ShaderProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
+     textProgram = new Engine::ShaderProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
 
-	 const GLchar *varyings[] = { "outPosition", "outDirection", "outLife" };
-	 physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL, varyings, 3);
+     const GLchar *varyings[] = { "outPosition", "outDirection", "outLife" };
+     physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL, varyings, 3);
 
      gBuffer = new Engine::GBuffer;
      player = new Player;
@@ -107,10 +107,10 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      sol = new Engine::Model(objectProgram, shadowMapProgram);
      vector_cepe = new std::vector<Cepe *>;
      vector_phalloide = new std::vector<Phalloide *>;
-	 vector_satan = new std::vector<Satan *>;
-	 moon = new Engine::DirLight(dirLightProgram);
+     vector_satan = new std::vector<Satan *>;
+     moon = new Engine::DirLight(dirLightProgram);
      torch = new Engine::SpotLight(spotLightProgram);
-	 rainManager = new Engine::ParticlesManager(physicsRainProgram, displayRainProgram);
+     rainManager = new Engine::ParticlesManager(physicsRainProgram, displayRainProgram);
      screen = new Engine::Screen(backgroundProgram, screenProgram);
      text = new Engine::TextArray(textProgram);
 
@@ -130,17 +130,17 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      // Model config
      configSol();
      configChamp();
-	 configTree();
+     configTree();
 
-	 moon->setColor(glm::vec3(0.1f, 0.2f, 0.3f));
-	 moon->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
-	 moon->setShadowMapping(GL_TRUE);
-	 moon->configShadowMap(1024, 1024);
+     moon->setColor(glm::vec3(0.1f, 0.2f, 0.3f));
+     moon->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
+     moon->setShadowMapping(GL_TRUE);
+     moon->configShadowMap(1024, 1024);
 
      torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
      torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
      torch->setShadowMapping(GL_TRUE);
-	 torch->configShadowMap(1024, 1024);
+     torch->configShadowMap(1024, 1024);
 
      // ParticlesManager config
      configRainParticles();
@@ -158,19 +158,19 @@ GameManager::~GameManager(void)
 
      delete text;
      delete screen;
-	 delete rainManager;
-	 delete torch;
-	 delete moon;
+     delete rainManager;
+     delete torch;
+     delete moon;
      for (i = 0; i < vector_satan->size(); i++)
-		 delete (*vector_satan)[i];
+	  delete (*vector_satan)[i];
      for (i = 0; i < vector_phalloide->size(); i++)
-		 delete (*vector_phalloide)[i];
+	  delete (*vector_phalloide)[i];
      for (i = 0; i < vector_cepe->size(); i++)
-		 delete (*vector_cepe)[i];
+	  delete (*vector_cepe)[i];
      delete vector_satan;
      delete vector_phalloide;
-	 delete vector_cepe;
-	 delete model_tree;
+     delete vector_cepe;
+     delete model_tree;
      delete model_satan;
      delete model_phalloide;
      delete model_cepe;
@@ -179,12 +179,12 @@ GameManager::~GameManager(void)
      delete player;
      delete gBuffer;
 
-	 delete physicsRainProgram;
+     delete physicsRainProgram;
 
      delete textProgram;
      delete screenProgram;
      delete backgroundProgram;
-	 delete displayRainProgram;
+     delete displayRainProgram;
      delete shadowMapProgram;
      delete spotLightProgram;
      delete dirLightProgram;
