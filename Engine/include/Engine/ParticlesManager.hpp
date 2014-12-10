@@ -14,8 +14,9 @@ namespace Engine
 
 	struct Particle
 	{
-        glm::vec3 pos;
-		glm::vec3 dir;
+        glm::vec3 position;
+		glm::vec3 direction;
+		GLfloat velocity;
         GLfloat life;
 	};
 

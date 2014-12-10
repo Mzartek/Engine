@@ -74,9 +74,10 @@ void GameManager::configRainParticles(void)
      std::vector<Engine::Particle> rainParticles(numParticle);
      for(int i = 0; i < numParticle; i++)
      {
-	  rainParticles[i].pos = glm::vec3(rand() % 40 - 20, 50, rand() % 40 - 20);
-	  rainParticles[i].dir = glm::vec3(0, -1, 0);
-	  rainParticles[i].life = (GLfloat)(rand() % 100);
+        rainParticles[i].position = glm::vec3(rand() % 40 - 20, 50, rand() % 40 - 20);
+        rainParticles[i].direction = glm::vec3(0.5f, -1, 0);
+        rainParticles[i].velocity = 1.0f;
+        rainParticles[i].life = (GLfloat)(rand() % 100);
      }
      rainManager->setTexture("resources/pre-project/goutte.png");
      rainManager->setParticles(rainParticles.data(), rainParticles.size());
@@ -98,8 +99,8 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      screenProgram = new Engine::ShaderProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
      textProgram = new Engine::ShaderProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
 
-     const GLchar *varyings[] = { "outPosition", "outDirection", "outLife" };
-     physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL, varyings, 3);
+     const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
+     physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL, varyings, 4);
 
      gBuffer = new Engine::GBuffer;
      player = new Player;
