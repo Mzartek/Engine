@@ -31,28 +31,18 @@ out VertexData
 
 void main(void)
 {
-     vec4 particle = GeomIn[0].particle;
-	 vec4 position;
      float xdim = 0.2;
      float ydim = 1.0;
-	 float theta = radians(22.5);
-	 float depth;
+
+     vec4 particle = modelMatrix * GeomIn[0].particle;
 
      mat4 finalMatrix = modelMatrix;
-     
-     finalMatrix[0][0] = cos(theta);
-     finalMatrix[0][1] = sin(theta);
-     finalMatrix[0][2] = 0;
-     
-     finalMatrix[1][0] = -sin(theta);
-     finalMatrix[1][1] = cos(theta);
-     finalMatrix[1][2] = 0;
-     
-     finalMatrix[3][0] = camPosition.x + particle.x - 25;
+	 
+     finalMatrix[3][0] = camPosition.x + particle.x - 40;
      finalMatrix[3][1] = camPosition.y + particle.y;
      finalMatrix[3][2] = camPosition.z + particle.z;
 
-     finalMatrix = viewMatrix * finalMatrix;
+	 finalMatrix = viewMatrix * finalMatrix;
      
      finalMatrix[0][0] = 1;
      finalMatrix[0][1] = 0;
@@ -64,7 +54,6 @@ void main(void)
 
      finalMatrix = projectionMatrix * finalMatrix;
 
-	 position = finalMatrix * vec4(-xdim, -ydim, 0, 1);
      gl_Position = finalMatrix * vec4(-xdim, -ydim, 0, 1);
      GeomOut.texCoord = vec2(1, 1);
      EmitVertex();

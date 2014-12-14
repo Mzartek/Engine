@@ -74,13 +74,15 @@ void GameManager::configRainParticles(void)
      std::vector<Engine::Particle> rainParticles(numParticle);
      for(int i = 0; i < numParticle; i++)
      {
-        rainParticles[i].position = glm::vec3(rand() % 40 - 20, 50, rand() % 40 - 20);
-        rainParticles[i].direction = glm::vec3(0.5f, -1, 0);
+        rainParticles[i].position = glm::vec3(rand() % 40 - 20, 100, rand() % 40 - 20);
+        rainParticles[i].direction = glm::vec3(0, -1, 0);
         rainParticles[i].velocity = 1.0f;
         rainParticles[i].life = (GLfloat)(rand() % 100);
      }
      rainManager->setTexture("resources/pre-project/goutte.png");
      rainManager->setParticles(rainParticles.data(), rainParticles.size());
+	 rainManager->matTranslate(20, 0, 0);
+	 rainManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, 1);
 }
 
 GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)

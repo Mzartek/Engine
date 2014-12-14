@@ -92,6 +92,18 @@
     <None Include="shader\rainParticles\rainPhysics.glsl">
       <Filter>Shader</Filter>
     </None>
+    <None Include="shader\smokeParticles\smokeFrag.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\smokeParticles\smokeGeom.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\smokeParticles\smokePhysics.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\smokeParticles\smokeVert.glsl">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp">

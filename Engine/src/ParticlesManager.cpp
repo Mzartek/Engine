@@ -40,11 +40,6 @@ Engine::ParticlesManager::~ParticlesManager(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::ParticlesManager::setPosition(const glm::vec3 &pos)
-{
-    *_modelMatrix = glm::translate(pos);
-}
-
 void Engine::ParticlesManager::setTexture(const GLchar *path)
 {
 	_colorTexture->load2DTextureFromFile(path);
@@ -56,6 +51,26 @@ void Engine::ParticlesManager::setParticles(const Particle *particles, const GLs
 
 	_vertexBuffer[0]->createStore(GL_ARRAY_BUFFER, particles, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
 	_vertexBuffer[1]->createStore(GL_ARRAY_BUFFER, NULL, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
+}
+
+void Engine::ParticlesManager::matIdentity(void)
+{
+	*_modelMatrix = glm::mat4(1.0f);
+}
+
+void Engine::ParticlesManager::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+{
+	*_modelMatrix *= glm::translate(glm::vec3(x, y, z));
+}
+
+void Engine::ParticlesManager::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
+{
+	*_modelMatrix *= glm::rotate(angle, glm::vec3(x, y, z));
+}
+
+void Engine::ParticlesManager::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+{
+	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
 }
 
 void Engine::ParticlesManager::updateParticles(void)

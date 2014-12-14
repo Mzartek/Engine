@@ -31,6 +31,10 @@
     <None Include="shader\shadow\shadowVert.glsl" />
     <None Include="shader\skybox\skyboxFrag.glsl" />
     <None Include="shader\skybox\skyboxVert.glsl" />
+    <None Include="shader\smokeParticles\smokeFrag.glsl" />
+    <None Include="shader\smokeParticles\smokeGeom.glsl" />
+    <None Include="shader\smokeParticles\smokePhysics.glsl" />
+    <None Include="shader\smokeParticles\smokeVert.glsl" />
     <None Include="shader\spotLight\spotLightFrag.glsl" />
     <None Include="shader\spotLight\spotLightVert.glsl" />
     <None Include="shader\text\textFrag.glsl" />

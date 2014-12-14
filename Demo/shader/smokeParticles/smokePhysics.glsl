@@ -27,8 +27,8 @@ void main(void)
 	}
 	else
 	{
-		outPosition = vec3(position.x, 100, position.z);
-		outDirection = vec3(0, -1, 0);
+		outPosition = vec3(0, 0, 0);
+		outDirection = direction;
 		outVelocity = velocity;
 		outLife = 0;
 	}

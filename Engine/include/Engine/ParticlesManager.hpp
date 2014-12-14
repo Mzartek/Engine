@@ -36,9 +36,12 @@ namespace Engine
 	public:
 		ParticlesManager(ShaderProgram *physicsProgram, ShaderProgram *displayProgram);
 		~ParticlesManager(void);
-		void setPosition(const glm::vec3 &pos);
 		void setTexture(const GLchar *path);
 		void setParticles(const Particle *particles, const GLsizei &numParticles);
+		void matIdentity(void);
+		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
+		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void updateParticles(void);
 		void display(GBuffer *gbuf, Camera *cam) const;
 	};
