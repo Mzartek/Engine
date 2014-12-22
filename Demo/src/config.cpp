@@ -94,6 +94,7 @@ void GameManager::configSmokeParticles(void)
      smokeManager->setTexture("resources/pre-project/smoke.png");
      smokeManager->setParticles(smokeParticles.data(), smokeParticles.size());
 	 smokeManager->matTranslate(10, 0, 0);
+	 smokeManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, -1);
 }
 
 GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
