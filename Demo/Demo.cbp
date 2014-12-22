@@ -62,6 +62,10 @@
 		<Unit filename="shader/shadow/shadowVert.glsl" />
 		<Unit filename="shader/skybox/skyboxFrag.glsl" />
 		<Unit filename="shader/skybox/skyboxVert.glsl" />
+		<Unit filename="shader/smokeParticles/smokeFrag.glsl" />
+		<Unit filename="shader/smokeParticles/smokeGeom.glsl" />
+		<Unit filename="shader/smokeParticles/smokePhysics.glsl" />
+		<Unit filename="shader/smokeParticles/smokeVert.glsl" />
 		<Unit filename="shader/spotLight/spotLightFrag.glsl" />
 		<Unit filename="shader/spotLight/spotLightVert.glsl" />
 		<Unit filename="shader/text/textFrag.glsl" />

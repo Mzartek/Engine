@@ -40,6 +40,7 @@ void GameManager::display(GLfloat state)
 
      // Particles
      rainManager->display(gBuffer, player->getCamera());
+     smokeManager->display(gBuffer, player->getCamera());
 
      if (player->isAlive())
 	  screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
@@ -69,8 +70,9 @@ void GameManager::idle(void)
 
 	  torch->setPosition(player->getCamera()->getPositionCamera() - glm::vec3(0.0f, 1.0f, 0.0f));
 	  torch->setDirection(player->getCamera()->getVectorForward());
-		
+
 	  rainManager->updateParticles();
+	  smokeManager->updateParticles();
 
 	  player->getCamera()->position();
 	  moon->position(glm::vec3(0, 0, 0), 100);

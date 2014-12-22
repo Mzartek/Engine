@@ -35,11 +35,13 @@ private:
 	Engine::ShaderProgram *spotLightProgram;
 	Engine::ShaderProgram *shadowMapProgram;
 	Engine::ShaderProgram *displayRainProgram;
+	Engine::ShaderProgram *displaySmokeProgram;
 	Engine::ShaderProgram *backgroundProgram;
 	Engine::ShaderProgram *screenProgram;
 	Engine::ShaderProgram *textProgram;
 
 	Engine::ShaderProgram *physicsRainProgram;
+	Engine::ShaderProgram *physicsSmokeProgram;
 
 	Engine::GBuffer *gBuffer;
 	Player *player;
@@ -55,11 +57,13 @@ private:
 	Engine::DirLight *moon;
 	Engine::SpotLight *torch;
 	Engine::ParticlesManager *rainManager;
+	Engine::ParticlesManager *smokeManager;
 	Engine::Screen *screen;
 	Engine::TextArray *text;
 	void configSol(void);
 	void configChamp(void);
 	void configRainParticles(void);
+	void configSmokeParticles(void);
 	void configTree(void);
 	void updateRainParticles(void);
 public:

@@ -1,12 +1,10 @@
 #include "config.hpp"
 
-inline
 static GLfloat getRandomPosition(void)
 {
      return (GLfloat)-500 + rand() % 1001;
 }
 
-inline
 void GameManager::configSol(void)
 {
      Engine::Vertex vertexArray[] =
@@ -30,7 +28,6 @@ void GameManager::configSol(void)
      sol->genMatNormal();
 }
 
-inline
 void GameManager::configChamp(void)
 {
      Cepe *cepe_tmp;
@@ -57,7 +54,6 @@ void GameManager::configChamp(void)
      }
 }
 
-inline
 void GameManager::configTree(void)
 {
      model_tree = new Engine::Model(objectProgram, shadowMapProgram);
@@ -67,7 +63,6 @@ void GameManager::configTree(void)
      model_tree->matScale(5, 5, 5);
 }
 
-inline
 void GameManager::configRainParticles(void)
 {
      int numParticle = 1000;
@@ -76,13 +71,29 @@ void GameManager::configRainParticles(void)
      {
         rainParticles[i].position = glm::vec3(rand() % 40 - 20, 100, rand() % 40 - 20);
         rainParticles[i].direction = glm::vec3(0, -1, 0);
-        rainParticles[i].velocity = 1.0f;
+        rainParticles[i].velocity = 1.5f;
         rainParticles[i].life = (GLfloat)(rand() % 100);
      }
      rainManager->setTexture("resources/pre-project/goutte.png");
      rainManager->setParticles(rainParticles.data(), rainParticles.size());
 	 rainManager->matTranslate(20, 0, 0);
 	 rainManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, 1);
+}
+
+void GameManager::configSmokeParticles(void)
+{
+    int numParticle = 30;
+    std::vector<Engine::Particle> smokeParticles(numParticle);
+    for (int i = 0; i < numParticle; i++)
+    {
+        smokeParticles[i].position = glm::vec3(0, 0, 0);
+        smokeParticles[i].direction = glm::vec3((GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX, 1, (GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX);
+        smokeParticles[i].velocity = 0.2f;
+        smokeParticles[i].life = (GLfloat)(rand() % 100);
+    }
+     smokeManager->setTexture("resources/pre-project/smoke.png");
+     smokeManager->setParticles(smokeParticles.data(), smokeParticles.size());
+	 smokeManager->matTranslate(10, 0, 0);
 }
 
 GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
@@ -97,12 +108,14 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      spotLightProgram = new Engine::ShaderProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
      shadowMapProgram = new Engine::ShaderProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
      displayRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainVert.glsl", NULL, NULL, "shader/rainParticles/rainGeom.glsl", "shader/rainParticles/rainFrag.glsl");
+     displaySmokeProgram = new Engine::ShaderProgram("shader/smokeParticles/smokeVert.glsl", NULL, NULL, "shader/smokeParticles/smokeGeom.glsl", "shader/smokeParticles/smokeFrag.glsl");
      backgroundProgram = new Engine::ShaderProgram("shader/background/backgroundVert.glsl", NULL, NULL, NULL, "shader/background/backgroundFrag.glsl");
      screenProgram = new Engine::ShaderProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
      textProgram = new Engine::ShaderProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
 
      const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
      physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL, varyings, 4);
+     physicsSmokeProgram = new Engine::ShaderProgram("shader/smokeParticles/smokePhysics.glsl", NULL, NULL, NULL, NULL, varyings, 4);
 
      gBuffer = new Engine::GBuffer;
      player = new Player;
@@ -114,6 +127,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
      moon = new Engine::DirLight(dirLightProgram);
      torch = new Engine::SpotLight(spotLightProgram);
      rainManager = new Engine::ParticlesManager(physicsRainProgram, displayRainProgram);
+     smokeManager = new Engine::ParticlesManager(physicsSmokeProgram, displaySmokeProgram);
      screen = new Engine::Screen(backgroundProgram, screenProgram);
      text = new Engine::TextArray(textProgram);
 
@@ -147,6 +161,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 
      // ParticlesManager config
      configRainParticles();
+     configSmokeParticles();
 
      // Text config
      text->setFont("resources/font/SIXTY.TTF", 100, 255, 255, 0);
@@ -161,6 +176,7 @@ GameManager::~GameManager(void)
 
      delete text;
      delete screen;
+     delete smokeManager;
      delete rainManager;
      delete torch;
      delete moon;
@@ -182,11 +198,13 @@ GameManager::~GameManager(void)
      delete player;
      delete gBuffer;
 
+     delete physicsSmokeProgram;
      delete physicsRainProgram;
 
      delete textProgram;
      delete screenProgram;
      delete backgroundProgram;
+     delete displaySmokeProgram;
      delete displayRainProgram;
      delete shadowMapProgram;
      delete spotLightProgram;

@@ -51,7 +51,7 @@ void Engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, _width, _height);
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL], 0);
-	
+
 	if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
 }

@@ -8,9 +8,11 @@ layout(location = 3) in float life;
 out VertexData
 {
      vec4 particle;
+	 float life;
 } VertOut;
 
 void main(void)
 {
-     VertOut.particle = vec4(position.x, position.y, position.z, 1.0) + vec4(normalize(direction) * life, 1.0);
+     VertOut.particle = vec4(position.x, position.y, position.z, 1.0) + vec4(normalize(direction) * life * velocity, 1.0);
+     VertOut.life = life;
 }
