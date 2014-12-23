@@ -48,9 +48,10 @@ GLboolean Engine::OctreeSystem::addOctree(const GLuint &depth, Octree *octree, M
 	glm::vec3 model_pos = model->getPosition();
 
 	// Check the position
-	if (model_pos.x < (octree_pos.x - octree->dim) || model_pos.y >= (octree_pos.x + octree->dim)) return GL_FALSE;
-	if (model_pos.y < (octree_pos.y - octree->dim) || model_pos.y >= (octree_pos.y + octree->dim)) return GL_FALSE;
-	if (model_pos.z < (octree_pos.z - octree->dim) || model_pos.z >= (octree_pos.z + octree->dim)) return GL_FALSE;
+	if (model_pos.x < (octree_pos.x - octree->dim) || model_pos.y >= (octree_pos.x + octree->dim) ||
+		model_pos.y < (octree_pos.y - octree->dim) || model_pos.y >= (octree_pos.y + octree->dim) ||
+		model_pos.z < (octree_pos.z - octree->dim) || model_pos.z >= (octree_pos.z + octree->dim)) 
+		return GL_FALSE;
 
 	// Recursive call
 	if (addOctree(depth + 1, &octree->next[0], model, dim)) return GL_TRUE;
