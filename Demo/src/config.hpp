@@ -17,6 +17,8 @@
 #include <Engine/Screen.hpp>
 #include <Engine/TextArray.hpp>
 
+#include <Engine/OctreeSystem.hpp>
+
 #include "Player.hpp"
 #include "Cepe.hpp"
 #include "Phalloide.hpp"
@@ -60,6 +62,9 @@ private:
 	Engine::ParticlesManager *smokeManager;
 	Engine::Screen *screen;
 	Engine::TextArray *text;
+
+	Engine::OctreeSystem *octreeSystem;
+
 	void configSol(void);
 	void configChamp(void);
 	void configRainParticles(void);

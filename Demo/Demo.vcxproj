@@ -39,8 +39,6 @@
     <None Include="shader\spotLight\spotLightVert.glsl" />
     <None Include="shader\text\textFrag.glsl" />
     <None Include="shader\text\textVert.glsl" />
-    <None Include="shader\vLight\vLightFrag.glsl" />
-    <None Include="shader\vLight\vLightVert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Cepe.hpp" />
