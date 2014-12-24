@@ -75,7 +75,7 @@ void Engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloa
 
 void Engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
 {
-	glm::mat4 pos = cam->getVPMatrix() * glm::translate(glm::vec3(cam->getPositionCamera())) * *_rotateMatrix;
+	glm::mat4 pos = cam->getVPMatrix() * glm::translate(glm::vec3(cam->getCameraPosition())) * *_rotateMatrix;
 
 	gbuf->setSkyboxState();
 

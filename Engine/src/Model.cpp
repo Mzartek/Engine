@@ -228,7 +228,7 @@ void Engine::Model::genMatNormal(void)
 
 glm::vec3 Engine::Model::getPosition(void) const
 {
-	return glm::vec3((*_modelMatrix)[3][0], (*_modelMatrix)[3][1], (*_modelMatrix)[3][2]);
+	return glm::vec3(glm::column(*_modelMatrix, 3));
 }
 
 Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
@@ -270,8 +270,8 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
         glm::vec3 ALIGN(16) position;
         glm::vec3 ALIGN(16) target;
 	} camera;
-	camera.position = cam->getPositionCamera();
-	camera.target = cam->getPositionTarget();
+	camera.position = cam->getCameraPosition();
+	camera.target = cam->getTargetPosition();
 	_cameraBuffer->updateStoreMap(&camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -309,8 +309,8 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
         glm::vec3 ALIGN(16) position;
         glm::vec3 ALIGN(16) target;
 	} camera;
-	camera.position = cam->getPositionCamera();
-	camera.target = cam->getPositionTarget();
+	camera.position = cam->getCameraPosition();
+	camera.target = cam->getTargetPosition();
 	_cameraBuffer->updateStoreMap(&camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 

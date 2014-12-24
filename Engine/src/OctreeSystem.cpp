@@ -7,6 +7,7 @@ struct Engine::Octree
 {
 	glm::vec3 position;
 	GLfloat dim;
+	GLfloat radius;
 	std::vector<Engine::Model *> container;
 	struct Octree *next;
 };
@@ -15,11 +16,12 @@ void Engine::OctreeSystem::initOctree(const GLuint &depth, Octree *octree, const
 {
 	if (depth >= _maxDepth)	return;
 
+	GLfloat newDim = dim / 2;
+
 	octree->position = position;
 	octree->dim = dim;
+	octree->radius = glm::length(glm::vec3(newDim));
 	octree->next = new Octree[8];
-
-	GLfloat newDim = dim / 2;
 
 	initOctree(depth + 1, &octree->next[0], glm::vec3(position.x - newDim, position.y - newDim, position.z - newDim), newDim);
 	initOctree(depth + 1, &octree->next[1], glm::vec3(position.x - newDim, position.y - newDim, position.z + newDim), newDim);
@@ -72,8 +74,18 @@ void Engine::OctreeSystem::displayOctree(const GLuint &depth, Octree *octree, GB
 {
 	if (depth >= _maxDepth)	return;
 
+	glm::vec3 oposition = octree->position;
+	glm::vec3 cposition = cam->getCameraPosition();
+
+	if (glm::length(oposition - cposition) > octree->radius)
+	{
+		if (acos(glm::dot(cam->getViewVector(), glm::normalize(oposition - cposition))) > cam->getFOV() / 2) return;
+	}
+
 	for (GLuint i = 0; i < octree->container.size(); i++)
+	{
 		octree->container[i]->display(gbuffer, cam);
+	}
 
 	for (GLuint i = 0; i < 8; i++)
 		displayOctree(depth + 1, &(octree->next[i]), gbuffer, cam);

@@ -115,7 +115,7 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 	}
 	mainInfo.IVPMatrix = cam->getIVPMatrix();
 	mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	mainInfo.camPosition = glm::vec3(cam->getPositionCamera().x, cam->getPositionCamera().y, cam->getPositionCamera().z);
+	mainInfo.camPosition = glm::vec3(cam->getCameraPosition().x, cam->getCameraPosition().y, cam->getCameraPosition().z);
 
 	_mainInfoBuffer->updateStoreMap(&mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);

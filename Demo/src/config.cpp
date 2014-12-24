@@ -26,6 +26,8 @@ void GameManager::configSol(void)
 		"resources/pre-project/feuilles.png", "resources/NM_none.png",
 		mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 	sol->genMatNormal();
+
+	octreeSystem->addModel(sol, 1000);
 }
 
 void GameManager::configChamp(void)
@@ -48,6 +50,10 @@ void GameManager::configChamp(void)
 		phalloide_tmp->matTranslate(getRandomPosition(), 1.5f, getRandomPosition());
 		satan_tmp->matTranslate(getRandomPosition(), 1.5f, getRandomPosition());
 
+		cepe_tmp->genMatNormal();
+		phalloide_tmp->genMatNormal();
+		satan_tmp->genMatNormal();
+
 		this->vector_cepe->push_back(cepe_tmp);
 		this->vector_phalloide->push_back(phalloide_tmp);
 		this->vector_satan->push_back(satan_tmp);
@@ -61,8 +67,9 @@ void GameManager::configTree(void)
 	model_tree->loadFromFile("./resources/tree/Tree1.3ds");
 	model_tree->matRotate(-glm::pi<GLfloat>() / 2, 1, 0, 0);
 	model_tree->matScale(5, 5, 5);
+	model_tree->genMatNormal();
 
-	octreeSystem->addModel(model_tree, 20);
+	octreeSystem->addModel(model_tree, 40);
 }
 
 void GameManager::configRainParticles(void)
@@ -95,7 +102,7 @@ void GameManager::configSmokeParticles(void)
 	}
 	smokeManager->setTexture("resources/pre-project/smoke.png");
 	smokeManager->setParticles(smokeParticles.data(), smokeParticles.size());
-	smokeManager->matTranslate(10, 0, 0);
+	smokeManager->matTranslate(-10, 0, 0);
 	smokeManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, -1);
 }
 
@@ -134,13 +141,13 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	screen = new Engine::Screen(backgroundProgram, screenProgram);
 	text = new Engine::TextArray(textProgram);
 
-	octreeSystem = new Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 500);
+	octreeSystem = new Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000);
 
 	// GBuffer config
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
 
 	// Camera config
-	player->getCamera()->setPositionCamera(glm::vec3(30, 5, 0));
+	player->getCamera()->setCameraPosition(glm::vec3(30, 5, 0));
 	player->getCamera()->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
 
 	// Skybox config

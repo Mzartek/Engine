@@ -134,8 +134,8 @@ void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam) const
 		glm::vec3 ALIGN(16) position;
 		glm::vec3 ALIGN(16) target;
 	} camera;
-	camera.position = cam->getPositionCamera();
-	camera.target = cam->getPositionTarget();
+	camera.position = cam->getCameraPosition();
+	camera.target = cam->getTargetPosition();
 	_cameraBuffer->updateStoreMap(&camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 

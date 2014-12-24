@@ -17,7 +17,7 @@ void GameManager::display(GLfloat state)
 	model_tree->displayShadowMap(torch);
 
 	// Opaque Object
-	sol->display(gBuffer, player->getCamera());
+	octreeSystem->display(gBuffer, player->getCamera());
 
 	for (i = 0; i < vector_cepe->size(); i++)
 		(*vector_cepe)[i]->display(gBuffer, player->getCamera());
@@ -28,16 +28,14 @@ void GameManager::display(GLfloat state)
 	for (i = 0; i < vector_satan->size(); i++)
 		(*vector_satan)[i]->display(gBuffer, player->getCamera());
 
-	octreeSystem->display(gBuffer, player->getCamera());
-
 	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
 	screen->background(gBuffer);
 
 	// Transparent Object
-	sol->displayTransparent(gBuffer, player->getCamera());
+	/*sol->displayTransparent(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
-	screen->background(gBuffer);
+	screen->background(gBuffer);*/
 
 	// Particles
 	rainManager->display(gBuffer, player->getCamera());
@@ -54,7 +52,7 @@ void GameManager::display(GLfloat state)
 void GameManager::idle(void)
 {
 	GLuint i;
-	glm::vec3 camPosition = player->getCamera()->getPositionCamera();
+	glm::vec3 camPosition = player->getCamera()->getCameraPosition();
 
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
@@ -69,8 +67,8 @@ void GameManager::idle(void)
 		player->getCamera()->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
 		player->getCamera()->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 
-		torch->setPosition(player->getCamera()->getPositionCamera() - glm::vec3(0.0f, 1.0f, 0.0f));
-		torch->setDirection(player->getCamera()->getVectorForward());
+		torch->setPosition(player->getCamera()->getCameraPosition());// - glm::vec3(0.0f, 1.0f, 0.0f));
+		torch->setDirection(player->getCamera()->getForwardVector());
 
 		rainManager->updateParticles();
 		smokeManager->updateParticles();
