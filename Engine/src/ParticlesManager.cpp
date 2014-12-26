@@ -73,6 +73,11 @@ void Engine::ParticlesManager::matScale(const GLfloat &x, const GLfloat &y, cons
 	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
 }
 
+glm::vec3 Engine::ParticlesManager::getPosition(void) const
+{
+	return glm::vec3(glm::column(*_modelMatrix, 3));
+}
+
 void Engine::ParticlesManager::updateParticles(void)
 {
 	glEnable(GL_RASTERIZER_DISCARD);

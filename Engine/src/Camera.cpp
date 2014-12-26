@@ -36,9 +36,9 @@ void Engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, con
 {
 	*_projectionMatrix = glm::perspective(fov, (GLfloat)width / height, n, f);
 
-	_fov = fov;
+	_fov = fov * width / height;
 	_viewLen = f - n;
-	_frusSphereRadian = glm::length(glm::vec3(0.0f, 0.0f, n + _viewLen * 0.5f) - glm::vec3(width, height, _viewLen));
+	_frusSphereRadius = glm::length(glm::vec3(0.0f, 0.0f, n + _viewLen * 0.5f) - glm::vec3(width, height, _viewLen));
 }
 
 glm::vec3 Engine::Camera::getCameraPosition(void) const
@@ -81,9 +81,9 @@ GLfloat Engine::Camera::getFOV(void) const
 	return _fov;
 }
 
-GLfloat Engine::Camera::getFrusSphereRadian(void) const
+GLfloat Engine::Camera::getFrusSphereRadius(void) const
 {
-	return _frusSphereRadian;
+	return _frusSphereRadius;
 }
 
 void Engine::Camera::position(void)

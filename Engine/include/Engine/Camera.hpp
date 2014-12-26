@@ -17,7 +17,7 @@ namespace Engine
 		glm::mat4 *_IVPMatrix;
 		GLfloat _fov;
 		GLfloat _viewLen;
-		GLfloat _frusSphereRadian;
+		GLfloat _frusSphereRadius;
 	public:
 		Camera(void);
 		~Camera(void);
@@ -32,7 +32,7 @@ namespace Engine
 		glm::mat4 getVPMatrix(void) const;
 		glm::mat4 getIVPMatrix(void) const;
 		GLfloat getFOV(void) const;
-		GLfloat getFrusSphereRadian(void) const;
+		GLfloat getFrusSphereRadius(void) const;
 		void position(void);
 	};
 }

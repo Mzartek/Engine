@@ -42,6 +42,7 @@ namespace Engine
 		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
+		glm::vec3 getPosition(void) const;
 		void updateParticles(void);
 		void display(GBuffer *gbuf, Camera *cam) const;
 	};
