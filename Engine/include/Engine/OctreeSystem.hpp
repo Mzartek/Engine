@@ -19,15 +19,15 @@ namespace Engine
 		Octree *_octree;
 		void initOctree(const GLuint &depth, Octree *octree, const glm::vec3 &position, const GLfloat &dim);
 		void destroyOctree(const GLuint &depth, Octree *octree);
-		GLboolean addOctreeModel(const GLuint &depth, Octree *octree, Model *model, const GLfloat &dim);
-		//GLboolean addOctreeParticles(const GLuint &depth, Octree *octree, ParticlesManager *particles, const GLfloat &dim);
-		void displayOctree(const GLuint &depth, Octree *octree, GBuffer *gbuffer, Camera *cam);
+		GLboolean addModelOctree(const GLuint &depth, Octree *octree, Model *model, const GLfloat &dim);
+		void removeModelOctree(const GLuint &depth, Octree *octree, Model *model);
+		void getModelOctree(const GLuint &depth, Octree *octree, GBuffer *gbuffer, Camera *cam, std::vector<Model *> *modelVector);
 	public:
 		OctreeSystem(const GLuint &maxDepth, const glm::vec3 &position, const GLfloat &dim);
 		~OctreeSystem(void);
 		void addModel(Model *model, const GLfloat &dim);
-		//void addParticles(ParticlesManager *particles, const GLfloat &dim);
-		void display(GBuffer *gbuffer, Camera *cam);
+		void removeModel(Model *model);
+		void getModel(GBuffer *gbuffer, Camera *cam, std::vector<Model *> *modelVector);
 	};
 }
 

@@ -3,6 +3,11 @@
 void GameManager::display(GLfloat state)
 {
 	GLuint i;
+	static std::vector<Engine::Model *> object;
+
+	// We retrieve object to display from the octree
+	object.clear();
+	octreeSystem->getModel(gBuffer, player->getCamera(), &object);
 
 	renderer->clear();
 	gBuffer->clear();
@@ -17,25 +22,20 @@ void GameManager::display(GLfloat state)
 	model_tree->displayShadowMap(torch);
 
 	// Opaque Object
-	octreeSystem->display(gBuffer, player->getCamera());
-
-	for (i = 0; i < vector_cepe->size(); i++)
-		(*vector_cepe)[i]->display(gBuffer, player->getCamera());
-
-	for (i = 0; i < vector_phalloide->size(); i++)
-		(*vector_phalloide)[i]->display(gBuffer, player->getCamera());
-
-	for (i = 0; i < vector_satan->size(); i++)
-		(*vector_satan)[i]->display(gBuffer, player->getCamera());
+	for (i = 0; i < object.size(); i++)
+		object[i]->display(gBuffer, player->getCamera());
 
 	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
 	screen->background(gBuffer);
 
-	// Transparent Object
-	/*sol->displayTransparent(gBuffer, player->getCamera());
+	// Transparent Object	
+	for (i = 0; i < object.size(); i++)
+		object[i]->displayTransparent(gBuffer, player->getCamera());
+
+	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
-	screen->background(gBuffer);*/
+	screen->background(gBuffer);
 
 	// Particles
 	rainManager->display(gBuffer, player->getCamera());
@@ -81,34 +81,40 @@ void GameManager::idle(void)
 	// Mushroom manager
 	for (i = 0; i < vector_cepe->size(); i++)
 	{
-		if (glm::length(camPosition - (*vector_cepe)[i]->getPosition()) < 5)
+		if (!(*vector_cepe)[i]->isEaten())
 		{
-			player->eatMushroom((*vector_cepe)[i]);
-			delete (*vector_cepe)[i];
-			vector_cepe->erase(vector_cepe->begin() + i);
-			text->writeScreen(std::to_string(player->getLife()).c_str());
+			if (glm::length(camPosition - (*vector_cepe)[i]->getPosition()) < 5)
+			{
+				player->eatMushroom((*vector_cepe)[i]);
+				octreeSystem->removeModel((*vector_cepe)[i]);
+				text->writeScreen(std::to_string(player->getLife()).c_str());
+			}
 		}
 	}
 
 	for (i = 0; i < vector_phalloide->size(); i++)
 	{
-		if (glm::length(camPosition - (*vector_phalloide)[i]->getPosition()) < 5)
+		if (!(*vector_phalloide)[i]->isEaten())
 		{
-			player->eatMushroom((*vector_phalloide)[i]);
-			delete (*vector_phalloide)[i];
-			vector_phalloide->erase(vector_phalloide->begin() + i);
-			text->writeScreen(std::to_string(player->getLife()).c_str());
+			if (glm::length(camPosition - (*vector_phalloide)[i]->getPosition()) < 5)
+			{
+				player->eatMushroom((*vector_phalloide)[i]);
+				octreeSystem->removeModel((*vector_phalloide)[i]);
+				text->writeScreen(std::to_string(player->getLife()).c_str());
+			}
 		}
 	}
 
 	for (i = 0; i < vector_satan->size(); i++)
 	{
-		if (glm::length(camPosition - (*vector_satan)[i]->getPosition()) < 5)
+		if (!(*vector_satan)[i]->isEaten())
 		{
-			player->eatMushroom((*vector_satan)[i]);
-			delete (*vector_satan)[i];
-			vector_satan->erase(vector_satan->begin() + i);
-			text->writeScreen(std::to_string(player->getLife()).c_str());
+			if (glm::length(camPosition - (*vector_satan)[i]->getPosition()) < 5)
+			{
+				player->eatMushroom((*vector_satan)[i]);
+				octreeSystem->removeModel((*vector_satan)[i]);
+				text->writeScreen(std::to_string(player->getLife()).c_str());
+			}
 		}
 	}
 }

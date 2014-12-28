@@ -38,7 +38,7 @@ void Engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, con
 
 	_fov = fov * width / height;
 	_viewLen = f - n;
-	_frusSphereRadius = glm::length(glm::vec3(0.0f, 0.0f, n + _viewLen * 0.5f) - glm::vec3(width, height, _viewLen));
+	_frusSphereRadius = _viewLen;
 }
 
 glm::vec3 Engine::Camera::getCameraPosition(void) const

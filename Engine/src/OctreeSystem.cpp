@@ -9,9 +9,9 @@ struct Engine::Octree
 	glm::vec3 position;
 	glm::vec3 vertex[8];
 	GLfloat dim;
+	GLfloat dim_2;
 	GLfloat radius;
 	std::vector<Engine::Model *> modelContainer;
-	//std::vector<Engine::ParticlesManager *> particlesContainer;
 	struct Octree *next;
 };
 
@@ -37,12 +37,12 @@ static inline GLboolean checkOctreeInCamFrus(const Engine::Octree *octree, const
 {
 	const glm::vec3 p = cam->getCameraPosition();
 	const glm::vec3 v = cam->getViewVector();
-	const GLfloat FOV = cam->getFOV();
+	const GLfloat fov_2 = cam->getFOV() / 2;
 
-	if (acos(glm::dot(v, glm::normalize(octree->position - p))) < FOV / 2) return GL_TRUE;
+	if (acos(glm::dot(v, glm::normalize(octree->position - p))) < fov_2) return GL_TRUE;
 	for (GLint i = 0; i < 8; i++)
 	{
-		if (acos(glm::dot(v, glm::normalize(octree->vertex[i] - p))) < FOV / 2)	return GL_TRUE;
+		if (acos(glm::dot(v, glm::normalize(octree->vertex[i] - p))) < fov_2) return GL_TRUE;
 	}
 	return GL_FALSE;
 }
@@ -56,6 +56,7 @@ void Engine::OctreeSystem::initOctree(const GLuint &depth, Octree *octree, const
 
 	octree->position = position;
 	octree->dim = dim;
+	octree->dim_2 = newDim;
 	octree->radius = glm::length(glm::vec3(newDim));
 	octree->next = new Octree[8];
 
@@ -87,63 +88,52 @@ void Engine::OctreeSystem::destroyOctree(const GLuint &depth, Octree *octree)
 	delete[] octree->next;
 }
 
-GLboolean Engine::OctreeSystem::addOctreeModel(const GLuint &depth, Octree *octree, Model *model, const GLfloat &dim)
+GLboolean Engine::OctreeSystem::addModelOctree(const GLuint &depth, Octree *octree, Model *model, const GLfloat &dim)
 {
-	if (depth >= _maxDepth || dim > octree->dim) return GL_FALSE;
+	if (depth >= _maxDepth) return GL_FALSE;
+	if (dim > octree->dim) return GL_FALSE;
 
 	glm::vec3 octree_pos = octree->position;
 	glm::vec3 model_pos = model->getPosition();
 
 	// Check the position
-	if (model_pos.x < (octree_pos.x - octree->dim) || model_pos.y >= (octree_pos.x + octree->dim) ||
-		model_pos.y < (octree_pos.y - octree->dim) || model_pos.y >= (octree_pos.y + octree->dim) ||
-		model_pos.z < (octree_pos.z - octree->dim) || model_pos.z >= (octree_pos.z + octree->dim)) 
+	if (model_pos.x < (octree_pos.x - octree->dim_2) || model_pos.x >= (octree_pos.x + octree->dim_2) ||
+		model_pos.y < (octree_pos.y - octree->dim_2) || model_pos.y >= (octree_pos.y + octree->dim_2) ||
+		model_pos.z < (octree_pos.z - octree->dim_2) || model_pos.z >= (octree_pos.z + octree->dim_2)) 
 		return GL_FALSE;
 
 	// Recursive call
-	if (addOctreeModel(depth + 1, &octree->next[0], model, dim)) return GL_TRUE;
-	if (addOctreeModel(depth + 1, &octree->next[1], model, dim)) return GL_TRUE;
-	if (addOctreeModel(depth + 1, &octree->next[2], model, dim)) return GL_TRUE;
-	if (addOctreeModel(depth + 1, &octree->next[3], model, dim)) return GL_TRUE;
-	if (addOctreeModel(depth + 1, &octree->next[4], model, dim)) return GL_TRUE;
-	if (addOctreeModel(depth + 1, &octree->next[5], model, dim)) return GL_TRUE;
-	if (addOctreeModel(depth + 1, &octree->next[6], model, dim)) return GL_TRUE;
-	if (addOctreeModel(depth + 1, &octree->next[7], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[0], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[1], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[2], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[3], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[4], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[5], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[6], model, dim)) return GL_TRUE;
+	if (addModelOctree(depth + 1, &octree->next[7], model, dim)) return GL_TRUE;
 
 	octree->modelContainer.push_back(model);
 
 	return GL_TRUE;
 }
 
-/*GLboolean Engine::OctreeSystem::addOctreeParticles(const GLuint &depth, Octree *octree, ParticlesManager *particles, const GLfloat &dim)
+void Engine::OctreeSystem::removeModelOctree(const GLuint &depth, Octree *octree, Model *model)
 {
-	if (depth >= _maxDepth || dim > octree->dim) return GL_FALSE;
+	if (depth >= _maxDepth) return;
 
-	glm::vec3 octree_pos = octree->position;
-	glm::vec3 particles_pos = particles->getPosition();
+	GLuint i;
 
-	// Check the position
-	if (particles_pos.x < (octree_pos.x - octree->dim) || particles_pos.y >= (octree_pos.x + octree->dim) ||
-		particles_pos.y < (octree_pos.y - octree->dim) || particles_pos.y >= (octree_pos.y + octree->dim) ||
-		particles_pos.z < (octree_pos.z - octree->dim) || particles_pos.z >= (octree_pos.z + octree->dim))
-		return GL_FALSE;
+	for (i = 0; i < octree->modelContainer.size(); i++)
+	{
+		if (octree->modelContainer[i] == model)
+			octree->modelContainer.erase(octree->modelContainer.begin() + i);
+	}
 
-	// Recursive call
-	if (addOctreeParticles(depth + 1, &octree->next[0], particles, dim)) return GL_TRUE;
-	if (addOctreeParticles(depth + 1, &octree->next[1], particles, dim)) return GL_TRUE;
-	if (addOctreeParticles(depth + 1, &octree->next[2], particles, dim)) return GL_TRUE;
-	if (addOctreeParticles(depth + 1, &octree->next[3], particles, dim)) return GL_TRUE;
-	if (addOctreeParticles(depth + 1, &octree->next[4], particles, dim)) return GL_TRUE;
-	if (addOctreeParticles(depth + 1, &octree->next[5], particles, dim)) return GL_TRUE;
-	if (addOctreeParticles(depth + 1, &octree->next[6], particles, dim)) return GL_TRUE;
-	if (addOctreeParticles(depth + 1, &octree->next[7], particles, dim)) return GL_TRUE;
+	for (i = 0; i < 8; i++)
+		removeModelOctree(depth + 1, &(octree->next[i]), model);
+}
 
-	octree->particlesContainer.push_back(particles);
-
-	return GL_TRUE;
-}*/
-
-void Engine::OctreeSystem::displayOctree(const GLuint &depth, Octree *octree, GBuffer *gbuffer, Camera *cam)
+void Engine::OctreeSystem::getModelOctree(const GLuint &depth, Octree *octree, GBuffer *gbuffer, Camera *cam, std::vector<Model *> *modelVector)
 {
 	if (depth >= _maxDepth)	return;
 
@@ -153,13 +143,15 @@ void Engine::OctreeSystem::displayOctree(const GLuint &depth, Octree *octree, GB
 		if (!checkOctreeInCamFrus(octree, cam)) return;
 	}
 
-	for (GLuint i = 0; i < octree->modelContainer.size(); i++)
+	GLuint i;
+
+	for (i = 0; i < octree->modelContainer.size(); i++)
 	{
-		octree->modelContainer[i]->display(gbuffer, cam);
+		modelVector->push_back(octree->modelContainer[i]);
 	}
 
-	for (GLuint i = 0; i < 8; i++)
-		displayOctree(depth + 1, &(octree->next[i]), gbuffer, cam);
+	for (i = 0; i < 8; i++)
+		getModelOctree(depth + 1, &(octree->next[i]), gbuffer, cam, modelVector);
 }
 
 Engine::OctreeSystem::OctreeSystem(const GLuint &maxDepth, const glm::vec3 &position, const GLfloat &dim)
@@ -177,17 +169,16 @@ Engine::OctreeSystem::~OctreeSystem()
 
 void Engine::OctreeSystem::addModel(Model *model, const GLfloat &dim)
 {
-	if (!addOctreeModel(0, _octree, model, dim))
+	if (!addModelOctree(0, _octree, model, dim))
 		std::cerr << "Unable to add model on the OctreeSystem" << std::endl;
 }
 
-/*void Engine::OctreeSystem::addParticles(ParticlesManager *particles, const GLfloat &dim)
+void Engine::OctreeSystem::removeModel(Model *model)
 {
-	if (!addOctreeParticles(0, _octree, particles, dim))
-		std::cerr << "Unable to add particles on the OctreeSystem" << std::endl;
-}*/
+	removeModelOctree(0, _octree, model);
+}
 
-void Engine::OctreeSystem::display(GBuffer *gbuffer, Camera *cam)
+void Engine::OctreeSystem::getModel(GBuffer *gbuffer, Camera *cam, std::vector<Model *> *modelVector)
 {
-	displayOctree(0, _octree, gbuffer, cam);
+	getModelOctree(0, _octree, gbuffer, cam, modelVector);
 }

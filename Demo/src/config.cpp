@@ -54,6 +54,10 @@ void GameManager::configChamp(void)
 		phalloide_tmp->genMatNormal();
 		satan_tmp->genMatNormal();
 
+		octreeSystem->addModel(cepe_tmp, 2);
+		octreeSystem->addModel(phalloide_tmp, 2);
+		octreeSystem->addModel(satan_tmp, 2);
+
 		this->vector_cepe->push_back(cepe_tmp);
 		this->vector_phalloide->push_back(phalloide_tmp);
 		this->vector_satan->push_back(satan_tmp);

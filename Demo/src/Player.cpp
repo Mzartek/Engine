@@ -31,6 +31,8 @@ void Player::eatMushroom(Mushroom *mushroom)
 		_life = ((_life - 2) >= 0) ? (_life - 2) : 0;
 	else if (mushroom->isSatan())
 		_life = 0;
+
+	mushroom->eat();
 }
 
 bool Player::isAlive(void)
