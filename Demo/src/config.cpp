@@ -2,7 +2,7 @@
 
 static GLfloat getRandomPosition(void)
 {
-	return (GLfloat)-500 + rand() % 1001;
+	return (GLfloat)-500 + rand() % 1000;
 }
 
 void GameManager::configSol(void)

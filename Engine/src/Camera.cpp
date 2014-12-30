@@ -9,6 +9,7 @@ Engine::Camera::Camera(void)
 	_viewMatrix = new glm::mat4;
 	_VPMatrix = new glm::mat4;
 	_IVPMatrix = new glm::mat4;
+	_frusSpherePosition = new glm::vec3;
 }
 
 Engine::Camera::~Camera(void)
@@ -20,6 +21,7 @@ Engine::Camera::~Camera(void)
 	delete _viewMatrix;
 	delete _VPMatrix;
 	delete _IVPMatrix;
+	delete _frusSpherePosition;
 }
 
 void Engine::Camera::setCameraPosition(const glm::vec3 &pos)
@@ -34,11 +36,15 @@ void Engine::Camera::setTargetPosition(const glm::vec3 &pos)
 
 void Engine::Camera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)
 {
-	*_projectionMatrix = glm::perspective(fov, (GLfloat)width / height, n, f);
+	GLfloat ratio = (GLfloat)width / height;
+	GLfloat yfar = tanf(fov * 0.5f) * f;
+	GLfloat xfar = yfar * ratio;
 
-	_fov = fov * width / height;
-	_viewLen = f - n;
-	_frusSphereRadius = _viewLen;
+	*_projectionMatrix = glm::perspective(fov, ratio, n, f);
+
+	_fov = fov * ratio;
+	_distance = n + (f - n) * 0.5f;
+	_frusSphereRadius = glm::length(glm::vec3(xfar, yfar, f) - glm::vec3(0.0f, 0.0f, _distance));
 }
 
 glm::vec3 Engine::Camera::getCameraPosition(void) const
@@ -86,9 +92,15 @@ GLfloat Engine::Camera::getFrusSphereRadius(void) const
 	return _frusSphereRadius;
 }
 
+glm::vec3 Engine::Camera::getFrusSpherePosition(void) const
+{
+	return *_frusSpherePosition;
+}
+
 void Engine::Camera::position(void)
 {
 	*_vview = glm::normalize(*_ptarget - *_pcamera);
+	*_frusSpherePosition = *_vview * _distance;
 	*_viewMatrix = glm::lookAt(*_pcamera, *_ptarget, glm::vec3(0.0f, 1.0f, 0.0f));
 	*_VPMatrix = *_projectionMatrix * *_viewMatrix;
 	*_IVPMatrix = glm::inverse(*_VPMatrix);

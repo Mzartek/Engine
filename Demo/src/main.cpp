@@ -81,40 +81,37 @@ void GameManager::idle(void)
 	// Mushroom manager
 	for (i = 0; i < vector_cepe->size(); i++)
 	{
-		if (!(*vector_cepe)[i]->isEaten())
+		if (glm::length(camPosition - (*vector_cepe)[i]->getPosition()) < 5)
 		{
-			if (glm::length(camPosition - (*vector_cepe)[i]->getPosition()) < 5)
-			{
-				player->eatMushroom((*vector_cepe)[i]);
-				octreeSystem->removeModel((*vector_cepe)[i]);
-				text->writeScreen(std::to_string(player->getLife()).c_str());
-			}
+			player->eatMushroom((*vector_cepe)[i]);
+			octreeSystem->removeModel((*vector_cepe)[i]);
+			delete (*vector_cepe)[i];
+			vector_cepe->erase(vector_cepe->begin() + i);
+			text->writeScreen(std::to_string(player->getLife()).c_str());
 		}
 	}
 
 	for (i = 0; i < vector_phalloide->size(); i++)
 	{
-		if (!(*vector_phalloide)[i]->isEaten())
+		if (glm::length(camPosition - (*vector_phalloide)[i]->getPosition()) < 5)
 		{
-			if (glm::length(camPosition - (*vector_phalloide)[i]->getPosition()) < 5)
-			{
-				player->eatMushroom((*vector_phalloide)[i]);
-				octreeSystem->removeModel((*vector_phalloide)[i]);
-				text->writeScreen(std::to_string(player->getLife()).c_str());
-			}
+			player->eatMushroom((*vector_phalloide)[i]);
+			octreeSystem->removeModel((*vector_phalloide)[i]);
+			delete (*vector_phalloide)[i];
+			vector_phalloide->erase(vector_phalloide->begin() + i);
+			text->writeScreen(std::to_string(player->getLife()).c_str());
 		}
 	}
 
 	for (i = 0; i < vector_satan->size(); i++)
 	{
-		if (!(*vector_satan)[i]->isEaten())
+		if (glm::length(camPosition - (*vector_satan)[i]->getPosition()) < 5)
 		{
-			if (glm::length(camPosition - (*vector_satan)[i]->getPosition()) < 5)
-			{
-				player->eatMushroom((*vector_satan)[i]);
-				octreeSystem->removeModel((*vector_satan)[i]);
-				text->writeScreen(std::to_string(player->getLife()).c_str());
-			}
+			player->eatMushroom((*vector_satan)[i]);
+			octreeSystem->removeModel((*vector_satan)[i]);
+			delete (*vector_satan)[i];
+			vector_satan->erase(vector_satan->begin() + i);
+			text->writeScreen(std::to_string(player->getLife()).c_str());
 		}
 	}
 }

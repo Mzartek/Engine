@@ -28,7 +28,7 @@ static inline GLboolean checkCamInOctree(const Engine::Octree *octree, const Eng
 
 static inline GLboolean checkOctreeInCamSphere(const Engine::Octree *octree, const Engine::Camera *cam)
 {
-	if (glm::length(octree->position - cam->getCameraPosition()) < octree->radius + cam->getFrusSphereRadius())
+	if (glm::length(octree->position - cam->getFrusSpherePosition()) < octree->radius + cam->getFrusSphereRadius())
 		return GL_TRUE;
 	return GL_FALSE;
 }
@@ -39,10 +39,10 @@ static inline GLboolean checkOctreeInCamFrus(const Engine::Octree *octree, const
 	const glm::vec3 v = cam->getViewVector();
 	const GLfloat fov_2 = cam->getFOV() / 2;
 
-	if (acos(glm::dot(v, glm::normalize(octree->position - p))) < fov_2) return GL_TRUE;
+	if (acosf(glm::dot(v, glm::normalize(octree->position - p))) < fov_2) return GL_TRUE;
 	for (GLint i = 0; i < 8; i++)
 	{
-		if (acos(glm::dot(v, glm::normalize(octree->vertex[i] - p))) < fov_2) return GL_TRUE;
+		if (acosf(glm::dot(v, glm::normalize(octree->vertex[i] - p))) < fov_2) return GL_TRUE;
 	}
 	return GL_FALSE;
 }
@@ -99,7 +99,7 @@ GLboolean Engine::OctreeSystem::addModelOctree(const GLuint &depth, Octree *octr
 	// Check the position
 	if (model_pos.x < (octree_pos.x - octree->dim_2) || model_pos.x >= (octree_pos.x + octree->dim_2) ||
 		model_pos.y < (octree_pos.y - octree->dim_2) || model_pos.y >= (octree_pos.y + octree->dim_2) ||
-		model_pos.z < (octree_pos.z - octree->dim_2) || model_pos.z >= (octree_pos.z + octree->dim_2)) 
+		model_pos.z < (octree_pos.z - octree->dim_2) || model_pos.z >= (octree_pos.z + octree->dim_2))
 		return GL_FALSE;
 
 	// Recursive call

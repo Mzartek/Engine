@@ -15,16 +15,13 @@ private:
 	Engine::ShaderProgram *_smProgram;
 protected:
 	GLuint _type;
-	bool _eaten;
 public:
 	Mushroom(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smProgram, const GLchar *texture);
 	Mushroom(Mushroom *mushroom);
 	~Mushroom(void);
-	void eat(void);
 	bool isCepe(void);
 	bool isPhalloide(void);
 	bool isSatan(void);
-	bool isEaten(void);
 };
 
 #endif
