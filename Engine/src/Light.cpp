@@ -35,8 +35,6 @@ Engine::Light::~Light(void)
 	delete _VPMatrix;
 }
 
-#undef BUFFER_OFFSET
-
 void Engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
 {
 	_shadow->config(width, height);

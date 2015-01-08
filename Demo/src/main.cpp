@@ -30,12 +30,12 @@ void GameManager::display(GLfloat state)
 	screen->background(gBuffer);
 
 	// Transparent Object	
-	for (i = 0; i < object.size(); i++)
+	/*for (i = 0; i < object.size(); i++)
 		object[i]->displayTransparent(gBuffer, player->getCamera());
 
 	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
-	screen->background(gBuffer);
+	screen->background(gBuffer);*/
 
 	// Particles
 	rainManager->display(gBuffer, player->getCamera());
