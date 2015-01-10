@@ -48,6 +48,8 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 	SDL_GL_SetSwapInterval(0);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 
+	glDrawBuffer(GL_BACK);
+
 #ifdef WIN32
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
@@ -116,7 +118,7 @@ void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 		for (accumulator += frameTime; accumulator >= dt; accumulator -= dt)
 			gameLoop->idle();
 		gameLoop->display((GLfloat)accumulator / dt);
-		SDL_GL_SwapWindow(_Window); 
+		SDL_GL_SwapWindow(_Window);
 	}
 }
 
@@ -127,7 +129,7 @@ void Engine::Renderer::stopLoop(void)
 
 void Engine::Renderer::setState(void) const
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -150,7 +152,7 @@ void Engine::Renderer::setState(void) const
 
 void Engine::Renderer::clear(void) const
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClearDepth(1.0);

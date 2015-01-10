@@ -2,7 +2,7 @@
 
 void GameManager::display(GLfloat state)
 {
-	GLuint i;
+    GLuint i;
 	static std::vector<Engine::Model *> object;
 
 	// We retrieve object to display from the octree
@@ -29,13 +29,13 @@ void GameManager::display(GLfloat state)
 	torch->display(gBuffer, player->getCamera());
 	screen->background(gBuffer);
 
-	// Transparent Object	
-	for (i = 0; i < object.size(); i++)
+	// Transparent Object
+	/*for (i = 0; i < object.size(); i++)
 		object[i]->displayTransparent(gBuffer, player->getCamera());
 
 	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
-	screen->background(gBuffer);
+	screen->background(gBuffer);*/
 
 	// Particles
 	rainManager->display(gBuffer, player->getCamera());

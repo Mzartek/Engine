@@ -17,42 +17,42 @@ void Engine::GBuffer::config(const GLuint &width, const GLuint &height)
 	glGenTextures(GBUF_NUM_TEX, _idTexture);
 
 	// Frame Buffer Object
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
 	// Normal Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_NORMAL]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _idTexture[GBUF_NORMAL], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _idTexture[GBUF_NORMAL], 0);
 
 	// Material Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32UI, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL], 0);
 
 	// Light Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_LIGHT]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, _idTexture[GBUF_LIGHT], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, _idTexture[GBUF_LIGHT], 0);
 
 	// Background Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_BACKGROUND]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, _idTexture[GBUF_BACKGROUND], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, _idTexture[GBUF_BACKGROUND], 0);
 
 	// Depth Stencil Texture
 	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, _width, _height);
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL], 0);
 
-	if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
 }
 
@@ -63,12 +63,9 @@ GLuint Engine::GBuffer::getIdTexture(const GLuint &num) const
 
 void Engine::GBuffer::setSkyboxState(void)
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
-	const GLenum colorAttachment[]
-	{
-		GL_COLOR_ATTACHMENT3,
-	};
-	glDrawBuffers(1, colorAttachment);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
+	glDrawBuffer(GL_COLOR_ATTACHMENT3);
 
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -88,7 +85,8 @@ void Engine::GBuffer::setSkyboxState(void)
 
 void Engine::GBuffer::setGeometryState(void)
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
 	const GLenum colorAttachment[]
 	{
 		GL_COLOR_ATTACHMENT0,
@@ -117,12 +115,9 @@ void Engine::GBuffer::setGeometryState(void)
 
 void Engine::GBuffer::setLightState(void)
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
-	const GLenum colorAttachment[]
-	{
-		GL_COLOR_ATTACHMENT2,
-	};
-	glDrawBuffers(1, colorAttachment);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
+	glDrawBuffer(GL_COLOR_ATTACHMENT2);
 
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -146,12 +141,9 @@ void Engine::GBuffer::setLightState(void)
 
 void Engine::GBuffer::setParticlesState(void)
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
-	const GLenum colorAttachment[]
-	{
-		GL_COLOR_ATTACHMENT3,
-	};
-	glDrawBuffers(1, colorAttachment);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
+	glDrawBuffer(GL_COLOR_ATTACHMENT3);
 
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -173,12 +165,9 @@ void Engine::GBuffer::setParticlesState(void)
 
 void Engine::GBuffer::setBackgroundState(void)
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
-	const GLenum colorAttachment[]
-	{
-		GL_COLOR_ATTACHMENT3,
-	};
-	glDrawBuffers(1, colorAttachment);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
+	glDrawBuffer(GL_COLOR_ATTACHMENT3);
 
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -202,7 +191,8 @@ void Engine::GBuffer::setBackgroundState(void)
 
 void Engine::GBuffer::clear(void) const
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
 	const GLenum colorAttachment[]
 	{
 		GL_COLOR_ATTACHMENT0,
@@ -225,12 +215,9 @@ void Engine::GBuffer::clear(void) const
 
 void Engine::GBuffer::clearLight(void) const
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _idFBO);
-	const GLenum colorAttachment[]
-	{
-		GL_COLOR_ATTACHMENT2,
-	};
-	glDrawBuffers(1, colorAttachment);
+	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
+
+	glDrawBuffer(GL_COLOR_ATTACHMENT2);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
