@@ -1,6 +1,7 @@
 #include <Engine/ShadowMap.hpp>
 
 Engine::ShadowMap::ShadowMap(void)
+    : _idDepthTexture(0)
 {
 }
 

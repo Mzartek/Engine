@@ -167,13 +167,13 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 
 	moon->setColor(glm::vec3(0.1f, 0.2f, 0.3f));
 	moon->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
-	moon->setShadowMapping(GL_FALSE);
-	//moon->configShadowMap(1024, 1024);
+	moon->setShadowMapping(GL_TRUE);
+	moon->configShadowMap(1024, 1024);
 
 	torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
-	torch->setShadowMapping(GL_FALSE);
-	//torch->configShadowMap(1024, 1024);
+	torch->setShadowMapping(GL_TRUE);
+	torch->configShadowMap(1024, 1024);
 
 	// ParticlesManager config
 	configRainParticles();

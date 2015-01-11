@@ -2,6 +2,7 @@
 
 Engine::GBuffer::GBuffer(void)
 {
+    memset(_idTexture, 0, sizeof _idTexture);
 }
 
 Engine::GBuffer::~GBuffer(void)
