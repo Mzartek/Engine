@@ -120,8 +120,10 @@ void Engine::Model::loadFromFile(const GLchar *file)
 	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
 	if (!pScene)
 	{
-		std::cerr << "Unable to load the model: " << file << std::endl;
-		exit(1);
+        std::string error = "Unable to load the model: ";
+        error.append(file);
+		throw error;
+		return;
 	}
 
 	Vertex tmpVertex;

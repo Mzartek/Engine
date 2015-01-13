@@ -68,7 +68,15 @@ void GameManager::configTree(void)
 {
 	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
 	model_tree->initMeshArray();
-	model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+	try
+	{
+        model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+	}
+	catch(const std::string &error)
+	{
+        std::cout << error << std::endl;
+        exit(1);
+	}
 	model_tree->matRotate(-glm::pi<GLfloat>() / 2, 1, 0, 0);
 	model_tree->matScale(5, 5, 5);
 	model_tree->genMatNormal();
