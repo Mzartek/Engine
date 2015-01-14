@@ -2,13 +2,15 @@
 
 CC= g++
 LIBNAME= Engine
+MAJOR=1
+MINOR=0.0
 DIR= bin/
 SYSTEM= $(shell uname)
 
 ifeq ($(SYSTEM), Linux)
 
 CFLAGS= -std=c++11 -Wall -fPIC -g -Iinclude -MMD -MP
-LDFLAGS= -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lassimp
+LDFLAGS= -lGL -lSDL2 -lSDL2_image -lSDL2_ttf -lassimp -Wl,-soname,lib$(LIBNAME).so.$(MAJOR)
 
 else
 
@@ -23,7 +25,9 @@ DEP= $(SRC:%.cpp=obj/%.d)
 
 all:	$(OBJ)
 ifeq ($(SYSTEM), Linux)
-	$(CC) -shared $^ -o $(DIR)lib$(LIBNAME).so $(LDFLAGS)
+	$(CC) -shared $^ -o $(DIR)lib$(LIBNAME).so.$(MAJOR).$(MINOR) $(LDFLAGS)
+	ln -s lib$(LIBNAME).so.$(MAJOR).$(MINOR) $(DIR)lib$(LIBNAME).so.$(MAJOR)
+	ln -s lib$(LIBNAME).so.$(MAJOR).$(MINOR) $(DIR)lib$(LIBNAME).so
 else
 	$(CC) -shared $^ -o $(DIR)$(LIBNAME).dll $(LDFLAGS)
 endif
@@ -39,5 +43,5 @@ clean:
 	rm -f *~
 	rm -f src/*~
 	rm -f include/Engine/*~
-	rm -f $(DIR)lib$(LIBNAME).so
+	rm -f $(DIR)lib$(LIBNAME).so $(DIR)lib$(LIBNAME).so.$(MAJOR) $(DIR)lib$(LIBNAME).so.$(MAJOR).$(MINOR)
 	rm -f $(DIR)$(LIBNAME).dll $(DIR)lib$(LIBNAME).a
