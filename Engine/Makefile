@@ -26,6 +26,7 @@ DEP= $(SRC:%.cpp=obj/%.d)
 all:	$(OBJ)
 ifeq ($(SYSTEM), Linux)
 	$(CC) -shared $^ -o $(DIR)lib$(LIBNAME).so.$(MAJOR).$(MINOR) $(LDFLAGS)
+	rm -f $(DIR)lib$(LIBNAME).so $(DIR)lib$(LIBNAME).so.$(MAJOR)
 	ln -s lib$(LIBNAME).so.$(MAJOR).$(MINOR) $(DIR)lib$(LIBNAME).so.$(MAJOR)
 	ln -s lib$(LIBNAME).so.$(MAJOR).$(MINOR) $(DIR)lib$(LIBNAME).so
 else
