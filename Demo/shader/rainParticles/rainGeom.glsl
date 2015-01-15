@@ -38,9 +38,9 @@ void main(void)
 
      mat4 finalMatrix = modelMatrix;
 	 
-     finalMatrix[3][0] = particle.x;
-     finalMatrix[3][1] = particle.y;
-     finalMatrix[3][2] = particle.z;
+     finalMatrix[3][0] = camPosition.x + particle.x - 40;
+     finalMatrix[3][1] = camPosition.y + particle.y;
+     finalMatrix[3][2] = camPosition.z + particle.z;
 
 	 finalMatrix = viewMatrix * finalMatrix;
      
