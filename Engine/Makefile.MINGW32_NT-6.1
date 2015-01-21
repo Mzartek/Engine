@@ -1,0 +1,27 @@
+# Makefile for library
+
+CC= g++
+LIBNAME= Engine
+MAJOR=1
+MINOR=0.0
+DIR= bin/
+
+CFLAGS= -std=c++11 -Wall -g -Iinclude -I/MinGW/user/include -MMD -MP -DWIN32 -DENGINE_EXPORTS -DGCC
+LDFLAGS= -L/MinGW/user/lib -lopengl32 -lglew32 -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lassimp -Wl,--out-implib,$(DIR)lib$(LIBNAME).a
+
+SRC= $(shell find src/ -name \*.cpp -print)
+OBJ= $(SRC:%.cpp=obj/%.o)
+DEP= $(SRC:%.cpp=obj/%.d)
+
+all:	$(OBJ)
+	$(CC) -shared $^ -o $(DIR)$(LIBNAME).dll $(LDFLAGS)
+
+-include $(DEP)
+
+obj/%.o:	%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ)
+	rm -f $(DEP)
+	rm -f $(DIR)$(LIBNAME).dll $(DIR)lib$(LIBNAME).a
