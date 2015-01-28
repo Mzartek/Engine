@@ -187,8 +187,8 @@ void Engine::Model::loadFromFile(const GLchar *file)
 		mat_diffuse.a = opacity;
 		mat_specular.a = opacity;
 
-		this->addMesh(vertices.size(), vertices.data(),
-			indices.size(), indices.data(),
+		this->addMesh((GLsizei)vertices.size(), vertices.data(),
+			(GLsizei)indices.size(), indices.data(),
 			colorPath.c_str(), NMPath.c_str(),
 			glm::vec4(mat_ambient.r, mat_ambient.g, mat_ambient.b, mat_ambient.a), glm::vec4(mat_diffuse.r, mat_diffuse.g, mat_diffuse.b, mat_diffuse.a), glm::vec4(mat_specular.r, mat_specular.g, mat_specular.b, mat_specular.a),
 			mat_shininess);

@@ -96,7 +96,7 @@ void GameManager::configRainParticles(void)
 		rainParticles[i].life = (GLfloat)(rand() % 100);
 	}
 	rainManager->setTexture("resources/pre-project/goutte.png");
-	rainManager->setParticles(rainParticles.data(), rainParticles.size());
+	rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
 	rainManager->matTranslate(20, 0, 0);
 	rainManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, 1);
 }
@@ -113,7 +113,7 @@ void GameManager::configSmokeParticles(void)
 		smokeParticles[i].life = (GLfloat)(rand() % 100);
 	}
 	smokeManager->setTexture("resources/pre-project/smoke.png");
-	smokeManager->setParticles(smokeParticles.data(), smokeParticles.size());
+	smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 	smokeManager->matTranslate(-10, 0, 0);
 	smokeManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, -1);
 }
