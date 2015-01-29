@@ -3,7 +3,7 @@
 
 #ifdef WIN32
 #include <Windows.h>
-#ifdef ENGINE_EXPORTS
+#ifdef Engine_EXPORTS
 #define DLLAPI __declspec(dllexport)
 #else
 #define DLLAPI __declspec(dllimport)

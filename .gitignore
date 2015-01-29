@@ -1,4 +1,6 @@
+# Auto Save files
 *~
+
 # Compiled Object files
 *.slo
 *.lo
@@ -24,8 +26,7 @@
 # Depend
 *.d
 
-memLost.txt
-
+# Others
 *.log
 *.tlog
 *.pdb
@@ -34,8 +35,16 @@ memLost.txt
 *.exp
 *.lastbuildstate
 *.metagen
-
 *.layout
 *.depend
 *.sdf
 *.suo
+*.cbp
+
+bin
+lib
+memLost.txt
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
