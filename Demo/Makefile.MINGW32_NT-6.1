@@ -5,7 +5,7 @@ NAME= Demo
 DIR= bin/
 
 CFLAGS= -std=c++11 -Wall -g -I../Engine/include -I/MinGW/user/include -MMD -MP -DWIN32 -DGCC
-LDFLAGS= -L../Engine/bin/ -L/MinGW/user/lib -lmingw32 -lSDL2main -lSDL2 -lEngine
+LDFLAGS= -L../Engine/bin/ -L/MinGW/user/lib -lEngine
 
 SRC= $(shell find src/ -name \*.cpp -print)
 OBJ= $(SRC:%.cpp=obj/%.o)

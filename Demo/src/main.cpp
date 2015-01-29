@@ -126,8 +126,25 @@ void GameManager::launch(void)
 	renderer->mainLoop(this);
 }
 
-int main(int argc, char *argv[])
+#ifndef WIN32
+
+int main(int argc, char **argv)
 {
+
+#else
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	UNREFERENCED_PARAMETER(hInstance);
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+	UNREFERENCED_PARAMETER(nCmdShow);
+
+	int argc = __argc;
+	char **argv = __argv;
+
+#endif
+
 	srand((unsigned int)time(NULL));
 
 	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);

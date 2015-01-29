@@ -2,6 +2,7 @@
 #define ENGINE_HEADER
 
 #ifdef WIN32
+#include <Windows.h>
 #ifdef ENGINE_EXPORTS
 #define DLLAPI __declspec(dllexport)
 #else
@@ -12,6 +13,7 @@
 #else
 #define ALIGN(X) __declspec(align(X))
 #pragma warning(disable:4324)
+#pragma warning(disable:4201)
 #endif
 #include <GL/glew.h>
 #else
@@ -26,6 +28,7 @@
 #include <vector>
 #include <string>
 
+#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
