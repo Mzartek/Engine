@@ -1,20 +1,20 @@
 #ifndef ENGINE_HEADER
 #define ENGINE_HEADER
 
-#ifdef WIN32
-#include <Windows.h>
+#ifdef _WIN32
 #ifdef Engine_EXPORTS
 #define DLLAPI __declspec(dllexport)
 #else
 #define DLLAPI __declspec(dllimport)
 #endif
-#ifdef GCC
+#ifdef __GNUC__
 #define ALIGN(X) __attribute__((aligned(X)))
 #else
 #define ALIGN(X) __declspec(align(X))
 #pragma warning(disable:4324)
 #pragma warning(disable:4201)
 #endif
+#include <Windows.h>
 #include <GL/glew.h>
 #else
 #define DLLAPI

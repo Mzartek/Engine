@@ -126,7 +126,7 @@ void GameManager::launch(void)
 	renderer->mainLoop(this);
 }
 
-#ifndef WIN32
+#ifndef _WIN32
 
 int main(int argc, char **argv)
 {

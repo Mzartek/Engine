@@ -40,6 +40,9 @@
 *.sdf
 *.suo
 *.cbp
+*.vcxproj
+*.vcxproj.filters
+*.sln
 
 bin
 lib

@@ -1,34 +1,36 @@
 cmake_minimum_required(VERSION 2.6)
 PROJECT(Engine)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
-set(LIBRARY_OUTPUT_PATH lib/${CMAKE_BUILD_TYPE})
-set(EXECUTABLE_OUTPUT_PATH bin/${CMAKE_BUILD_TYPE})
+if(UNIX)
 
-# External dep
-find_package(OpenGL)
+  set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
+  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+  set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+  
+elseif(WIN32)
 
-if(WIN32)
+  if(MINGW)
+    set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
+  elseif(MSVC)
+    set(CMAKE_CXX_FLAGS "/W4 /EHsc")
+	set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:WINDOWS")
+  endif()
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+  
   find_path(GLEW_INCLUDE_DIR GL/glew.h)
   
   find_library(GLEW_LIBRARY NAMES GLEW libGLEW)
 
   set(GLEW_INCLUDE_DIRS GLEW_INCLUDE_DIR)
-  include_directories()
 
   set(GLEW_LIBRARIES ${GLEW_LIBRARY})
-endif()
-
-if(APPLE)
-  find_path(GLEW_INCLUDE_DIR GLEW/glew.h)
   
-  find_library(GLEW_LIBRARY NAMES glew libglew32)
-
-  set(GLEW_INCLUDE_DIRS GLEW_INCLUDE_DIR)
-  include_directories(${GLEW_INCLUDE_DIRS})
-
-  set(GLEW_LIBRARIES ${GLEW_LIBRARY})
 endif()
+
+# External dep
+find_package(OpenGL)
 
 find_path(GLM_INCLUDE_DIR glm/glm.hpp)
 find_path(SDL2_INCLUDE_DIR SDL2/SDL.h)
@@ -43,19 +45,20 @@ set(GLM_INCLUDE_DIRS ${GLM_INCLUDE_DIR})
 set(SDL2_INCLUDE_DIRS ${SDL2_INCLUDE_DIR})
 set(ASSIMP_INCLUDE_DIRS ${ASSIMP_INCLUDE_DIR})
 set(ENGINE_INCLUDE_DIRS Engine/include)
-include_directories(
-  ${OPENGL_INCLUDE_DIRS}
-  ${GLEW_INCLUDE_DIRS}
-  ${GLM_INCLUDE_DIR}
-  ${SDL2_INCLUDE_DIRS}
-  ${ASSIMP_INCLUDE_DIRS}
-  ${ENGINE_INCLUDE_DIRS}
-  )
 
 set(SDL2_LIBRARIES ${SDL2_LIBRARY})
 set(SDL2_IMAGE_LIBRARIES ${SDL2_IMAGE_LIBRARY})
 set(SDL2_TTF_LIBRARIES ${SDL2_TTF_LIBRARY})
 set(ASSIMP_LIBRARIES ${ASSIMP_LIBRARY})
+
+include_directories(
+  ${GLEW_INCLUDE_DIRS}
+  ${OPENGL_INCLUDE_DIRS}
+  ${GLM_INCLUDE_DIR}
+  ${SDL2_INCLUDE_DIRS}
+  ${ASSIMP_INCLUDE_DIRS}
+  ${ENGINE_INCLUDE_DIRS}
+  )
 
 # Engine
 file(GLOB_RECURSE engine_header_files ${ENGINE_INCLUDE_DIRS}/*)
@@ -67,12 +70,12 @@ set_target_properties(Engine
   SOVERSION 1
   )
 target_link_libraries(Engine
+  ${GLEW_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${SDL2_LIBRARIES}
   ${SDL2_IMAGE_LIBRARIES}
   ${SDL2_TTF_LIBRARIES}
   ${ASSIMP_LIBRARIES}
-  ${GLEW_LIBRARIES}
   )
 
 # Demo
