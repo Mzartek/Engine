@@ -1,6 +1,7 @@
 find_path(GLM_INCLUDE_DIR glm/glm.hpp)
 set(GLM_INCLUDE_DIRS ${GLM_INCLUDE_DIR})
-  
+
+include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(GLM REQUIRED_VARS
 	GLM_INCLUDE_DIRS)
 	

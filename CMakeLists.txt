@@ -33,7 +33,7 @@ elseif(WIN32)
 endif()
 
 set(ENGINE_INCLUDE_DIRS Engine/include)
-include_directories(
+include_directories(${ENGINE_INCLUDE_DIRS}
   ${OPENGL_INCLUDE_DIRS}
   ${GLEW_INCLUDE_DIRS}
   ${GLM_INCLUDE_DIR}
@@ -41,7 +41,6 @@ include_directories(
   ${SDL2_IMAGE_INCLUDE_DIRS}
   ${SDL2_TTF_INCLUDE_DIRS}
   ${ASSIMP_INCLUDE_DIRS}
-  ${ENGINE_INCLUDE_DIRS}
   )
 
 # Engine
