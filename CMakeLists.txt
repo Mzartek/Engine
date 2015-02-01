@@ -2,6 +2,27 @@ cmake_minimum_required(VERSION 2.6)
 PROJECT(Engine)
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_BINARY_DIR}/CMakeModules")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(ENGINE_INCLUDE_DIRS Engine/include)
+
+if(UNIX)
+
+  set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
+  
+elseif(WIN32)
+
+  if(MINGW)
+    set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
+  elseif(MSVC)
+    set(CMAKE_CXX_FLAGS "/W4 /EHsc")
+    set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:WINDOWS")
+  endif()
+  
+  find_package(GLEW REQUIRED)
+  
+endif()
 
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
@@ -10,29 +31,6 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(Assimp REQUIRED)
 
-if(UNIX)
-
-  set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
-  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
-  set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
-  
-elseif(WIN32)
-
-  if(MINGW)
-    set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
-  elseif(MSVC)
-    set(CMAKE_CXX_FLAGS "/W4 /EHsc")
-	set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:WINDOWS")
-  endif()
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-  
-  find_package(GLEW REQUIRED)
-  
-endif()
-
-set(ENGINE_INCLUDE_DIRS Engine/include)
 include_directories(${ENGINE_INCLUDE_DIRS}
   ${OPENGL_INCLUDE_DIRS}
   ${GLEW_INCLUDE_DIRS}
@@ -54,7 +52,6 @@ set_target_properties(Engine
   )
 target_link_libraries(Engine
   ${OPENGL_LIBRARIES}
-  ${GLEW_LIBRARIES}
   ${SDL2_LIBRARIES}
   ${SDL2_IMAGE_LIBRARIES}
   ${SDL2_TTF_LIBRARIES}
