@@ -22,7 +22,7 @@ namespace Engine
 		void setShadowMapping(const GLboolean &shadow);
 		glm::vec3 getColor(void) const;
 		glm::vec3 getDirection(void) const;
-		void position(const glm::vec3 &position, const GLfloat &dim);
+		void position(Camera *cam, const GLfloat &dim);
 		void display(GBuffer *gbuf, Camera *cam);
 	};
 }

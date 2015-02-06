@@ -1,5 +1,7 @@
 #version 440
 
+#define LIMIT 50
+
 // From GBuffer
 uniform sampler2D normalTexture;
 uniform usampler2D materialTexture;
@@ -22,6 +24,7 @@ layout(binding = 1) uniform lightInfoBuffer
 	vec3 lightPosition;
 	vec3 lightDirection;
 	float lightSpotCutOff;
+	float lightMaxDistance;
 	bool withShadowMapping;
 };
 
@@ -79,15 +82,27 @@ void main(void)
 
 	vec4 diffColor = unpackUnorm4x8(material.z) * vec4(lightColor, 1.0);
 	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);
-	
+
 	float shadow = 1.0;
 	if (withShadowMapping)
 		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
 	vec3 L = normalize(lightPosition - position);
+
+	// For the angle
 	float cos_cur_angle = dot(-L, normalize(lightDirection));
 	float cos_outer_cone_angle = cos(lightSpotCutOff);
 	float cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
 	float cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
 	float spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
+
+	// For the distance
+	float current_distance = length(lightPosition - position);
+	float inner_distance = lightMaxDistance - LIMIT;
+	if (current_distance >= inner_distance)
+	{
+	     float tmp = min(current_distance, lightMaxDistance) - inner_distance;
+	     spot *= (LIMIT - tmp) / LIMIT;
+	}
+	
 	outLight = calcLight(diffColor, specColor, normal.xyz, L, normalize(camPosition - position), normal.w) * shadow * spot;
 }

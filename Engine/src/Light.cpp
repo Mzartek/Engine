@@ -37,7 +37,12 @@ Engine::Light::~Light(void)
 
 void Engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
 {
-	_shadow->config(width, height);
+    _shadow->config(width, height);
+}
+
+Engine::ShadowMap *Engine::Light::getShadowMap(void)
+{
+	return _shadow;
 }
 
 glm::mat4 Engine::Light::getProjectionMatrix(void) const
@@ -55,12 +60,7 @@ glm::mat4 Engine::Light::getVPMatrix(void) const
 	return *_VPMatrix;
 }
 
-Engine::ShadowMap *Engine::Light::getShadowMap(void)
-{
-	return _shadow;
-}
-
 void Engine::Light::clear(void) const
 {
-	_shadow->clear();
+    _shadow->clear();
 }

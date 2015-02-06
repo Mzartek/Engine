@@ -15,8 +15,10 @@ namespace Engine
 		glm::mat4 *_viewMatrix;
 		glm::mat4 *_VPMatrix;
 		glm::mat4 *_IVPMatrix;
+		GLfloat _near;
+		GLfloat _far;
 		GLfloat _fov;
-		GLfloat _distance;
+		GLfloat _frusSphereDistance;
 		GLfloat _frusSphereRadius;
 		glm::vec3 *_frusSpherePosition;
 	public:
@@ -32,7 +34,10 @@ namespace Engine
 		glm::mat4 getViewMatrix(void) const;
 		glm::mat4 getVPMatrix(void) const;
 		glm::mat4 getIVPMatrix(void) const;
+		GLfloat getNear(void) const;
+		GLfloat getFar(void) const;
 		GLfloat getFOV(void) const;
+		GLfloat getFrusSphereDistance(void) const;
 		GLfloat getFrusSphereRadius(void) const;
 		glm::vec3 getFrusSpherePosition(void) const;
 		void position(void);
