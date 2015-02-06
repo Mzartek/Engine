@@ -44,9 +44,14 @@ void Engine::SpotLight::setDirection(const glm::vec3 &dir)
 	_lightInfo.direction = dir;
 }
 
-void Engine::SpotLight::setSpotCutOff(const float &spot)
+void Engine::SpotLight::setSpotCutOff(const GLfloat &spot)
 {
 	_lightInfo.spotCutOff = spot;
+}
+
+void Engine::SpotLight::setMaxDistance(const GLfloat &maxDistance)
+{
+    _lightInfo.maxDistance = maxDistance;
 }
 
 void Engine::SpotLight::setShadowMapping(const GLboolean &shadow)
@@ -74,9 +79,14 @@ GLfloat Engine::SpotLight::getSpotCutOff(void) const
 	return _lightInfo.spotCutOff;
 }
 
+GLfloat Engine::SpotLight::getMaxDistance(void) const
+{
+    return _lightInfo.maxDistance;
+}
+
 void Engine::SpotLight::position(void)
 {
-    *_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, 1000.0f);
+    *_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, _lightInfo.maxDistance);
     *_viewMatrix = glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
 	*_VPMatrix =  *_projectionMatrix * *_viewMatrix;
 }

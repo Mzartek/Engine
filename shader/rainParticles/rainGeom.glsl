@@ -38,11 +38,11 @@ void main(void)
 
      mat4 finalMatrix = modelMatrix;
 	 
-     finalMatrix[3][0] = camPosition.x + particle.x - 40;
+     finalMatrix[3][0] = camPosition.x + particle.x;
      finalMatrix[3][1] = camPosition.y + particle.y;
      finalMatrix[3][2] = camPosition.z + particle.z;
 
-	 finalMatrix = viewMatrix * finalMatrix;
+     finalMatrix = viewMatrix * finalMatrix;
      
      finalMatrix[0][0] = 1;
      finalMatrix[0][1] = 0;

@@ -97,8 +97,7 @@ void GameManager::configRainParticles(void)
 	}
 	rainManager->setTexture("resources/pre-project/goutte.png");
 	rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
-	rainManager->matTranslate(20, 0, 0);
-	rainManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, 1);
+	//rainManager->matTranslate(20, 0, 0);
 }
 
 void GameManager::configSmokeParticles(void)
@@ -114,7 +113,7 @@ void GameManager::configSmokeParticles(void)
 	}
 	smokeManager->setTexture("resources/pre-project/smoke.png");
 	smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
-	smokeManager->matTranslate(-10, 0, 0);
+	smokeManager->matTranslate(-20, 0, 0);
 	smokeManager->matRotate(glm::pi<GLfloat>() / 4, 0, 0, -1);
 }
 
@@ -173,13 +172,16 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	configChamp();
 	configTree();
 
-	moon->setColor(glm::vec3(0.1f, 0.2f, 0.3f));
-	moon->setDirection(glm::vec3(1.0f, -1.0f, 0.0f));
+	moon->setColor(glm::vec3(0.5f, 0.5f, 0.9f));
+	moon->setDirection(glm::vec3(2.0f, -1.0f, 0.0f));
 	moon->setShadowMapping(GL_TRUE);
-	moon->configShadowMap(1024, 1024);
+	moon->configShadowMap(4096, 4096);
 
+    torch->setPosition(glm::vec3(25, 50, -25));
+    torch->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
 	torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
+	torch->setMaxDistance(250);
 	torch->setShadowMapping(GL_TRUE);
 	torch->configShadowMap(1024, 1024);
 

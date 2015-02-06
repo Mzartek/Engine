@@ -2,12 +2,13 @@
 
 void GameManager::display(GLfloat state)
 {
-    GLuint i;
+    static GLuint i;
 	static std::vector<Engine::Model *> object;
+	static Engine::PlayerCam *player_cam = player->getCamera();
 
 	// We retrieve object to display from the octree
 	object.clear();
-	octreeSystem->getModel(gBuffer, player->getCamera(), &object);
+	octreeSystem->getModel(gBuffer, player_cam, &object);
 
 	renderer->clear();
 	gBuffer->clear();
@@ -15,7 +16,7 @@ void GameManager::display(GLfloat state)
 	torch->clear();
 
 	// Skybox
-	skybox->display(gBuffer, player->getCamera());
+	skybox->display(gBuffer, player_cam);
 
 	// ShadowMap
 	model_tree->displayShadowMap(moon);
@@ -23,11 +24,15 @@ void GameManager::display(GLfloat state)
 
 	// Opaque Object
 	for (i = 0; i < object.size(); i++)
-		object[i]->display(gBuffer, player->getCamera());
+		object[i]->display(gBuffer, player_cam);
 
-	moon->display(gBuffer, player->getCamera());
-	torch->display(gBuffer, player->getCamera());
+	moon->display(gBuffer, player_cam);
+	torch->display(gBuffer, player_cam);
 	screen->background(gBuffer);
+
+	// Particles
+	rainManager->display(gBuffer, player_cam);
+	smokeManager->display(gBuffer, player_cam);
 
 	// Transparent Object
 	/*for (i = 0; i < object.size(); i++)
@@ -36,10 +41,6 @@ void GameManager::display(GLfloat state)
 	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
 	screen->background(gBuffer);*/
-
-	// Particles
-	rainManager->display(gBuffer, player->getCamera());
-	smokeManager->display(gBuffer, player->getCamera());
 
 	if (player->isAlive())
 		screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
@@ -51,8 +52,9 @@ void GameManager::display(GLfloat state)
 
 void GameManager::idle(void)
 {
-	GLuint i;
-	glm::vec3 camPosition = player->getCamera()->getCameraPosition();
+	static GLuint i;
+	static Engine::PlayerCam *player_cam = player->getCamera();
+	glm::vec3 camPosition = player_cam->getCameraPosition();
 
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
@@ -64,17 +66,14 @@ void GameManager::idle(void)
 		if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT)) player->getCamera()->setSpeed(0.05f);
 		else player->getCamera()->setSpeed(0.25f);
 		if (input->getMouseState(SDL_BUTTON_LEFT)) player->getCamera()->setSpeed(5.0f);
-		player->getCamera()->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
-		player->getCamera()->mouseMove(input->getMouseRelX(), input->getMouseRelY());
-
-		torch->setPosition(player->getCamera()->getCameraPosition());// - glm::vec3(0.0f, 1.0f, 0.0f));
-		torch->setDirection(player->getCamera()->getForwardVector());
+		player_cam->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
+		player_cam->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 
 		rainManager->updateParticles();
 		smokeManager->updateParticles();
 
-		player->getCamera()->position();
-		moon->position(glm::vec3(0, 0, 0), 100);
+		player_cam->position();
+		moon->position(player_cam, 500);
 		torch->position();
 	}
 
@@ -147,7 +146,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	srand((unsigned int)time(NULL));
 
-	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
+	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 1680, 1050, GL_TRUE);
 	Engine::Input *input = new Engine::Input;
 	GameManager *game = new GameManager(renderer, input);
 

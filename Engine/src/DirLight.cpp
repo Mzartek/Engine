@@ -54,11 +54,28 @@ glm::vec3 Engine::DirLight::getDirection(void) const
 	return _lightInfo.direction;
 }
 
-void Engine::DirLight::position(const glm::vec3 &position, const GLfloat &dim)
+void Engine::DirLight::position(Camera *cam, const GLfloat &dim)
 {
-    *_projectionMatrix = glm::ortho(-dim, dim, -dim, dim, -dim, dim);
-    *_viewMatrix = glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
-	*_VPMatrix = *_projectionMatrix * *_viewMatrix;
+    glm::vec3 position[3];
+    GLfloat test_dim[3];
+
+    glm::vec3 camPosition = cam->getCameraPosition();
+    glm::vec3 camDirection = cam->getViewVector();
+    GLfloat near = cam->getNear();
+    GLfloat far = cam->getFar();
+    GLfloat distance = (far - near) / 3;
+
+    position[0] = camPosition + camDirection * near;
+    position[1] = camPosition + camDirection * (near + distance);
+    position[2] = camPosition + camDirection * (near + distance * 2);
+
+    test_dim[0] = dim / 3;
+    test_dim[1] = dim / 2;
+    test_dim[2] = dim;
+
+    *_projectionMatrix = glm::ortho(-test_dim[0], test_dim[0], -test_dim[0], test_dim[0], -test_dim[0], test_dim[0]);
+    *_viewMatrix = glm::lookAt(position[0] - _lightInfo.direction, position[0], glm::vec3(0.0f, 1.0f, 0.0f));
+    *_VPMatrix = *_projectionMatrix * *_viewMatrix;
 }
 
 void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)

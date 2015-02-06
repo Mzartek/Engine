@@ -23,7 +23,7 @@ void main(void)
 		outPosition = position;
 		outDirection = direction;
 		outVelocity = velocity;
-		outLife = life + 1;
+		outLife = life + 0.5;
 	}
 	else
 	{
