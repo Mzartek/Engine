@@ -43,6 +43,7 @@
 *.vcxproj
 *.vcxproj.filters
 *.sln
+*.dir
 
 bin
 lib

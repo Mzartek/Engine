@@ -52,6 +52,7 @@ set_target_properties(Engine
   )
 target_link_libraries(Engine
   ${OPENGL_LIBRARIES}
+  ${GLEW_LIBRARIES}
   ${SDL2_LIBRARIES}
   ${SDL2_IMAGE_LIBRARIES}
   ${SDL2_TTF_LIBRARIES}
