@@ -8,10 +8,6 @@ Engine::Light::Light(ShaderProgram *program)
 	_vertexBuffer = new Buffer;
 	_mainInfoBuffer = new Buffer;
 	_lightInfoBuffer = new Buffer;
-	_shadow = new ShadowMap;
-	_projectionMatrix = new glm::mat4;
-	_viewMatrix = new glm::mat4;
-	_VPMatrix = new glm::mat4;
 
 	GLfloat vertex[] =
 	{
@@ -29,38 +25,4 @@ Engine::Light::~Light(void)
 	delete _vertexBuffer;
 	delete _mainInfoBuffer;
 	delete _lightInfoBuffer;
-	delete _shadow;
-	delete _projectionMatrix;
-	delete _viewMatrix;
-	delete _VPMatrix;
-}
-
-void Engine::Light::configShadowMap(const GLuint &width, const GLuint &height)
-{
-    _shadow->config(width, height);
-}
-
-Engine::ShadowMap *Engine::Light::getShadowMap(void)
-{
-	return _shadow;
-}
-
-glm::mat4 Engine::Light::getProjectionMatrix(void) const
-{
-	return *_projectionMatrix;
-}
-
-glm::mat4 Engine::Light::getViewMatrix(void) const
-{
-	return *_viewMatrix;
-}
-
-glm::mat4 Engine::Light::getVPMatrix(void) const
-{
-	return *_VPMatrix;
-}
-
-void Engine::Light::clear(void) const
-{
-    _shadow->clear();
 }

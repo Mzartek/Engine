@@ -24,12 +24,12 @@ Engine::Camera::~Camera(void)
 	delete _frusSpherePosition;
 }
 
-void Engine::Camera::setCameraPosition(const glm::vec3 &pos)
+void Engine::Camera::setCameraPosition(const glm::vec3 &pos) const
 {
 	*_pcamera = pos;
 }
 
-void Engine::Camera::setTargetPosition(const glm::vec3 &pos)
+void Engine::Camera::setTargetPosition(const glm::vec3 &pos) const
 {
 	*_ptarget = pos;
 }
@@ -114,7 +114,7 @@ glm::vec3 Engine::Camera::getFrusSpherePosition(void) const
 	return *_frusSpherePosition;
 }
 
-void Engine::Camera::position(void)
+void Engine::Camera::position(void) const
 {
 	*_vview = glm::normalize(*_ptarget - *_pcamera);
 	*_frusSpherePosition = *_vview * _frusSphereDistance;

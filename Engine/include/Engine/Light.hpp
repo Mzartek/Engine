@@ -26,13 +26,9 @@ namespace Engine
 	public:
 		Light(ShaderProgram *program);
 		~Light(void);
-		void configShadowMap(const GLuint &width, const GLuint &height);
-		ShadowMap *getShadowMap(void);
-		glm::mat4 getProjectionMatrix(void) const;
-		glm::mat4 getViewMatrix(void) const;
-		glm::mat4 getVPMatrix(void) const;
-		void clear(void) const;
-		virtual void display(GBuffer *gbuf, Camera *cam) = 0;
+		virtual void configShadowMap(const GLuint &width, const GLuint &height) const = 0;
+		virtual void clear(void) const = 0;
+		virtual void display(GBuffer *gbuf, Camera *cam) const = 0;
 	};
 }
 

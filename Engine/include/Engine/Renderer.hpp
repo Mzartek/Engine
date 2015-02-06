@@ -26,9 +26,9 @@ namespace Engine
 	public:
 		Renderer(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen);
 		~Renderer(void);
-		GLuint getWidth(void);
-		GLuint getHeight(void);
-		SDL_Window *getWindow(void);
+		GLuint getWidth(void) const;
+		GLuint getHeight(void) const;
+		SDL_Window *getWindow(void) const;
 		void mainLoop(GameLoop *gameLoop);
 		void stopLoop(void);
 		void setState(void) const;

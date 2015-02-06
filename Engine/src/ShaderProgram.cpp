@@ -139,7 +139,7 @@ Engine::ShaderProgram::~ShaderProgram(void)
 	if (glIsShader(_idFragmentShader)) glDeleteShader(_idFragmentShader);
 }
 
-GLuint Engine::ShaderProgram::getId(void)
+GLuint Engine::ShaderProgram::getId(void) const
 {
 	return _idProgram;
 }

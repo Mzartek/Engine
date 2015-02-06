@@ -70,17 +70,17 @@ Engine::Renderer::~Renderer(void)
 	SDL_Quit();
 }
 
-GLuint Engine::Renderer::getWidth(void)
+GLuint Engine::Renderer::getWidth(void) const
 {
 	return _width;
 }
 
-GLuint Engine::Renderer::getHeight(void)
+GLuint Engine::Renderer::getHeight(void) const
 {
 	return _height;
 }
 
-SDL_Window *Engine::Renderer::getWindow(void)
+SDL_Window *Engine::Renderer::getWindow(void) const
 {
 	return _Window;
 }

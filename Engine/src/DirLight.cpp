@@ -8,6 +8,11 @@
 Engine::DirLight::DirLight(ShaderProgram *program)
 	: Light(program)
 {
+	_shadow = new ShadowMap;
+	_projectionMatrix = new glm::mat4;
+	_viewMatrix = new glm::mat4;
+	_VPMatrix = new glm::mat4;
+
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
@@ -26,6 +31,11 @@ Engine::DirLight::DirLight(ShaderProgram *program)
 
 Engine::DirLight::~DirLight(void)
 {
+	delete _shadow;
+	delete _projectionMatrix;
+	delete _viewMatrix;
+	delete _VPMatrix;
+
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
@@ -44,6 +54,31 @@ void Engine::DirLight::setShadowMapping(const GLboolean &shadow)
 	_lightInfo.withShadowMapping = shadow;
 }
 
+void Engine::DirLight::configShadowMap(const GLuint &width, const GLuint &height) const
+{
+	_shadow->config(width, height);
+}
+
+Engine::ShadowMap *Engine::DirLight::getShadowMap(void) const
+{
+	return _shadow;
+}
+
+glm::mat4 Engine::DirLight::getProjectionMatrix(void) const
+{
+	return *_projectionMatrix;
+}
+
+glm::mat4 Engine::DirLight::getViewMatrix(void) const
+{
+	return *_viewMatrix;
+}
+
+glm::mat4 Engine::DirLight::getVPMatrix(void) const
+{
+	return *_VPMatrix;
+}
+
 glm::vec3 Engine::DirLight::getColor(void) const
 {
 	return _lightInfo.color;
@@ -54,20 +89,20 @@ glm::vec3 Engine::DirLight::getDirection(void) const
 	return _lightInfo.direction;
 }
 
-void Engine::DirLight::position(Camera *cam, const GLfloat &dim)
+void Engine::DirLight::position(Camera *cam, const GLfloat &dim) const
 {
     glm::vec3 position[3];
     GLfloat test_dim[3];
 
     glm::vec3 camPosition = cam->getCameraPosition();
     glm::vec3 camDirection = cam->getViewVector();
-    GLfloat near = cam->getNear();
-    GLfloat far = cam->getFar();
-    GLfloat distance = (far - near) / 3;
+    GLfloat n = cam->getNear();
+    GLfloat f = cam->getFar();
+    GLfloat distance = (f - n) / 3;
 
-    position[0] = camPosition + camDirection * near;
-    position[1] = camPosition + camDirection * (near + distance);
-    position[2] = camPosition + camDirection * (near + distance * 2);
+    position[0] = camPosition + camDirection * n;
+    position[1] = camPosition + camDirection * (n + distance);
+    position[2] = camPosition + camDirection * (n + distance * 2);
 
     test_dim[0] = dim / 3;
     test_dim[1] = dim / 2;
@@ -78,8 +113,15 @@ void Engine::DirLight::position(Camera *cam, const GLfloat &dim)
     *_VPMatrix = *_projectionMatrix * *_viewMatrix;
 }
 
-void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
+void Engine::DirLight::clear(void) const
 {
+	_shadow->clear();
+}
+
+void Engine::DirLight::display(GBuffer *gbuf, Camera *cam) const
+{
+	glm::vec3 camPosition = cam->getCameraPosition();
+
 	gbuf->setLightState();
 
 	glUseProgram(_program->getId());
@@ -112,7 +154,7 @@ void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 	}
 	mainInfo.IVPMatrix = cam->getIVPMatrix();
 	mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	mainInfo.camPosition = glm::vec3(cam->getCameraPosition().x, cam->getCameraPosition().y, cam->getCameraPosition().z);
+	mainInfo.camPosition = glm::vec3(camPosition.x, camPosition.y, camPosition.z);
 
 	_mainInfoBuffer->updateStoreMap(&mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);

@@ -24,8 +24,8 @@ namespace Engine
 	public:
 		Camera(void);
 		~Camera(void);
-		void setCameraPosition(const glm::vec3 &pos);
-		void setTargetPosition(const glm::vec3 &pos);
+		void setCameraPosition(const glm::vec3 &pos) const;
+		void setTargetPosition(const glm::vec3 &pos) const;
 		void setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f);
 		glm::vec3 getCameraPosition(void) const;
 		glm::vec3 getTargetPosition(void) const;
@@ -40,7 +40,7 @@ namespace Engine
 		GLfloat getFrusSphereDistance(void) const;
 		GLfloat getFrusSphereRadius(void) const;
 		glm::vec3 getFrusSpherePosition(void) const;
-		void position(void);
+		void position(void) const;
 	};
 }
 

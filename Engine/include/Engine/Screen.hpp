@@ -21,8 +21,8 @@ namespace Engine
 	public:
 		Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram);
 		~Screen(void);
-		void background(GBuffer *gbuf);
-		void display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a);
+		void background(GBuffer *gbuf) const;
+		void display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a) const;
 	};
 }
 

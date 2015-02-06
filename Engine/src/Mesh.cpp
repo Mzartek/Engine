@@ -26,12 +26,12 @@ Engine::Mesh::~Mesh(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Mesh::setColorTexture(const GLchar *path)
+void Engine::Mesh::setColorTexture(const GLchar *path) const
 {
 	_colorTexture->load2DTextureFromFile(path);
 }
 
-void Engine::Mesh::setNMTexture(const GLchar *path)
+void Engine::Mesh::setNMTexture(const GLchar *path) const
 {
 	_NMTexture->load2DTextureFromFile(path);
 }
@@ -56,7 +56,7 @@ void Engine::Mesh::setShininess(const GLfloat &shininess)
 	_material.shininess = shininess;
 }
 
-GLfloat Engine::Mesh::getTransparency(void)
+GLfloat Engine::Mesh::getTransparency(void) const
 {
 	return _material.diffuse.w;
 }

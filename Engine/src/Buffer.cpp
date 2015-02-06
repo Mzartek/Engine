@@ -10,12 +10,12 @@ Engine::Buffer::~Buffer(void)
 	if (glIsBuffer(_idBuffer)) glDeleteBuffers(1, &_idBuffer);
 }
 
-GLenum Engine::Buffer::getTarget(void)
+GLenum Engine::Buffer::getTarget(void) const
 {
 	return _target;
 }
 
-GLuint Engine::Buffer::getId(void)
+GLuint Engine::Buffer::getId(void) const
 {
 	return _idBuffer;
 }
@@ -41,14 +41,14 @@ void Engine::Buffer::createStore(const GLenum &target, const GLvoid *data, const
 	glBindBuffer(_target, 0);
 }
 
-void Engine::Buffer::updateStoreSub(const GLvoid *data)
+void Engine::Buffer::updateStoreSub(const GLvoid *data) const
 {
 	glBindBuffer(_target, _idBuffer);
 	glBufferSubData(_target, 0, _size, data);
 	glBindBuffer(_target, 0);
 }
 
-void Engine::Buffer::updateStoreMap(const GLvoid *data)
+void Engine::Buffer::updateStoreMap(const GLvoid *data) const
 {
 	glBindBuffer(_target, _idBuffer);
 	memcpy(glMapBuffer(_target, GL_WRITE_ONLY), data, _size);

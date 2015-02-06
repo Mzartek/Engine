@@ -18,10 +18,10 @@ namespace Engine
 	public:
 		Input(void);
 		~Input(void);
-		GLboolean getKeyBoardState(const GLubyte &button);
-		GLboolean getMouseState(const GLubyte &button);
-		GLint getMouseRelX(void);
-		GLint getMouseRelY(void);
+		GLboolean getKeyBoardState(const GLubyte &button) const;
+		GLboolean getMouseState(const GLubyte &button) const;
+		GLint getMouseRelX(void) const;
+		GLint getMouseRelY(void) const;
 		void refresh(void);
 	};
 }

@@ -11,7 +11,8 @@ namespace Engine
 	class ShaderProgram;
 	class GBuffer;
 	class Camera;
-	class Light;
+	class DirLight;
+	class SpotLight;
 
 	class DLLAPI Model : public Object
 	{
@@ -35,16 +36,17 @@ namespace Engine
 				  const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);
 		void loadFromFile(const GLchar *file);
 		void sortMesh(void);
-		void matIdentity(void);
-		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z);
-		void genMatNormal(void);
+		void matIdentity(void) const;
+		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
+		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
+		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
+		void genMatNormal(void) const;
 		glm::vec3 getPosition(void) const;
 		Mesh *getMesh(const GLuint &num) const;
 		void display(GBuffer *g, Camera *cam) const;
 		void displayTransparent(GBuffer *gbuf, Camera *cam) const;
-		void displayShadowMap(Light *light) const;
+		void displayShadowMap(DirLight *light) const;
+		void displayShadowMap(SpotLight *light) const;
 	};
 }
 

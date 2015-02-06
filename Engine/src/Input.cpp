@@ -8,24 +8,24 @@ Engine::Input::~Input(void)
 {
 }
 
-GLboolean Engine::Input::getKeyBoardState(const GLubyte &button)
+GLboolean Engine::Input::getKeyBoardState(const GLubyte &button) const
 {
 	return _keyState[button];
 }
 
-GLboolean Engine::Input::getMouseState(const GLubyte &button)
+GLboolean Engine::Input::getMouseState(const GLubyte &button) const
 {
 	if (_mouseState.buttons & button)
 		return GL_TRUE;
 	return GL_FALSE;
 }
 
-GLint Engine::Input::getMouseRelX(void)
+GLint Engine::Input::getMouseRelX(void) const
 {
 	return _mouseState.x;
 }
 
-GLint Engine::Input::getMouseRelY(void)
+GLint Engine::Input::getMouseRelY(void) const
 {
 	return _mouseState.y;
 }

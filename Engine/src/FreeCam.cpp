@@ -8,7 +8,7 @@ Engine::FreeCam::~FreeCam(void)
 {
 }
 
-void Engine::FreeCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r)
+void Engine::FreeCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) const
 {
 	if(f)
 		*_pcamera += *_vforward * _speed;

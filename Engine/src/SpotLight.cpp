@@ -8,6 +8,11 @@
 Engine::SpotLight::SpotLight(ShaderProgram *program)
 	: Light(program)
 {
+	_shadow = new ShadowMap;
+	_projectionMatrix = new glm::mat4;
+	_viewMatrix = new glm::mat4;
+	_VPMatrix = new glm::mat4;
+
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
@@ -26,6 +31,11 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 
 Engine::SpotLight::~SpotLight(void)
 {
+	delete _shadow;
+	delete _projectionMatrix;
+	delete _viewMatrix;
+	delete _VPMatrix;
+
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
@@ -59,6 +69,31 @@ void Engine::SpotLight::setShadowMapping(const GLboolean &shadow)
 	_lightInfo.withShadowMapping = shadow;
 }
 
+void Engine::SpotLight::configShadowMap(const GLuint &width, const GLuint &height) const
+{
+	_shadow->config(width, height);
+}
+
+Engine::ShadowMap *Engine::SpotLight::getShadowMap(void) const
+{
+	return _shadow;
+}
+
+glm::mat4 Engine::SpotLight::getProjectionMatrix(void) const
+{
+	return *_projectionMatrix;
+}
+
+glm::mat4 Engine::SpotLight::getViewMatrix(void) const
+{
+	return *_viewMatrix;
+}
+
+glm::mat4 Engine::SpotLight::getVPMatrix(void) const
+{
+	return *_VPMatrix;
+}
+
 glm::vec3 Engine::SpotLight::getColor(void) const
 {
 	return _lightInfo.color;
@@ -84,15 +119,22 @@ GLfloat Engine::SpotLight::getMaxDistance(void) const
     return _lightInfo.maxDistance;
 }
 
-void Engine::SpotLight::position(void)
+void Engine::SpotLight::position(void) const
 {
     *_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)_shadow->getWidth() / _shadow->getHeight(), 0.1f, _lightInfo.maxDistance);
     *_viewMatrix = glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
 	*_VPMatrix =  *_projectionMatrix * *_viewMatrix;
 }
 
-void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
+void Engine::SpotLight::clear(void) const
 {
+	_shadow->clear();
+}
+
+void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam) const
+{
+	glm::vec3 camPosition = cam->getCameraPosition();
+
 	gbuf->setLightState();
 
 	glUseProgram(_program->getId());
@@ -125,7 +167,7 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 	}
 	mainInfo.IVPMatrix = cam->getIVPMatrix();
 	mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	mainInfo.camPosition = glm::vec3(cam->getCameraPosition().x, cam->getCameraPosition().y, cam->getCameraPosition().z);
+	mainInfo.camPosition = glm::vec3(camPosition.x, camPosition.y, camPosition.z);
 
 	_mainInfoBuffer->updateStoreMap(&mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);

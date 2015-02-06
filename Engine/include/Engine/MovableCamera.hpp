@@ -21,7 +21,7 @@ namespace Engine
 		glm::vec3 getForwardVector(void) const;
 		glm::vec3 getLeftVector(void) const;
 		void mouseMove(const GLint &xrel, const GLint &yrel);
-		virtual void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) = 0;
+		virtual void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) const = 0;
 	};
 }
 

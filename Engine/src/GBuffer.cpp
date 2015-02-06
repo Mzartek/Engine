@@ -62,7 +62,7 @@ GLuint Engine::GBuffer::getIdTexture(const GLuint &num) const
 	return _idTexture[num];
 }
 
-void Engine::GBuffer::setSkyboxState(void)
+void Engine::GBuffer::setSkyboxState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -84,7 +84,7 @@ void Engine::GBuffer::setSkyboxState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setGeometryState(void)
+void Engine::GBuffer::setGeometryState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -114,7 +114,7 @@ void Engine::GBuffer::setGeometryState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setLightState(void)
+void Engine::GBuffer::setLightState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -140,7 +140,7 @@ void Engine::GBuffer::setLightState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setParticlesState(void)
+void Engine::GBuffer::setParticlesState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -164,7 +164,7 @@ void Engine::GBuffer::setParticlesState(void)
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setBackgroundState(void)
+void Engine::GBuffer::setBackgroundState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 

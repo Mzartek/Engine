@@ -25,9 +25,9 @@ namespace Engine
 		TextArray(ShaderProgram *program);
 		~TextArray(void);
 		void setFont(const GLchar *font, const GLuint &size, const GLubyte &r, const GLubyte &g, const GLubyte &b);
-		void writeScreen(const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, Renderer *renderer, const GLchar *text);
-		void writeScreen(const GLchar *text);
-		void display(Renderer *renderer);
+		void writeScreen(const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, Renderer *renderer, const GLchar *text) const;
+		void writeScreen(const GLchar *text) const;
+		void display(Renderer *renderer) const;
 	};
 }
 

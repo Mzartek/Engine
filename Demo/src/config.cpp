@@ -177,7 +177,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	moon->setShadowMapping(GL_TRUE);
 	moon->configShadowMap(4096, 4096);
 
-    torch->setPosition(glm::vec3(25, 50, -25));
+    torch->setPosition(glm::vec3(25, 100, -25));
     torch->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
 	torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torch->setSpotCutOff(glm::pi<GLfloat>() / 4);

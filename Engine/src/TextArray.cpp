@@ -54,7 +54,7 @@ void Engine::TextArray::setFont(const GLchar *font, const GLuint &size, const GL
 	_color.a = 0;
 }
 
-void Engine::TextArray::writeScreen(const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, Renderer *renderer, const GLchar *text)
+void Engine::TextArray::writeScreen(const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, Renderer *renderer, const GLchar *text) const
 {
 	SDL_Surface *t;
 	
@@ -77,7 +77,7 @@ void Engine::TextArray::writeScreen(const GLuint &x, const GLuint &y, const GLui
 	*_mat = glm::ortho(0.0f, (GLfloat)renderer->getWidth(), 0.0f, (GLfloat)renderer->getHeight(), -1.0f, 1.0f);
 }
 
-void Engine::TextArray::writeScreen(const GLchar *text)
+void Engine::TextArray::writeScreen(const GLchar *text) const
 {
 	SDL_Surface *t;
 
@@ -86,7 +86,7 @@ void Engine::TextArray::writeScreen(const GLchar *text)
 	SDL_FreeSurface(t);
 }
 
-void Engine::TextArray::display(Renderer *renderer)
+void Engine::TextArray::display(Renderer *renderer) const
 {
 	renderer->setState();
 

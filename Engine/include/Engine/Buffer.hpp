@@ -14,11 +14,11 @@ namespace Engine
 	public:
 		Buffer(void);
 		~Buffer(void);
-		GLenum getTarget(void);
-		GLuint getId(void);
+		GLenum getTarget(void) const;
+		GLuint getId(void) const;
 		void createStore(const GLenum &target, const GLvoid *data, const GLsizeiptr &size, const GLenum &usage);
-		void updateStoreSub(const GLvoid *data);
-		void updateStoreMap(const GLvoid *data);
+		void updateStoreSub(const GLvoid *data) const;
+		void updateStoreMap(const GLvoid *data) const;
 	};
 }
 

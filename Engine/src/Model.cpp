@@ -4,7 +4,8 @@
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
-#include <Engine/Light.hpp>
+#include <Engine/DirLight.hpp>
+#include <Engine/SpotLight.hpp>
 #include <Engine/ShadowMap.hpp>
 
 #include <assimp/postprocess.h>
@@ -203,27 +204,27 @@ void Engine::Model::sortMesh(void)
 	qsort(&(*_tMesh)[0], _tMesh->size(), sizeof (*_tMesh)[0], comparMesh);
 }
 
-void Engine::Model::matIdentity(void)
+void Engine::Model::matIdentity(void) const
 {
 	*_modelMatrix = glm::mat4(1.0f);
 }
 
-void Engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z) const
 {
 	*_modelMatrix *= glm::translate(glm::vec3(x, y, z));
 }
 
-void Engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const
 {
 	*_modelMatrix *= glm::rotate(angle, glm::vec3(x, y, z));
 }
 
-void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z) const
 {
 	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
 }
 
-void Engine::Model::genMatNormal(void)
+void Engine::Model::genMatNormal(void) const
 {
 	*_normalMatrix = glm::transpose(glm::inverse(*_modelMatrix));
 }
@@ -321,7 +322,7 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 			(*_tMesh)[i]->display();
 }
 
-void Engine::Model::displayShadowMap(Light *light) const
+void Engine::Model::displayShadowMap(DirLight *light) const
 {
 	GLuint i;
 
@@ -347,5 +348,34 @@ void Engine::Model::displayShadowMap(Light *light) const
 
 	for(i=0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
+			(*_tMesh)[i]->displayShadow();
+}
+
+void Engine::Model::displayShadowMap(SpotLight *light) const
+{
+	GLuint i;
+
+	light->getShadowMap()->setState();
+
+	glUseProgram(_smProgram->getId());
+
+	struct
+	{
+		glm::mat4 MVP;
+		glm::mat4 projection;
+		glm::mat4 view;
+		glm::mat4 model;
+		glm::mat4 normal;
+	} matrix;
+	matrix.MVP = light->getVPMatrix() * *_modelMatrix;
+	matrix.projection = light->getProjectionMatrix();
+	matrix.view = light->getViewMatrix();
+	matrix.model = *_modelMatrix;
+	matrix.normal = *_normalMatrix;
+	_matrixBuffer->updateStoreMap(&matrix);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+	for (i = 0; i<_tMesh->size(); i++)
+		if ((*_tMesh)[i]->getTransparency() == 1.0f)
 			(*_tMesh)[i]->displayShadow();
 }

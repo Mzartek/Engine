@@ -29,8 +29,8 @@ namespace Engine
 		~SkyBox(void);
 		void load(const GLchar *posx, const GLchar *negx,
 			const GLchar *posy, const GLchar *negy,
-			const GLchar *posz, const GLchar *negz);
-		void rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z);
+			const GLchar *posz, const GLchar *negz) const;
+		void rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
 		void display(GBuffer *gbuf, Camera *cam) const;
 	};
 }

@@ -26,13 +26,19 @@ namespace Engine
 		void setSpotCutOff(const GLfloat &spot);
 		void setMaxDistance(const GLfloat &maxDistance);
 		void setShadowMapping(const GLboolean &shadow);
+		void configShadowMap(const GLuint &width, const GLuint &height) const;
+		ShadowMap *getShadowMap(void) const;
+		glm::mat4 getProjectionMatrix(void) const;
+		glm::mat4 getViewMatrix(void) const;
+		glm::mat4 getVPMatrix(void) const;
 		glm::vec3 getColor(void) const;
 		glm::vec3 getPosition(void) const;
 		glm::vec3 getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
 		GLfloat getMaxDistance(void) const;
-		void position(void);
-		void display(GBuffer *gbuf, Camera *cam);
+		void position(void) const;
+		void clear(void) const;
+		void display(GBuffer *gbuf, Camera *cam) const;
 	};
 }
 

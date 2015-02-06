@@ -40,7 +40,7 @@ Engine::Screen::~Screen(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Screen::background(GBuffer *gbuf)
+void Engine::Screen::background(GBuffer *gbuf) const
 {
 	gbuf->setBackgroundState();
 
@@ -59,7 +59,7 @@ void Engine::Screen::background(GBuffer *gbuf)
 	gbuf->clearLight();
 }
 
-void Engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a)
+void Engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a) const
 {
 	renderer->setState();
 

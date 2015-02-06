@@ -17,7 +17,7 @@ namespace Engine
 	public:
 		ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings = NULL, const GLsizei count = 0);
 		~ShaderProgram(void);
-		GLuint getId(void);
+		GLuint getId(void) const;
 	};
 }
 

@@ -8,7 +8,7 @@ Engine::PlayerCam::~PlayerCam(void)
 {
 }
 
-void Engine::PlayerCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r)
+void Engine::PlayerCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) const
 {
 	if(f)
 	{

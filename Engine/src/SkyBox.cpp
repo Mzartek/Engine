@@ -63,12 +63,12 @@ Engine::SkyBox::~SkyBox(void)
 
 void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	const GLchar *posy, const GLchar *negy,
-	const GLchar *posz, const GLchar *negz)
+	const GLchar *posz, const GLchar *negz) const
 {
 	_cubeTexture->loadCubeTextureFromFiles(posx, negx, posy, negy, posz, negz);
 }
 
-void Engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z)
+void Engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const
 {
 	*_rotateMatrix *= glm::rotate(angle, glm::vec3(x, y, z));
 }

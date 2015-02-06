@@ -12,7 +12,7 @@ namespace Engine
 	public:
 		Texture(void);
 		~Texture(void);
-		GLuint getId(void);
+		GLuint getId(void) const;
 		void load2DTextureFromFile(const GLchar *path);
 		void load2DTextureFromSDL_Surface(const SDL_Surface *surface);
 		void loadCubeTextureFromFiles(

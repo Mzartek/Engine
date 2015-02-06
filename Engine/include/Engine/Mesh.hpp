@@ -38,15 +38,15 @@ namespace Engine
 	public:
 		Mesh(void);
 		~Mesh(void);
-		void setColorTexture(const GLchar *path);
-		void setNMTexture(const GLchar *path);
+		void setColorTexture(const GLchar *path) const;
+		void setNMTexture(const GLchar *path) const;
 		void setAmbient(const glm::vec4 &ambient);
 		void setDiffuse(const glm::vec4 &diffuse);
 		void setSpecular(const glm::vec4 &specular);
 		void setShininess(const GLfloat &shininess);
-		GLfloat getTransparency(void);
+		GLfloat getTransparency(void) const;
 		void load(const GLsizei &numVertex, const Vertex *vertexArray,
-			  const GLsizei &numIndex, const GLuint *indexArray);
+			const GLsizei &numIndex, const GLuint *indexArray);
 		void display(void) const;
 		void displayShadow(void) const;
 	};
