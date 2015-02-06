@@ -17,7 +17,6 @@ elseif(WIN32)
     set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
   elseif(MSVC)
     set(CMAKE_CXX_FLAGS "/W4 /EHsc")
-    set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:WINDOWS")
   endif()
   
   find_package(GLEW REQUIRED)

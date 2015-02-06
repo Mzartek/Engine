@@ -10,6 +10,14 @@ namespace Engine
 	private:
 		struct
 		{
+			glm::mat4 shadowMatrix;
+			glm::mat4 IVPMatrix;
+			glm::uvec2 ALIGN(16) screen;
+			glm::vec3 ALIGN(16) camPosition;
+		} _mainInfo;
+
+		struct
+		{
 			glm::vec3 ALIGN(16) color;
 			glm::vec3 ALIGN(16) position;
 			glm::vec3 ALIGN(16) direction;
@@ -38,7 +46,7 @@ namespace Engine
 		GLfloat getMaxDistance(void) const;
 		void position(void) const;
 		void clear(void) const;
-		void display(GBuffer *gbuf, Camera *cam) const;
+		void display(GBuffer *gbuf, Camera *cam);
 	};
 }
 

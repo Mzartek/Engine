@@ -28,7 +28,7 @@ namespace Engine
 		~Light(void);
 		virtual void configShadowMap(const GLuint &width, const GLuint &height) const = 0;
 		virtual void clear(void) const = 0;
-		virtual void display(GBuffer *gbuf, Camera *cam) const = 0;
+		virtual void display(GBuffer *gbuf, Camera *cam) = 0;
 	};
 }
 

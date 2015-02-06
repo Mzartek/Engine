@@ -17,7 +17,6 @@ Engine::Light::Light(ShaderProgram *program)
 		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
-	_mainInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 160, GL_DYNAMIC_DRAW);
 }
 
 Engine::Light::~Light(void)

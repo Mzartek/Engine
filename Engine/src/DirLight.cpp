@@ -8,18 +8,21 @@
 Engine::DirLight::DirLight(ShaderProgram *program)
 	: Light(program)
 {
-	_shadow = new ShadowMap;
-	_projectionMatrix = new glm::mat4;
-	_viewMatrix = new glm::mat4;
-	_VPMatrix = new glm::mat4;
+	_shadow = new ShadowMap[CSM_NUM];
+	_projectionMatrix = new glm::mat4[CSM_NUM];
+	_viewMatrix = new glm::mat4[CSM_NUM];
+	_VPMatrix = new glm::mat4[CSM_NUM];
 
+	_mainInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _mainInfo, GL_DYNAMIC_DRAW);
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "normalTexture"), 0);
 	glUniform1i(glGetUniformLocation(_program->getId(), "materialTexture"), 1);
 	glUniform1i(glGetUniformLocation(_program->getId(), "depthTexture"), 2);
-	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap"), 3);
+	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap0"), 3);
+	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap1"), 4);
+	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap2"), 5);
 
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
@@ -31,10 +34,10 @@ Engine::DirLight::DirLight(ShaderProgram *program)
 
 Engine::DirLight::~DirLight(void)
 {
-	delete _shadow;
-	delete _projectionMatrix;
-	delete _viewMatrix;
-	delete _VPMatrix;
+	delete[] _shadow;
+	delete[] _projectionMatrix;
+	delete[] _viewMatrix;
+	delete[] _VPMatrix;
 
 	glDeleteVertexArrays(1, &_idVAO);
 }
@@ -56,27 +59,28 @@ void Engine::DirLight::setShadowMapping(const GLboolean &shadow)
 
 void Engine::DirLight::configShadowMap(const GLuint &width, const GLuint &height) const
 {
-	_shadow->config(width, height);
+	for (GLuint i = 0; i < CSM_NUM; i++)
+		_shadow[i].config(width, height);
 }
 
-Engine::ShadowMap *Engine::DirLight::getShadowMap(void) const
+Engine::ShadowMap *Engine::DirLight::getShadowMap(const GLuint num) const
 {
-	return _shadow;
+	return &_shadow[num];
 }
 
-glm::mat4 Engine::DirLight::getProjectionMatrix(void) const
+glm::mat4 Engine::DirLight::getProjectionMatrix(const GLuint num) const
 {
-	return *_projectionMatrix;
+	return _projectionMatrix[num];
 }
 
-glm::mat4 Engine::DirLight::getViewMatrix(void) const
+glm::mat4 Engine::DirLight::getViewMatrix(const GLuint num) const
 {
-	return *_viewMatrix;
+	return _viewMatrix[num];
 }
 
-glm::mat4 Engine::DirLight::getVPMatrix(void) const
+glm::mat4 Engine::DirLight::getVPMatrix(const GLuint num) const
 {
-	return *_VPMatrix;
+	return _VPMatrix[num];
 }
 
 glm::vec3 Engine::DirLight::getColor(void) const
@@ -94,31 +98,36 @@ void Engine::DirLight::position(Camera *cam, const GLfloat &dim) const
     glm::vec3 position[3];
     GLfloat test_dim[3];
 
-    glm::vec3 camPosition = cam->getCameraPosition();
+	glm::vec3 camPosition = cam->getCameraPosition();
     glm::vec3 camDirection = cam->getViewVector();
     GLfloat n = cam->getNear();
     GLfloat f = cam->getFar();
-    GLfloat distance = (f - n) / 3;
 
-    position[0] = camPosition + camDirection * n;
-    position[1] = camPosition + camDirection * (n + distance);
-    position[2] = camPosition + camDirection * (n + distance * 2);
+	camDirection = glm::normalize(glm::vec3(camDirection.x, 0, camDirection.z));
 
-    test_dim[0] = dim / 3;
+    position[0] = camPosition + camDirection * (n + 25);
+	position[1] = camPosition + camDirection * (n + 50);
+	position[2] = camPosition + camDirection * (n + 75);
+
+	test_dim[0] = dim / 3;
     test_dim[1] = dim / 2;
     test_dim[2] = dim;
 
-    *_projectionMatrix = glm::ortho(-test_dim[0], test_dim[0], -test_dim[0], test_dim[0], -test_dim[0], test_dim[0]);
-    *_viewMatrix = glm::lookAt(position[0] - _lightInfo.direction, position[0], glm::vec3(0.0f, 1.0f, 0.0f));
-    *_VPMatrix = *_projectionMatrix * *_viewMatrix;
+	for (GLuint i = 0; i < CSM_NUM; i++)
+	{
+		_projectionMatrix[i] = glm::ortho(-test_dim[i], test_dim[i], -test_dim[i], test_dim[i], -test_dim[i], test_dim[i]);
+		_viewMatrix[i] = glm::lookAt(position[i] - _lightInfo.direction, position[i], glm::vec3(0.0f, 1.0f, 0.0f));
+		_VPMatrix[i] = _projectionMatrix[i] * _viewMatrix[i];
+	}
 }
 
 void Engine::DirLight::clear(void) const
 {
-	_shadow->clear();
+	for (GLuint i = 0; i < CSM_NUM; i++)
+		_shadow[i].clear();
 }
 
-void Engine::DirLight::display(GBuffer *gbuf, Camera *cam) const
+void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 {
 	glm::vec3 camPosition = cam->getCameraPosition();
 
@@ -136,27 +145,25 @@ void Engine::DirLight::display(GBuffer *gbuf, Camera *cam) const
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
-	struct
-	{
-		glm::mat4 shadowMatrix;
-		glm::mat4 IVPMatrix;
-		glm::uvec2 ALIGN(16) screen;
-		glm::vec3 ALIGN(16) camPosition;
-	} mainInfo;
-
 	// ShadowMap
 	if (_lightInfo.withShadowMapping == GL_TRUE)
 	{
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
+		glBindTexture(GL_TEXTURE_2D, _shadow[0].getIdDepthTexture());
 
-		mainInfo.shadowMatrix = *_VPMatrix;
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, _shadow[1].getIdDepthTexture());
+
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, _shadow[2].getIdDepthTexture());
+
+		memcpy(_mainInfo.shadowMatrix, _VPMatrix, 3 * sizeof(glm::mat4));
 	}
-	mainInfo.IVPMatrix = cam->getIVPMatrix();
-	mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	mainInfo.camPosition = glm::vec3(camPosition.x, camPosition.y, camPosition.z);
+	_mainInfo.IVPMatrix = cam->getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
+	_mainInfo.camPosition = glm::vec3(camPosition.x, camPosition.y, camPosition.z);
 
-	_mainInfoBuffer->updateStoreMap(&mainInfo);
+	_mainInfoBuffer->updateStoreMap(&_mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());

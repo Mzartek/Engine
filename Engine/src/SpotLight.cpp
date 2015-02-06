@@ -13,6 +13,7 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 	_viewMatrix = new glm::mat4;
 	_VPMatrix = new glm::mat4;
 
+	_mainInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _mainInfo, GL_DYNAMIC_DRAW);
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
@@ -131,7 +132,7 @@ void Engine::SpotLight::clear(void) const
 	_shadow->clear();
 }
 
-void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam) const
+void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 {
 	glm::vec3 camPosition = cam->getCameraPosition();
 
@@ -149,27 +150,19 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam) const
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
-	struct
-	{
-		glm::mat4 shadowMatrix;
-		glm::mat4 IVPMatrix;
-		glm::uvec2 ALIGN(16) screen;
-		glm::vec3 ALIGN(16) camPosition;
-	} mainInfo;
-
 	// ShadowMap
 	if (_lightInfo.withShadowMapping == GL_TRUE)
 	{
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
 
-		mainInfo.shadowMatrix = *_VPMatrix;
+		_mainInfo.shadowMatrix = *_VPMatrix;
 	}
-	mainInfo.IVPMatrix = cam->getIVPMatrix();
-	mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	mainInfo.camPosition = glm::vec3(camPosition.x, camPosition.y, camPosition.z);
+	_mainInfo.IVPMatrix = cam->getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
+	_mainInfo.camPosition = glm::vec3(camPosition.x, camPosition.y, camPosition.z);
 
-	_mainInfoBuffer->updateStoreMap(&mainInfo);
+	_mainInfoBuffer->updateStoreMap(&_mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());

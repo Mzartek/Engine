@@ -17,6 +17,21 @@ namespace Engine
 	class DLLAPI Model : public Object
 	{
 	private:
+		struct
+		{
+			glm::mat4 MVP;
+			glm::mat4 projection;
+			glm::mat4 view;
+			glm::mat4 model;
+			glm::mat4 normal;
+		} _matrix;
+
+		struct
+		{
+			glm::vec3 ALIGN(16) position;
+			glm::vec3 ALIGN(16) target;
+		} _camera;
+
 		GLboolean isMirror;
 		std::vector<Mesh *> *_tMesh;
 		Buffer *_matrixBuffer;
@@ -43,10 +58,10 @@ namespace Engine
 		void genMatNormal(void) const;
 		glm::vec3 getPosition(void) const;
 		Mesh *getMesh(const GLuint &num) const;
-		void display(GBuffer *g, Camera *cam) const;
-		void displayTransparent(GBuffer *gbuf, Camera *cam) const;
-		void displayShadowMap(DirLight *light) const;
-		void displayShadowMap(SpotLight *light) const;
+		void display(GBuffer *g, Camera *cam);
+		void displayTransparent(GBuffer *gbuf, Camera *cam);
+		void displayShadowMap(DirLight *light);
+		void displayShadowMap(SpotLight *light);
 	};
 }
 

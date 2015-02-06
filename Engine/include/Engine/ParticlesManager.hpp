@@ -23,6 +23,20 @@ namespace Engine
 	class DLLAPI ParticlesManager : public Object
 	{
 	protected:
+		struct
+		{
+			glm::mat4 MVP;
+			glm::mat4 projectionMatrix;
+			glm::mat4 viewMatrix;
+			glm::mat4 modelMatrix;
+		} _matrix;
+
+		struct
+		{
+			glm::vec3 ALIGN(16) position;
+			glm::vec3 ALIGN(16) target;
+		} _camera;
+
 		ShaderProgram *_physicsProgram;
 		ShaderProgram *_displayProgram;
 		GLuint _idTFO;
@@ -44,7 +58,7 @@ namespace Engine
 		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
 		glm::vec3 getPosition(void) const;
 		void updateParticles(void);
-		void display(GBuffer *gbuf, Camera *cam) const;
+		void display(GBuffer *gbuf, Camera *cam);
 	};
 }
 

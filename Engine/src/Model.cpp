@@ -20,8 +20,8 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_modelMatrix = new glm::mat4;
 	_normalMatrix = new glm::mat4;
 
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 5 * sizeof(glm::mat4), GL_DYNAMIC_DRAW);
-	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 2 * sizeof(glm::vec4), GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
@@ -244,7 +244,7 @@ Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
 	return (*_tMesh)[num];
 }
 
-void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
+void Engine::Model::display(GBuffer *gbuf, Camera *cam)
 {
 	GLuint i;
 
@@ -252,30 +252,17 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
 
 	glUseProgram(_gProgram->getId());
 
-	struct
-	{
-        glm::mat4 MVP;
-        glm::mat4 projection;
-        glm::mat4 view;
-        glm::mat4 model;
-        glm::mat4 normal;
-	} matrix;
-	matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
-	matrix.projection = cam->getProjectionMatrix();
-	matrix.view = cam->getViewMatrix();
-	matrix.model = *_modelMatrix;
-	matrix.normal = *_normalMatrix;
-	_matrixBuffer->updateStoreMap(&matrix);
+	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = cam->getProjectionMatrix();
+	_matrix.view = cam->getViewMatrix();
+	_matrix.model = *_modelMatrix;
+	_matrix.normal = *_normalMatrix;
+	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	struct
-	{
-        glm::vec3 ALIGN(16) position;
-        glm::vec3 ALIGN(16) target;
-	} camera;
-	camera.position = cam->getCameraPosition();
-	camera.target = cam->getTargetPosition();
-	_cameraBuffer->updateStoreMap(&camera);
+	_camera.position = cam->getCameraPosition();
+	_camera.target = cam->getTargetPosition();
+	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
 	for(i=0 ; i<_tMesh->size(); i++)
@@ -283,7 +270,7 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam) const
 			(*_tMesh)[i]->display();
 }
 
-void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
+void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam)
 {
 	GLuint i;
 
@@ -291,30 +278,18 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 
 	glUseProgram(_gProgram->getId());
 
-	struct
-	{
-        glm::mat4 MVP;
-        glm::mat4 projection;
-        glm::mat4 view;
-        glm::mat4 model;
-        glm::mat4 normal;
-	} matrix;
-	matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
-	matrix.projection = cam->getProjectionMatrix();
-	matrix.view = cam->getViewMatrix();
-	matrix.model = *_modelMatrix;
-	matrix.normal = *_normalMatrix;
-	_matrixBuffer->updateStoreMap(&matrix);
+	
+	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = cam->getProjectionMatrix();
+	_matrix.view = cam->getViewMatrix();
+	_matrix.model = *_modelMatrix;
+	_matrix.normal = *_normalMatrix;
+	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	struct
-	{
-        glm::vec3 ALIGN(16) position;
-        glm::vec3 ALIGN(16) target;
-	} camera;
-	camera.position = cam->getCameraPosition();
-	camera.target = cam->getTargetPosition();
-	_cameraBuffer->updateStoreMap(&camera);
+	_camera.position = cam->getCameraPosition();
+	_camera.target = cam->getTargetPosition();
+	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
 	for (i = 0; i<_tMesh->size(); i++)
@@ -322,36 +297,33 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam) const
 			(*_tMesh)[i]->display();
 }
 
-void Engine::Model::displayShadowMap(DirLight *light) const
+void Engine::Model::displayShadowMap(DirLight *light)
 {
-	GLuint i;
-
-	light->getShadowMap()->setState();
+	GLuint i, j;
 
 	glUseProgram(_smProgram->getId());
 
-	struct
-	{
-        glm::mat4 MVP;
-        glm::mat4 projection;
-        glm::mat4 view;
-        glm::mat4 model;
-        glm::mat4 normal;
-	} matrix;
-	matrix.MVP = light->getVPMatrix() * *_modelMatrix;
-	matrix.projection = light->getProjectionMatrix();
-	matrix.view = light->getViewMatrix();
-	matrix.model = *_modelMatrix;
-	matrix.normal = *_normalMatrix;
-	_matrixBuffer->updateStoreMap(&matrix);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+	_matrix.model = *_modelMatrix;
+	_matrix.normal = *_normalMatrix;
 
-	for(i=0 ; i<_tMesh->size(); i++)
-        if((*_tMesh)[i]->getTransparency() == 1.0f)
-			(*_tMesh)[i]->displayShadow();
+	for (i = 0; i < CSM_NUM; i++)
+	{
+		light->getShadowMap(i)->setState();
+
+		_matrix.MVP = light->getVPMatrix(i) * *_modelMatrix;
+		_matrix.projection = light->getProjectionMatrix(i);
+		_matrix.view = light->getViewMatrix(i);
+
+		_matrixBuffer->updateStoreMap(&_matrix);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+		for (j = 0; j<_tMesh->size(); j++)
+			if ((*_tMesh)[j]->getTransparency() == 1.0f)
+				(*_tMesh)[j]->displayShadow();
+	}
 }
 
-void Engine::Model::displayShadowMap(SpotLight *light) const
+void Engine::Model::displayShadowMap(SpotLight *light)
 {
 	GLuint i;
 
@@ -359,20 +331,12 @@ void Engine::Model::displayShadowMap(SpotLight *light) const
 
 	glUseProgram(_smProgram->getId());
 
-	struct
-	{
-		glm::mat4 MVP;
-		glm::mat4 projection;
-		glm::mat4 view;
-		glm::mat4 model;
-		glm::mat4 normal;
-	} matrix;
-	matrix.MVP = light->getVPMatrix() * *_modelMatrix;
-	matrix.projection = light->getProjectionMatrix();
-	matrix.view = light->getViewMatrix();
-	matrix.model = *_modelMatrix;
-	matrix.normal = *_normalMatrix;
-	_matrixBuffer->updateStoreMap(&matrix);
+	_matrix.MVP = light->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = light->getProjectionMatrix();
+	_matrix.view = light->getViewMatrix();
+	_matrix.model = *_modelMatrix;
+	_matrix.normal = *_normalMatrix;
+	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
 	for (i = 0; i<_tMesh->size(); i++)

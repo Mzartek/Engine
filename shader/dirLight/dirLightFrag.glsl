@@ -6,11 +6,13 @@ uniform usampler2D materialTexture;
 uniform sampler2D depthTexture;
 
 // ShadowMap
-uniform sampler2DShadow shadowMap;
+uniform sampler2DShadow shadowMap0;
+uniform sampler2DShadow shadowMap1;
+uniform sampler2DShadow shadowMap2;
 
 layout(binding = 0) uniform mainInfoBuffer
 {
-	mat4 shadowMatrix;
+	mat4 shadowMatrix[3];
 	mat4 IVPMatrix;
 	uvec2 screen;
 	vec3 camPosition;
@@ -33,7 +35,7 @@ vec3 getPosition(vec2 fragCoord)
 	return tmp2.xyz / tmp2.w;
 }
 
-float lookUp(vec4 coord, vec2 offSet, ivec2 texSize)
+float lookUp(vec4 coord, vec2 offSet, ivec2 texSize, sampler2DShadow shadowMap)
 {
 	coord.x = 0.5f + (coord.x / coord.w * 0.5f);
 	coord.y = 0.5f + (coord.y / coord.w * 0.5f);
@@ -47,7 +49,7 @@ float lookUp(vec4 coord, vec2 offSet, ivec2 texSize)
 	return texture(shadowMap, coord.xyz);
 }
 
-float calcShadow(vec4 coord, float pcf)
+float calcShadow(vec4 coord, float pcf, sampler2DShadow shadowMap)
 {
 	float a, x, y, shadow = 0.0;
 	ivec2 texSize = textureSize(shadowMap, 0);
@@ -55,7 +57,7 @@ float calcShadow(vec4 coord, float pcf)
 	a = (pcf-1.0)/2.0;
 	for(x=-a ; x<=a ; x+=1.0)
 	  for(y=-a ; y<=a ; y+=1.0)
-		  shadow += lookUp(coord, vec2(x, y), texSize);
+		  shadow += lookUp(coord, vec2(x, y), texSize, shadowMap);
 	shadow /= (pcf*pcf);
 
 	return shadow;
@@ -78,8 +80,14 @@ void main(void)
 	vec4 diffColor = unpackUnorm4x8(material.z) * vec4(lightColor, 1.0);
 	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);
 	
+	vec3 cam_minus_pos = camPosition - position;	
 	float shadow = 1.0;
 	if (withShadowMapping)
-		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
-	outLight = calcLight(diffColor, specColor, normal.xyz, normalize(-lightDirection), normalize(camPosition - position), normal.w) * shadow;
+	{
+		float distance = length(cam_minus_pos);
+		if (distance < 25) shadow = calcShadow(shadowMatrix[0] * vec4(position, 1.0), 3.0, shadowMap0);
+		else if (distance < 100) shadow = shadow = calcShadow(shadowMatrix[1] * vec4(position, 1.0), 1.0, shadowMap1);
+		else shadow = calcShadow(shadowMatrix[2] * vec4(position, 1.0), 1.0, shadowMap2);
+	}
+	outLight = calcLight(diffColor, specColor, normal.xyz, normalize(-lightDirection), normalize(cam_minus_pos), normal.w) * shadow;
 }

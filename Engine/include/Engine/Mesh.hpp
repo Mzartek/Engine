@@ -21,11 +21,6 @@ namespace Engine
 		friend int comparMesh(const void *p1, const void *p2);
 
 	private:
-		Texture *_colorTexture;
-		Texture *_NMTexture;
-		Buffer *_vertexBuffer;
-		Buffer *_indexBuffer;
-		Buffer *_materialBuffer;
 		struct material
 		{
 			glm::vec4 ambient;
@@ -33,6 +28,12 @@ namespace Engine
 			glm::vec4 specular;
 			GLfloat ALIGN(16) shininess;
 		} _material;
+
+		Texture *_colorTexture;
+		Texture *_NMTexture;
+		Buffer *_vertexBuffer;
+		Buffer *_indexBuffer;
+		Buffer *_materialBuffer;
 		GLuint _idVAO;
 		GLsizei _numElement;
 	public:

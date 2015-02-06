@@ -16,8 +16,8 @@ Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, Shader
 	_vertexBuffer[0] = new Buffer;
 	_vertexBuffer[1] = new Buffer;
 
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 4 * sizeof(glm::mat4), GL_DYNAMIC_DRAW);
-	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, 2 * sizeof(glm::vec4), GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
 	glUseProgram(displayProgram->getId());
 	glUniform1i(glGetUniformLocation(displayProgram->getId(), "colorTexture"), 0);
@@ -114,34 +114,22 @@ void Engine::ParticlesManager::updateParticles(void)
 	std::swap(_vertexBuffer[0], _vertexBuffer[1]);
 }
 
-void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam) const
+void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam)
 {
 	gbuf->setParticlesState();
 
 	glUseProgram(_displayProgram->getId());
 
-	struct
-	{
-		glm::mat4 MVP;
-		glm::mat4 projectionMatrix;
-		glm::mat4 viewMatrix;
-		glm::mat4 modelMatrix;
-	} matrix;
-	matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
-	matrix.projectionMatrix = cam->getProjectionMatrix();
-	matrix.viewMatrix = cam->getViewMatrix();
-	matrix.modelMatrix = *_modelMatrix;
-	_matrixBuffer->updateStoreMap(&matrix);
+	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projectionMatrix = cam->getProjectionMatrix();
+	_matrix.viewMatrix = cam->getViewMatrix();
+	_matrix.modelMatrix = *_modelMatrix;
+	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	struct
-	{
-		glm::vec3 ALIGN(16) position;
-		glm::vec3 ALIGN(16) target;
-	} camera;
-	camera.position = cam->getCameraPosition();
-	camera.target = cam->getTargetPosition();
-	_cameraBuffer->updateStoreMap(&camera);
+	_camera.position = cam->getCameraPosition();
+	_camera.target = cam->getTargetPosition();
+	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
 	glActiveTexture(GL_TEXTURE0);
