@@ -95,7 +95,7 @@ glm::vec3 Engine::DirLight::getDirection(void) const
 
 void Engine::DirLight::position(Camera *cam, const GLfloat &dim) const
 {
-    glm::vec3 position[3];
+    glm::vec3 position;
     GLfloat test_dim[3];
 
 	glm::vec3 camPosition = cam->getCameraPosition();
@@ -105,9 +105,7 @@ void Engine::DirLight::position(Camera *cam, const GLfloat &dim) const
 
 	camDirection = glm::normalize(glm::vec3(camDirection.x, 0, camDirection.z));
 
-    position[0] = camPosition + camDirection * (n + 25);
-	position[1] = camPosition + camDirection * (n + 50);
-	position[2] = camPosition + camDirection * (n + 75);
+    position = camPosition + camDirection * n;
 
 	test_dim[0] = dim / 3;
     test_dim[1] = dim / 2;
@@ -116,7 +114,7 @@ void Engine::DirLight::position(Camera *cam, const GLfloat &dim) const
 	for (GLuint i = 0; i < CSM_NUM; i++)
 	{
 		_projectionMatrix[i] = glm::ortho(-test_dim[i], test_dim[i], -test_dim[i], test_dim[i], -test_dim[i], test_dim[i]);
-		_viewMatrix[i] = glm::lookAt(position[i] - _lightInfo.direction, position[i], glm::vec3(0.0f, 1.0f, 0.0f));
+		_viewMatrix[i] = glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
 		_VPMatrix[i] = _projectionMatrix[i] * _viewMatrix[i];
 	}
 }
