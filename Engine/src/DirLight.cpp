@@ -101,7 +101,6 @@ void Engine::DirLight::position(Camera *cam, const GLfloat &dim) const
 	glm::vec3 camPosition = cam->getCameraPosition();
     glm::vec3 camDirection = cam->getViewVector();
     GLfloat n = cam->getNear();
-    GLfloat f = cam->getFar();
 
 	camDirection = glm::normalize(glm::vec3(camDirection.x, 0, camDirection.z));
 
