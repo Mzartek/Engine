@@ -10,6 +10,7 @@ void GameManager::display(GLfloat state)
 	object.clear();
 	octreeSystem->getModel(gBuffer, player_cam, &object);
 
+	// Clear Buffers
 	renderer->clear();
 	gBuffer->clear();
 	moon->clear();
@@ -35,12 +36,12 @@ void GameManager::display(GLfloat state)
 	smokeManager->display(gBuffer, player_cam);
 
 	// Transparent Object
-	/*for (i = 0; i < object.size(); i++)
+	for (i = 0; i < object.size(); i++)
 		object[i]->displayTransparent(gBuffer, player->getCamera());
 
 	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
-	screen->background(gBuffer);*/
+	screen->background(gBuffer);
 
 	if (player->isAlive())
 		screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
@@ -129,7 +130,7 @@ int main(int argc, char **argv)
 {
 	srand((unsigned int)time(NULL));
 
-	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 1680, 1050, GL_TRUE);
+	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
 	Engine::Input *input = new Engine::Input;
 	GameManager *game = new GameManager(renderer, input);
 

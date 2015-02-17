@@ -28,21 +28,32 @@ static inline GLboolean checkCamInOctree(const Engine::Octree *octree, const Eng
 
 static inline GLboolean checkOctreeInCamSphere(const Engine::Octree *octree, const Engine::Camera *cam)
 {
-	if (glm::length(octree->position - cam->getFrusSpherePosition()) < octree->radius + cam->getFrusSphereRadius())
+	const glm::vec3 octree_position = cam->getCameraPosition();
+	const GLfloat distance = glm::length(octree_position - cam->getFrusSpherePosition());
+
+	if (distance < octree->radius + cam->getFrusSphereRadius())
 		return GL_TRUE;
 	return GL_FALSE;
 }
 
 static inline GLboolean checkOctreeInCamFrus(const Engine::Octree *octree, const Engine::Camera *cam)
 {
-	const glm::vec3 p = cam->getCameraPosition();
-	const glm::vec3 v = cam->getViewVector();
+	const glm::vec3 camera_position = cam->getCameraPosition();
+	const glm::vec3 view_vector = cam->getViewVector();
 	const GLfloat fov_2 = cam->getFOV() / 2;
 
-	if (acosf(glm::dot(v, glm::normalize(octree->position - p))) < fov_2) return GL_TRUE;
+	glm::vec3 position = octree->position;
+	glm::vec3 direction = glm::normalize(position - camera_position);
+	GLfloat dot = glm::dot(view_vector, direction);
+
+	if (acosf(dot) < fov_2) return GL_TRUE;
 	for (GLint i = 0; i < 8; i++)
 	{
-		if (acosf(glm::dot(v, glm::normalize(octree->vertex[i] - p))) < fov_2) return GL_TRUE;
+		position = octree->vertex[i];
+		direction = glm::normalize(position - camera_position);
+		dot = glm::dot(view_vector, direction);
+
+		if (acosf(dot) < fov_2) return GL_TRUE;
 	}
 	return GL_FALSE;
 }
@@ -59,7 +70,7 @@ void Engine::OctreeSystem::initOctree(const GLuint &depth, Octree *octree, const
 	octree->dim_2 = newDim;
 	octree->radius = glm::length(glm::vec3(newDim));
 	octree->next = new Octree[8];
-
+		
 	octree->vertex[0] = glm::vec3(position.x - newDim, position.y - newDim, position.z - newDim);
 	octree->vertex[1] = glm::vec3(position.x - newDim, position.y - newDim, position.z + newDim);
 	octree->vertex[2] = glm::vec3(position.x - newDim, position.y + newDim, position.z - newDim);
@@ -154,11 +165,14 @@ void Engine::OctreeSystem::getModelOctree(const GLuint &depth, Octree *octree, G
 		getModelOctree(depth + 1, &(octree->next[i]), gbuffer, cam, modelVector);
 }
 
-Engine::OctreeSystem::OctreeSystem(const GLuint &maxDepth, const glm::vec3 &position, const GLfloat &dim)
+Engine::OctreeSystem::OctreeSystem(const GLuint &maxDepth, const glm::vec3 &pos, const GLfloat &dim)
 {
+	glm::vec3 position = pos;
+
 	_maxDepth = maxDepth;
 	_octree = new Octree;
-	initOctree(0, _octree, position, dim);
+
+	initOctree(0, _octree, pos, dim);
 }
 
 Engine::OctreeSystem::~OctreeSystem()
