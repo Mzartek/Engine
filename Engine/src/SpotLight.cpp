@@ -13,7 +13,6 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 	_viewMatrix = new glm::mat4;
 	_VPMatrix = new glm::mat4;
 
-	_mainInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _mainInfo, GL_DYNAMIC_DRAW);
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
@@ -156,7 +155,7 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, _shadow->getIdDepthTexture());
 
-		_mainInfo.shadowMatrix = *_VPMatrix;
+		_lightInfo.shadowMatrix = *_VPMatrix;
 	}
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());

@@ -14,6 +14,13 @@ namespace Engine
 	class DLLAPI Light : public Object
 	{
 	protected:
+		struct
+		{
+			glm::mat4 IVPMatrix;
+			glm::uvec2 ALIGN(16) screen;
+			glm::vec3 ALIGN(16) camPosition;
+		} _mainInfo;
+
 		Buffer *_vertexBuffer;
 		Buffer *_mainInfoBuffer;
 		Buffer *_lightInfoBuffer;

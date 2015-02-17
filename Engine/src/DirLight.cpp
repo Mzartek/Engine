@@ -13,7 +13,6 @@ Engine::DirLight::DirLight(ShaderProgram *program)
 	_viewMatrix = new glm::mat4[CSM_NUM];
 	_VPMatrix = new glm::mat4[CSM_NUM];
 
-	_mainInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _mainInfo, GL_DYNAMIC_DRAW);
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
@@ -63,22 +62,22 @@ void Engine::DirLight::configShadowMap(const GLuint &width, const GLuint &height
 		_shadow[i].config(width, height);
 }
 
-Engine::ShadowMap *Engine::DirLight::getShadowMap(const GLuint num) const
+Engine::ShadowMap *Engine::DirLight::getShadowMap(const GLuint &num) const
 {
 	return &_shadow[num];
 }
 
-glm::mat4 Engine::DirLight::getProjectionMatrix(const GLuint num) const
+glm::mat4 Engine::DirLight::getProjectionMatrix(const GLuint &num) const
 {
 	return _projectionMatrix[num];
 }
 
-glm::mat4 Engine::DirLight::getViewMatrix(const GLuint num) const
+glm::mat4 Engine::DirLight::getViewMatrix(const GLuint &num) const
 {
 	return _viewMatrix[num];
 }
 
-glm::mat4 Engine::DirLight::getVPMatrix(const GLuint num) const
+glm::mat4 Engine::DirLight::getVPMatrix(const GLuint &num) const
 {
 	return _VPMatrix[num];
 }
@@ -93,27 +92,14 @@ glm::vec3 Engine::DirLight::getDirection(void) const
 	return _lightInfo.direction;
 }
 
-void Engine::DirLight::position(Camera *cam, const GLfloat &dim) const
+void Engine::DirLight::position(const glm::vec3 &pos, const GLfloat &dim0, const GLfloat &dim1, const GLfloat &dim2) const
 {
-    glm::vec3 position;
-    GLfloat test_dim[3];
-
-	glm::vec3 camPosition = cam->getCameraPosition();
-    glm::vec3 camDirection = cam->getViewVector();
-    GLfloat n = cam->getNear();
-
-	camDirection = glm::normalize(glm::vec3(camDirection.x, 0, camDirection.z));
-
-    position = camPosition + camDirection * n;
-
-	test_dim[0] = dim / 3;
-    test_dim[1] = dim / 2;
-    test_dim[2] = dim;
+	GLfloat dim[3] = { dim0, dim1, dim2 };
 
 	for (GLuint i = 0; i < CSM_NUM; i++)
 	{
-		_projectionMatrix[i] = glm::ortho(-test_dim[i], test_dim[i], -test_dim[i], test_dim[i], -test_dim[i], test_dim[i]);
-		_viewMatrix[i] = glm::lookAt(position - _lightInfo.direction, position, glm::vec3(0.0f, 1.0f, 0.0f));
+		_projectionMatrix[i] = glm::ortho(-dim[i], dim[i], -dim[i], dim[i],	-dim[i], dim[i]);
+		_viewMatrix[i] = glm::lookAt(pos - _lightInfo.direction, pos, glm::vec3(0.0f, 1.0f, 0.0f));
 		_VPMatrix[i] = _projectionMatrix[i] * _viewMatrix[i];
 	}
 }
@@ -154,7 +140,7 @@ void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 		glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, _shadow[2].getIdDepthTexture());
 
-		memcpy(_mainInfo.shadowMatrix, _VPMatrix, 3 * sizeof(glm::mat4));
+		memcpy(_lightInfo.shadowMatrix, _VPMatrix, 3 * sizeof(glm::mat4));
 	}
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());

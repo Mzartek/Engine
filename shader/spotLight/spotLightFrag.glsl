@@ -12,7 +12,6 @@ uniform sampler2DShadow shadowMap;
 
 layout(binding = 0) uniform mainInfoBuffer
 {
-	mat4 shadowMatrix;
 	mat4 IVPMatrix;
 	uvec2 screen;
 	vec3 camPosition;
@@ -20,6 +19,7 @@ layout(binding = 0) uniform mainInfoBuffer
 
 layout(binding = 1) uniform lightInfoBuffer
 {
+	mat4 shadowMatrix;
 	vec3 lightColor;
 	vec3 lightPosition;
 	vec3 lightDirection;
