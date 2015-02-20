@@ -70,7 +70,7 @@ void Engine::OctreeSystem::initOctree(const GLuint &depth, Octree *octree, const
 	octree->dim_2 = newDim;
 	octree->radius = glm::length(glm::vec3(newDim));
 	octree->next = new Octree[8];
-		
+
 	octree->vertex[0] = glm::vec3(position.x - newDim, position.y - newDim, position.z - newDim);
 	octree->vertex[1] = glm::vec3(position.x - newDim, position.y - newDim, position.z + newDim);
 	octree->vertex[2] = glm::vec3(position.x - newDim, position.y + newDim, position.z - newDim);
@@ -167,8 +167,6 @@ void Engine::OctreeSystem::getModelOctree(const GLuint &depth, Octree *octree, G
 
 Engine::OctreeSystem::OctreeSystem(const GLuint &maxDepth, const glm::vec3 &pos, const GLfloat &dim)
 {
-	glm::vec3 position = pos;
-
 	_maxDepth = maxDepth;
 	_octree = new Octree;
 

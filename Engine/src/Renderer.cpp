@@ -40,7 +40,7 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 	_Window = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
 	if (_Window == NULL)
 	{
-		std::cerr << "Error while creating Window: " << SDL_GetError();
+		std::cerr << "Error while creating Window: " << SDL_GetError() << std::endl;
 		exit(1);
 	}
 	_GLContext = SDL_GL_CreateContext(_Window);
