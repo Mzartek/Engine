@@ -102,6 +102,16 @@ void Engine::DirLight::position(const glm::vec3 &pos, const GLfloat &dim0, const
 		_viewMatrix[i] = glm::lookAt(pos - _lightInfo.direction, pos, glm::vec3(0.0f, 1.0f, 0.0f));
 		_VPMatrix[i] = _projectionMatrix[i] * _viewMatrix[i];
 	}
+
+	/*glm::mat4 mattest;
+	mattest = _projectionMatrix[0];
+	std::string test =
+		std::to_string(mattest[0][0]) + " " + std::to_string(mattest[0][1]) + " " + std::to_string(mattest[0][2]) + " " + std::to_string(mattest[0][3]) + "\n" +
+		std::to_string(mattest[1][0]) + " " + std::to_string(mattest[1][1]) + " " + std::to_string(mattest[1][2]) + " " + std::to_string(mattest[1][3]) + "\n" +
+		std::to_string(mattest[2][0]) + " " + std::to_string(mattest[2][1]) + " " + std::to_string(mattest[2][2]) + " " + std::to_string(mattest[2][3]) + "\n" +
+		std::to_string(mattest[3][0]) + " " + std::to_string(mattest[3][1]) + " " + std::to_string(mattest[3][2]) + " " + std::to_string(mattest[3][3]) + "\n";
+	MessageBoxA(NULL, test.c_str(), "OpenGL", MB_OK);
+	exit(0);*/
 }
 
 void Engine::DirLight::clear(void) const

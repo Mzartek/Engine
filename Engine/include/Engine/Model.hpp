@@ -17,31 +17,39 @@ namespace Engine
 	class DLLAPI Model : public Object
 	{
 	private:
-		GLboolean isMirror;
+		GLboolean _isMirror;
 		std::vector<Mesh *> *_tMesh;
 		Buffer *_matrixBuffer;
 		Buffer *_cameraBuffer;
+		glm::vec3 *_position;
+		glm::vec3 *_rotation;
+		glm::vec3 *_scale;
 		glm::mat4 *_modelMatrix;
 		glm::mat4 *_normalMatrix;
+		GLboolean _needMatModel;
+		GLboolean _needMatNormal;
 		ShaderProgram *_gProgram;
 		ShaderProgram *_smProgram;
+		void genMatModel(void) const;
+		void genMatNormal(void) const;
+		void checkMatrix(void);
+		void deleteMesh(void);
 	public:
 		Model(ShaderProgram *gProgram, ShaderProgram *smProgram);
+		Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smProgram);
 		~Model(void);
-		void initMeshArray(void);
-		void initMeshMirror(Model *m);
 		void addMesh(const GLsizei &numVertex, const Vertex *vertexArray,
 				  const GLsizei &numIndex, const GLuint *indexArray,
 				  const GLchar *colorTexture, const GLchar *NMTexture,
 				  const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);
 		void loadFromFile(const GLchar *file);
 		void sortMesh(void);
-		void matIdentity(void) const;
-		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
-		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
-		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
-		void genMatNormal(void) const;
+		void setPosition(const glm::vec3 &position);
+		void setRotation(const glm::vec3 &rotation);
+		void setScale(const glm::vec3 &scale);
 		glm::vec3 getPosition(void) const;
+		glm::vec3 getRotation(void) const;
+		glm::vec3 getScale(void) const;
 		Mesh *getMesh(const GLuint &num) const;
 		void display(GBuffer *g, Camera *cam);
 		void displayTransparent(GBuffer *gbuf, Camera *cam);

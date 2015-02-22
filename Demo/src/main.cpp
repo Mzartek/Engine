@@ -74,7 +74,7 @@ void GameManager::idle(void)
 		smokeManager->updateParticles();
 
 		player_cam->position();
-		moon->position(player_cam->getCameraPosition(), 250, 500, 1000);
+		moon->position(player_cam->getCameraPosition(), 100, 250, 500);
 		torch->position();
 	}
 

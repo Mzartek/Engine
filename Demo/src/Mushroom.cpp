@@ -19,14 +19,12 @@ Mushroom::Mushroom(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smPro
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
 	GLfloat mat_shininess = 128.0f;
 
-	this->initMeshArray();
 	this->addMesh(sizeof vertexArray / sizeof(Engine::Vertex), vertexArray, sizeof index / sizeof(GLuint), index, texture, "resources/NM_none.png", mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 }
 
 Mushroom::Mushroom(Mushroom *mushroom)
-	: Model(mushroom->_gProgram, mushroom->_smProgram), _type(MUSHROOM_NONE)
+	: Model(mushroom, mushroom->_gProgram, mushroom->_smProgram), _type(MUSHROOM_NONE)
 {
-	this->initMeshMirror(mushroom);
 }
 
 Mushroom::~Mushroom(void)

@@ -27,13 +27,85 @@ static struct
 	glm::vec3 ALIGN(16) target;
 } _camera;
 
-Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
-	: _tMesh(NULL), _gProgram(gProgram), _smProgram(smProgram)
+void Engine::Model::genMatModel(void) const
 {
+	*_modelMatrix = glm::translate(*_position) *
+		glm::rotate(_rotation->x, glm::vec3(1, 0, 0)) *
+		glm::rotate(_rotation->y, glm::vec3(0, 1, 0)) *
+		glm::rotate(_rotation->z, glm::vec3(0, 0, 1)) *
+		glm::scale(*_scale);
+}
+
+void Engine::Model::genMatNormal(void) const
+{
+	*_normalMatrix = glm::transpose(glm::inverse(*_modelMatrix));
+}
+
+void Engine::Model::checkMatrix(void)
+{
+	if (_needMatModel == GL_TRUE)
+	{
+		genMatModel();
+		_needMatModel = GL_FALSE;
+	}
+	if (_needMatNormal == GL_TRUE)
+	{
+		genMatNormal();
+		_needMatNormal = GL_FALSE;
+	}
+}
+
+void Engine::Model::deleteMesh(void)
+{
+	if (_tMesh != NULL && _isMirror != GL_TRUE)
+	{
+		for (GLuint i = 0; i<_tMesh->size(); i++)
+			delete (*_tMesh)[i];
+		delete _tMesh;
+	}
+}
+
+Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
+	: _isMirror(GL_FALSE), _tMesh(NULL), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _gProgram(gProgram), _smProgram(smProgram)
+{
+	_tMesh = new std::vector<Mesh *>;
 	_matrixBuffer = new Buffer;
     _cameraBuffer = new Buffer;
+	_position = new glm::vec3;
+	_rotation = new glm::vec3;
+	_scale = new glm::vec3;
 	_modelMatrix = new glm::mat4;
 	_normalMatrix = new glm::mat4;
+
+	*_position = glm::vec3(0, 0, 0);
+	*_rotation = glm::vec3(0, 0, 0);
+	*_scale = glm::vec3(1, 1, 1);
+
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
+
+	glUseProgram(_gProgram->getId());
+	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
+	glUniform1i(glGetUniformLocation(_gProgram->getId(), "NMTexture"), 1);
+	glUseProgram(_smProgram->getId());
+	glUniform1i(glGetUniformLocation(_smProgram->getId(), "colorTexture"), 0);
+}
+
+Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
+	: _isMirror(GL_TRUE), _tMesh(NULL), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _gProgram(gProgram), _smProgram(smProgram)
+{
+	_tMesh = model->_tMesh;
+	_matrixBuffer = new Buffer;
+	_cameraBuffer = new Buffer;
+	_position = new glm::vec3;
+	_rotation = new glm::vec3;
+	_scale = new glm::vec3;
+	_modelMatrix = new glm::mat4;
+	_normalMatrix = new glm::mat4;
+
+	*_position = glm::vec3(0, 0, 0);
+	*_rotation = glm::vec3(0, 0, 0);
+	*_scale = glm::vec3(1, 1, 1);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
@@ -47,43 +119,15 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 
 Engine::Model::~Model(void)
 {
-	GLuint i;
-	if (_tMesh != NULL && isMirror != GL_TRUE)
-	{
-		for (i = 0; i<_tMesh->size(); i++)
-			delete (*_tMesh)[i];
-		delete _tMesh;
-	}
+	deleteMesh();
+
 	delete _matrixBuffer;
 	delete _cameraBuffer;
+	delete _position;
+	delete _rotation;
+	delete _scale;
 	delete _modelMatrix;
 	delete _normalMatrix;
-}
-
-void Engine::Model::initMeshArray(void)
-{
-	GLuint i;
-	if (_tMesh != NULL && isMirror != GL_TRUE)
-	{
-		for (i = 0; i<_tMesh->size(); i++)
-			delete (*_tMesh)[i];
-		delete _tMesh;
-	}
-	isMirror = GL_FALSE;
-	_tMesh = new std::vector<Mesh *>;
-}
-
-void Engine::Model::initMeshMirror(Model *m)
-{
-	GLuint i;
-	if (_tMesh != NULL && isMirror != GL_TRUE)
-	{
-		for (i = 0; i<_tMesh->size(); i++)
-			delete (*_tMesh)[i];
-		delete _tMesh;
-	}
-	isMirror = GL_TRUE;
-	_tMesh = m->_tMesh;
 }
 
 void Engine::Model::addMesh(const GLsizei &numVertex, const Vertex *vertexArray,
@@ -124,22 +168,19 @@ void Engine::Model::loadFromFile(const GLchar *file)
 	Assimp::Importer Importer;
 	GLuint i, j;
 
-	if (_tMesh == NULL || isMirror == GL_TRUE)
+	if (_isMirror == GL_TRUE)
 	{
-		std::cerr << "Error Model configuration" << std::endl;
+		std::cerr << "Can't load a mirror model" << std::endl;
 		exit(1);
 	}
-	for (i = 0; i<_tMesh->size(); i++)
-		delete (*_tMesh)[i];
-	_tMesh->clear();
 
 	const aiScene *pScene = Importer.ReadFile(file, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
 	if (!pScene)
 	{
         std::string error = "Unable to load the model: ";
         error.append(file);
-		throw error;
-		return;
+		std::cout << error << std::endl;
+		exit(1);
 	}
 
 	Vertex tmpVertex;
@@ -219,34 +260,39 @@ void Engine::Model::sortMesh(void)
 	qsort(&(*_tMesh)[0], _tMesh->size(), sizeof (*_tMesh)[0], comparMesh);
 }
 
-void Engine::Model::matIdentity(void) const
+void Engine::Model::setPosition(const glm::vec3 &position)
 {
-	*_modelMatrix = glm::mat4(1.0f);
+	*_position = position;
+	_needMatModel = GL_TRUE;
 }
 
-void Engine::Model::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z) const
+void Engine::Model::setRotation(const glm::vec3 &rotation)
 {
-	*_modelMatrix *= glm::translate(glm::vec3(x, y, z));
+	*_rotation = rotation;
+	_needMatModel = GL_TRUE;
+	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const
+void Engine::Model::setScale(const glm::vec3 &scale)
 {
-	*_modelMatrix *= glm::rotate(angle, glm::vec3(x, y, z));
-}
-
-void Engine::Model::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z) const
-{
-	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
-}
-
-void Engine::Model::genMatNormal(void) const
-{
-	*_normalMatrix = glm::transpose(glm::inverse(*_modelMatrix));
+	*_scale = scale;
+	_needMatModel = GL_TRUE;
+	_needMatNormal = GL_TRUE;
 }
 
 glm::vec3 Engine::Model::getPosition(void) const
 {
-	return glm::vec3(glm::column(*_modelMatrix, 3));
+	return *_position;
+}
+
+glm::vec3 Engine::Model::getRotation(void) const
+{
+	return *_rotation;
+}
+
+glm::vec3 Engine::Model::getScale(void) const
+{
+	return *_scale;
 }
 
 Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
@@ -261,7 +307,7 @@ Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
 
 void Engine::Model::display(GBuffer *gbuf, Camera *cam)
 {
-	GLuint i;
+	checkMatrix();
 
 	gbuf->setGeometryState();
 
@@ -280,19 +326,18 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam)
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
-	for(i=0 ; i<_tMesh->size(); i++)
+	for(GLuint i = 0 ; i<_tMesh->size(); i++)
         if((*_tMesh)[i]->getTransparency() == 1.0f)
 			(*_tMesh)[i]->display();
 }
 
 void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam)
 {
-	GLuint i;
+	checkMatrix();
 
 	gbuf->setGeometryState();
 
 	glUseProgram(_gProgram->getId());
-
 	
 	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
 	_matrix.projection = cam->getProjectionMatrix();
@@ -307,21 +352,21 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam)
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
-	for (i = 0; i<_tMesh->size(); i++)
+	for (GLuint i = 0; i<_tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() != 1.0f)
 			(*_tMesh)[i]->display();
 }
 
 void Engine::Model::displayShadowMap(DirLight *light)
 {
-	GLuint i, j;
+	checkMatrix();
 
 	glUseProgram(_smProgram->getId());
 
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 
-	for (i = 0; i < CSM_NUM; i++)
+	for (GLuint i = 0; i < CSM_NUM; i++)
 	{
 		light->getShadowMap(i)->setState();
 
@@ -332,7 +377,7 @@ void Engine::Model::displayShadowMap(DirLight *light)
 		_matrixBuffer->updateStoreMap(&_matrix);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-		for (j = 0; j<_tMesh->size(); j++)
+		for (GLuint j = 0; j<_tMesh->size(); j++)
 			if ((*_tMesh)[j]->getTransparency() == 1.0f)
 				(*_tMesh)[j]->displayShadow();
 	}
@@ -340,7 +385,7 @@ void Engine::Model::displayShadowMap(DirLight *light)
 
 void Engine::Model::displayShadowMap(SpotLight *light)
 {
-	GLuint i;
+	checkMatrix();
 
 	light->getShadowMap()->setState();
 
@@ -354,7 +399,7 @@ void Engine::Model::displayShadowMap(SpotLight *light)
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	for (i = 0; i<_tMesh->size(); i++)
+	for (GLuint i = 0; i<_tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() == 1.0f)
 			(*_tMesh)[i]->displayShadow();
 }

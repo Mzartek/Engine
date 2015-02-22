@@ -20,12 +20,10 @@ void GameManager::configSol(void)
 	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
 	GLfloat mat_shininess = 8.0f;
 
-	sol->initMeshArray();
 	sol->addMesh(sizeof vertexArray / sizeof(Engine::Vertex), vertexArray,
 		sizeof index / sizeof(GLuint), index,
 		"resources/pre-project/feuilles.png", "resources/NM_none.png",
 		mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-	sol->genMatNormal();
 
 	octreeSystem->addModel(sol, 1000);
 }
@@ -46,40 +44,26 @@ void GameManager::configChamp(void)
 		phalloide_tmp = new Phalloide(model_phalloide);
 		satan_tmp = new Satan(model_satan);
 
-		cepe_tmp->matTranslate(getRandomPosition(), 1.5f, getRandomPosition());
-		phalloide_tmp->matTranslate(getRandomPosition(), 1.5f, getRandomPosition());
-		satan_tmp->matTranslate(getRandomPosition(), 1.5f, getRandomPosition());
-
-		cepe_tmp->genMatNormal();
-		phalloide_tmp->genMatNormal();
-		satan_tmp->genMatNormal();
+		cepe_tmp->setPosition(glm::vec3(getRandomPosition(), 1.5f, getRandomPosition()));
+		phalloide_tmp->setPosition(glm::vec3(getRandomPosition(), 1.5f, getRandomPosition()));
+		satan_tmp->setPosition(glm::vec3(getRandomPosition(), 1.5f, getRandomPosition()));
 
 		octreeSystem->addModel(cepe_tmp, 2);
 		octreeSystem->addModel(phalloide_tmp, 2);
 		octreeSystem->addModel(satan_tmp, 2);
 
-		this->vector_cepe->push_back(cepe_tmp);
-		this->vector_phalloide->push_back(phalloide_tmp);
-		this->vector_satan->push_back(satan_tmp);
+		vector_cepe->push_back(cepe_tmp);
+		vector_phalloide->push_back(phalloide_tmp);
+		vector_satan->push_back(satan_tmp);
 	}
 }
 
 void GameManager::configTree(void)
 {
 	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
-	model_tree->initMeshArray();
-	try
-	{
-        model_tree->loadFromFile("./resources/tree/Tree1.3ds");
-	}
-	catch(const std::string &error)
-	{
-        std::cout << error << std::endl;
-        exit(1);
-	}
-	model_tree->matRotate(-glm::pi<GLfloat>() / 2, 1, 0, 0);
-	model_tree->matScale(5, 5, 5);
-	model_tree->genMatNormal();
+    model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+	model_tree->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
+	model_tree->setScale(glm::vec3(5, 5, 5));
 
 	octreeSystem->addModel(model_tree, 40);
 }
@@ -97,7 +81,6 @@ void GameManager::configRainParticles(void)
 	}
 	rainManager->setTexture("resources/pre-project/goutte.png");
 	rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
-	//rainManager->matTranslate(20, 0, 0);
 }
 
 void GameManager::configSmokeParticles(void)
@@ -173,7 +156,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	configTree();
 
 	moon->setColor(glm::vec3(0.5f, 0.5f, 0.9f));
-	moon->setDirection(glm::vec3(2.0f, -1.0f, 0.0f));
+	moon->setDirection(glm::vec3(0.5f, -1.0f, 0.0f));
 	moon->setShadowMapping(GL_TRUE);
 	moon->configShadowMap(4096, 4096);
 
