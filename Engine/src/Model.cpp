@@ -257,7 +257,7 @@ void Engine::Model::loadFromFile(const GLchar *file)
 
 void Engine::Model::sortMesh(void)
 {
-	qsort(&(*_tMesh)[0], _tMesh->size(), sizeof (*_tMesh)[0], comparMesh);
+	std::sort(_tMesh->begin(), _tMesh->end(), CompareMesh());
 }
 
 void Engine::Model::setPosition(const glm::vec3 &position)

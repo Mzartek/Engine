@@ -61,7 +61,8 @@ void GameManager::configChamp(void)
 void GameManager::configTree(void)
 {
 	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
-    model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+	model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+	model_tree->sortMesh();
 	model_tree->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
 	model_tree->setScale(glm::vec3(5, 5, 5));
 

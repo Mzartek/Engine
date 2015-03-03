@@ -109,14 +109,9 @@ void Engine::Mesh::displayShadow(void) const
 	glBindVertexArray(0);
 }
 
-int Engine::comparMesh(const void *p1, const void *p2)
+bool Engine::CompareMesh::operator()(const Mesh *first, const Mesh *second)
 {
-	Mesh **obj1 = (Engine::Mesh **)p1;
-	Mesh **obj2 = (Engine::Mesh **)p2;
-
-	if ((*obj1)->_material.diffuse.w < (*obj2)->_material.diffuse.w)
-		return 1;
-	if ((*obj1)->_material.diffuse.w > (*obj2)->_material.diffuse.w)
-		return -1;
-	return 0;
+	if (first->_material.diffuse.z > second->_material.diffuse.z)
+		return true;
+	return false;
 }
