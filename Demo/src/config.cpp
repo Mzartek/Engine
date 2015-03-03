@@ -149,7 +149,6 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	skybox->load("resources/Skybox/nnksky01_right.jpg", "resources/Skybox/nnksky01_left.jpg",
 		"resources/Skybox/nnksky01_top.jpg", "resources/Skybox/nnksky01_bottom.jpg",
 		"resources/Skybox/nnksky01_front.jpg", "resources/Skybox/nnksky01_back.jpg");
-	skybox->rotate(glm::pi<GLfloat>(), 1, 0, 0);
 
 	// Model config
 	configSol();

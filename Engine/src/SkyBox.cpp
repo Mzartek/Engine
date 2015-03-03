@@ -12,7 +12,6 @@ Engine::SkyBox::SkyBox(ShaderProgram *program)
 	_vertexBuffer = new Buffer;
 	_indexBuffer = new Buffer;
 	_MVPMatrixBuffer = new Buffer;
-	_rotateMatrix = new glm::mat4;
 
 	GLfloat vertexArray[] =
 	{
@@ -57,7 +56,6 @@ Engine::SkyBox::~SkyBox(void)
 	delete _vertexBuffer;
 	delete _indexBuffer;
 	delete _MVPMatrixBuffer;
-	delete _rotateMatrix;
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
@@ -68,14 +66,14 @@ void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	_cubeTexture->loadCubeTextureFromFiles(posx, negx, posy, negy, posz, negz);
 }
 
-void Engine::SkyBox::rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const
+Engine::Texture *Engine::SkyBox::getTexture(void) const
 {
-	*_rotateMatrix *= glm::rotate(angle, glm::vec3(x, y, z));
+	return _cubeTexture;
 }
 
 void Engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
 {
-	glm::mat4 pos = cam->getVPMatrix() * glm::translate(glm::vec3(cam->getCameraPosition())) * *_rotateMatrix;
+	glm::mat4 pos = cam->getVPMatrix() * glm::translate(glm::vec3(cam->getCameraPosition()));
 
 	gbuf->setSkyboxState();
 

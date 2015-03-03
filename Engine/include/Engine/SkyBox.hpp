@@ -20,7 +20,6 @@ namespace Engine
 		Buffer *_vertexBuffer;
 		Buffer *_indexBuffer;
 		Buffer *_MVPMatrixBuffer;
-		glm::mat4 *_rotateMatrix;
 		ShaderProgram *_program;
 		GLuint _idVAO;
 		GLuint _numElement;
@@ -30,7 +29,7 @@ namespace Engine
 		void load(const GLchar *posx, const GLchar *negx,
 			const GLchar *posy, const GLchar *negy,
 			const GLchar *posz, const GLchar *negz) const;
-		void rotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
+		Texture *getTexture(void) const;
 		void display(GBuffer *gbuf, Camera *cam) const;
 	};
 }
