@@ -68,9 +68,9 @@ float calcShadow(vec4 coord, float pcf)
 
 vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, vec3 V, float shininess)
 {
-	vec3 R = reflect(-L, N);
+	vec3 H = normalize(L + V);
 	vec4 diff = max(dot(N, L), 0.0) * diffColor;
-	vec4 spec = pow(max(dot(R, V), 0.0), shininess) * specColor;
+	vec4 spec = pow(max(dot(N, H), 0.0), shininess) * specColor;
 	return diff + spec;
 }
 
