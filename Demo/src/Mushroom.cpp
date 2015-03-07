@@ -2,7 +2,7 @@
 #include <Engine/Mesh.hpp>
 
 Mushroom::Mushroom(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smProgram, const GLchar *texture)
-	: Model(gProgram, smProgram), _type(MUSHROOM_NONE)
+	: Model(gProgram, smProgram)
 {
 	_gProgram = gProgram;
 	_smProgram = smProgram;
@@ -23,7 +23,7 @@ Mushroom::Mushroom(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smPro
 }
 
 Mushroom::Mushroom(Mushroom *mushroom)
-	: Model(mushroom, mushroom->_gProgram, mushroom->_smProgram), _type(MUSHROOM_NONE)
+	: Model(mushroom, mushroom->_gProgram, mushroom->_smProgram)
 {
 }
 
@@ -33,15 +33,15 @@ Mushroom::~Mushroom(void)
 
 bool Mushroom::isCepe(void)
 {
-	return (_type == MUSHROOM_CEPE) ? true : false;
+	return false;
 }
 
 bool Mushroom::isPhalloide(void)
 {
-	return (_type == MUSHROOM_PHALLOIDE) ? true : false;
+	return false;
 }
 
 bool Mushroom::isSatan(void)
 {
-	return (_type == MUSHROOM_SATAN) ? true : false;
+	return false;
 }

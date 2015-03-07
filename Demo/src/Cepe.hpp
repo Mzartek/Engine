@@ -9,6 +9,7 @@ public:
 	Cepe(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smProgram);
 	Cepe(Cepe *cepe);
 	~Cepe(void);
+	bool isCepe(void);
 };
 
 #endif

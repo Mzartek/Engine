@@ -4,10 +4,8 @@ uniform sampler2D depthTexture;
 
 layout (binding = 0) uniform matrixBuffer
 {
-     mat4 MVP;
      mat4 projectionMatrix;
      mat4 viewMatrix;
-     mat4 modelMatrix;
 };
 
 layout (binding = 1) uniform cameraBuffer
@@ -34,13 +32,14 @@ void main(void)
      float xdim = 0.2;
      float ydim = 1.0;
 
-     vec4 particle = modelMatrix * GeomIn[0].particle;
+     vec4 particle = GeomIn[0].particle;
 
-     mat4 finalMatrix = modelMatrix;
-	 
-     finalMatrix[3][0] = camPosition.x + particle.x;
-     finalMatrix[3][1] = camPosition.y + particle.y;
-     finalMatrix[3][2] = camPosition.z + particle.z;
+	 mat4 finalMatrix = mat4(
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		particle.x, particle.y, particle.z, 1.0
+	 );
 
      finalMatrix = viewMatrix * finalMatrix;
      

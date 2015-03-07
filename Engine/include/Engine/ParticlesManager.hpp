@@ -25,10 +25,13 @@ namespace Engine
 	protected:
 		struct
 		{
-			glm::mat4 MVP;
+			glm::vec3 ALIGN(16) origin;
+		} _position;
+
+		struct
+		{
 			glm::mat4 projectionMatrix;
 			glm::mat4 viewMatrix;
-			glm::mat4 modelMatrix;
 		} _matrix;
 
 		struct
@@ -41,8 +44,8 @@ namespace Engine
 		ShaderProgram *_displayProgram;
 		GLuint _idTFO;
 		GLuint _idVAO;
-		glm::mat4 *_modelMatrix;
 		Texture *_colorTexture;
+		Buffer *_positionBuffer;
 		Buffer *_matrixBuffer;
 		Buffer *_cameraBuffer;
 		Buffer *_vertexBuffer[2];
@@ -52,10 +55,7 @@ namespace Engine
 		~ParticlesManager(void);
 		void setTexture(const GLchar *path) const;
 		void setParticles(const Particle *particles, const GLsizei &numParticles);
-		void matIdentity(void) const;
-		void matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
-		void matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
-		void matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z) const;
+		void setPosition(const glm::vec3 &pos);
 		glm::vec3 getPosition(void) const;
 		void updateParticles(void);
 		void display(GBuffer *gbuf, Camera *cam);

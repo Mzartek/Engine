@@ -10,25 +10,36 @@ out vec3 outDirection;
 out float outVelocity;
 out float outLife;
 
-/*int rand(int seed)
+layout (binding = 0) uniform positionBuffer
 {
-    int res = ((1103515245 * seed) + 0) & 0x7FFFFFFF;
-    return res;
-}*/
+	vec3 origin;
+};
+
+layout (binding = 1) uniform cameraBuffer
+{
+    vec3 camPosition;
+    vec3 camTarget;
+};
+
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
 
 void main(void)
 {
 	if(life < 100)
 	{
-		outPosition = position;
+		outPosition = position + vec3(normalize(direction) * velocity);
 		outDirection = direction;
 		outVelocity = velocity;
 		outLife = life + 1.0;
 	}
 	else
 	{
-		outPosition = vec3(0, 0, 0);
-		outDirection = direction;
+		float num0 = rand(direction.xz);
+
+		outPosition = origin;
+		outDirection = normalize(vec3(num0, 0.50, 0));
 		outVelocity = velocity;
 		outLife = 0;
 	}

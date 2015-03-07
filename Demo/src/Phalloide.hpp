@@ -9,6 +9,7 @@ public:
 	Phalloide(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smProgram);
 	Phalloide(Phalloide *phalloide);
 	~Phalloide(void);
+	bool isPhalloide(void);
 };
 
 #endif

@@ -9,13 +9,14 @@
 Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, ShaderProgram *displayProgram)
 	: _physicsProgram(physicsProgram), _displayProgram(displayProgram), _numElement(0)
 {
-	_modelMatrix = new glm::mat4;
 	_colorTexture = new Texture;
+	_positionBuffer = new Buffer;
 	_matrixBuffer = new Buffer;
 	_cameraBuffer = new Buffer;
 	_vertexBuffer[0] = new Buffer;
 	_vertexBuffer[1] = new Buffer;
 
+	_positionBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _position, GL_DYNAMIC_DRAW);
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
@@ -29,8 +30,8 @@ Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, Shader
 
 Engine::ParticlesManager::~ParticlesManager(void)
 {
-	delete _modelMatrix;
 	delete _colorTexture;
+	delete _positionBuffer;
 	delete _matrixBuffer;
 	delete _cameraBuffer;
 	delete _vertexBuffer[0];
@@ -53,29 +54,15 @@ void Engine::ParticlesManager::setParticles(const Particle *particles, const GLs
 	_vertexBuffer[1]->createStore(GL_ARRAY_BUFFER, NULL, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
 }
 
-void Engine::ParticlesManager::matIdentity(void) const
+void Engine::ParticlesManager::setPosition(const glm::vec3 &pos)
 {
-	*_modelMatrix = glm::mat4(1.0f);
-}
-
-void Engine::ParticlesManager::matTranslate(const GLfloat &x, const GLfloat &y, const GLfloat &z) const
-{
-	*_modelMatrix *= glm::translate(glm::vec3(x, y, z));
-}
-
-void Engine::ParticlesManager::matRotate(const GLfloat &angle, const GLfloat &x, const GLfloat &y, const GLfloat &z) const
-{
-	*_modelMatrix *= glm::rotate(angle, glm::vec3(x, y, z));
-}
-
-void Engine::ParticlesManager::matScale(const GLfloat &x, const GLfloat &y, const GLfloat &z) const
-{
-	*_modelMatrix *= glm::scale(glm::vec3(x, y, z));
+	_position.origin = pos;
+	_positionBuffer->updateStoreMap(&_position);
 }
 
 glm::vec3 Engine::ParticlesManager::getPosition(void) const
 {
-	return glm::vec3(glm::column(*_modelMatrix, 3));
+	return _position.origin;
 }
 
 void Engine::ParticlesManager::updateParticles(void)
@@ -83,6 +70,8 @@ void Engine::ParticlesManager::updateParticles(void)
 	glEnable(GL_RASTERIZER_DISCARD);
 
 	glUseProgram(_physicsProgram->getId());
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _positionBuffer->getId());
 
 	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, _idTFO);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, _vertexBuffer[1]->getId());
@@ -120,10 +109,8 @@ void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam)
 
 	glUseProgram(_displayProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
 	_matrix.projectionMatrix = cam->getProjectionMatrix();
 	_matrix.viewMatrix = cam->getViewMatrix();
-	_matrix.modelMatrix = *_modelMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -149,7 +136,7 @@ void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam)
 	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(6 * sizeof(GLfloat)));
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), BUFFER_OFFSET(7 * sizeof(GLfloat)));
 	glDrawArrays(GL_POINTS, 0, _numElement);
-    glDisableVertexAttribArray(3);
+	glDisableVertexAttribArray(3);
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(0);

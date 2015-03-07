@@ -70,12 +70,13 @@ void GameManager::idle(void)
 		player_cam->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
 		player_cam->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 
-		rainManager->updateParticles();
-		smokeManager->updateParticles();
-
 		player_cam->position();
 		moon->position(player_cam->getCameraPosition(), 100, 250, 500);
 		torch->position();
+
+		rainManager->setPosition(camPosition);
+		rainManager->updateParticles();
+		smokeManager->updateParticles();
 	}
 
 	// Mushroom manager

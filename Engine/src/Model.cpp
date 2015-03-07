@@ -12,21 +12,6 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
-static struct
-{
-	glm::mat4 MVP;
-	glm::mat4 projection;
-	glm::mat4 view;
-	glm::mat4 model;
-	glm::mat4 normal;
-} _matrix;
-
-static struct
-{
-	glm::vec3 ALIGN(16) position;
-	glm::vec3 ALIGN(16) target;
-} _camera;
-
 void Engine::Model::genMatModel(void) const
 {
 	*_modelMatrix = glm::translate(*_position) *
