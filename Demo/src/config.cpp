@@ -74,9 +74,10 @@ void GameManager::configRainParticles(void)
 {
 	int numParticle = 10000;
 	std::vector<Engine::Particle> rainParticles(numParticle);
+	glm::vec3 pos = player->getCamera()->getCameraPosition();
 	for (int i = 0; i < numParticle; i++)
 	{
-		rainParticles[i].position = glm::vec3(rand() % 200 - 100, 0, rand() % 200 - 100);
+	        rainParticles[i].position = glm::vec3(pos.x + (rand() % 200 - 100), pos.y + 100, pos.z + (rand() % 200 - 100));
 		rainParticles[i].direction = glm::vec3(0, -1, 0);
 		rainParticles[i].velocity = 2.0f;
 		rainParticles[i].life = (GLfloat)(rand() % 100);

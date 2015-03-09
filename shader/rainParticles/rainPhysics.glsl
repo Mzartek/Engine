@@ -23,7 +23,7 @@ void main(void)
 {
 	if(life < 100)
 	{
-		outPosition = position + vec3(normalize(direction) * velocity);
+	        outPosition = position;// + vec3(normalize(direction) * velocity);
 		outDirection = direction;
 		outVelocity = velocity;
 		outLife = life + 1.0;
