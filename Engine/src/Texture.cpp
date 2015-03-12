@@ -132,9 +132,31 @@ void Engine::Texture::loadCubeTextureFromFiles(
 	{
 		if (image[i] == NULL)
 		{
-			std::cerr << "Error while loading image" << std::endl;
+			std::cerr << "Error while loading image: ";
+			switch (i)
+			{
+			case 0:
+				std::cerr << posx << std::endl;
+				break;
+			case 1:
+				std::cerr << negx << std::endl;
+				break;
+			case 2:
+				std::cerr << posy << std::endl;
+				break;
+			case 3:
+				std::cerr << negy << std::endl;
+				break;
+			case 4:
+				std::cerr << posz << std::endl;
+				break;
+			case 5:
+				std::cerr << negz << std::endl;
+				break;
+			}
 			exit(1);
 		}
+
 		switch (testFormat(image[i]->format->format))
 		{
 		case RGB:
