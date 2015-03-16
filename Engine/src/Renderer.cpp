@@ -17,7 +17,6 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 	if (TTF_Init() < -1)
 	{
 		std::cerr << "Error init SDL_ttf " << TTF_GetError() << std::endl;
-		TTF_Quit();
 		exit(1);
 	}
 
