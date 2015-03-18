@@ -10,4 +10,4 @@ launch:
 clean:
 	rm -rf Makefile
 	rm -rf CMakeCache.txt cmake_install.cmake CMakeFiles
-	rm -rf aclocal.m4 configure autom4te.cache compile config.guess config.sub depcomp install-sh ltmain.sh missing Demo/Makefile.in Engine/Makefile.in
+	rm -rf aclocal.m4 configure autom4te.cache compile config.guess config.sub depcomp install-sh ltmain.sh missing Makefile.in Demo/Makefile.in Engine/Makefile.in

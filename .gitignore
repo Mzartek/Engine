@@ -44,6 +44,7 @@
 *.vcxproj.filters
 *.sln
 *.dir
+*.in
 
 bin
 lib
@@ -52,3 +53,12 @@ CMakeCache.txt
 CMakeFiles
 Makefile
 cmake_install.cmake
+aclocal.m4
+autom4te.cache
+compile
+config.guess
+config.sub
+configure
+install-sh
+ltmain.sh
+missing
