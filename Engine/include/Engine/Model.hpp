@@ -55,10 +55,10 @@ namespace Engine
 		Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smProgram);
 		~Model(void);
 		void addMesh(const GLsizei &numVertex, const Vertex *vertexArray,
-				  const GLsizei &numIndex, const GLuint *indexArray,
-				  const GLchar *colorTexture, const GLchar *NMTexture,
-				  const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);
-		void loadFromFile(const GLchar *file);
+			     const GLsizei &numIndex, const GLuint *indexArray,
+			     const GLchar *colorTexture, const GLchar *NMTexture,
+			     const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);
+		void loadFromFile(const GLchar *file, const GLchar *defaultTex, const GLchar *defaultNM);
 		void sortMesh(void);
 		void setPosition(const glm::vec3 &position);
 		void setRotation(const glm::vec3 &rotation);

@@ -22,7 +22,7 @@ void GameManager::configSol(void)
 
 	sol->addMesh(sizeof vertexArray / sizeof(Engine::Vertex), vertexArray,
 		sizeof index / sizeof(GLuint), index,
-		"resources/pre-project/feuilles.png", "resources/NM_none.png",
+		"../share/Demo/resources/pre-project/feuilles.png", "../share/Demo/resources/NM_none.png",
 		mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	octreeSystem->addModel(sol, 1000);
@@ -61,7 +61,10 @@ void GameManager::configChamp(void)
 void GameManager::configTree(void)
 {
 	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
-	model_tree->loadFromFile("./resources/tree/Tree1.3ds");
+	model_tree->loadFromFile(
+	     "../share/Demo/resources/tree/Tree1.3ds",
+	     "../share/Demo/resources/none.png",
+	     "../share/Demo/resources/NM_none.png");
 	model_tree->sortMesh();
 	model_tree->setPosition(glm::vec3(50, 0, 50));
 	model_tree->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
@@ -82,7 +85,7 @@ void GameManager::configRainParticles(void)
 		rainParticles[i].velocity = 2.0f;
 		rainParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	rainManager->setTexture("resources/pre-project/goutte.png");
+	rainManager->setTexture("../share/Demo/resources/pre-project/goutte.png");
 	rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
 }
 
@@ -97,7 +100,7 @@ void GameManager::configSmokeParticles(void)
 		smokeParticles[i].velocity = 0.2f;
 		smokeParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	smokeManager->setTexture("resources/pre-project/smoke.png");
+	smokeManager->setTexture("../share/Demo/resources/pre-project/smoke.png");
 	smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 	smokeManager->setPosition(glm::vec3(0, 0, 0));
 }
@@ -107,21 +110,100 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	renderer = r;
 	input = i;
 
-	skyboxProgram = new Engine::ShaderProgram("shader/skybox/skyboxVert.glsl", NULL, NULL, NULL, "shader/skybox/skyboxFrag.glsl");
-	objectProgram = new Engine::ShaderProgram("shader/object/objectVert.glsl", NULL, NULL, "shader/object/objectGeom.glsl", "shader/object/objectFrag.glsl");
-	mushroomProgram = new Engine::ShaderProgram("shader/mushroom/mushroomVert.glsl", NULL, NULL, "shader/mushroom/mushroomGeom.glsl", "shader/mushroom/mushroomFrag.glsl");
-	dirLightProgram = new Engine::ShaderProgram("shader/dirLight/dirLightVert.glsl", NULL, NULL, NULL, "shader/dirLight/dirLightFrag.glsl");
-	spotLightProgram = new Engine::ShaderProgram("shader/spotLight/spotLightVert.glsl", NULL, NULL, NULL, "shader/spotLight/spotLightFrag.glsl");
-	shadowMapProgram = new Engine::ShaderProgram("shader/shadow/shadowVert.glsl", NULL, NULL, NULL, "shader/shadow/shadowFrag.glsl");
-	displayRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainVert.glsl", NULL, NULL, "shader/rainParticles/rainGeom.glsl", "shader/rainParticles/rainFrag.glsl");
-	displaySmokeProgram = new Engine::ShaderProgram("shader/smokeParticles/smokeVert.glsl", NULL, NULL, "shader/smokeParticles/smokeGeom.glsl", "shader/smokeParticles/smokeFrag.glsl");
-	backgroundProgram = new Engine::ShaderProgram("shader/background/backgroundVert.glsl", NULL, NULL, NULL, "shader/background/backgroundFrag.glsl");
-	screenProgram = new Engine::ShaderProgram("shader/screen/screenVert.glsl", NULL, NULL, NULL, "shader/screen/screenFrag.glsl");
-	textProgram = new Engine::ShaderProgram("shader/text/textVert.glsl", NULL, NULL, NULL, "shader/text/textFrag.glsl");
+	skyboxProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/skybox/skyboxVert.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/skybox/skyboxFrag.glsl");
+	
+	objectProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/object/objectVert.glsl",
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/object/objectGeom.glsl",
+	     "../share/Demo/shader/object/objectFrag.glsl");
+	
+	mushroomProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/mushroom/mushroomVert.glsl",
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/mushroom/mushroomGeom.glsl",
+	     "../share/Demo/shader/mushroom/mushroomFrag.glsl");
+	
+	dirLightProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/dirLight/dirLightVert.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/dirLight/dirLightFrag.glsl");
+	
+	spotLightProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/spotLight/spotLightVert.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/spotLight/spotLightFrag.glsl");
+	
+	shadowMapProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/shadow/shadowVert.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/shadow/shadowFrag.glsl");
+	
+	displayRainProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/rainParticles/rainVert.glsl",
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/rainParticles/rainGeom.glsl",
+	     "../share/Demo/shader/rainParticles/rainFrag.glsl");
+	
+	displaySmokeProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/smokeParticles/smokeVert.glsl",
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/smokeParticles/smokeGeom.glsl",
+	     "../share/Demo/shader/smokeParticles/smokeFrag.glsl");
+	
+	backgroundProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/background/backgroundVert.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/background/backgroundFrag.glsl");
+	
+	screenProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/screen/screenVert.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/screen/screenFrag.glsl");
+	
+	textProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/text/textVert.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     "../share/Demo/shader/text/textFrag.glsl");
 
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
-	physicsRainProgram = new Engine::ShaderProgram("shader/rainParticles/rainPhysics.glsl", NULL, NULL, NULL, NULL, varyings, sizeof(varyings) / sizeof(GLfloat *));
-	physicsSmokeProgram = new Engine::ShaderProgram("shader/smokeParticles/smokePhysics.glsl", NULL, NULL, NULL, NULL, varyings, sizeof(varyings) / sizeof(GLfloat *));
+	
+	physicsRainProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/rainParticles/rainPhysics.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     NULL,
+	     varyings, sizeof(varyings) / sizeof(GLfloat *));
+	
+	physicsSmokeProgram = new Engine::ShaderProgram(
+	     "../share/Demo/shader/smokeParticles/smokePhysics.glsl",
+	     NULL,
+	     NULL,
+	     NULL,
+	     NULL,
+	     varyings, sizeof(varyings) / sizeof(GLfloat *));
 
 	gBuffer = new Engine::GBuffer;
 	player = new Player;
@@ -147,9 +229,10 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	player->getCamera()->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
 
 	// Skybox config
-	skybox->load("resources/Skybox/nnksky01_right.jpg", "resources/Skybox/nnksky01_left.jpg",
-		"resources/Skybox/nnksky01_top.jpg", "resources/Skybox/nnksky01_bottom.jpg",
-		"resources/Skybox/nnksky01_front.jpg", "resources/Skybox/nnksky01_back.jpg");
+	skybox->load(
+	     "../share/Demo/resources/Skybox/nnksky01_right.jpg", "../share/Demo/resources/Skybox/nnksky01_left.jpg",
+	     "../share/Demo/resources/Skybox/nnksky01_top.jpg",   "../share/Demo/resources/Skybox/nnksky01_bottom.jpg",
+	     "../share/Demo/resources/Skybox/nnksky01_front.jpg", "../share/Demo/resources/Skybox/nnksky01_back.jpg");
 
 	// Model config
 	configSol();
@@ -161,8 +244,8 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	moon->setShadowMapping(GL_TRUE);
 	moon->configShadowMap(4096, 4096);
 
-    torch->setPosition(glm::vec3(25, 100, -25));
-    torch->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
+	torch->setPosition(glm::vec3(25, 100, -25));
+	torch->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
 	torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
 	torch->setMaxDistance(250);
@@ -174,7 +257,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	configSmokeParticles();
 
 	// Text config
-	text->setFont("resources/font/SIXTY.TTF", 100, 255, 255, 0);
+	text->setFont("../share/Demo/resources/font/SIXTY.TTF", 100, 255, 255, 0);
 	text->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
 		renderer->getWidth() / 10, renderer->getHeight() / 10,
 		renderer, std::to_string(player->getLife()).c_str());

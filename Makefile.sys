@@ -5,7 +5,7 @@ debug:
 	cmake . -DCMAKE_BUILD_TYPE=Debug && make
 
 launch:
-	./bin/Demo
+	(cd ./bin; ./Demo)
 
 clean:
 	make clean

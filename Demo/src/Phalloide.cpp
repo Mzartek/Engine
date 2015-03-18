@@ -1,7 +1,7 @@
 #include "Phalloide.hpp"
 
 Phalloide::Phalloide(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smProgram)
-	: Mushroom(gProgram, smProgram, "resources/pre-project/phalloide.png")
+	: Mushroom(gProgram, smProgram, "../share/Demo/resources/pre-project/phalloide.png")
 {
 }
 

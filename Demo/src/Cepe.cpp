@@ -1,7 +1,7 @@
 #include "Cepe.hpp"
 
 Cepe::Cepe(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smProgram)
-	: Mushroom(gProgram, smProgram, "resources/pre-project/cepe.png")
+	: Mushroom(gProgram, smProgram, "../share/Demo/resources/pre-project/cepe.png")
 {
 }
 
