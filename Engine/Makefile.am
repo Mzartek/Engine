@@ -1,18 +1,19 @@
 AM_CPPFLAGS = -Iinclude
 
-lib__LTLIBRARIES = $(top_builddir)/lib/Engine.la
+lib_LTLIBRARIES = $(top_builddir)/lib/libEngine.la
 
-Engine_HEADERs = find include/Engine/ -name *.hpp
-Engine_SOURCES = find src/ -name *.cpp
+__top_builddir__lib_libEngineincludedir = $(includedir)/include
+__top_builddir__lib_libEngineinclude_HEADERS = find include/Engine/ -name "*.hpp"
+__top_builddir__lib_libEngine_la_SOURCES = find src/ -name "*.cpp"
 
 if USE_VERSION_RC
-lib_LDFLAGS = \
+__top_builddir__lib_libEngine_la_LDFLAGS = \
 	-no-undefined \
 	-release $(LT_RELEASE) \
 	-version-info $(VERSION_INFO) -Wl,version.o
-lib_DEPENDENCIES = version.o
+__top_builddir__lib_libEngine_la_DEPENDENCIES = version.o
 else
-lib_LDFLAGS = \
+__top_builddir__lib_libEngine_la_LDFLAGS = \
 	-no-undefined \
 	-release 0.1 \
 	-version-info $(VERSION_INFO)

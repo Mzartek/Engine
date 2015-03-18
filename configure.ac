@@ -1,9 +1,20 @@
-AC_INIT([Engine-GL4-], [1.0], [mzartek@hotmail.fr])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
-AC_PROG_CXX
-AC_CONFIG_FILES([
- Makefile
- Engine/Makefile
- Demo/Makefile
-])
+AC_INIT([Engine-GL4-], [1.0])
+AM_INIT_AUTOMAKE([subdir-objects])
+AC_LANG(C++)
+AC_PROG_CC
+
+AC_HEADER_STDC
+
+AM_CONDITIONAL(USE_VERSION_RC, false)
+
+m4_define(LT_CURRENT, 1)
+m4_define(LT_REVISION, 0) 
+m4_define(LT_AGE, 0)
+
+VERSION_INFO="LT_CURRENT():LT_REVISION():LT_AGE()"
+AC_SUBST(VERSION_INFO)
+
+LT_INIT
+
+AC_CONFIG_FILES([Makefile Engine/Makefile Demo/Makefile])
 AC_OUTPUT
