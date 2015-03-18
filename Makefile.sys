@@ -1,0 +1,13 @@
+release:
+	cmake . -DCMAKE_BUILD_TYPE=Release && make
+
+debug:
+	cmake . -DCMAKE_BUILD_TYPE=Debug && make
+
+launch:
+	./bin/Demo
+
+clean:
+	make clean
+	rm -rf Makefile
+	rm -rf CMakeCache.txt cmake_install.cmake CMakeFiles

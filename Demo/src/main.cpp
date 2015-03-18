@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 	delete renderer;
 
 	std::cout << "MemState " << Engine::Object::getMemoryState() << std::endl;
-	Engine::Object::saveMemoryInfo("memLost.txt");
+	// Engine::Object::saveMemoryInfo("memLost.txt");
 
 	return 0;
 }
