@@ -1,9 +1,11 @@
 AC_INIT([Engine-GL4-], [1.0])
-AM_INIT_AUTOMAKE([subdir-objects])
+AM_INIT_AUTOMAKE([subdir-objects -Wall])
 AC_LANG(C++)
-AC_PROG_CC
 
+AC_PROG_CC
 AC_HEADER_STDC
+
+AM_PROG_AR
 
 AM_CONDITIONAL(USE_VERSION_RC, false)
 
@@ -15,6 +17,9 @@ VERSION_INFO="LT_CURRENT():LT_REVISION():LT_AGE()"
 AC_SUBST(VERSION_INFO)
 
 LT_INIT
+
+CFLAGS="-Wall -O3"
+LDFLAGS="-lm"
 
 AC_CONFIG_FILES([Makefile Engine/Makefile Demo/Makefile])
 AC_OUTPUT
