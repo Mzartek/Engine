@@ -46,6 +46,8 @@
 *.sln
 *.dir
 *.in
+*.deps
+*.dirstamp
 
 bin
 lib
@@ -66,3 +68,4 @@ missing
 ar-lib
 config.status
 libtool
+depcomp
