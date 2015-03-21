@@ -42,6 +42,7 @@
 *.cbp
 *.vcxproj
 *.vcxproj.filters
+*.vcxproj.user
 *.sln
 *.dir
 *.in
