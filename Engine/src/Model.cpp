@@ -210,7 +210,7 @@ void Engine::Model::loadFromFile(const GLchar *file, const GLchar *defaultTex, c
 		else
 			colorPath = defaultTex;
 		if (pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->GetTexture(aiTextureType_NORMALS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
-			NMPath += dir + "NM_" + path.C_Str();
+			NMPath += dir + path.C_Str();
 		else
 			NMPath = defaultNM;
 
