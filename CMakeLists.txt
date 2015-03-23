@@ -68,5 +68,8 @@ add_executable(Demo ${demo_source_files})
 target_link_libraries(Demo Engine)
 
 # Install
-install(TARGETS Engine DESTINATION lib)
-install(FILES ${engine_header_files} DESTINATION include/Engine)
+install(TARGETS Engine
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
+install(FILES ${engine_header_files} DESTINATION include/Engine-GL4-)
