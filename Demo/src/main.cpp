@@ -2,13 +2,12 @@
 
 void GameManager::display(GLfloat state)
 {
-    static GLuint i;
-	static std::vector<Engine::Model *> object;
+	static std::set<Engine::Model *> object;
 	static Engine::PlayerCam *player_cam = player->getCamera();
 
 	// We retrieve object to display from the octree
 	object.clear();
-	octreeSystem->getModel(gBuffer, player_cam, &object);
+	octreeSystem->getModels(gBuffer, player_cam, &object);
 
 	// Clear Buffers
 	renderer->clear();
@@ -24,24 +23,24 @@ void GameManager::display(GLfloat state)
 	model_tree->displayShadowMap(torch);
 
 	// Opaque Object
-	for (i = 0; i < object.size(); i++)
-		object[i]->display(gBuffer, player_cam);
+	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
+		(*it)->display(gBuffer, player_cam);
 
 	moon->display(gBuffer, player_cam);
 	torch->display(gBuffer, player_cam);
 	screen->background(gBuffer);
 
-	// Particles
-	rainManager->display(gBuffer, player_cam);
-	smokeManager->display(gBuffer, player_cam);
-
 	// Transparent Object
-	for (i = 0; i < object.size(); i++)
-		object[i]->displayTransparent(gBuffer, player->getCamera());
+	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
+		(*it)->displayTransparent(gBuffer, player->getCamera());
 
 	moon->display(gBuffer, player->getCamera());
 	torch->display(gBuffer, player->getCamera());
 	screen->background(gBuffer);
+
+	// Particles
+	rainManager->display(gBuffer, player_cam);
+	smokeManager->display(gBuffer, player_cam);
 
 	if (player->isAlive())
 		screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);

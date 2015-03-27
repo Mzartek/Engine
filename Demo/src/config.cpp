@@ -242,7 +242,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	moon->setColor(glm::vec3(0.5f, 0.5f, 0.9f));
 	moon->setDirection(glm::vec3(0.5f, -1.0f, 0.0f));
 	moon->setShadowMapping(GL_TRUE);
-	moon->configShadowMap(4096, 4096);
+	moon->configShadowMap(2048, 2048);
 
 	torch->setPosition(glm::vec3(25, 100, -25));
 	torch->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
@@ -250,7 +250,7 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
 	torch->setMaxDistance(250);
 	torch->setShadowMapping(GL_TRUE);
-	torch->configShadowMap(1024, 1024);
+	torch->configShadowMap(2048, 2048);
 
 	// ParticlesManager config
 	configRainParticles();

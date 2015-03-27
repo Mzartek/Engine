@@ -26,7 +26,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <set>
 #include <string>
+#include <algorithm>
 
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>

@@ -4,6 +4,8 @@
 #include <Engine/ParticlesManager.hpp>
 #include <Engine/GBuffer.hpp>
 
+// The Octree struct
+
 struct Engine::Octree
 {
 	glm::vec3 position;
@@ -14,6 +16,8 @@ struct Engine::Octree
 	std::vector<Engine::Model *> modelContainer;
 	struct Octree *next;
 };
+
+// Inline functions
 
 static inline GLboolean checkCamInOctree(const Engine::Octree *octree, const Engine::Camera *cam)
 {
@@ -58,7 +62,9 @@ static inline GLboolean checkOctreeInCamFrus(const Engine::Octree *octree, const
 	return GL_FALSE;
 }
 
-void Engine::OctreeSystem::initOctree(const GLuint &depth, Octree *octree, const glm::vec3 &position, const GLfloat &dim) const
+// Private methods
+
+void Engine::OctreeSystem::_initOctree(const GLuint &depth, Octree *octree, const glm::vec3 &position, const GLfloat &dim) const
 {
 	if (depth >= _maxDepth)	return;
 
@@ -80,26 +86,26 @@ void Engine::OctreeSystem::initOctree(const GLuint &depth, Octree *octree, const
 	octree->vertex[6] = glm::vec3(position.x + newDim, position.y + newDim, position.z - newDim);
 	octree->vertex[7] = glm::vec3(position.x + newDim, position.y + newDim, position.z + newDim);
 
-	initOctree(depth + 1, &octree->next[0], glm::vec3(position.x - tmp, position.y - tmp, position.z - tmp), newDim);
-	initOctree(depth + 1, &octree->next[1], glm::vec3(position.x - tmp, position.y - tmp, position.z + tmp), newDim);
-	initOctree(depth + 1, &octree->next[2], glm::vec3(position.x - tmp, position.y + tmp, position.z - tmp), newDim);
-	initOctree(depth + 1, &octree->next[3], glm::vec3(position.x - tmp, position.y + tmp, position.z + tmp), newDim);
-	initOctree(depth + 1, &octree->next[4], glm::vec3(position.x + tmp, position.y - tmp, position.z - tmp), newDim);
-	initOctree(depth + 1, &octree->next[5], glm::vec3(position.x + tmp, position.y - tmp, position.z + tmp), newDim);
-	initOctree(depth + 1, &octree->next[6], glm::vec3(position.x + tmp, position.y + tmp, position.z - tmp), newDim);
-	initOctree(depth + 1, &octree->next[7], glm::vec3(position.x + tmp, position.y + tmp, position.z + tmp), newDim);
+	_initOctree(depth + 1, &octree->next[0], glm::vec3(position.x - tmp, position.y - tmp, position.z - tmp), newDim);
+	_initOctree(depth + 1, &octree->next[1], glm::vec3(position.x - tmp, position.y - tmp, position.z + tmp), newDim);
+	_initOctree(depth + 1, &octree->next[2], glm::vec3(position.x - tmp, position.y + tmp, position.z - tmp), newDim);
+	_initOctree(depth + 1, &octree->next[3], glm::vec3(position.x - tmp, position.y + tmp, position.z + tmp), newDim);
+	_initOctree(depth + 1, &octree->next[4], glm::vec3(position.x + tmp, position.y - tmp, position.z - tmp), newDim);
+	_initOctree(depth + 1, &octree->next[5], glm::vec3(position.x + tmp, position.y - tmp, position.z + tmp), newDim);
+	_initOctree(depth + 1, &octree->next[6], glm::vec3(position.x + tmp, position.y + tmp, position.z - tmp), newDim);
+	_initOctree(depth + 1, &octree->next[7], glm::vec3(position.x + tmp, position.y + tmp, position.z + tmp), newDim);
 }
 
-void Engine::OctreeSystem::destroyOctree(const GLuint &depth, Octree *octree) const
+void Engine::OctreeSystem::_destroyOctree(const GLuint &depth, Octree *octree) const
 {
 	if (depth >= _maxDepth)	return;
 
 	for (GLuint i = 0; i < 8; i++)
-		destroyOctree(depth + 1, &(octree->next[i]));
+		_destroyOctree(depth + 1, &(octree->next[i]));
 	delete[] octree->next;
 }
 
-GLboolean Engine::OctreeSystem::addModelOctree(const GLuint &depth, Octree *octree, Model *model, const GLfloat &dim) const
+GLboolean Engine::OctreeSystem::_addModelOctree(const GLuint &depth, Octree *octree, Model *model, const GLfloat &dim) const
 {
 	if (depth >= _maxDepth) return GL_FALSE;
 	if (dim > octree->dim) return GL_FALSE;
@@ -114,37 +120,34 @@ GLboolean Engine::OctreeSystem::addModelOctree(const GLuint &depth, Octree *octr
 		return GL_FALSE;
 
 	// Recursive call
-	if (addModelOctree(depth + 1, &octree->next[0], model, dim)) return GL_TRUE;
-	if (addModelOctree(depth + 1, &octree->next[1], model, dim)) return GL_TRUE;
-	if (addModelOctree(depth + 1, &octree->next[2], model, dim)) return GL_TRUE;
-	if (addModelOctree(depth + 1, &octree->next[3], model, dim)) return GL_TRUE;
-	if (addModelOctree(depth + 1, &octree->next[4], model, dim)) return GL_TRUE;
-	if (addModelOctree(depth + 1, &octree->next[5], model, dim)) return GL_TRUE;
-	if (addModelOctree(depth + 1, &octree->next[6], model, dim)) return GL_TRUE;
-	if (addModelOctree(depth + 1, &octree->next[7], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[0], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[1], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[2], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[3], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[4], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[5], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[6], model, dim)) return GL_TRUE;
+	if (_addModelOctree(depth + 1, &octree->next[7], model, dim)) return GL_TRUE;
 
 	octree->modelContainer.push_back(model);
 
 	return GL_TRUE;
 }
 
-void Engine::OctreeSystem::removeModelOctree(const GLuint &depth, Octree *octree, Model *model) const
+void Engine::OctreeSystem::_removeModelOctree(const GLuint &depth, Octree *octree, Model *model) const
 {
 	if (depth >= _maxDepth) return;
 
-	GLuint i;
+	std::vector<Model *>::iterator iterator_begin = octree->modelContainer.begin();
+	std::vector<Model *>::iterator iterator_end = octree->modelContainer.end();
 
-	for (i = 0; i < octree->modelContainer.size(); i++)
-	{
-		if (octree->modelContainer[i] == model)
-			octree->modelContainer.erase(octree->modelContainer.begin() + i);
-	}
+	octree->modelContainer.erase(std::remove(iterator_begin, iterator_end, model), iterator_end);
 
-	for (i = 0; i < 8; i++)
-		removeModelOctree(depth + 1, &(octree->next[i]), model);
+	for (GLuint i = 0; i < 8; i++)
+		_removeModelOctree(depth + 1, &(octree->next[i]), model);
 }
 
-void Engine::OctreeSystem::getModelOctree(const GLuint &depth, Octree *octree, GBuffer *gbuffer, Camera *cam, std::vector<Model *> *modelVector) const
+void Engine::OctreeSystem::_getModelsOctree(const GLuint &depth, Octree *octree, GBuffer *gbuffer, Camera *cam, std::set<Model *> *modelSet) const
 {
 	if (depth >= _maxDepth)	return;
 
@@ -153,44 +156,41 @@ void Engine::OctreeSystem::getModelOctree(const GLuint &depth, Octree *octree, G
 		if (!checkOctreeInCamSphere(octree, cam)) return;
 		if (!checkOctreeInCamFrus(octree, cam)) return;
 	}
+	
+	modelSet->insert(octree->modelContainer.begin(), octree->modelContainer.end());
 
-	GLuint i;
-
-	for (i = 0; i < octree->modelContainer.size(); i++)
-	{
-		modelVector->push_back(octree->modelContainer[i]);
-	}
-
-	for (i = 0; i < 8; i++)
-		getModelOctree(depth + 1, &(octree->next[i]), gbuffer, cam, modelVector);
+	for (GLuint i = 0; i < 8; i++)
+		_getModelsOctree(depth + 1, &(octree->next[i]), gbuffer, cam, modelSet);
 }
+
+// Public methods
 
 Engine::OctreeSystem::OctreeSystem(const GLuint &maxDepth, const glm::vec3 &pos, const GLfloat &dim)
 {
 	_maxDepth = maxDepth;
 	_octree = new Octree;
 
-	initOctree(0, _octree, pos, dim);
+	_initOctree(0, _octree, pos, dim);
 }
 
 Engine::OctreeSystem::~OctreeSystem()
 {
-	destroyOctree(0, _octree);
+	_destroyOctree(0, _octree);
 	delete _octree;
 }
 
 void Engine::OctreeSystem::addModel(Model *model, const GLfloat &dim) const
 {
-	if (!addModelOctree(0, _octree, model, dim))
+	if (!_addModelOctree(0, _octree, model, dim))
 		std::cerr << "Unable to add model on the OctreeSystem" << std::endl;
 }
 
 void Engine::OctreeSystem::removeModel(Model *model) const
 {
-	removeModelOctree(0, _octree, model);
+	_removeModelOctree(0, _octree, model);
 }
 
-void Engine::OctreeSystem::getModel(GBuffer *gbuffer, Camera *cam, std::vector<Model *> *modelVector) const
+void Engine::OctreeSystem::getModels(GBuffer *gbuffer, Camera *cam, std::set<Model *> *modelSet) const
 {
-	getModelOctree(0, _octree, gbuffer, cam, modelVector);
+	_getModelsOctree(0, _octree, gbuffer, cam, modelSet);
 }
