@@ -28,7 +28,8 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/FreeCam.hpp \
 	include/Engine/OctreeSystem.hpp \
 	include/Engine/ShaderProgram.hpp \
-	include/Engine/Object.hpp
+	include/Engine/Object.hpp \
+	include/Engine/Audio.hpp
 
 __top_builddir__lib_libEngine_la_SOURCES = \
 	src/Buffer.cpp \
@@ -53,7 +54,8 @@ __top_builddir__lib_libEngine_la_SOURCES = \
 	src/TextArray.cpp \
 	src/FreeCam.cpp \
 	src/SpotLight.cpp \
-	src/ParticlesManager.cpp
+	src/ParticlesManager.cpp \
+	src/Audio.cpp
 
 clean-local:
 	rm -f include/Engine/*~ src/*~

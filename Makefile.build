@@ -3,16 +3,9 @@ all:
 	autoconf
 	automake -a
 
-cmake_release:
-	cmake . -DCMAKE_BUILD_TYPE=Release && make
-
-cmake_debug:
-	cmake . -DCMAKE_BUILD_TYPE=Debug && make
-
 launch:
 	(cd ./bin; ./Demo)
 
 clean:
 	rm -rf Makefile Demo/Makefile Engine/Makefile
-	rm -rf CMakeCache.txt cmake_install.cmake CMakeFiles
 	rm -rf aclocal.m4 configure autom4te.cache compile config.guess config.sub depcomp install-sh ltmain.sh missing ar-lib config.status libtool Makefile.in Demo/Makefile.in Engine/Makefile.in
