@@ -28,19 +28,23 @@ elseif(WIN32)
 endif()
 
 find_package(OpenGL REQUIRED)
+find_package(OpenAL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 find_package(Assimp REQUIRED)
 
 include_directories(${ENGINE_INCLUDE_DIRS}
   ${OPENGL_INCLUDE_DIRS}
+  ${OPENAL_INCLUDE_DIRS}
   ${GLEW_INCLUDE_DIRS}
   ${GLM_INCLUDE_DIR}
   ${SDL2_INCLUDE_DIRS}
   ${SDL2_IMAGE_INCLUDE_DIRS}
   ${SDL2_TTF_INCLUDE_DIRS}
+  ${SDL2_MIXER_INCLUDE_DIRS}
   ${ASSIMP_INCLUDE_DIRS}
   )
 
@@ -55,10 +59,12 @@ set_target_properties(Engine
   )
 target_link_libraries(Engine
   ${OPENGL_LIBRARIES}
+  ${OPENAL_LIBRARIES}
   ${GLEW_LIBRARIES}
   ${SDL2_LIBRARIES}
   ${SDL2_IMAGE_LIBRARIES}
   ${SDL2_TTF_LIBRARIES}
+  ${SDL2_MIXER_LIBRARIES}
   ${ASSIMP_LIBRARIES}
   )
 
