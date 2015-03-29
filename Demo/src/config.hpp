@@ -4,6 +4,7 @@
 #include <ctime>
 
 #include <Engine/Renderer.hpp>
+#include <Engine/Audio.hpp>
 #include <Engine/Input.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>

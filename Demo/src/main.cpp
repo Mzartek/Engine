@@ -131,6 +131,7 @@ int main(int argc, char **argv)
 	srand((unsigned int)time(NULL));
 
 	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
+	Engine::Audio *audio = new Engine::Audio;
 	Engine::Input *input = new Engine::Input;
 	GameManager *game = new GameManager(renderer, input);
 
@@ -138,6 +139,7 @@ int main(int argc, char **argv)
 
 	delete game;
 	delete input;
+	delete audio;
 	delete renderer;
 
 	std::cout << "MemState " << Engine::Object::getMemoryState() << std::endl;
