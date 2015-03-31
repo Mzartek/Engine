@@ -18,7 +18,7 @@
 #include <GL/glew.h>
 #else
 #define DLLAPI
-#define UNREFERENCED_PARAMETER(P) (P)
+#define UNREFERENCED_PARAMETER(P) ((void)P)
 #define ALIGN(X) __attribute__((aligned(X)))
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
