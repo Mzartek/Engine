@@ -23,7 +23,7 @@ void main(void)
 {
 	if(life < 100)
 	{
-	        outPosition = position;// + vec3(normalize(direction) * velocity);
+	    outPosition = position;// + vec3(normalize(direction) * velocity);
 		outDirection = direction;
 		outVelocity = velocity;
 		outLife = life + 1.0;
@@ -36,6 +36,6 @@ void main(void)
 		outPosition = vec3(origin.x + num0, origin.y + 100, origin.z + num1);
 		outDirection = vec3(0, -1, 0);
 		outVelocity = velocity;
-		outLife = 0;
+		outLife = rand(vec2(num0, num1));
 	}
 }

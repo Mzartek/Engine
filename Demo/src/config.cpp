@@ -22,7 +22,7 @@ void GameManager::configSol(void)
 
 	sol->addMesh(sizeof vertexArray / sizeof(Engine::Vertex), vertexArray,
 		sizeof index / sizeof(GLuint), index,
-		"../share/Demo/resources/pre-project/feuilles.png", "../share/Demo/resources/NM_none.png",
+		"../share/Demo/resources/textures/feuilles.png", "../share/Demo/resources/textures/NM_none.png",
 		mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 
 	octreeSystem->addModel(sol, 1000);
@@ -62,9 +62,9 @@ void GameManager::configTree(void)
 {
 	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
 	model_tree->loadFromFile(
-	     "../share/Demo/resources/tree/Tree1.3ds",
-	     "../share/Demo/resources/none.png",
-	     "../share/Demo/resources/NM_none.png");
+	     "../share/Demo/resources/models/tree/Tree1.3ds",
+	     "../share/Demo/resources/textures/none.png",
+	     "../share/Demo/resources/textures/NM_none.png");
 	model_tree->sortMesh();
 	model_tree->setPosition(glm::vec3(50, 0, 50));
 	model_tree->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
@@ -80,12 +80,12 @@ void GameManager::configRainParticles(void)
 	glm::vec3 pos = player->getCamera()->getCameraPosition();
 	for (int i = 0; i < numParticle; i++)
 	{
-	        rainParticles[i].position = glm::vec3(pos.x + (rand() % 200 - 100), pos.y + 100, pos.z + (rand() % 200 - 100));
+	    rainParticles[i].position = glm::vec3(pos.x + (rand() % 200 - 100), pos.y + 100, pos.z + (rand() % 200 - 100));
 		rainParticles[i].direction = glm::vec3(0, -1, 0);
 		rainParticles[i].velocity = 2.0f;
 		rainParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	rainManager->setTexture("../share/Demo/resources/pre-project/goutte.png");
+	rainManager->setTexture("../share/Demo/resources/textures/goutte.png");
 	rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
 }
 
@@ -96,19 +96,20 @@ void GameManager::configSmokeParticles(void)
 	for (int i = 0; i < numParticle; i++)
 	{
 		smokeParticles[i].position = glm::vec3(0, 0, 0);
-		smokeParticles[i].direction = glm::vec3((GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX, 0.75f, 0);
+		smokeParticles[i].direction = glm::vec3((GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX, 1.0f, (GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX);
 		smokeParticles[i].velocity = 0.2f;
 		smokeParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	smokeManager->setTexture("../share/Demo/resources/pre-project/smoke.png");
+	smokeManager->setTexture("../share/Demo/resources/textures/smoke.png");
 	smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 	smokeManager->setPosition(glm::vec3(0, 0, 0));
 }
 
-GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
+GameManager::GameManager(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 {
 	renderer = r;
 	input = i;
+	audio = a;
 
 	skyboxProgram = new Engine::ShaderProgram(
 	     "../share/Demo/shader/skybox/skyboxVert.glsl",
@@ -221,6 +222,9 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 
 	octreeSystem = new Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000);
 
+	rain_sound = new Engine::Sound;
+	fire_sound = new Engine::Sound;
+
 	// GBuffer config
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
 
@@ -230,9 +234,9 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 
 	// Skybox config
 	skybox->load(
-	     "../share/Demo/resources/Skybox/nnksky01_right.jpg", "../share/Demo/resources/Skybox/nnksky01_left.jpg",
-	     "../share/Demo/resources/Skybox/nnksky01_top.jpg",   "../share/Demo/resources/Skybox/nnksky01_bottom.jpg",
-	     "../share/Demo/resources/Skybox/nnksky01_front.jpg", "../share/Demo/resources/Skybox/nnksky01_back.jpg");
+	     "../share/Demo/resources/textures/skybox/nnksky01_right.jpg", "../share/Demo/resources/textures/skybox/nnksky01_left.jpg",
+	     "../share/Demo/resources/textures/skybox/nnksky01_top.jpg",   "../share/Demo/resources/textures/skybox/nnksky01_bottom.jpg",
+	     "../share/Demo/resources/textures/skybox/nnksky01_front.jpg", "../share/Demo/resources/textures/skybox/nnksky01_back.jpg");
 
 	// Model config
 	configSol();
@@ -261,11 +265,30 @@ GameManager::GameManager(Engine::Renderer *r, Engine::Input *i)
 	text->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
 		renderer->getWidth() / 10, renderer->getHeight() / 10,
 		renderer, std::to_string(player->getLife()).c_str());
+
+	rain_sound->setGain(0.25f);
+	rain_sound->setPitch(1.0f);
+	rain_sound->setLoop(AL_TRUE);
+	rain_sound->loadFromFile("../share/Demo/resources/sound/rain_stereo.wav", 22050, AL_FORMAT_STEREO16);
+
+	fire_sound->setGain(1.0f);
+	fire_sound->setPitch(0.75f);
+	fire_sound->setLoop(AL_TRUE);
+	fire_sound->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	fire_sound->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+	fire_sound->setDistances(1.0f, 100.0f);
+	fire_sound->loadFromFile("../share/Demo/resources/sound/fire_mono.wav", 44100, AL_FORMAT_MONO16);
+
+	rain_sound->play();
+	fire_sound->play();
 }
 
 GameManager::~GameManager(void)
 {
 	GLuint i;
+
+	delete fire_sound;
+	delete rain_sound;
 
 	delete octreeSystem;
 

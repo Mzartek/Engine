@@ -17,8 +17,8 @@
 #include <Engine/ParticlesManager.hpp>
 #include <Engine/Screen.hpp>
 #include <Engine/TextArray.hpp>
-
 #include <Engine/OctreeSystem.hpp>
+#include <Engine/Sound.hpp>
 
 #include "Player.hpp"
 #include "Cepe.hpp"
@@ -28,9 +28,12 @@
 class GameManager : public Engine::GameLoop
 {
 private:
+	// System
 	Engine::Renderer *renderer;
 	Engine::Input *input;
+	Engine::Audio *audio;
 
+	// ShaderProgram
 	Engine::ShaderProgram *skyboxProgram;
 	Engine::ShaderProgram *objectProgram;
 	Engine::ShaderProgram *mushroomProgram;
@@ -66,6 +69,11 @@ private:
 
 	Engine::OctreeSystem *octreeSystem;
 
+	// Sound
+	Engine::Sound *rain_sound;
+	Engine::Sound *fire_sound;
+
+	// Private methods
 	void configSol(void);
 	void configChamp(void);
 	void configRainParticles(void);
@@ -73,7 +81,7 @@ private:
 	void configTree(void);
 	void updateRainParticles(void);
 public:
-	GameManager(Engine::Renderer *r, Engine::Input *i);
+	GameManager(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a);
 	~GameManager(void);
 	void display(GLfloat state);
 	void idle(void);

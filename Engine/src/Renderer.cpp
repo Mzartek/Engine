@@ -65,6 +65,8 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 
 Engine::Renderer::~Renderer(void)
 {
+	SDL_GL_DeleteContext(_GLContext);
+	SDL_DestroyWindow(_Window);
 	TTF_Quit();
 	SDL_Quit();
 }

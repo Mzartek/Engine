@@ -18,6 +18,7 @@
 #include <GL/glew.h>
 #else
 #define DLLAPI
+#define UNREFERENCED_PARAMETER(P) (P)
 #define ALIGN(X) __attribute__((aligned(X)))
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
@@ -43,6 +44,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_access.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <AL/al.h>
+#include <AL/alc.h>
 
 #define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
 

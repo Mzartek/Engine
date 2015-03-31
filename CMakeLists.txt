@@ -38,7 +38,7 @@ find_package(Assimp REQUIRED)
 
 include_directories(${ENGINE_INCLUDE_DIRS}
   ${OPENGL_INCLUDE_DIRS}
-  ${OPENAL_INCLUDE_DIRS}
+  ${OPENAL_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIRS}
   ${GLM_INCLUDE_DIR}
   ${SDL2_INCLUDE_DIRS}
@@ -59,7 +59,7 @@ set_target_properties(Engine
   )
 target_link_libraries(Engine
   ${OPENGL_LIBRARIES}
-  ${OPENAL_LIBRARIES}
+  ${OPENAL_LIBRARY}
   ${GLEW_LIBRARIES}
   ${SDL2_LIBRARIES}
   ${SDL2_IMAGE_LIBRARIES}

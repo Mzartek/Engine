@@ -2,6 +2,8 @@
 
 void GameManager::display(GLfloat state)
 {
+	UNREFERENCED_PARAMETER(state);
+
 	static std::set<Engine::Model *> object;
 	static Engine::PlayerCam *player_cam = player->getCamera();
 
@@ -54,7 +56,8 @@ void GameManager::idle(void)
 {
 	static GLuint i;
 	static Engine::PlayerCam *player_cam = player->getCamera();
-	glm::vec3 camPosition = player_cam->getCameraPosition();
+	glm::vec3 camPosition;
+	glm::vec3 camView;
 
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
@@ -63,19 +66,32 @@ void GameManager::idle(void)
 	// Player control
 	if (player->isAlive())
 	{
-		if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT)) player->getCamera()->setSpeed(0.05f);
-		else player->getCamera()->setSpeed(0.25f);
-		if (input->getMouseState(SDL_BUTTON_LEFT)) player->getCamera()->setSpeed(5.0f);
-		player_cam->keyboardMove(input->getKeyBoardState(SDL_SCANCODE_W), input->getKeyBoardState(SDL_SCANCODE_S), input->getKeyBoardState(SDL_SCANCODE_A), input->getKeyBoardState(SDL_SCANCODE_D));
+		if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT))
+			player->getCamera()->setSpeed(0.05f);
+		else if (input->getMouseState(SDL_BUTTON_LEFT))
+			player->getCamera()->setSpeed(5.0f);
+		else
+			player->getCamera()->setSpeed(0.25f);		
+
+		player_cam->keyboardMove(
+			input->getKeyBoardState(SDL_SCANCODE_W), 
+			input->getKeyBoardState(SDL_SCANCODE_S), 
+			input->getKeyBoardState(SDL_SCANCODE_A), 
+			input->getKeyBoardState(SDL_SCANCODE_D));
 		player_cam->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 
 		player_cam->position();
-		moon->position(player_cam->getCameraPosition(), 100, 250, 500);
+		camPosition = player_cam->getCameraPosition();
+		camView = player_cam->getViewVector();
+
+		moon->position(camPosition, 100, 250, 500);
 		torch->position();
 
 		rainManager->setPosition(camPosition);
 		rainManager->updateParticles();
 		smokeManager->updateParticles();
+
+		audio->setListenerPosition(camPosition, camView);
 	}
 
 	// Mushroom manager
@@ -128,22 +144,26 @@ void GameManager::launch(void)
 
 int main(int argc, char **argv)
 {
+	UNREFERENCED_PARAMETER(argc);
+	UNREFERENCED_PARAMETER(argv);
+
 	srand((unsigned int)time(NULL));
 
 	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
 	Engine::Audio *audio = new Engine::Audio;
 	Engine::Input *input = new Engine::Input;
-	GameManager *game = new GameManager(renderer, input);
 
+	GameManager *game = new GameManager(renderer, input, audio);
+	
 	game->launch();
 
 	delete game;
+
 	delete input;
 	delete audio;
 	delete renderer;
 
 	std::cout << "MemState " << Engine::Object::getMemoryState() << std::endl;
-	// Engine::Object::saveMemoryInfo("memLost.txt");
 
 	return 0;
 }

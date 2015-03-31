@@ -22,7 +22,7 @@ Mushroom::Mushroom(Engine::ShaderProgram *gProgram, Engine::ShaderProgram *smPro
 	this->addMesh(
 	     sizeof vertexArray / sizeof(Engine::Vertex), vertexArray,
 	     sizeof index / sizeof(GLuint), index, texture,
-	     "../share/Demo/resources/NM_none.png",
+	     "../share/Demo/resources/textures/NM_none.png",
 	     mat_ambient, mat_diffuse, mat_specular, mat_shininess);
 }
 

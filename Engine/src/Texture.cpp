@@ -40,6 +40,7 @@ void Engine::Texture::load2DTextureFromFile(const GLchar *path)
 	if (image == NULL)
 	{
 		std::cerr << "Error while loading image: " << path << std::endl;
+		std::cerr << IMG_GetError() << std::endl;
 		exit(1);
 	}
 
@@ -154,6 +155,7 @@ void Engine::Texture::loadCubeTextureFromFiles(
 				std::cerr << negz << std::endl;
 				break;
 			}
+			std::cerr << IMG_GetError() << std::endl;
 			exit(1);
 		}
 

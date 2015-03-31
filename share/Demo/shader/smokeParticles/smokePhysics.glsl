@@ -36,11 +36,12 @@ void main(void)
 	}
 	else
 	{
-		float num0 = rand(direction.xz);
+		float num0 = (rand(direction.xz) * 2) - 1;
+		float num1 = (rand(direction.zx) * 2) - 1;
 
 		outPosition = origin;
-		outDirection = normalize(vec3(num0, 0.50, 0));
+		outDirection = normalize(vec3(num0, 1.0f, num1));
 		outVelocity = velocity;
-		outLife = 0;
+		outLife = rand(vec2(num0, num1));
 	}
 }
