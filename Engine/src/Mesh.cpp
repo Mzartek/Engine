@@ -99,6 +99,25 @@ void Engine::Mesh::display(void) const
 	glBindVertexArray(0);
 }
 
+void Engine::Mesh::display(Texture *cubeTexture) const
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, _NMTexture->getId());
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, cubeTexture->getId());
+
+	_materialBuffer->updateStoreMap(&_material);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _materialBuffer->getId());
+
+	glBindVertexArray(_idVAO);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
 void Engine::Mesh::displayShadow(void) const
 {
 	glActiveTexture(GL_TEXTURE0);

@@ -49,6 +49,7 @@ namespace Engine
 		void load(const GLsizei &numVertex, const Vertex *vertexArray,
 			const GLsizei &numIndex, const GLuint *indexArray);
 		void display(void) const;
+		void display(Texture *cubeTexture) const;
 		void displayShadow(void) const;
 	};
 
