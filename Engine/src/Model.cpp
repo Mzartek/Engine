@@ -7,7 +7,7 @@
 #include <Engine/DirLight.hpp>
 #include <Engine/SpotLight.hpp>
 #include <Engine/ShadowMap.hpp>
-#include <Engine/Texture.hpp>
+#include <Engine/TextureCube.hpp>
 
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
@@ -124,8 +124,8 @@ void Engine::Model::addMesh(const GLsizei &numVertex, const Vertex *vertexArray,
 {
      Mesh *newone = new Mesh;
 
-     newone->setColorTexture(colorTexture);
-     newone->setNMTexture(NMTexture);
+     newone->loadColorTexture(colorTexture);
+     newone->loadNMTexture(NMTexture);
      newone->setAmbient(ambient);
      newone->setDiffuse(diffuse);
      newone->setSpecular(specular);
@@ -267,9 +267,9 @@ void Engine::Model::setScale(const glm::vec3 &scale)
      _needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::setCubeTexture(Texture *cubeTex)
+void Engine::Model::setCubeTexture(TextureCube *cubeTexture)
 {
-     _cubeTexture = cubeTex;
+	_cubeTexture = cubeTexture;
 }
 
 glm::vec3 Engine::Model::getPosition(void) const

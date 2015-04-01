@@ -1,6 +1,6 @@
 #include <Engine/ParticlesManager.hpp>
 #include <Engine/ShaderProgram.hpp>
-#include <Engine/Texture.hpp>
+#include <Engine/Texture2D.hpp>
 #include <Engine/Buffer.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
@@ -9,7 +9,7 @@
 Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, ShaderProgram *displayProgram)
 	: _physicsProgram(physicsProgram), _displayProgram(displayProgram), _numElement(0)
 {
-	_colorTexture = new Texture;
+	_colorTexture = new Texture2D;
 	_positionBuffer = new Buffer;
 	_matrixBuffer = new Buffer;
 	_cameraBuffer = new Buffer;
@@ -41,9 +41,9 @@ Engine::ParticlesManager::~ParticlesManager(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::ParticlesManager::setTexture(const GLchar *path) const
+void Engine::ParticlesManager::loadTexture(const GLchar *path) const
 {
-	_colorTexture->load2DTextureFromFile(path);
+	_colorTexture->loadFromFile(path);
 }
 
 void Engine::ParticlesManager::setParticles(const Particle *particles, const GLsizei &numParticles)

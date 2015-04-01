@@ -5,20 +5,17 @@
 
 namespace Engine
 {
+	enum TextureType { TEXTURE_2D_TYPE, TEXTURE_CUBE_TYPE };
+
 	class DLLAPI Texture : public Object
 	{
-	private:
+	protected:
 		GLuint _idTexture;
 	public:
 		Texture(void);
 		~Texture(void);
 		GLuint getId(void) const;
-		void load2DTextureFromFile(const GLchar *path);
-		void load2DTextureFromSDL_Surface(const SDL_Surface *surface);
-		void loadCubeTextureFromFiles(
-			const GLchar *posx, const GLchar *negx,
-			const GLchar *posy, const GLchar *negy,
-			const GLchar *posz, const GLchar *negz);
+		virtual TextureType getType(void) const = 0;
 	};
 }
 

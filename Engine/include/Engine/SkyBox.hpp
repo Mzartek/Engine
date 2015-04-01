@@ -7,7 +7,7 @@
 
 namespace Engine
 {
-	class Texture;
+	class TextureCube;
 	class Buffer;
 	class ShaderProgram;
 	class GBuffer;
@@ -16,7 +16,7 @@ namespace Engine
 	class DLLAPI SkyBox : public Object
 	{
 	private:
-		Texture *_cubeTexture;
+		TextureCube *_cubeTexture;
 		Buffer *_vertexBuffer;
 		Buffer *_indexBuffer;
 		Buffer *_MVPMatrixBuffer;
@@ -29,7 +29,7 @@ namespace Engine
 		void load(const GLchar *posx, const GLchar *negx,
 			const GLchar *posy, const GLchar *negy,
 			const GLchar *posz, const GLchar *negz) const;
-		Texture *getTexture(void) const;
+		TextureCube *getTexture(void) const;
 		void display(GBuffer *gbuf, Camera *cam) const;
 	};
 }

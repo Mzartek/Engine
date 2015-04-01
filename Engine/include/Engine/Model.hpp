@@ -13,7 +13,7 @@ namespace Engine
      class Camera;
      class DirLight;
      class SpotLight;
-     class Texture;
+     class TextureCube;
 
      class DLLAPI Model : public Object
      {
@@ -44,7 +44,7 @@ namespace Engine
 	  glm::mat4 *_normalMatrix;
 	  GLboolean _needMatModel;
 	  GLboolean _needMatNormal;
-	  Texture *_cubeTexture;
+	  TextureCube *_cubeTexture;
 	  ShaderProgram *_gProgram;
 	  ShaderProgram *_smProgram;
 
@@ -65,7 +65,7 @@ namespace Engine
 	  void setPosition(const glm::vec3 &position);
 	  void setRotation(const glm::vec3 &rotation);
 	  void setScale(const glm::vec3 &scale);
-	  void setCubeTexture(Texture *cubeTex);
+	  void setCubeTexture(TextureCube *cubeTexture);
 	  glm::vec3 getPosition(void) const;
 	  glm::vec3 getRotation(void) const;
 	  glm::vec3 getScale(void) const;

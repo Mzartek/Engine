@@ -85,7 +85,7 @@ void GameManager::configRainParticles(void)
 		rainParticles[i].velocity = 2.0f;
 		rainParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	rainManager->setTexture("../share/Demo/resources/textures/goutte.png");
+	rainManager->loadTexture("../share/Demo/resources/textures/goutte.png");
 	rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
 }
 
@@ -100,7 +100,7 @@ void GameManager::configSmokeParticles(void)
 		smokeParticles[i].velocity = 0.2f;
 		smokeParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	smokeManager->setTexture("../share/Demo/resources/textures/smoke.png");
+	smokeManager->loadTexture("../share/Demo/resources/textures/smoke.png");
 	smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 	smokeManager->setPosition(glm::vec3(0, 0, 0));
 }

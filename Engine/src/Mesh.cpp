@@ -1,12 +1,13 @@
 #include <Engine/Mesh.hpp>
-#include <Engine/Texture.hpp>
+#include <Engine/Texture2D.hpp>
+#include <Engine/TextureCube.hpp>
 #include <Engine/Buffer.hpp>
 
 Engine::Mesh::Mesh(void)
 	: _numElement(0)
 {
-	_colorTexture = new Texture;
-	_NMTexture = new Texture;
+	_colorTexture = new Texture2D;
+	_NMTexture = new Texture2D;
 	_vertexBuffer = new Buffer;
 	_indexBuffer = new Buffer;
 	_materialBuffer = new Buffer;
@@ -26,14 +27,14 @@ Engine::Mesh::~Mesh(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Mesh::setColorTexture(const GLchar *path) const
+void Engine::Mesh::loadColorTexture(const GLchar *path) const
 {
-	_colorTexture->load2DTextureFromFile(path);
+	_colorTexture->loadFromFile(path);
 }
 
-void Engine::Mesh::setNMTexture(const GLchar *path) const
+void Engine::Mesh::loadNMTexture(const GLchar *path) const
 {
-	_NMTexture->load2DTextureFromFile(path);
+	_NMTexture->loadFromFile(path);
 }
 
 void Engine::Mesh::setAmbient(const glm::vec4 &ambient)
@@ -99,7 +100,7 @@ void Engine::Mesh::display(void) const
 	glBindVertexArray(0);
 }
 
-void Engine::Mesh::display(Texture *cubeTexture) const
+void Engine::Mesh::display(TextureCube *cubeTexture) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());

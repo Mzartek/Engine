@@ -6,7 +6,7 @@
 namespace Engine
 {
 	class ShaderProgram;
-	class Texture;
+	class Texture2D;
 	class Buffer;
 	class GBuffer;
 	class Camera;
@@ -44,7 +44,7 @@ namespace Engine
 		ShaderProgram *_displayProgram;
 		GLuint _idTFO;
 		GLuint _idVAO;
-		Texture *_colorTexture;
+		Texture2D *_colorTexture;
 		Buffer *_positionBuffer;
 		Buffer *_matrixBuffer;
 		Buffer *_cameraBuffer;
@@ -53,7 +53,7 @@ namespace Engine
 	public:
 		ParticlesManager(ShaderProgram *physicsProgram, ShaderProgram *displayProgram);
 		~ParticlesManager(void);
-		void setTexture(const GLchar *path) const;
+		void loadTexture(const GLchar *path) const;
 		void setParticles(const Particle *particles, const GLsizei &numParticles);
 		void setPosition(const glm::vec3 &pos);
 		glm::vec3 getPosition(void) const;

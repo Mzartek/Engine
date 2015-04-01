@@ -1,5 +1,5 @@
 #include <Engine/TextArray.hpp>
-#include <Engine/Texture.hpp>
+#include <Engine/Texture2D.hpp>
 #include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/Renderer.hpp>
@@ -7,7 +7,7 @@
 Engine::TextArray::TextArray(ShaderProgram *program)
 	: _font(NULL), _program(program)
 {
-	_texture = new Texture;
+	_texture = new Texture2D;
 	_vertexBuffer = new Buffer;
 	_MVPMatrixBuffer = new Buffer;
 	_mat = new glm::mat4;
@@ -59,7 +59,7 @@ void Engine::TextArray::writeScreen(const GLuint &x, const GLuint &y, const GLui
 	SDL_Surface *t;
 	
 	t = TTF_RenderText_Blended(_font, &text[0], _color);
-	_texture->load2DTextureFromSDL_Surface(t);
+	_texture->loadFromSDL_Surface(t);
 	SDL_FreeSurface(t);
 
 	GLfloat vertexArray[] =
@@ -82,7 +82,7 @@ void Engine::TextArray::writeScreen(const GLchar *text) const
 	SDL_Surface *t;
 
 	t = TTF_RenderText_Blended(_font, &text[0], _color);
-	_texture->load2DTextureFromSDL_Surface(t);
+	_texture->loadFromSDL_Surface(t);
 	SDL_FreeSurface(t);
 }
 

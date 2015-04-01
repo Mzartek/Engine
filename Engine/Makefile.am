@@ -8,6 +8,8 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/Input.hpp \
 	include/Engine/Light.hpp \
 	include/Engine/Texture.hpp \
+	include/Engine/Texture2D.hpp \
+	include/Engine/TextureCube.hpp \
 	include/Engine/Buffer.hpp \
 	include/Engine/ShadowMap.hpp \
 	include/Engine/ParticlesManager.hpp \
@@ -51,6 +53,8 @@ __top_builddir__lib_libEngine_la_SOURCES = \
 	src/SkyBox.cpp \
 	src/Light.cpp \
 	src/Texture.cpp \
+	src/Texture2D.cpp \
+	src/TextureCube.cpp \
 	src/Input.cpp \
 	src/TextArray.cpp \
 	src/FreeCam.cpp \

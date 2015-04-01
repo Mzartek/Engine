@@ -5,7 +5,7 @@
 
 namespace Engine
 {
-	class Texture;
+	class Texture2D;
 	class Buffer;
 	class ShaderProgram;
 	class Renderer;
@@ -14,7 +14,7 @@ namespace Engine
 	{
 	private:
 		TTF_Font *_font;
-		Texture *_texture;
+		Texture2D *_texture;
 		Buffer *_vertexBuffer;
 		Buffer *_MVPMatrixBuffer;
 		glm::mat4 *_mat;

@@ -5,7 +5,8 @@
 
 namespace Engine
 {
-	class Texture;
+	class Texture2D;
+	class TextureCube;
 	class Buffer;
 
 	struct Vertex
@@ -29,8 +30,8 @@ namespace Engine
 			GLfloat ALIGN(16) shininess;
 		} _material;
 
-		Texture *_colorTexture;
-		Texture *_NMTexture;
+		Texture2D *_colorTexture;
+		Texture2D *_NMTexture;
 		Buffer *_vertexBuffer;
 		Buffer *_indexBuffer;
 		Buffer *_materialBuffer;
@@ -39,8 +40,8 @@ namespace Engine
 	public:
 		Mesh(void);
 		~Mesh(void);
-		void setColorTexture(const GLchar *path) const;
-		void setNMTexture(const GLchar *path) const;
+		void loadColorTexture(const GLchar *path) const;
+		void loadNMTexture(const GLchar *path) const;
 		void setAmbient(const glm::vec4 &ambient);
 		void setDiffuse(const glm::vec4 &diffuse);
 		void setSpecular(const glm::vec4 &specular);
@@ -49,7 +50,7 @@ namespace Engine
 		void load(const GLsizei &numVertex, const Vertex *vertexArray,
 			const GLsizei &numIndex, const GLuint *indexArray);
 		void display(void) const;
-		void display(Texture *cubeTexture) const;
+		void display(TextureCube *cubeTexture) const;
 		void displayShadow(void) const;
 	};
 
