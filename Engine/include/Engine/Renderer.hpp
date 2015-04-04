@@ -11,7 +11,7 @@ namespace Engine
 		GameLoop(void);
 		~GameLoop(void);
 		virtual void display(GLfloat state) = 0;
-		virtual void idle(void) = 0; 
+		virtual void idle(long long time) = 0;
 		virtual void reshape(GLuint w, GLuint h) = 0;
 	};
 

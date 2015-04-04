@@ -13,6 +13,20 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
+inline std::string getDir(const GLchar *file)
+{
+	GLuint size, i;
+	std::string path;
+
+	for (size = i = 0; file[i] != '\0'; i++)
+		if (file[i] == '/')
+			size = i + 1;
+
+	path.insert(0, file, 0, size);
+
+	return path;
+}
+
 void Engine::Model::genMatModel(void) const
 {
      *_modelMatrix = glm::translate(*_position) *
@@ -134,20 +148,6 @@ void Engine::Model::addMesh(const GLsizei &numVertex, const Vertex *vertexArray,
 		  numIndex, indexArray);
 
      _tMesh->push_back(newone);
-}
-
-static std::string getDir(const GLchar *file)
-{
-     GLuint size, i;
-     std::string path;
-
-     for (size = i = 0; file[i] != '\0'; i++)
-	  if (file[i] == '/')
-	       size = i + 1;
-
-     path.insert(0, file, 0, size);
-
-     return path;
 }
 
 void Engine::Model::loadFromFile(const GLchar *file, const GLchar *defaultTex, const GLchar *defaultNM)

@@ -1,6 +1,6 @@
 #include <Engine/ShaderProgram.hpp>
 
-static GLchar *readText(const GLchar *filename)
+inline GLchar *readText(const GLchar *filename)
 {
 	std::ifstream file(filename, std::ifstream::in | std::ifstream::binary);
 	GLchar *content;
@@ -25,7 +25,7 @@ static GLchar *readText(const GLchar *filename)
 	return content;
 }
 
-static GLuint loadShader(const GLchar *filename, const GLenum &type)
+inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 {
 	GLuint id;
 	GLchar *content, *log;

@@ -89,7 +89,7 @@ SDL_Window *Engine::Renderer::getWindow(void) const
 void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 {
 	SDL_Event event;
-	long long currentTime, newTime, frameTime;
+	long long startTime, currentTime, newTime, frameTime;
 	long long accumulator = 0;
 	long long dt = 16;
 
@@ -100,8 +100,12 @@ void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 	}
 
 	_stopLoop = GL_FALSE;
+
 	gameLoop->reshape(_width, _height);
-	currentTime = SDL_GetTicks();
+
+	startTime = SDL_GetTicks();
+	currentTime = SDL_GetTicks() - startTime;
+
 	while (!_stopLoop)
 	{
 		while (SDL_PollEvent(&event))
@@ -113,11 +117,11 @@ void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 				break;
 			}
 		}
-		newTime = SDL_GetTicks();
+		newTime = SDL_GetTicks() - startTime;
 		frameTime = newTime - currentTime;
 		currentTime = newTime;
 		for (accumulator += frameTime; accumulator >= dt; accumulator -= dt)
-			gameLoop->idle();
+			gameLoop->idle(currentTime);
 		gameLoop->display((GLfloat)accumulator / dt);
 		SDL_GL_SwapWindow(_Window);
 	}

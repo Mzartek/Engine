@@ -19,7 +19,7 @@ struct Engine::Octree
 
 // Inline functions
 
-static inline GLboolean checkCamInOctree(const Engine::Octree *octree, const Engine::Camera *cam)
+inline GLboolean checkCamInOctree(const Engine::Octree *octree, const Engine::Camera *cam)
 {
 	const glm::vec3 p = cam->getCameraPosition();
 
@@ -30,7 +30,7 @@ static inline GLboolean checkCamInOctree(const Engine::Octree *octree, const Eng
 	return GL_FALSE;
 }
 
-static inline GLboolean checkOctreeInCamSphere(const Engine::Octree *octree, const Engine::Camera *cam)
+inline GLboolean checkOctreeInCamSphere(const Engine::Octree *octree, const Engine::Camera *cam)
 {
 	const glm::vec3 octree_position = cam->getCameraPosition();
 	const GLfloat distance = glm::length(octree_position - cam->getFrusSpherePosition());
@@ -40,7 +40,7 @@ static inline GLboolean checkOctreeInCamSphere(const Engine::Octree *octree, con
 	return GL_FALSE;
 }
 
-static inline GLboolean checkOctreeInCamFrus(const Engine::Octree *octree, const Engine::Camera *cam)
+inline GLboolean checkOctreeInCamFrus(const Engine::Octree *octree, const Engine::Camera *cam)
 {
 	const glm::vec3 camera_position = cam->getCameraPosition();
 	const glm::vec3 view_vector = cam->getViewVector();

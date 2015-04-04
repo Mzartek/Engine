@@ -1,5 +1,5 @@
-#ifndef CONFIG_HEADER
-#define CONFIG_HEADER
+#ifndef DEMO_HEADER
+#define DEMO_HEADER
 
 #include <ctime>
 
@@ -25,7 +25,7 @@
 #include "Phalloide.hpp"
 #include "Satan.hpp"
 
-class GameManager : public Engine::GameLoop
+class Demo : public Engine::GameLoop
 {
 private:
 	// System
@@ -81,10 +81,10 @@ private:
 	void configTree(void);
 	void updateRainParticles(void);
 public:
-	GameManager(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a);
-	~GameManager(void);
+	Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a);
+	~Demo(void);
 	void display(GLfloat state);
-	void idle(void);
+	void idle(long long time);
 	void reshape(GLuint w, GLuint h);
 	void launch(void);
 };
