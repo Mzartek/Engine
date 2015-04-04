@@ -1,10 +1,5 @@
 #include "Demo.hpp"
 
-inline GLfloat getRandomPosition(void)
-{
-	return (GLfloat)-500 + rand() % 1000;
-}
-
 void Demo::configSol(void)
 {
 	Engine::Vertex vertexArray[] =
@@ -28,43 +23,13 @@ void Demo::configSol(void)
 	octreeSystem->addModel(sol, 1000);
 }
 
-void Demo::configChamp(void)
-{
-	Cepe *cepe_tmp;
-	Phalloide *phalloide_tmp;
-	Satan *satan_tmp;
-
-	model_cepe = new Cepe(mushroomProgram, shadowMapProgram);
-	model_phalloide = new Phalloide(mushroomProgram, shadowMapProgram);
-	model_satan = new Satan(mushroomProgram, shadowMapProgram);
-
-	for (GLuint i = 1; i < 20; i++)
-	{
-		cepe_tmp = new Cepe(model_cepe);
-		phalloide_tmp = new Phalloide(model_phalloide);
-		satan_tmp = new Satan(model_satan);
-
-		cepe_tmp->setPosition(glm::vec3(getRandomPosition(), 1.5f, getRandomPosition()));
-		phalloide_tmp->setPosition(glm::vec3(getRandomPosition(), 1.5f, getRandomPosition()));
-		satan_tmp->setPosition(glm::vec3(getRandomPosition(), 1.5f, getRandomPosition()));
-
-		octreeSystem->addModel(cepe_tmp, 2);
-		octreeSystem->addModel(phalloide_tmp, 2);
-		octreeSystem->addModel(satan_tmp, 2);
-
-		vector_cepe->push_back(cepe_tmp);
-		vector_phalloide->push_back(phalloide_tmp);
-		vector_satan->push_back(satan_tmp);
-	}
-}
-
 void Demo::configTree(void)
 {
-	model_tree = new Engine::Model(objectProgram, shadowMapProgram);
+	model_tree = new Engine::Model(objectProgram, depthMapProgram);
 	model_tree->loadFromFile(
-	     "../share/Demo/resources/models/tree/Tree1.3ds",
-	     "../share/Demo/resources/textures/none.png",
-	     "../share/Demo/resources/textures/NM_none.png");
+		"../share/Demo/resources/models/tree/Tree1.3ds",
+		"../share/Demo/resources/textures/none.png",
+		"../share/Demo/resources/textures/NM_none.png");
 	model_tree->sortMesh();
 	model_tree->setPosition(glm::vec3(50, 0, 50));
 	model_tree->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
@@ -77,10 +42,10 @@ void Demo::configRainParticles(void)
 {
 	int numParticle = 10000;
 	std::vector<Engine::Particle> rainParticles(numParticle);
-	glm::vec3 pos = player->getCamera()->getCameraPosition();
+	glm::vec3 pos = camera->getCameraPosition();
 	for (int i = 0; i < numParticle; i++)
 	{
-	    rainParticles[i].position = glm::vec3(pos.x + (rand() % 200 - 100), pos.y + 100, pos.z + (rand() % 200 - 100));
+		rainParticles[i].position = glm::vec3(pos.x + (rand() % 200 - 100), pos.y + 100, pos.z + (rand() % 200 - 100));
 		rainParticles[i].direction = glm::vec3(0, -1, 0);
 		rainParticles[i].velocity = 2.0f;
 		rainParticles[i].life = (GLfloat)(rand() % 100);
@@ -112,107 +77,105 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	audio = a;
 
 	skyboxProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/skybox/skyboxVert.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/skybox/skyboxFrag.glsl");
-	
+		"../share/Demo/shader/skybox/skyboxVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/skybox/skyboxFrag.glsl");
+
 	objectProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/object/objectVert.glsl",
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/object/objectGeom.glsl",
-	     "../share/Demo/shader/object/objectFrag.glsl");
-	
+		"../share/Demo/shader/object/objectVert.glsl",
+		NULL,
+		NULL,
+		"../share/Demo/shader/object/objectGeom.glsl",
+		"../share/Demo/shader/object/objectFrag.glsl");
+
 	mushroomProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/mushroom/mushroomVert.glsl",
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/mushroom/mushroomGeom.glsl",
-	     "../share/Demo/shader/mushroom/mushroomFrag.glsl");
-	
+		"../share/Demo/shader/mushroom/mushroomVert.glsl",
+		NULL,
+		NULL,
+		"../share/Demo/shader/mushroom/mushroomGeom.glsl",
+		"../share/Demo/shader/mushroom/mushroomFrag.glsl");
+
 	dirLightProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/dirLight/dirLightVert.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/dirLight/dirLightFrag.glsl");
-	
+		"../share/Demo/shader/dirLight/dirLightVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/dirLight/dirLightFrag.glsl");
+
 	spotLightProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/spotLight/spotLightVert.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/spotLight/spotLightFrag.glsl");
-	
-	shadowMapProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/shadow/shadowVert.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/shadow/shadowFrag.glsl");
-	
+		"../share/Demo/shader/spotLight/spotLightVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/spotLight/spotLightFrag.glsl");
+
+	depthMapProgram = new Engine::ShaderProgram(
+		"../share/Demo/shader/depthMap/depthMapVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
+
 	displayRainProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/rainParticles/rainVert.glsl",
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/rainParticles/rainGeom.glsl",
-	     "../share/Demo/shader/rainParticles/rainFrag.glsl");
-	
+		"../share/Demo/shader/rainParticles/rainVert.glsl",
+		NULL,
+		NULL,
+		"../share/Demo/shader/rainParticles/rainGeom.glsl",
+		"../share/Demo/shader/rainParticles/rainFrag.glsl");
+
 	displaySmokeProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/smokeParticles/smokeVert.glsl",
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/smokeParticles/smokeGeom.glsl",
-	     "../share/Demo/shader/smokeParticles/smokeFrag.glsl");
-	
+		"../share/Demo/shader/smokeParticles/smokeVert.glsl",
+		NULL,
+		NULL,
+		"../share/Demo/shader/smokeParticles/smokeGeom.glsl",
+		"../share/Demo/shader/smokeParticles/smokeFrag.glsl");
+
 	backgroundProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/background/backgroundVert.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/background/backgroundFrag.glsl");
-	
+		"../share/Demo/shader/background/backgroundVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/background/backgroundFrag.glsl");
+
 	screenProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/screen/screenVert.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/screen/screenFrag.glsl");
-	
+		"../share/Demo/shader/screen/screenVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/screen/screenFrag.glsl");
+
 	textProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/text/textVert.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     "../share/Demo/shader/text/textFrag.glsl");
+		"../share/Demo/shader/text/textVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/text/textFrag.glsl");
 
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
-	
+
 	physicsRainProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/rainParticles/rainPhysics.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     NULL,
-	     varyings, sizeof(varyings) / sizeof(GLfloat *));
-	
+		"../share/Demo/shader/rainParticles/rainPhysics.glsl",
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		varyings, sizeof(varyings) / sizeof(GLfloat *));
+
 	physicsSmokeProgram = new Engine::ShaderProgram(
-	     "../share/Demo/shader/smokeParticles/smokePhysics.glsl",
-	     NULL,
-	     NULL,
-	     NULL,
-	     NULL,
-	     varyings, sizeof(varyings) / sizeof(GLfloat *));
+		"../share/Demo/shader/smokeParticles/smokePhysics.glsl",
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		varyings, sizeof(varyings) / sizeof(GLfloat *));
 
 	gBuffer = new Engine::GBuffer;
-	player = new Player;
+	dMaps = new Engine::DepthMap[3];
+	camera = new Engine::FreeCam;
 	skybox = new Engine::SkyBox(skyboxProgram);
-	sol = new Engine::Model(objectProgram, shadowMapProgram);
-	vector_cepe = new std::vector < Cepe * > ;
-	vector_phalloide = new std::vector < Phalloide * > ;
-	vector_satan = new std::vector < Satan * > ;
+	sol = new Engine::Model(objectProgram, depthMapProgram);
 	moon = new Engine::DirLight(dirLightProgram);
 	torch = new Engine::SpotLight(spotLightProgram);
 	rainManager = new Engine::ParticlesManager(physicsRainProgram, displayRainProgram);
@@ -227,34 +190,32 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 	// GBuffer config
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
+	dMaps[0].config(2048, 2048);
+	dMaps[1].config(2048, 2048);
+	dMaps[2].config(2048, 2048);
 
 	// Camera config
-	player->getCamera()->setCameraPosition(glm::vec3(30, 5, 0));
-	player->getCamera()->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
+	camera->setCameraPosition(glm::vec3(30, 5, 0));
+	camera->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
 
 	// Skybox config
 	skybox->load(
-	     "../share/Demo/resources/textures/skybox/nnksky01_right.jpg", "../share/Demo/resources/textures/skybox/nnksky01_left.jpg",
-	     "../share/Demo/resources/textures/skybox/nnksky01_top.jpg",   "../share/Demo/resources/textures/skybox/nnksky01_bottom.jpg",
-	     "../share/Demo/resources/textures/skybox/nnksky01_front.jpg", "../share/Demo/resources/textures/skybox/nnksky01_back.jpg");
+		"../share/Demo/resources/textures/skybox/nnksky01_right.jpg", "../share/Demo/resources/textures/skybox/nnksky01_left.jpg",
+		"../share/Demo/resources/textures/skybox/nnksky01_top.jpg", "../share/Demo/resources/textures/skybox/nnksky01_bottom.jpg",
+		"../share/Demo/resources/textures/skybox/nnksky01_front.jpg", "../share/Demo/resources/textures/skybox/nnksky01_back.jpg");
 
 	// Model config
 	configSol();
-	configChamp();
 	configTree();
 
 	moon->setColor(glm::vec3(0.5f, 0.5f, 0.9f));
 	moon->setDirection(glm::vec3(0.5f, -1.0f, 0.0f));
-	moon->setShadowMapping(GL_TRUE);
-	moon->configShadowMap(2048, 2048);
 
 	torch->setPosition(glm::vec3(25, 100, -25));
 	torch->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
 	torch->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torch->setSpotCutOff(glm::pi<GLfloat>() / 4);
 	torch->setMaxDistance(250);
-	torch->setShadowMapping(GL_TRUE);
-	torch->configShadowMap(2048, 2048);
 
 	// ParticlesManager config
 	configRainParticles();
@@ -264,7 +225,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	text->setFont("../share/Demo/resources/font/SIXTY.TTF", 100, 255, 255, 0);
 	text->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
 		renderer->getWidth() / 10, renderer->getHeight() / 10,
-		renderer, std::to_string(player->getLife()).c_str());
+		renderer, "test");
 
 	rain_sound->setGain(0.25f);
 	rain_sound->setPitch(1.0f);
@@ -285,8 +246,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 Demo::~Demo(void)
 {
-	GLuint i;
-
 	delete fire_sound;
 	delete rain_sound;
 
@@ -298,22 +257,11 @@ Demo::~Demo(void)
 	delete rainManager;
 	delete torch;
 	delete moon;
-	for (i = 0; i < vector_satan->size(); i++)
-		delete (*vector_satan)[i];
-	for (i = 0; i < vector_phalloide->size(); i++)
-		delete (*vector_phalloide)[i];
-	for (i = 0; i < vector_cepe->size(); i++)
-		delete (*vector_cepe)[i];
-	delete vector_satan;
-	delete vector_phalloide;
-	delete vector_cepe;
 	delete model_tree;
-	delete model_satan;
-	delete model_phalloide;
-	delete model_cepe;
 	delete sol;
 	delete skybox;
-	delete player;
+	delete camera;
+	delete[] dMaps;
 	delete gBuffer;
 
 	delete physicsSmokeProgram;
@@ -324,7 +272,7 @@ Demo::~Demo(void)
 	delete backgroundProgram;
 	delete displaySmokeProgram;
 	delete displayRainProgram;
-	delete shadowMapProgram;
+	delete depthMapProgram;
 	delete spotLightProgram;
 	delete dirLightProgram;
 	delete objectProgram;
@@ -337,144 +285,96 @@ void Demo::display(GLfloat state)
 	UNREFERENCED_PARAMETER(state);
 
 	static std::set<Engine::Model *> object;
-	static Engine::PlayerCam *player_cam = player->getCamera();
 
 	// We retrieve object to display from the octree
 	object.clear();
-	octreeSystem->getModels(gBuffer, player_cam, &object);
+	octreeSystem->getModels(gBuffer, camera, &object);
 
 	// Clear Buffers
 	renderer->clear();
 	gBuffer->clear();
-	moon->clear();
-	torch->clear();
 
 	// Skybox
-	skybox->display(gBuffer, player_cam);
-
-	// ShadowMap
-	model_tree->displayShadowMap(moon);
-	model_tree->displayShadowMap(torch);
+	skybox->display(gBuffer, camera);
 
 	// Opaque Object
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
-		(*it)->display(gBuffer, player_cam);
+		(*it)->display(gBuffer, camera);
 
-	moon->display(gBuffer, player_cam);
-	torch->display(gBuffer, player_cam);
+	// Lights
+	dMaps[0].clear();
+	model_tree->displayDepthMap(dMaps, moon);
+	moon->display(gBuffer, dMaps, camera);
+
+	dMaps[0].clear();
+	dMaps[1].clear();
+	dMaps[2].clear();
+	model_tree->displayDepthMap(dMaps, torch);
+	torch->display(gBuffer, dMaps, camera);
+
 	screen->background(gBuffer);
 
 	// Transparent Object
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
-		(*it)->displayTransparent(gBuffer, player->getCamera());
+		(*it)->displayTransparent(gBuffer, camera);
 
-	moon->display(gBuffer, player->getCamera());
-	torch->display(gBuffer, player->getCamera());
+	moon->display(gBuffer, camera);
+	torch->display(gBuffer, camera);
+
 	screen->background(gBuffer);
 
 	// Particles
-	rainManager->display(gBuffer, player_cam);
-	smokeManager->display(gBuffer, player_cam);
+	rainManager->display(gBuffer, camera);
+	smokeManager->display(gBuffer, camera);
 
-	if (player->isAlive())
-		screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
-	else
-		screen->display(renderer, gBuffer, 1.0f, 0.5f, 0.5f, 1.0f);
+	screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
 	text->display(renderer);
 }
 
 void Demo::idle(long long time)
 {
-	static GLuint i;
-	static Engine::PlayerCam *player_cam = player->getCamera();
+	UNREFERENCED_PARAMETER(time);
+
 	glm::vec3 camPosition;
 	glm::vec3 camView;
-
-	std::cout << (GLfloat)time / 1000 << std::endl;
-
-	if (time > 20000)
-	{
-		std::cout << "End of the game!" << std::endl;
-		renderer->stopLoop();
-	}
 
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
 		renderer->stopLoop();
 
 	// Player control
-	if (player->isAlive())
-	{
-		if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT))
-			player->getCamera()->setSpeed(0.05f);
-		else if (input->getMouseState(SDL_BUTTON_LEFT))
-			player->getCamera()->setSpeed(5.0f);
-		else
-			player->getCamera()->setSpeed(0.25f);
+	if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT))
+		camera->setSpeed(0.05f);
+	else if (input->getMouseState(SDL_BUTTON_LEFT))
+		camera->setSpeed(5.0f);
+	else
+		camera->setSpeed(0.25f);
 
-		player_cam->keyboardMove(
-			input->getKeyBoardState(SDL_SCANCODE_W),
-			input->getKeyBoardState(SDL_SCANCODE_S),
-			input->getKeyBoardState(SDL_SCANCODE_A),
-			input->getKeyBoardState(SDL_SCANCODE_D));
-		player_cam->mouseMove(input->getMouseRelX(), input->getMouseRelY());
+	camera->keyboardMove(
+		input->getKeyBoardState(SDL_SCANCODE_W),
+		input->getKeyBoardState(SDL_SCANCODE_S),
+		input->getKeyBoardState(SDL_SCANCODE_A),
+		input->getKeyBoardState(SDL_SCANCODE_D));
+	camera->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 
-		player_cam->position();
-		camPosition = player_cam->getCameraPosition();
-		camView = player_cam->getViewVector();
+	camera->position();
+	camPosition = camera->getCameraPosition();
+	camView = camera->getViewVector();
 
-		moon->position(camPosition, 100, 250, 500);
-		torch->position();
+	moon->position(camPosition, 100, 250, 500);
+	torch->position(dMaps);
 
-		rainManager->setPosition(camPosition);
-		rainManager->updateParticles();
-		smokeManager->updateParticles();
+	rainManager->setPosition(camPosition);
+	rainManager->updateParticles();
+	smokeManager->updateParticles();
 
-		audio->setListenerPosition(camPosition, camView);
-	}
-
-	// Mushroom manager
-	for (i = 0; i < vector_cepe->size(); i++)
-	{
-		if (glm::length(camPosition - (*vector_cepe)[i]->getPosition()) < 5)
-		{
-			player->eatMushroom((*vector_cepe)[i]);
-			octreeSystem->removeModel((*vector_cepe)[i]);
-			delete (*vector_cepe)[i];
-			vector_cepe->erase(vector_cepe->begin() + i);
-			text->writeScreen(std::to_string(player->getLife()).c_str());
-		}
-	}
-
-	for (i = 0; i < vector_phalloide->size(); i++)
-	{
-		if (glm::length(camPosition - (*vector_phalloide)[i]->getPosition()) < 5)
-		{
-			player->eatMushroom((*vector_phalloide)[i]);
-			octreeSystem->removeModel((*vector_phalloide)[i]);
-			delete (*vector_phalloide)[i];
-			vector_phalloide->erase(vector_phalloide->begin() + i);
-			text->writeScreen(std::to_string(player->getLife()).c_str());
-		}
-	}
-
-	for (i = 0; i < vector_satan->size(); i++)
-	{
-		if (glm::length(camPosition - (*vector_satan)[i]->getPosition()) < 5)
-		{
-			player->eatMushroom((*vector_satan)[i]);
-			octreeSystem->removeModel((*vector_satan)[i]);
-			delete (*vector_satan)[i];
-			vector_satan->erase(vector_satan->begin() + i);
-			text->writeScreen(std::to_string(player->getLife()).c_str());
-		}
-	}
+	audio->setListenerPosition(camPosition, camView);
 }
 
 void Demo::reshape(GLuint w, GLuint h)
 {
-	player->getCamera()->setPerspective(glm::pi<GLfloat>() / 2, w, h, 0.1f, 1000.0f);
+	camera->setPerspective(glm::pi<GLfloat>() / 2, w, h, 0.1f, 1000.0f);
 }
 
 void Demo::launch(void)

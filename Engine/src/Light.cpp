@@ -1,6 +1,6 @@
 #include <Engine/Light.hpp>
 #include <Engine/Buffer.hpp>
-#include <Engine/ShadowMap.hpp>
+#include <Engine/DepthMap.hpp>
 
 Engine::Light::Light(ShaderProgram *program)
 	: _program(program)

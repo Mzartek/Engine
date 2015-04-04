@@ -1,6 +1,7 @@
 #include <Engine/DirLight.hpp>
 #include <Engine/Buffer.hpp>
-#include <Engine/ShadowMap.hpp>
+#include <Engine/DepthMap.hpp>
+#include <Engine/DepthMap.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Camera.hpp>
@@ -8,7 +9,6 @@
 Engine::DirLight::DirLight(ShaderProgram *program)
 	: Light(program)
 {
-	_shadow = new ShadowMap[CSM_NUM];
 	_projectionMatrix = new glm::mat4[CSM_NUM];
 	_viewMatrix = new glm::mat4[CSM_NUM];
 	_VPMatrix = new glm::mat4[CSM_NUM];
@@ -33,7 +33,6 @@ Engine::DirLight::DirLight(ShaderProgram *program)
 
 Engine::DirLight::~DirLight(void)
 {
-	delete[] _shadow;
 	delete[] _projectionMatrix;
 	delete[] _viewMatrix;
 	delete[] _VPMatrix;
@@ -49,22 +48,6 @@ void Engine::DirLight::setColor(const glm::vec3 &color)
 void Engine::DirLight::setDirection(const glm::vec3 &dir)
 {
 	_lightInfo.direction = dir;
-}
-
-void Engine::DirLight::setShadowMapping(const GLboolean &shadow)
-{
-	_lightInfo.withShadowMapping = shadow;
-}
-
-void Engine::DirLight::configShadowMap(const GLuint &width, const GLuint &height) const
-{
-	for (GLuint i = 0; i < CSM_NUM; i++)
-		_shadow[i].config(width, height);
-}
-
-Engine::ShadowMap *Engine::DirLight::getShadowMap(const GLuint &num) const
-{
-	return &_shadow[num];
 }
 
 glm::mat4 Engine::DirLight::getProjectionMatrix(const GLuint &num) const
@@ -92,38 +75,64 @@ glm::vec3 Engine::DirLight::getDirection(void) const
 	return _lightInfo.direction;
 }
 
-void Engine::DirLight::position(const glm::vec3 &pos, const GLfloat &dim0, const GLfloat &dim1, const GLfloat &dim2) const
+void Engine::DirLight::position(const glm::vec3 &pos, const GLfloat &dim0, const GLfloat &dim1, const GLfloat &dim2)
 {
 	GLfloat dim[3] = { dim0, dim1, dim2 };
 
 	for (GLuint i = 0; i < CSM_NUM; i++)
 	{
-		_projectionMatrix[i] = glm::ortho(-dim[i], dim[i], -dim[i], dim[i],	-dim[i], dim[i]);
+		_projectionMatrix[i] = glm::ortho(-dim[i], dim[i], -dim[i], dim[i], -dim[i], dim[i]);
 		_viewMatrix[i] = glm::lookAt(pos - _lightInfo.direction, pos, glm::vec3(0.0f, 1.0f, 0.0f));
 		_VPMatrix[i] = _projectionMatrix[i] * _viewMatrix[i];
 	}
 
+	memcpy(_lightInfo.shadowMatrix, _VPMatrix, 3 * sizeof(glm::mat4));
+
 	/*glm::mat4 mattest;
 	mattest = _projectionMatrix[0];
 	std::string test =
-		std::to_string(mattest[0][0]) + " " + std::to_string(mattest[0][1]) + " " + std::to_string(mattest[0][2]) + " " + std::to_string(mattest[0][3]) + "\n" +
-		std::to_string(mattest[1][0]) + " " + std::to_string(mattest[1][1]) + " " + std::to_string(mattest[1][2]) + " " + std::to_string(mattest[1][3]) + "\n" +
-		std::to_string(mattest[2][0]) + " " + std::to_string(mattest[2][1]) + " " + std::to_string(mattest[2][2]) + " " + std::to_string(mattest[2][3]) + "\n" +
-		std::to_string(mattest[3][0]) + " " + std::to_string(mattest[3][1]) + " " + std::to_string(mattest[3][2]) + " " + std::to_string(mattest[3][3]) + "\n";
+	std::to_string(mattest[0][0]) + " " + std::to_string(mattest[0][1]) + " " + std::to_string(mattest[0][2]) + " " + std::to_string(mattest[0][3]) + "\n" +
+	std::to_string(mattest[1][0]) + " " + std::to_string(mattest[1][1]) + " " + std::to_string(mattest[1][2]) + " " + std::to_string(mattest[1][3]) + "\n" +
+	std::to_string(mattest[2][0]) + " " + std::to_string(mattest[2][1]) + " " + std::to_string(mattest[2][2]) + " " + std::to_string(mattest[2][3]) + "\n" +
+	std::to_string(mattest[3][0]) + " " + std::to_string(mattest[3][1]) + " " + std::to_string(mattest[3][2]) + " " + std::to_string(mattest[3][3]) + "\n";
 	MessageBoxA(NULL, test.c_str(), "OpenGL", MB_OK);
 	exit(0);*/
 }
 
-void Engine::DirLight::clear(void) const
-{
-	for (GLuint i = 0; i < CSM_NUM; i++)
-		_shadow[i].clear();
-}
-
 void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 {
-	glm::vec3 camPosition = cam->getCameraPosition();
+	gbuf->setLightState();
 
+	glUseProgram(_program->getId());
+
+	// GBuffer
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+
+	_mainInfo.IVPMatrix = cam->getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
+	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.withShadowMapping = GL_FALSE;
+
+	_mainInfoBuffer->updateStoreMap(&_mainInfo);
+	_lightInfoBuffer->updateStoreMap(&_lightInfo);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
+
+	glBindVertexArray(_idVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
+}
+
+void Engine::DirLight::display(GBuffer *gbuf, DepthMap *dmaps, Camera *cam)
+{
 	gbuf->setLightState();
 
 	glUseProgram(_program->getId());
@@ -139,22 +148,19 @@ void Engine::DirLight::display(GBuffer *gbuf, Camera *cam)
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
 	// ShadowMap
-	if (_lightInfo.withShadowMapping == GL_TRUE)
-	{
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, _shadow[0].getIdDepthTexture());
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, dmaps[0].getIdDepthTexture());
 
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, _shadow[1].getIdDepthTexture());
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, dmaps[1].getIdDepthTexture());
 
-		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, _shadow[2].getIdDepthTexture());
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, dmaps[2].getIdDepthTexture());
 
-		memcpy(_lightInfo.shadowMatrix, _VPMatrix, 3 * sizeof(glm::mat4));
-	}
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	_mainInfo.camPosition = glm::vec3(camPosition.x, camPosition.y, camPosition.z);
+	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.withShadowMapping = GL_TRUE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);

@@ -1,16 +1,16 @@
-#include <Engine/ShadowMap.hpp>
+#include <Engine/DepthMap.hpp>
 
-Engine::ShadowMap::ShadowMap(void)
+Engine::DepthMap::DepthMap(void)
     : _idDepthTexture(0)
 {
 }
 
-Engine::ShadowMap::~ShadowMap(void)
+Engine::DepthMap::~DepthMap(void)
 {
 	if (glIsTexture(_idDepthTexture)) glDeleteTextures(1, &_idDepthTexture);
 }
 
-void Engine::ShadowMap::config(const GLuint &width, const GLuint &height)
+void Engine::DepthMap::config(const GLuint &width, const GLuint &height)
 {
 	FrameBuffer::config(width, height);
 
@@ -40,12 +40,12 @@ void Engine::ShadowMap::config(const GLuint &width, const GLuint &height)
 		std::cerr << "Framebuffer not complete" << std::endl;
 }
 
-GLuint Engine::ShadowMap::getIdDepthTexture(void) const
+GLuint Engine::DepthMap::getIdDepthTexture(void) const
 {
 	return _idDepthTexture;
 }
 
-void Engine::ShadowMap::setState(void) const
+void Engine::DepthMap::setState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -63,7 +63,7 @@ void Engine::ShadowMap::setState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::ShadowMap::clear(void) const
+void Engine::DepthMap::clear(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 

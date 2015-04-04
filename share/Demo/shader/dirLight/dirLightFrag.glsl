@@ -15,14 +15,14 @@ layout(binding = 0) uniform mainInfoBuffer
 	mat4 IVPMatrix;
 	uvec2 screen;
 	vec3 camPosition;
+	bool withShadowMapping;
 };
 
 layout(binding = 1) uniform lightInfoBuffer
 {
-	mat4 shadowMatrix[3];
 	vec3 lightColor;
 	vec3 lightDirection;
-	bool withShadowMapping;
+	mat4 shadowMatrix[3];
 };
 
 layout(location = 0) out vec4 outLight;

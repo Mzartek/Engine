@@ -8,7 +8,8 @@
 #include <Engine/Input.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
-#include <Engine/PlayerCam.hpp>
+#include <Engine/DepthMap.hpp>
+#include <Engine/FreeCam.hpp>
 #include <Engine/SkyBox.hpp>
 #include <Engine/Model.hpp>
 #include <Engine/Mesh.hpp>
@@ -19,11 +20,6 @@
 #include <Engine/TextArray.hpp>
 #include <Engine/OctreeSystem.hpp>
 #include <Engine/Sound.hpp>
-
-#include "Player.hpp"
-#include "Cepe.hpp"
-#include "Phalloide.hpp"
-#include "Satan.hpp"
 
 class Demo : public Engine::GameLoop
 {
@@ -39,7 +35,7 @@ private:
 	Engine::ShaderProgram *mushroomProgram;
 	Engine::ShaderProgram *dirLightProgram;
 	Engine::ShaderProgram *spotLightProgram;
-	Engine::ShaderProgram *shadowMapProgram;
+	Engine::ShaderProgram *depthMapProgram;
 	Engine::ShaderProgram *displayRainProgram;
 	Engine::ShaderProgram *displaySmokeProgram;
 	Engine::ShaderProgram *backgroundProgram;
@@ -50,16 +46,11 @@ private:
 	Engine::ShaderProgram *physicsSmokeProgram;
 
 	Engine::GBuffer *gBuffer;
-	Player *player;
+	Engine::DepthMap *dMaps;
+	Engine::FreeCam *camera;
 	Engine::SkyBox *skybox;
 	Engine::Model *sol;
-	Cepe *model_cepe;
-	Phalloide *model_phalloide;
-	Satan *model_satan;
 	Engine::Model *model_tree;
-	std::vector<Cepe *> *vector_cepe;
-	std::vector<Phalloide *> *vector_phalloide;
-	std::vector<Satan *> *vector_satan;
 	Engine::DirLight *moon;
 	Engine::SpotLight *torch;
 	Engine::ParticlesManager *rainManager;
@@ -75,7 +66,6 @@ private:
 
 	// Private methods
 	void configSol(void);
-	void configChamp(void);
 	void configRainParticles(void);
 	void configSmokeParticles(void);
 	void configTree(void);

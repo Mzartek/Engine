@@ -117,11 +117,14 @@ void Engine::Renderer::mainLoop(GameLoop *gameLoop)
 				break;
 			}
 		}
+
 		newTime = SDL_GetTicks() - startTime;
 		frameTime = newTime - currentTime;
 		currentTime = newTime;
+
 		for (accumulator += frameTime; accumulator >= dt; accumulator -= dt)
 			gameLoop->idle(currentTime);
+
 		gameLoop->display((GLfloat)accumulator / dt);
 		SDL_GL_SwapWindow(_Window);
 	}

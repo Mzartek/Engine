@@ -10,13 +10,12 @@ namespace Engine
 	private:
 		struct
 		{
-			glm::mat4 shadowMatrix;
 			glm::vec3 ALIGN(16) color;
 			glm::vec3 ALIGN(16) position;
 			glm::vec3 ALIGN(16) direction;
 			GLfloat spotCutOff;
 			GLfloat ALIGN(16) maxDistance;
-			GLint withShadowMapping;
+			glm::mat4 ALIGN(16) shadowMatrix;
 		} _lightInfo;
 	public:
 		SpotLight(ShaderProgram *program);
@@ -26,9 +25,6 @@ namespace Engine
 		void setDirection(const glm::vec3 &dir);
 		void setSpotCutOff(const GLfloat &spot);
 		void setMaxDistance(const GLfloat &maxDistance);
-		void setShadowMapping(const GLboolean &shadow);
-		void configShadowMap(const GLuint &width, const GLuint &height) const;
-		ShadowMap *getShadowMap(void) const;
 		glm::mat4 getProjectionMatrix(void) const;
 		glm::mat4 getViewMatrix(void) const;
 		glm::mat4 getVPMatrix(void) const;
@@ -37,9 +33,9 @@ namespace Engine
 		glm::vec3 getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
 		GLfloat getMaxDistance(void) const;
-		void position(void) const;
-		void clear(void) const;
+		void position(DepthMap *dmap);
 		void display(GBuffer *gbuf, Camera *cam);
+		void display(GBuffer *gbuf, DepthMap *dmap, Camera *cam);
 	};
 }
 

@@ -1,17 +1,17 @@
-#ifndef SHADOWMAP_HEADER
-#define SHADOWMAP_HEADER
+#ifndef DEPTHMAP_HEADER
+#define DEPTHMAP_HEADER
 
 #include "FrameBuffer.hpp"
 
 namespace Engine
 {
-	class DLLAPI ShadowMap : public FrameBuffer
+	class DLLAPI DepthMap : public FrameBuffer
 	{
 	private:
 		GLuint _idDepthTexture;
 	public:
-		ShadowMap(void);
-		~ShadowMap(void);
+		DepthMap(void);
+		~DepthMap(void);
 		void config(const GLuint &width, const GLuint &height);
 		GLuint getIdDepthTexture(void) const;
 		void setState(void) const;
