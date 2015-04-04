@@ -11,7 +11,7 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/Texture2D.hpp \
 	include/Engine/TextureCube.hpp \
 	include/Engine/Buffer.hpp \
-	include/Engine/ShadowMap.hpp \
+	include/Engine/DepthMap.hpp \
 	include/Engine/ParticlesManager.hpp \
 	include/Engine/Camera.hpp \
 	include/Engine/Mesh.hpp \
@@ -36,7 +36,7 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 
 __top_builddir__lib_libEngine_la_SOURCES = \
 	src/Buffer.cpp \
-	src/ShadowMap.cpp \
+	src/DepthMap.cpp \
 	src/Model.cpp \
 	src/Renderer.cpp \
 	src/Mesh.cpp \
