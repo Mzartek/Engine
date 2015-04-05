@@ -19,6 +19,7 @@ namespace Engine
 			glm::mat4 IVPMatrix;
 			glm::uvec2 ALIGN(16) screen;
 			glm::vec3 ALIGN(16) camPosition;
+			GLint withShadowMapping;
 		} _mainInfo;
 
 		Buffer *_vertexBuffer;

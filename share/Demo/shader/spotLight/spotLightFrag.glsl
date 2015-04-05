@@ -15,6 +15,7 @@ layout(binding = 0) uniform mainInfoBuffer
 	mat4 IVPMatrix;
 	uvec2 screen;
 	vec3 camPosition;
+	bool withShadowMapping;
 };
 
 layout(binding = 1) uniform lightInfoBuffer
@@ -82,7 +83,9 @@ void main(void)
 	vec4 diffColor = unpackUnorm4x8(material.z) * vec4(lightColor, 1.0);
 	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);
 
-	float shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
+	float shadow = 1.0;
+	if (withShadowMapping)
+		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
 	vec3 L = normalize(lightPosition - position);
 
 	// For the angle

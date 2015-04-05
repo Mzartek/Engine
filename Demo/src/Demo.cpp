@@ -319,7 +319,6 @@ void Demo::idle(long long time)
 		input->getKeyBoardState(SDL_SCANCODE_A),
 		input->getKeyBoardState(SDL_SCANCODE_D));
 	camera->mouseMove(input->getMouseRelX(), input->getMouseRelY());
-
 	camera->position();
 	camPosition = camera->getCameraPosition();
 	camView = camera->getViewVector();

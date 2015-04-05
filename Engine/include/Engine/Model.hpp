@@ -11,6 +11,7 @@ namespace Engine
      class ShaderProgram;
      class GBuffer;
      class Camera;
+	 class PerspCamera;
      class DirLight;
      class SpotLight;
      class TextureCube;
@@ -28,9 +29,16 @@ namespace Engine
 	       glm::mat4 normal;
 	  } _matrix;
 
+	  struct
+	  {
+		  glm::vec3 ALIGN(16) position;
+		  glm::vec3 ALIGN(16) target;
+	  } _camera;
+
 	  GLboolean _isMirror;
 	  std::vector<Mesh *> *_tMesh;
 	  Buffer *_matrixBuffer;
+	  Buffer *_cameraBuffer;
 	  glm::vec3 *_position;
 	  glm::vec3 *_rotation;
 	  glm::vec3 *_scale;
@@ -64,8 +72,8 @@ namespace Engine
 	  glm::vec3 getRotation(void) const;
 	  glm::vec3 getScale(void) const;
 	  Mesh *getMesh(const GLuint &num) const;
-	  void display(GBuffer *g, Camera *cam);
-	  void displayTransparent(GBuffer *gbuf, Camera *cam);
+	  void display(GBuffer *g, PerspCamera *cam);
+	  void displayTransparent(GBuffer *gbuf, PerspCamera *cam);
 	  void displayDepthMap(DepthMap *dmap, Camera *cam);
 	  void displayDepthMap(DepthMap *dmaps, DirLight *light);
 	  void displayDepthMap(DepthMap *dmap, SpotLight *light);

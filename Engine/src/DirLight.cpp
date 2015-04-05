@@ -118,6 +118,7 @@ void Engine::DirLight::display(GBuffer *gbuf, PerspCamera *cam)
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
 	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.withShadowMapping = GL_FALSE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);
@@ -159,6 +160,7 @@ void Engine::DirLight::display(GBuffer *gbuf, DepthMap *dmaps, PerspCamera *cam)
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
 	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.withShadowMapping = GL_TRUE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);

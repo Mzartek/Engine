@@ -3,7 +3,7 @@
 #include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
-#include <Engine/Camera.hpp>
+#include <Engine/PerspCamera.hpp>
 #include <Engine/DirLight.hpp>
 #include <Engine/SpotLight.hpp>
 #include <Engine/DepthMap.hpp>
@@ -70,6 +70,7 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 {
 	_tMesh = new std::vector < Mesh * > ;
 	_matrixBuffer = new Buffer;
+	_cameraBuffer = new Buffer;
 	_position = new glm::vec3;
 	_rotation = new glm::vec3;
 	_scale = new glm::vec3;
@@ -81,6 +82,7 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	*_scale = glm::vec3(1, 1, 1);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
@@ -94,6 +96,7 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 {
 	_tMesh = model->_tMesh;
 	_matrixBuffer = new Buffer;
+	_cameraBuffer = new Buffer;
 	_position = new glm::vec3;
 	_rotation = new glm::vec3;
 	_scale = new glm::vec3;
@@ -105,6 +108,7 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 	*_scale = glm::vec3(1, 1, 1);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "colorTexture"), 0);
@@ -119,6 +123,7 @@ Engine::Model::~Model(void)
 	deleteMesh();
 
 	delete _matrixBuffer;
+	delete _cameraBuffer;
 	delete _position;
 	delete _rotation;
 	delete _scale;
@@ -292,7 +297,7 @@ Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
 	return (*_tMesh)[num];
 }
 
-void Engine::Model::display(GBuffer *gbuf, Camera *cam)
+void Engine::Model::display(GBuffer *gbuf, PerspCamera *cam)
 {
 	checkMatrix();
 
@@ -307,6 +312,11 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam)
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+	_camera.position = cam->getCameraPosition();
+	_camera.target = cam->getTargetPosition();
+	_cameraBuffer->updateStoreMap(&_camera);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
 	for (GLuint i = 0; i < _tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() == 1.0f)
@@ -318,7 +328,7 @@ void Engine::Model::display(GBuffer *gbuf, Camera *cam)
 		}
 }
 
-void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam)
+void Engine::Model::displayTransparent(GBuffer *gbuf, PerspCamera *cam)
 {
 	checkMatrix();
 
@@ -333,6 +343,11 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, Camera *cam)
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+	_camera.position = cam->getCameraPosition();
+	_camera.target = cam->getTargetPosition();
+	_cameraBuffer->updateStoreMap(&_camera);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
 	for (GLuint i = 0; i < _tMesh->size(); i++)
 		if ((*_tMesh)[i]->getTransparency() != 1.0f)
