@@ -3,7 +3,7 @@
 #include <Engine/DepthMap.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
-#include <Engine/Camera.hpp>
+#include <Engine/PerspCamera.hpp>
 
 Engine::SpotLight::SpotLight(ShaderProgram *program)
 	: Light(program)
@@ -111,7 +111,7 @@ void Engine::SpotLight::position(DepthMap *dmap)
 	_lightInfo.shadowMatrix = *_VPMatrix;
 }
 
-void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
+void Engine::SpotLight::display(GBuffer *gbuf, PerspCamera *cam)
 {
 	gbuf->setLightState();
 
@@ -130,7 +130,6 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
 	_mainInfo.camPosition = cam->getCameraPosition();
-	_mainInfo.withShadowMapping = GL_FALSE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);
@@ -143,7 +142,7 @@ void Engine::SpotLight::display(GBuffer *gbuf, Camera *cam)
 	glBindVertexArray(0);
 }
 
-void Engine::SpotLight::display(GBuffer *gbuf, DepthMap *dmap, Camera *cam)
+void Engine::SpotLight::display(GBuffer *gbuf, DepthMap *dmap, PerspCamera *cam)
 {
 	gbuf->setLightState();
 
@@ -166,7 +165,6 @@ void Engine::SpotLight::display(GBuffer *gbuf, DepthMap *dmap, Camera *cam)
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
 	_mainInfo.camPosition = cam->getCameraPosition();
-	_mainInfo.withShadowMapping = GL_TRUE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
 	_lightInfoBuffer->updateStoreMap(&_lightInfo);

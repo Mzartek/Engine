@@ -14,6 +14,8 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/DepthMap.hpp \
 	include/Engine/ParticlesManager.hpp \
 	include/Engine/Camera.hpp \
+	include/Engine/PerspCamera.hpp \
+	include/Engine/OrthoCamera.hpp \
 	include/Engine/Mesh.hpp \
 	include/Engine/DirLight.hpp \
 	include/Engine/Renderer.hpp \
@@ -23,7 +25,7 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/PlayerCam.hpp \
 	include/Engine/FrameBuffer.hpp \
 	include/Engine/GBuffer.hpp \
-	include/Engine/EngineHead.hpp \
+	include/Engine/Engine.hpp \
 	include/Engine/Screen.hpp \
 	include/Engine/TextArray.hpp \
 	include/Engine/SpotLight.hpp \
@@ -47,6 +49,8 @@ __top_builddir__lib_libEngine_la_SOURCES = \
 	src/FrameBuffer.cpp \
 	src/MovableCamera.cpp \
 	src/Camera.cpp \
+	src/PerspCamera.cpp \
+	src/OrthoCamera.cpp \
 	src/PlayerCam.cpp \
 	src/ShaderProgram.cpp \
 	src/OctreeSystem.cpp \

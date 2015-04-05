@@ -3,7 +3,7 @@
 #include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
-#include <Engine/Camera.hpp>
+#include <Engine/PerspCamera.hpp>
 
 Engine::SkyBox::SkyBox(ShaderProgram *program)
 	: _program(program)
@@ -71,7 +71,7 @@ Engine::TextureCube *Engine::SkyBox::getTexture(void) const
 	return _cubeTexture;
 }
 
-void Engine::SkyBox::display(GBuffer *gbuf, Camera *cam) const
+void Engine::SkyBox::display(GBuffer *gbuf, PerspCamera *cam) const
 {
 	glm::mat4 pos = cam->getVPMatrix() * glm::translate(glm::vec3(cam->getCameraPosition()));
 

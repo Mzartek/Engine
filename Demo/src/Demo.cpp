@@ -38,22 +38,6 @@ void Demo::configTree(void)
 	octreeSystem->addModel(model_tree, 40);
 }
 
-void Demo::configRainParticles(void)
-{
-	int numParticle = 10000;
-	std::vector<Engine::Particle> rainParticles(numParticle);
-	glm::vec3 pos = camera->getCameraPosition();
-	for (int i = 0; i < numParticle; i++)
-	{
-		rainParticles[i].position = glm::vec3(pos.x + (rand() % 200 - 100), pos.y + 100, pos.z + (rand() % 200 - 100));
-		rainParticles[i].direction = glm::vec3(0, -1, 0);
-		rainParticles[i].velocity = 2.0f;
-		rainParticles[i].life = (GLfloat)(rand() % 100);
-	}
-	rainManager->loadTexture("../share/Demo/resources/textures/goutte.png");
-	rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
-}
-
 void Demo::configSmokeParticles(void)
 {
 	int numParticle = 50;
@@ -90,13 +74,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 		"../share/Demo/shader/object/objectGeom.glsl",
 		"../share/Demo/shader/object/objectFrag.glsl");
 
-	mushroomProgram = new Engine::ShaderProgram(
-		"../share/Demo/shader/mushroom/mushroomVert.glsl",
-		NULL,
-		NULL,
-		"../share/Demo/shader/mushroom/mushroomGeom.glsl",
-		"../share/Demo/shader/mushroom/mushroomFrag.glsl");
-
 	dirLightProgram = new Engine::ShaderProgram(
 		"../share/Demo/shader/dirLight/dirLightVert.glsl",
 		NULL,
@@ -117,13 +94,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 		NULL,
 		NULL,
 		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
-
-	displayRainProgram = new Engine::ShaderProgram(
-		"../share/Demo/shader/rainParticles/rainVert.glsl",
-		NULL,
-		NULL,
-		"../share/Demo/shader/rainParticles/rainGeom.glsl",
-		"../share/Demo/shader/rainParticles/rainFrag.glsl");
 
 	displaySmokeProgram = new Engine::ShaderProgram(
 		"../share/Demo/shader/smokeParticles/smokeVert.glsl",
@@ -155,14 +125,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	physicsRainProgram = new Engine::ShaderProgram(
-		"../share/Demo/shader/rainParticles/rainPhysics.glsl",
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		varyings, sizeof(varyings) / sizeof(GLfloat *));
-
 	physicsSmokeProgram = new Engine::ShaderProgram(
 		"../share/Demo/shader/smokeParticles/smokePhysics.glsl",
 		NULL,
@@ -178,7 +140,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	sol = new Engine::Model(objectProgram, depthMapProgram);
 	moon = new Engine::DirLight(dirLightProgram);
 	torch = new Engine::SpotLight(spotLightProgram);
-	rainManager = new Engine::ParticlesManager(physicsRainProgram, displayRainProgram);
 	smokeManager = new Engine::ParticlesManager(physicsSmokeProgram, displaySmokeProgram);
 	screen = new Engine::Screen(backgroundProgram, screenProgram);
 	text = new Engine::TextArray(textProgram);
@@ -187,6 +148,8 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 	rain_sound = new Engine::Sound;
 	fire_sound = new Engine::Sound;
+
+	rainEffect = new RainEffect;
 
 	// GBuffer config
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
@@ -197,6 +160,8 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	// Camera config
 	camera->setCameraPosition(glm::vec3(30, 5, 0));
 	camera->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
+
+	rainEffect->init(camera->getCameraPosition(), 10000);
 
 	// Skybox config
 	skybox->load(
@@ -218,7 +183,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	torch->setMaxDistance(250);
 
 	// ParticlesManager config
-	configRainParticles();
 	configSmokeParticles();
 
 	// Text config
@@ -246,6 +210,8 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 Demo::~Demo(void)
 {
+	delete rainEffect;
+
 	delete fire_sound;
 	delete rain_sound;
 
@@ -254,7 +220,6 @@ Demo::~Demo(void)
 	delete text;
 	delete screen;
 	delete smokeManager;
-	delete rainManager;
 	delete torch;
 	delete moon;
 	delete model_tree;
@@ -265,18 +230,15 @@ Demo::~Demo(void)
 	delete gBuffer;
 
 	delete physicsSmokeProgram;
-	delete physicsRainProgram;
 
 	delete textProgram;
 	delete screenProgram;
 	delete backgroundProgram;
 	delete displaySmokeProgram;
-	delete displayRainProgram;
 	delete depthMapProgram;
 	delete spotLightProgram;
 	delete dirLightProgram;
 	delete objectProgram;
-	delete mushroomProgram;
 	delete skyboxProgram;
 }
 
@@ -324,8 +286,8 @@ void Demo::display(GLfloat state)
 	screen->background(gBuffer);
 
 	// Particles
-	rainManager->display(gBuffer, camera);
 	smokeManager->display(gBuffer, camera);
+	rainEffect->display(gBuffer, camera);
 
 	screen->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -365,9 +327,8 @@ void Demo::idle(long long time)
 	moon->position(camPosition, 100, 250, 500);
 	torch->position(dMaps);
 
-	rainManager->setPosition(camPosition);
-	rainManager->updateParticles();
 	smokeManager->updateParticles();
+	rainEffect->updateParticles(camPosition);
 
 	audio->setListenerPosition(camPosition, camView);
 }

@@ -9,7 +9,7 @@ namespace Engine
 	class DepthMap;
 	class ShaderProgram;
 	class GBuffer;
-	class Camera;
+	class PerspCamera;
 
 	class DLLAPI Light : public Object
 	{
@@ -19,7 +19,6 @@ namespace Engine
 			glm::mat4 IVPMatrix;
 			glm::uvec2 ALIGN(16) screen;
 			glm::vec3 ALIGN(16) camPosition;
-			GLint withShadowMapping;
 		} _mainInfo;
 
 		Buffer *_vertexBuffer;
@@ -33,8 +32,8 @@ namespace Engine
 	public:
 		Light(ShaderProgram *program);
 		~Light(void);
-		virtual void display(GBuffer *gbuf, Camera *cam) = 0;
-		virtual void display(GBuffer *gbuf, DepthMap *dmap, Camera *cam) = 0;
+		virtual void display(GBuffer *gbuf, PerspCamera *cam) = 0;
+		virtual void display(GBuffer *gbuf, DepthMap *dmap, PerspCamera *cam) = 0;
 	};
 }
 

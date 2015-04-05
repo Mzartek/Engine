@@ -12,5 +12,5 @@ out VertexData
 
 void main(void)
 {
-     VertOut.particle = vec4(position.xyz, 1.0) + vec4(normalize(direction) * life * velocity, 1.0);
+     VertOut.particle = vec4(position.xyz, 1.0);// + vec4(normalize(direction) * life * velocity, 1.0);
 }

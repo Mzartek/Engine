@@ -28,16 +28,9 @@ namespace Engine
 	       glm::mat4 normal;
 	  } _matrix;
 
-	  struct
-	  {
-	       glm::vec3 ALIGN(16) position;
-	       glm::vec3 ALIGN(16) target;
-	  } _camera;
-
 	  GLboolean _isMirror;
 	  std::vector<Mesh *> *_tMesh;
 	  Buffer *_matrixBuffer;
-	  Buffer *_cameraBuffer;
 	  glm::vec3 *_position;
 	  glm::vec3 *_rotation;
 	  glm::vec3 *_scale;

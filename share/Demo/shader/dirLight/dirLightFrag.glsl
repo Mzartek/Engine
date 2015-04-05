@@ -15,7 +15,6 @@ layout(binding = 0) uniform mainInfoBuffer
 	mat4 IVPMatrix;
 	uvec2 screen;
 	vec3 camPosition;
-	bool withShadowMapping;
 };
 
 layout(binding = 1) uniform lightInfoBuffer
@@ -81,13 +80,12 @@ void main(void)
 	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);
 	
 	vec3 cam_minus_pos = camPosition - position;	
-	float shadow = 1.0;
-	if (withShadowMapping)
-	{
-		float distance = length(cam_minus_pos);
-		if      (distance < 25) shadow = calcShadow(shadowMatrix[0] * vec4(position, 1.0), 3.0, shadowMap0);
-		else if (distance < 50) shadow = calcShadow(shadowMatrix[1] * vec4(position, 1.0), 1.0, shadowMap1);
-		else                    shadow = calcShadow(shadowMatrix[2] * vec4(position, 1.0), 1.0, shadowMap2);
-	}
+	float shadow;
+	float distance = length(cam_minus_pos);
+	
+	if      (distance < 25) shadow = calcShadow(shadowMatrix[0] * vec4(position, 1.0), 3.0, shadowMap0);
+	else if (distance < 50) shadow = calcShadow(shadowMatrix[1] * vec4(position, 1.0), 1.0, shadowMap1);
+	else                    shadow = calcShadow(shadowMatrix[2] * vec4(position, 1.0), 1.0, shadowMap2);
+	
 	outLight = calcLight(diffColor, specColor, normal.xyz, normalize(-lightDirection), normalize(cam_minus_pos), normal.w) * shadow;
 }

@@ -8,12 +8,6 @@ layout (binding = 0) uniform matrixBuffer
      mat4 viewMatrix;
 };
 
-layout (binding = 1) uniform cameraBuffer
-{
-    vec3 camPosition;
-    vec3 camTarget;
-};
-
 layout (points) in;
 layout (triangle_strip, max_vertices = 4) out;
 

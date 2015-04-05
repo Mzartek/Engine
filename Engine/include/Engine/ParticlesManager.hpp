@@ -11,6 +11,7 @@ namespace Engine
 	class GBuffer;
 	class Camera;
 	class Renderer;
+	class DepthMap;
 
 	struct Particle
 	{
@@ -25,8 +26,9 @@ namespace Engine
 	protected:
 		struct
 		{
-			glm::vec3 ALIGN(16) origin;
-		} _position;
+			glm::vec3 ALIGN(16) position;
+			glm::mat4 ALIGN(16) depthMatrix;
+		} _main;
 
 		struct
 		{
@@ -34,20 +36,13 @@ namespace Engine
 			glm::mat4 viewMatrix;
 		} _matrix;
 
-		struct
-		{
-			glm::vec3 ALIGN(16) position;
-			glm::vec3 ALIGN(16) target;
-		} _camera;
-
 		ShaderProgram *_physicsProgram;
 		ShaderProgram *_displayProgram;
 		GLuint _idTFO;
 		GLuint _idVAO;
 		Texture2D *_colorTexture;
-		Buffer *_positionBuffer;
+		Buffer *_mainBuffer;
 		Buffer *_matrixBuffer;
-		Buffer *_cameraBuffer;
 		Buffer *_vertexBuffer[2];
 		GLsizei _numElement;
 	public:
@@ -58,6 +53,7 @@ namespace Engine
 		void setPosition(const glm::vec3 &pos);
 		glm::vec3 getPosition(void) const;
 		void updateParticles(void);
+		void updateParticles(DepthMap *dmap, Camera *cam);
 		void display(GBuffer *gbuf, Camera *cam);
 	};
 }

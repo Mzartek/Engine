@@ -27,8 +27,8 @@ namespace Engine
 		glm::vec3 getColor(void) const;
 		glm::vec3 getDirection(void) const;
 		void position(const glm::vec3 &pos, const GLfloat &dim0, const GLfloat &dim1, const GLfloat &dim2);
-		void display(GBuffer *gbuf, Camera *cam);
-		void display(GBuffer *gbuf, DepthMap *dmap, Camera *cam);
+		void display(GBuffer *gbuf, PerspCamera *cam);
+		void display(GBuffer *gbuf, DepthMap *dmap, PerspCamera *cam);
 	};
 }
 
