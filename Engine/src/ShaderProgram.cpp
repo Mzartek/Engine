@@ -63,7 +63,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	return id;
 }
 
-Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, const GLsizei count)
+Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
 	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
 {
 	GLchar *log;
@@ -77,13 +77,11 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 		exit(1);
 	}
 
-	if (vs == NULL)
+	if (vs != NULL)
 	{
-		std::cerr << "Need a Vertex Shader for ShaderProgram" << std::endl;
-		exit(1);
+		_idVertexShader = loadShader(vs, GL_VERTEX_SHADER);
+		glAttachShader(_idProgram, _idVertexShader);
 	}
-	_idVertexShader = loadShader(vs, GL_VERTEX_SHADER);
-	glAttachShader(_idProgram, _idVertexShader);
 
 	if (tcs != NULL)
 	{
@@ -109,7 +107,69 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 		glAttachShader(_idProgram, _idFragmentShader);
 	}
 
-	if (varyings != NULL) glTransformFeedbackVaryings(_idProgram, count, varyings, GL_INTERLEAVED_ATTRIBS);
+	glLinkProgram(_idProgram);
+
+	glGetProgramiv(_idProgram, GL_LINK_STATUS, &status);
+	if (status != GL_TRUE)
+	{
+		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
+
+		log = new GLchar[logsize + 1];
+		log[logsize] = '\0';
+
+		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
+		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
+
+		delete[] log;
+		exit(1);
+	}
+}
+
+Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, const GLsizei &count)
+	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
+{
+	GLchar *log;
+	GLsizei logsize;
+	GLint status;
+
+	_idProgram = glCreateProgram();
+	if (_idProgram == 0)
+	{
+		std::cerr << "Error while creating program" << std::endl;
+		exit(1);
+	}
+
+	if (vs != NULL)
+	{
+		_idVertexShader = loadShader(vs, GL_VERTEX_SHADER);
+		glAttachShader(_idProgram, _idVertexShader);
+	}
+
+	if (tcs != NULL)
+	{
+		_idTessControlShader = loadShader(tcs, GL_TESS_CONTROL_SHADER);
+		glAttachShader(_idProgram, _idTessControlShader);
+	}
+
+	if (tes != NULL)
+	{
+		_idTessEvaluationShader = loadShader(tes, GL_TESS_EVALUATION_SHADER);
+		glAttachShader(_idProgram, _idTessEvaluationShader);
+	}
+
+	if (gs != NULL)
+	{
+		_idGeometryShader = loadShader(gs, GL_GEOMETRY_SHADER);
+		glAttachShader(_idProgram, _idGeometryShader);
+	}
+
+	if (fs != NULL)
+	{
+		_idFragmentShader = loadShader(fs, GL_FRAGMENT_SHADER);
+		glAttachShader(_idProgram, _idFragmentShader);
+	}
+
+	glTransformFeedbackVaryings(_idProgram, count, varyings, GL_INTERLEAVED_ATTRIBS);
 
 	glLinkProgram(_idProgram);
 

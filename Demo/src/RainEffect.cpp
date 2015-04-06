@@ -7,10 +7,10 @@ RainEffect::RainEffect(void)
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
 	_physicsRainProgram = new Engine::ShaderProgram(
-		"../share/Demo/shader/rainParticles/rainPhysics.glsl",
+		"../share/Demo/shader/rainParticles/rainPhysics_v.glsl",
 		NULL,
 		NULL,
-		NULL,
+		"../share/Demo/shader/rainParticles/rainPhysics_g.glsl",
 		NULL,
 		varyings, sizeof(varyings) / sizeof(GLfloat *));
 

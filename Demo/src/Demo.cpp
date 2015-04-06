@@ -126,10 +126,10 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
 	physicsSmokeProgram = new Engine::ShaderProgram(
-		"../share/Demo/shader/smokeParticles/smokePhysics.glsl",
+		"../share/Demo/shader/smokeParticles/smokePhysics_v.glsl",
 		NULL,
 		NULL,
-		NULL,
+		"../share/Demo/shader/smokeParticles/smokePhysics_g.glsl",
 		NULL,
 		varyings, sizeof(varyings) / sizeof(GLfloat *));
 

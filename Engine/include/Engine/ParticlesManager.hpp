@@ -27,8 +27,12 @@ namespace Engine
 		struct
 		{
 			glm::vec3 ALIGN(16) position;
+		} _position;
+
+		struct
+		{
 			glm::mat4 ALIGN(16) depthMatrix;
-		} _main;
+		} _depth;
 
 		struct
 		{
@@ -41,7 +45,8 @@ namespace Engine
 		GLuint _idTFO;
 		GLuint _idVAO;
 		Texture2D *_colorTexture;
-		Buffer *_mainBuffer;
+		Buffer *_positionBuffer;
+		Buffer *_depthBuffer;
 		Buffer *_matrixBuffer;
 		Buffer *_vertexBuffer[2];
 		GLsizei _numElement;

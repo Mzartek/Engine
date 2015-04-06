@@ -11,12 +11,14 @@ Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, Shader
 	: _physicsProgram(physicsProgram), _displayProgram(displayProgram), _numElement(0)
 {
 	_colorTexture = new Texture2D;
-	_mainBuffer = new Buffer;
+	_positionBuffer = new Buffer;
+	_depthBuffer = new Buffer;
 	_matrixBuffer = new Buffer;
 	_vertexBuffer[0] = new Buffer;
 	_vertexBuffer[1] = new Buffer;
 
-	_mainBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _main, GL_DYNAMIC_DRAW);
+	_positionBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _position, GL_DYNAMIC_DRAW);
+	_depthBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _depth, GL_DYNAMIC_DRAW);
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 
 	glUseProgram(physicsProgram->getId());
@@ -32,7 +34,8 @@ Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, Shader
 Engine::ParticlesManager::~ParticlesManager(void)
 {
 	delete _colorTexture;
-	delete _mainBuffer;
+	delete _positionBuffer;
+	delete _depthBuffer;
 	delete _matrixBuffer;
 	delete _vertexBuffer[0];
 	delete _vertexBuffer[1];
@@ -56,12 +59,13 @@ void Engine::ParticlesManager::setParticles(const Particle *particles, const GLs
 
 void Engine::ParticlesManager::setPosition(const glm::vec3 &pos)
 {
-	_main.position = pos;
+	_position.position = pos;
+	_positionBuffer->updateStoreMap(&_position);
 }
 
 glm::vec3 Engine::ParticlesManager::getPosition(void) const
 {
-	return _main.position;
+	return _position.position;
 }
 
 void Engine::ParticlesManager::updateParticles(void)
@@ -70,9 +74,7 @@ void Engine::ParticlesManager::updateParticles(void)
 
 	glUseProgram(_physicsProgram->getId());
 
-	_mainBuffer->updateStoreMap(&_main);
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _positionBuffer->getId());
 
 	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, _idTFO);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, _vertexBuffer[1]->getId());
@@ -113,10 +115,11 @@ void Engine::ParticlesManager::updateParticles(DepthMap *dmap, Camera *cam)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, dmap->getIdDepthTexture());
 
-	_main.depthMatrix = cam->getVPMatrix();
-	_mainBuffer->updateStoreMap(&_main);
+	_depth.depthMatrix = cam->getVPMatrix();
+	_depthBuffer->updateStoreMap(&_depth);
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _positionBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _depthBuffer->getId());
 
 	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, _idTFO);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, _vertexBuffer[1]->getId());
