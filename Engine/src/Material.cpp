@@ -138,7 +138,7 @@ void Engine::Material::setOpacityTexture(Texture2D *tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setbumpMap(Texture2D *map)
+void Engine::Material::setBumpMap(Texture2D *map)
 {
 	_bumpMap = map;
 
@@ -186,112 +186,142 @@ void Engine::Material::setLightMap(Texture2D *map)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-GLboolean Engine::Material::hasDiffuseTexture(void)
+glm::vec3 Engine::Material::getDiffuse(void) const
 {
-	return (GLboolean)_state.hasDiffuseTexture;
+	return _mat.diffuse;
 }
 
-GLboolean Engine::Material::hasSpecularTexture(void)
+glm::vec3 Engine::Material::getSpecular(void) const
 {
-	return (GLboolean)_state.hasSpecularTexture;
+	return _mat.specular;
 }
 
-GLboolean Engine::Material::hasAmbientTexture(void)
+glm::vec3 Engine::Material::getAmbient(void) const
 {
-	return (GLboolean)_state.hasAmbientTexture;
+	return _mat.ambient;
 }
 
-GLboolean Engine::Material::hasEmissiveTexture(void)
+glm::vec3 Engine::Material::getEmissive(void) const
 {
-	return (GLboolean)_state.hasEmissiveTexture;
+	return _mat.emissive;
 }
 
-GLboolean Engine::Material::hasShininessTexture(void)
+GLfloat Engine::Material::getShininess(void) const
 {
-	return (GLboolean)_state.hasShininessTexture;
+	return _mat.shininess;
 }
 
-GLboolean Engine::Material::hasOpacityTexture(void)
+GLfloat Engine::Material::getOpacity(void) const
 {
-	return (GLboolean)_state.hasOpacityTexture;
+	return _mat.opacity;
 }
 
-GLboolean Engine::Material::hasBumpMap(void)
-{
-	return (GLboolean)_state.hasBumpMap;
-}
-
-GLboolean Engine::Material::hasNormalMap(void)
-{
-	return (GLboolean)_state.hasNormalMap;
-}
-
-GLboolean Engine::Material::hasDisplacementMap(void)
-{
-	return (GLboolean)_state.hasDisplacementMap;
-}
-
-GLboolean Engine::Material::hasLightMap(void)
-{
-	return (GLboolean)_state.hasLightMap;
-}
-
-Engine::Texture2D *Engine::Material::getDiffuseTexture(void)
+Engine::Texture2D *Engine::Material::getDiffuseTexture(void) const
 {
 	return _diffuseTexture;
 }
 
-Engine::Texture2D *Engine::Material::getSpecularTexture(void)
+Engine::Texture2D *Engine::Material::getSpecularTexture(void) const
 {
 	return _specularTexture;
 }
 
-Engine::Texture2D *Engine::Material::getAmbientTexture(void)
+Engine::Texture2D *Engine::Material::getAmbientTexture(void) const
 {
 	return _ambientTexture;
 }
 
-Engine::Texture2D *Engine::Material::getEmissiveTexture(void)
+Engine::Texture2D *Engine::Material::getEmissiveTexture(void) const
 {
 	return _emissiveTexture;
 }
 
-Engine::Texture2D *Engine::Material::getShininessTexture(void)
+Engine::Texture2D *Engine::Material::getShininessTexture(void) const
 {
 	return _shininessTexture;
 }
 
-Engine::Texture2D *Engine::Material::getOpacityTexture(void)
+Engine::Texture2D *Engine::Material::getOpacityTexture(void) const
 {
 	return _opacityTexture;
 }
 
-Engine::Texture2D *Engine::Material::getBumpMap(void)
+Engine::Texture2D *Engine::Material::getBumpMap(void) const
 {
 	return _bumpMap;
 }
 
-Engine::Texture2D *Engine::Material::getNormalMap(void)
+Engine::Texture2D *Engine::Material::getNormalMap(void) const
 {
 	return _normalMap;
 }
 
-Engine::Texture2D *Engine::Material::getDisplacementMap(void)
+Engine::Texture2D *Engine::Material::getDisplacementMap(void) const
 {
 	return _displacementMap;
 }
 
-Engine::Texture2D *Engine::Material::getLightMap(void)
+Engine::Texture2D *Engine::Material::getLightMap(void) const
 {
 	return _lightMap;
 }
 
-GLuint Engine::Material::getMatBuffer(void)
+GLboolean Engine::Material::hasDiffuseTexture(void) const
+{
+	return (GLboolean)_state.hasDiffuseTexture;
+}
+
+GLboolean Engine::Material::hasSpecularTexture(void) const
+{
+	return (GLboolean)_state.hasSpecularTexture;
+}
+
+GLboolean Engine::Material::hasAmbientTexture(void) const
+{
+	return (GLboolean)_state.hasAmbientTexture;
+}
+
+GLboolean Engine::Material::hasEmissiveTexture(void) const
+{
+	return (GLboolean)_state.hasEmissiveTexture;
+}
+
+GLboolean Engine::Material::hasShininessTexture(void) const
+{
+	return (GLboolean)_state.hasShininessTexture;
+}
+
+GLboolean Engine::Material::hasOpacityTexture(void) const
+{
+	return (GLboolean)_state.hasOpacityTexture;
+}
+
+GLboolean Engine::Material::hasBumpMap(void) const
+{
+	return (GLboolean)_state.hasBumpMap;
+}
+
+GLboolean Engine::Material::hasNormalMap(void) const
+{
+	return (GLboolean)_state.hasNormalMap;
+}
+
+GLboolean Engine::Material::hasDisplacementMap(void) const
+{
+	return (GLboolean)_state.hasDisplacementMap;
+}
+
+GLboolean Engine::Material::hasLightMap(void) const
+{
+	return (GLboolean)_state.hasLightMap;
+}
+
+GLuint Engine::Material::getMatBuffer(void) const
 {
 	return _matBuffer->getId();
 }
 
-GLuint Engine::Material::getStateBuffer(void)
+GLuint Engine::Material::getStateBuffer(void) const
 {
 	return _stateBuffer->getId();
 }
