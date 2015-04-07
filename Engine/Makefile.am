@@ -33,6 +33,7 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/OctreeSystem.hpp \
 	include/Engine/ShaderProgram.hpp \
 	include/Engine/Object.hpp \
+	include/Engine/Material.hpp \
 	include/Engine/Audio.hpp \
 	include/Engine/Sound.hpp
 
@@ -64,6 +65,7 @@ __top_builddir__lib_libEngine_la_SOURCES = \
 	src/FreeCam.cpp \
 	src/SpotLight.cpp \
 	src/ParticlesManager.cpp \
+	src/Material.cpp \
 	src/Audio.cpp \
 	src/Sound.cpp
 

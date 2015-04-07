@@ -2,9 +2,10 @@
 #include <Engine/Texture2D.hpp>
 #include <Engine/TextureCube.hpp>
 #include <Engine/Buffer.hpp>
+#include <Engine/Material.hpp>
 
 Engine::Mesh::Mesh(void)
-	: _numElement(0)
+	: _numElement(0), _materia(NULL)
 {
 	_colorTexture = new Texture2D;
 	_NMTexture = new Texture2D;
@@ -15,6 +16,8 @@ Engine::Mesh::Mesh(void)
 	_materialBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _material, GL_DYNAMIC_DRAW);
 
 	glGenVertexArrays(1, &_idVAO);
+
+	memset(_tex, 0, sizeof _tex);
 };
 
 Engine::Mesh::~Mesh(void)
@@ -55,6 +58,43 @@ void Engine::Mesh::setSpecular(const glm::vec4 &specular)
 void Engine::Mesh::setShininess(const GLfloat &shininess)
 {
 	_material.shininess = shininess;
+}
+
+void Engine::Mesh::setMaterial(Material *material)
+{
+	memset(_tex, 0, sizeof _tex);
+
+	_materia = material;
+
+	if (_materia->hasDiffuseTexture())
+		_tex[0] = _materia->getDiffuseTexture()->getId();
+
+	if (_materia->hasSpecularTexture())
+		_tex[1] = _materia->getSpecularTexture()->getId();
+
+	if (_materia->hasAmbientTexture())
+		_tex[2] = _materia->getAmbientTexture()->getId();
+
+	if (_materia->hasEmissiveTexture())
+		_tex[3] = _materia->getEmissiveTexture()->getId();
+
+	if (_materia->hasShininessTexture())
+		_tex[4] = _materia->getShininessTexture()->getId();
+
+	if (_materia->hasOpacityTexture())
+		_tex[5] = _materia->getOpacityTexture()->getId();
+
+	if (_materia->hasBumpMap())
+		_tex[6] = _materia->getBumpMap()->getId();
+
+	if (_materia->hasNormalMap())
+		_tex[7] = _materia->getNormalMap()->getId();
+
+	if (_materia->hasDisplacementMap())
+		_tex[8] = _materia->getDisplacementMap()->getId();
+
+	if (_materia->hasLightMap())
+		_tex[9] = _materia->getLightMap()->getId();
 }
 
 GLfloat Engine::Mesh::getTransparency(void) const

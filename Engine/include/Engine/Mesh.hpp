@@ -8,6 +8,7 @@ namespace Engine
 	class Texture2D;
 	class TextureCube;
 	class Buffer;
+	class Material;
 
 	struct Vertex
 	{
@@ -37,6 +38,9 @@ namespace Engine
 		Buffer *_materialBuffer;
 		GLuint _idVAO;
 		GLsizei _numElement;
+
+		Material *_materia;
+		GLuint _tex[10];
 	public:
 		Mesh(void);
 		~Mesh(void);
@@ -46,6 +50,7 @@ namespace Engine
 		void setDiffuse(const glm::vec4 &diffuse);
 		void setSpecular(const glm::vec4 &specular);
 		void setShininess(const GLfloat &shininess);
+		void setMaterial(Material *material);
 		GLfloat getTransparency(void) const;
 		void load(const GLsizei &numVertex, const Vertex *vertexArray,
 			const GLsizei &numIndex, const GLuint *indexArray);
