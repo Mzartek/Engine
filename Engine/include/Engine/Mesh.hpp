@@ -23,35 +23,18 @@ namespace Engine
 		friend struct CompareMesh;
 
 	private:
-		struct material
-		{
-			glm::vec4 ambient;
-			glm::vec4 diffuse;
-			glm::vec4 specular;
-			GLfloat ALIGN(16) shininess;
-		} _material;
-
-		Texture2D *_colorTexture;
-		Texture2D *_NMTexture;
 		Buffer *_vertexBuffer;
 		Buffer *_indexBuffer;
-		Buffer *_materialBuffer;
 		GLuint _idVAO;
 		GLsizei _numElement;
 
-		Material *_materia;
+		Material *_material;
 		GLuint _tex[10];
 	public:
 		Mesh(void);
 		~Mesh(void);
-		void loadColorTexture(const GLchar *path) const;
-		void loadNMTexture(const GLchar *path) const;
-		void setAmbient(const glm::vec4 &ambient);
-		void setDiffuse(const glm::vec4 &diffuse);
-		void setSpecular(const glm::vec4 &specular);
-		void setShininess(const GLfloat &shininess);
 		void setMaterial(Material *material);
-		GLfloat getTransparency(void) const;
+		Material *getMaterial(void) const;
 		void load(const GLsizei &numVertex, const Vertex *vertexArray,
 			const GLsizei &numIndex, const GLuint *indexArray);
 		void display(void) const;

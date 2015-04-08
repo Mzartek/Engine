@@ -1,15 +1,39 @@
 #version 440
 
-uniform sampler2D colorTexture;
-uniform sampler2D NMTexture;
-uniform samplerCube cubeTexture;
+uniform sampler2D diffuseTex;
+uniform sampler2D specularTex;
+uniform sampler2D ambiantTex;
+uniform sampler2D emissiveTex;
+uniform sampler2D shininessTex;
+uniform sampler2D opacityTex;
+uniform sampler2D bumpMap;
+uniform sampler2D normalMap;
+uniform sampler2D displacementMap;
+uniform sampler2D lightMap;
+uniform samplerCube reflectionTex;
 
 layout(binding = 2) uniform materialBuffer
 {
-     vec4 matAmbient;
-     vec4 matDiffuse;
-     vec4 matSpecular;
-     float shininess;
+     vec3 matDiffuse;
+     vec3 matSpecular;
+     vec3 matAmbient;
+     vec3 matEmissive;
+     float matShininess;
+     float matOpacity;
+};
+
+layout(binding = 3) uniform stateBuffer
+{
+     bool hasDiffuseTexture;
+     bool hasSpecularTexture;
+     bool hasAmbientTexture;
+     bool hasEmissiveTexture;
+     bool hasShininessTexture;
+     bool hasOpacityTexture;
+     bool hasBumpMap;
+     bool hasNormalMap;
+     bool hasDisplacementMap;
+     bool hasLightMap;
 };
 
 in VertexData
@@ -28,16 +52,16 @@ vec3 CalcBumpedNormal(mat3 TBN, vec3 bumpMapNormal)
 
 void main(void)
 {
-     vec4 color = texture(colorTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y));
-     vec3 normal = CalcBumpedNormal(FragIn.TBN, texture(NMTexture, vec2(FragIn.texCoord.x, 1.0 - FragIn.texCoord.y)).xyz);
+     vec4 color = texture(diffuseTex, vec2(FragIn.texCoord.x, 1.0f - FragIn.texCoord.y));
+     vec3 normal = CalcBumpedNormal(FragIn.TBN, texture(normalMap, vec2(FragIn.texCoord.x, 1.0f - FragIn.texCoord.y)).xyz);
 
      if(color.a > 0.5)
      {
-	  outNormal = vec4(normal, shininess);
+	  outNormal = vec4(normal, matShininess);
 	  outMaterial.x = packUnorm4x8(color);
-	  outMaterial.y = packUnorm4x8(matAmbient);
-	  outMaterial.z = packUnorm4x8(matDiffuse);
-	  outMaterial.w = packUnorm4x8(matSpecular);
+	  outMaterial.y = packUnorm4x8(vec4(matAmbient, matOpacity));
+	  outMaterial.z = packUnorm4x8(vec4(matDiffuse, matOpacity));
+	  outMaterial.w = packUnorm4x8(vec4(matSpecular, matOpacity));
 	  gl_FragDepth = gl_FragCoord.z;
      }
      else

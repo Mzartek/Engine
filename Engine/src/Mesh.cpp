@@ -5,15 +5,10 @@
 #include <Engine/Material.hpp>
 
 Engine::Mesh::Mesh(void)
-	: _numElement(0), _materia(NULL)
+	: _numElement(0), _material(NULL)
 {
-	_colorTexture = new Texture2D;
-	_NMTexture = new Texture2D;
 	_vertexBuffer = new Buffer;
 	_indexBuffer = new Buffer;
-	_materialBuffer = new Buffer;
-
-	_materialBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _material, GL_DYNAMIC_DRAW);
 
 	glGenVertexArrays(1, &_idVAO);
 
@@ -22,84 +17,52 @@ Engine::Mesh::Mesh(void)
 
 Engine::Mesh::~Mesh(void)
 {
-	delete _colorTexture;
-	delete _NMTexture;
 	delete _vertexBuffer;
 	delete _indexBuffer;
-	delete _materialBuffer;
+	
 	glDeleteVertexArrays(1, &_idVAO);
-}
-
-void Engine::Mesh::loadColorTexture(const GLchar *path) const
-{
-	_colorTexture->loadFromFile(path);
-}
-
-void Engine::Mesh::loadNMTexture(const GLchar *path) const
-{
-	_NMTexture->loadFromFile(path);
-}
-
-void Engine::Mesh::setAmbient(const glm::vec4 &ambient)
-{
-	_material.ambient = ambient;
-}
-
-void Engine::Mesh::setDiffuse(const glm::vec4 &diffuse)
-{
-	_material.diffuse = diffuse;
-}
-
-void Engine::Mesh::setSpecular(const glm::vec4 &specular)
-{
-	_material.specular = specular;
-}
-
-void Engine::Mesh::setShininess(const GLfloat &shininess)
-{
-	_material.shininess = shininess;
 }
 
 void Engine::Mesh::setMaterial(Material *material)
 {
 	memset(_tex, 0, sizeof _tex);
 
-	_materia = material;
+	_material = material;
 
-	if (_materia->hasDiffuseTexture())
-		_tex[0] = _materia->getDiffuseTexture()->getId();
+	if (_material->hasDiffuseTexture())
+		_tex[0] = _material->getDiffuseTexture()->getId();
 
-	if (_materia->hasSpecularTexture())
-		_tex[1] = _materia->getSpecularTexture()->getId();
+	if (_material->hasSpecularTexture())
+		_tex[1] = _material->getSpecularTexture()->getId();
 
-	if (_materia->hasAmbientTexture())
-		_tex[2] = _materia->getAmbientTexture()->getId();
+	if (_material->hasAmbientTexture())
+		_tex[2] = _material->getAmbientTexture()->getId();
 
-	if (_materia->hasEmissiveTexture())
-		_tex[3] = _materia->getEmissiveTexture()->getId();
+	if (_material->hasEmissiveTexture())
+		_tex[3] = _material->getEmissiveTexture()->getId();
 
-	if (_materia->hasShininessTexture())
-		_tex[4] = _materia->getShininessTexture()->getId();
+	if (_material->hasShininessTexture())
+		_tex[4] = _material->getShininessTexture()->getId();
 
-	if (_materia->hasOpacityTexture())
-		_tex[5] = _materia->getOpacityTexture()->getId();
+	if (_material->hasOpacityTexture())
+		_tex[5] = _material->getOpacityTexture()->getId();
 
-	if (_materia->hasBumpMap())
-		_tex[6] = _materia->getBumpMap()->getId();
+	if (_material->hasBumpMap())
+		_tex[6] = _material->getBumpMap()->getId();
 
-	if (_materia->hasNormalMap())
-		_tex[7] = _materia->getNormalMap()->getId();
+	if (_material->hasNormalMap())
+		_tex[7] = _material->getNormalMap()->getId();
 
-	if (_materia->hasDisplacementMap())
-		_tex[8] = _materia->getDisplacementMap()->getId();
+	if (_material->hasDisplacementMap())
+		_tex[8] = _material->getDisplacementMap()->getId();
 
-	if (_materia->hasLightMap())
-		_tex[9] = _materia->getLightMap()->getId();
+	if (_material->hasLightMap())
+		_tex[9] = _material->getLightMap()->getId();
 }
 
-GLfloat Engine::Mesh::getTransparency(void) const
+Engine::Material *Engine::Mesh::getMaterial(void) const
 {
-	return _material.diffuse.w;
+     return _material;
 }
 
 void Engine::Mesh::load(const GLsizei &numVertex, const Vertex *vertexArray,
@@ -127,13 +90,37 @@ void Engine::Mesh::load(const GLsizei &numVertex, const Vertex *vertexArray,
 void Engine::Mesh::display(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
+	glBindTexture(GL_TEXTURE_2D, _tex[0]);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _NMTexture->getId());
+	glBindTexture(GL_TEXTURE_2D, _tex[1]);
 
-	_materialBuffer->updateStoreMap(&_material);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _materialBuffer->getId());
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, _tex[2]);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, _tex[3]);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, _tex[4]);
+
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, _tex[5]);
+
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, _tex[6]);
+
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, _tex[7]);
+
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, _tex[8]);
+
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, _tex[9]);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _material->getMatBuffer());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 3, _material->getStateBuffer());
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
@@ -143,16 +130,40 @@ void Engine::Mesh::display(void) const
 void Engine::Mesh::display(TextureCube *cubeTexture) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
+	glBindTexture(GL_TEXTURE_2D, _tex[0]);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _NMTexture->getId());
+	glBindTexture(GL_TEXTURE_2D, _tex[1]);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, cubeTexture->getId());
+	glBindTexture(GL_TEXTURE_2D, _tex[2]);
 
-	_materialBuffer->updateStoreMap(&_material);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _materialBuffer->getId());
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, _tex[3]);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, _tex[4]);
+
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, _tex[5]);
+
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, _tex[6]);
+
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, _tex[7]);
+
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, _tex[8]);
+
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, _tex[9]);
+	
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTexture->getId());
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _material->getMatBuffer());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 3, _material->getStateBuffer());
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
@@ -162,7 +173,7 @@ void Engine::Mesh::display(TextureCube *cubeTexture) const
 void Engine::Mesh::displayShadow(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
+	glBindTexture(GL_TEXTURE_2D, _tex[0]);
 
 	glBindVertexArray(_idVAO);
 	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
@@ -171,7 +182,9 @@ void Engine::Mesh::displayShadow(void) const
 
 bool Engine::CompareMesh::operator()(const Mesh *first, const Mesh *second)
 {
-	if (first->_material.diffuse.z > second->_material.diffuse.z)
+	if (first->_material == NULL)
+		return false;
+	if (first->_material->getOpacity() < second->_material->getOpacity())
 		return true;
 	return false;
 }

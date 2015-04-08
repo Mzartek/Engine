@@ -5,6 +5,7 @@
 #include <ctime>
 
 #include "RainEffect.hpp"
+#include "Ground.hpp"
 
 class Demo : public Engine::GameLoop
 {
@@ -31,7 +32,7 @@ private:
 	Engine::DepthMap *dMaps;
 	Engine::FreeCam *camera;
 	Engine::SkyBox *skybox;
-	Engine::Model *sol;
+	Ground *ground;
 	Engine::Model *model_tree;
 	Engine::DirLight *moon;
 	Engine::SpotLight *torch;
@@ -48,7 +49,6 @@ private:
 	Engine::Sound *fire_sound;
 
 	// Private methods
-	void configSol(void);
 	void configSmokeParticles(void);
 	void configTree(void);
 	void updateRainParticles(void);

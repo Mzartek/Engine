@@ -11,7 +11,7 @@ namespace Engine
      class ShaderProgram;
      class GBuffer;
      class Camera;
-	 class PerspCamera;
+     class PerspCamera;
      class DirLight;
      class SpotLight;
      class TextureCube;
@@ -36,33 +36,37 @@ namespace Engine
 	  } _camera;
 
 	  GLboolean _isMirror;
+	  
 	  std::vector<Mesh *> *_tMesh;
+	  std::vector<Object *> *_tObject;
+	  
 	  Buffer *_matrixBuffer;
 	  Buffer *_cameraBuffer;
+	  
 	  glm::vec3 *_position;
 	  glm::vec3 *_rotation;
 	  glm::vec3 *_scale;
+	  
 	  glm::mat4 *_modelMatrix;
 	  glm::mat4 *_normalMatrix;
+	  
 	  GLboolean _needMatModel;
 	  GLboolean _needMatNormal;
+	  
 	  TextureCube *_cubeTexture;
+	  
 	  ShaderProgram *_gProgram;
 	  ShaderProgram *_smProgram;
 
 	  void genMatModel(void) const;
 	  void genMatNormal(void) const;
 	  void checkMatrix(void);
-	  void deleteMesh(void);
      public:
 	  Model(ShaderProgram *gProgram, ShaderProgram *smProgram);
 	  Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smProgram);
 	  ~Model(void);
-	  void addMesh(const GLsizei &numVertex, const Vertex *vertexArray,
-		       const GLsizei &numIndex, const GLuint *indexArray,
-		       const GLchar *colorTexture, const GLchar *NMTexture,
-		       const glm::vec4 &ambient, const glm::vec4 &diffuse, const glm::vec4 &specular, const GLfloat &shininess);
-	  void loadFromFile(const GLchar *file, const GLchar *defaultTex, const GLchar *defaultNM);
+	  void addMesh(Mesh *mesh);
+	  void loadFromFile(const GLchar *inFile);
 	  void sortMesh(void);
 	  void setPosition(const glm::vec3 &position);
 	  void setRotation(const glm::vec3 &rotation);

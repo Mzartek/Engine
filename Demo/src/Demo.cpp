@@ -1,35 +1,9 @@
 #include "Demo.hpp"
 
-void Demo::configSol(void)
-{
-	Engine::Vertex vertexArray[] =
-	{
-		glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		glm::vec3(-500, 0, 500), glm::vec2(0, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		glm::vec3(500, 0, 500), glm::vec2(50, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		glm::vec3(500, 0, -500), glm::vec2(50, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-	};
-	GLuint index[] = { 2, 0, 1, 0, 2, 3 };
-	glm::vec4 mat_ambient(0.1f, 0.1f, 0.1f, 1.0f);
-	glm::vec4 mat_diffuse(0.9f, 0.9f, 0.9f, 1.0f);
-	glm::vec4 mat_specular(1.0f, 1.0f, 1.0f, 1.0f);
-	GLfloat mat_shininess = 8.0f;
-
-	sol->addMesh(sizeof vertexArray / sizeof(Engine::Vertex), vertexArray,
-		sizeof index / sizeof(GLuint), index,
-		"../share/Demo/resources/textures/feuilles.png", "../share/Demo/resources/textures/NM_none.png",
-		mat_ambient, mat_diffuse, mat_specular, mat_shininess);
-
-	octreeSystem->addModel(sol, 1000);
-}
-
 void Demo::configTree(void)
 {
 	model_tree = new Engine::Model(objectProgram, depthMapProgram);
-	model_tree->loadFromFile(
-		"../share/Demo/resources/models/tree/Tree1.3ds",
-		"../share/Demo/resources/textures/none.png",
-		"../share/Demo/resources/textures/NM_none.png");
+	model_tree->loadFromFile("../share/Demo/resources/models/tree/Tree1.3ds");
 	model_tree->sortMesh();
 	model_tree->setPosition(glm::vec3(50, 0, 50));
 	model_tree->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
@@ -137,7 +111,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	dMaps = new Engine::DepthMap[3];
 	camera = new Engine::FreeCam;
 	skybox = new Engine::SkyBox(skyboxProgram);
-	sol = new Engine::Model(objectProgram, depthMapProgram);
+	ground = new Ground(objectProgram, depthMapProgram);
 	moon = new Engine::DirLight(dirLightProgram);
 	torch = new Engine::SpotLight(spotLightProgram);
 	smokeManager = new Engine::ParticlesManager(physicsSmokeProgram, displaySmokeProgram);
@@ -170,7 +144,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 		"../share/Demo/resources/textures/skybox/nnksky01_front.jpg", "../share/Demo/resources/textures/skybox/nnksky01_back.jpg");
 
 	// Model config
-	configSol();
+	octreeSystem->addModel(ground->getModel(), 1000);        
 	configTree();
 
 	moon->setColor(glm::vec3(0.5f, 0.5f, 0.9f));
@@ -223,7 +197,7 @@ Demo::~Demo(void)
 	delete torch;
 	delete moon;
 	delete model_tree;
-	delete sol;
+	delete ground;
 	delete skybox;
 	delete camera;
 	delete[] dMaps;

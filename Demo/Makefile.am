@@ -6,9 +6,11 @@ bin_PROGRAMS = $(top_builddir)/bin/Demo
 __top_builddir__bin_Demo_SOURCES = \
 	src/Demo.hpp \
 	src/RainEffect.hpp \
+	src/Ground.hpp \
 	\
 	src/Demo.cpp \
 	src/RainEffect.cpp \
+	src/Ground.cpp \
 	src/main.cpp
 
 clean-local:
