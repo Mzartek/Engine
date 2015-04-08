@@ -7,7 +7,7 @@ Ground::Ground(Engine::ShaderProgram *objectProgram, Engine::ShaderProgram *dept
 	_mesh = new Engine::Mesh;
 	_model = new Engine::Model(objectProgram, depthMapProgram);
 
-	_texture->loadFromFile("../resources/textures/ornaments.jpg");
+	_texture->loadFromFile("../share/Demo/resources/textures/feuilles.png");
 	_material->setDiffuseTexture(_texture);
 	_material->setAmbient(glm::vec3(0.5f, 0.5f, 0.5f));
 	_material->setDiffuse(glm::vec3(0.9f, 0.9f, 0.9f));
@@ -18,9 +18,9 @@ Ground::Ground(Engine::ShaderProgram *objectProgram, Engine::ShaderProgram *dept
 	Engine::Vertex vertexArray[] =
 	{
 		glm::vec3(-500, 0, -500), glm::vec2(0, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		glm::vec3(-500, 0, 500), glm::vec2(0, 1), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		glm::vec3(500, 0, 500), glm::vec2(1, 1), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
-		glm::vec3(500, 0, -500), glm::vec2(1, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+		glm::vec3(-500, 0, 500), glm::vec2(0, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+		glm::vec3(500, 0, 500), glm::vec2(50, 50), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
+		glm::vec3(500, 0, -500), glm::vec2(50, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0),
 	};
 	GLuint index[] = { 2, 0, 1, 0, 2, 3 };
 

@@ -239,12 +239,12 @@ void Demo::display(GLfloat state)
 
 	// Lights
 	dMaps[0].clear();
+	dMaps[1].clear();
+	dMaps[2].clear();
 	model_tree->displayDepthMap(dMaps, moon);
 	moon->display(gBuffer, dMaps, camera);
 
 	dMaps[0].clear();
-	dMaps[1].clear();
-	dMaps[2].clear();
 	model_tree->displayDepthMap(dMaps, torch);
 	torch->display(gBuffer, dMaps, camera);
 

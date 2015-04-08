@@ -23,17 +23,16 @@ layout(location = 3) in vec3 tangent;
 out VertexData
 {
 	vec2 texCoord;
-	mat3 TBN;
+	vec3 normal;
+	vec3 tangent;
+	vec3 bitangent;
 } VertOut;
 
 void main(void)
 {
 	gl_Position = MVP * vec4(vertex, 1.0);
-
-	vec3 N = (normalMatrix * vec4(normal, 0.0)).xyz;
-	vec3 T = (normalMatrix * vec4(tangent, 0.0)).xyz;
-	vec3 B = cross(N, T);
-
 	VertOut.texCoord = texCoord;
-	VertOut.TBN = mat3(T, B, N);
+	VertOut.normal = normalize((normalMatrix * vec4(normal, 0.0)).xyz);
+	VertOut.tangent = normalize((normalMatrix * vec4(tangent, 0.0)).xyz);
+	VertOut.bitangent = cross(VertOut.normal, VertOut.tangent);
 }

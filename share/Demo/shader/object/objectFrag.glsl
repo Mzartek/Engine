@@ -14,56 +14,74 @@ uniform samplerCube reflectionTex;
 
 layout(binding = 2) uniform materialBuffer
 {
-     vec3 matDiffuse;
-     vec3 matSpecular;
-     vec3 matAmbient;
-     vec3 matEmissive;
-     float matShininess;
-     float matOpacity;
+	vec3 matDiffuse;
+	vec3 matSpecular;
+	vec3 matAmbient;
+	vec3 matEmissive;
+	float matShininess;
+	float matOpacity;
 };
 
 layout(binding = 3) uniform stateBuffer
 {
-     bool hasDiffuseTexture;
-     bool hasSpecularTexture;
-     bool hasAmbientTexture;
-     bool hasEmissiveTexture;
-     bool hasShininessTexture;
-     bool hasOpacityTexture;
-     bool hasBumpMap;
-     bool hasNormalMap;
-     bool hasDisplacementMap;
-     bool hasLightMap;
+	bool hasDiffuseTexture;
+	bool hasSpecularTexture;
+	bool hasAmbientTexture;
+	bool hasEmissiveTexture;
+	bool hasShininessTexture;
+	bool hasOpacityTexture;
+	bool hasBumpMap;
+	bool hasNormalMap;
+	bool hasDisplacementMap;
+	bool hasLightMap;
 };
 
 in VertexData
 {
-     vec2 texCoord;
-     mat3 TBN;
+	vec2 texCoord;
+	vec3 normal;
+	vec3 tangent;
+	vec3 bitangent;
 } FragIn;
 
 layout(location = 0) out vec4 outNormal;
 layout(location = 1) out uvec4 outMaterial;
 
-vec3 CalcBumpedNormal(mat3 TBN, vec3 bumpMapNormal)
+vec4 getColor(void)
 {
-     return normalize(TBN * (bumpMapNormal * 2.0 - 1.0));
+	if (hasDiffuseTexture)
+		return texture(diffuseTex, vec2(FragIn.texCoord.x, 1.0f - FragIn.texCoord.y));
+	else
+		return vec4(1.0, 1.0, 1.0, 1.0);
+}
+
+vec3 getNormal(void)
+{
+	if (hasNormalMap)
+	{
+		mat3 TBN = mat3(FragIn.tangent, FragIn.bitangent, FragIn.normal);
+		vec3 bumpMapNormal = texture(normalMap, vec2(FragIn.texCoord.x, 1.0f - FragIn.texCoord.y)).xyz;
+		
+		return TBN * (bumpMapNormal * 2.0 - 1.0);
+	}
+	else
+		return FragIn.normal;
 }
 
 void main(void)
 {
-     vec4 color = texture(diffuseTex, vec2(FragIn.texCoord.x, 1.0f - FragIn.texCoord.y));
-     vec3 normal = CalcBumpedNormal(FragIn.TBN, texture(normalMap, vec2(FragIn.texCoord.x, 1.0f - FragIn.texCoord.y)).xyz);
-
-     if(color.a > 0.5)
-     {
-	  outNormal = vec4(normal, matShininess);
-	  outMaterial.x = packUnorm4x8(color);
-	  outMaterial.y = packUnorm4x8(vec4(matAmbient, matOpacity));
-	  outMaterial.z = packUnorm4x8(vec4(matDiffuse, matOpacity));
-	  outMaterial.w = packUnorm4x8(vec4(matSpecular, matOpacity));
-	  gl_FragDepth = gl_FragCoord.z;
-     }
-     else
-	  discard;
+	vec4 color = getColor();
+	vec3 normal = getNormal();
+	
+	if(color.a > 0.5)
+	{
+		outNormal = vec4(normal, matShininess);
+		outMaterial.x = packUnorm4x8(color);
+		outMaterial.y = packUnorm4x8(vec4(matAmbient, matOpacity));
+		outMaterial.z = packUnorm4x8(vec4(matDiffuse, matOpacity));
+		outMaterial.w = packUnorm4x8(vec4(matSpecular, matOpacity));
+		gl_FragDepth = gl_FragCoord.z;
+	}
+	else
+		discard;
 }
