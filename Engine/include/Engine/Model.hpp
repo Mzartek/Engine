@@ -32,7 +32,9 @@ namespace Engine
 	  struct
 	  {
 		  glm::vec3 ALIGN(16) position;
-		  glm::vec3 ALIGN(16) target;
+		  glm::vec3 ALIGN(16) forward;
+		  glm::vec3 ALIGN(16) left;
+		  glm::vec3 ALIGN(16) up;
 	  } _camera;
 
 	  GLboolean _isMirror;

@@ -374,7 +374,9 @@ void Engine::Model::display(GBuffer *gbuf, PerspCamera *cam)
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
 	_camera.position = cam->getCameraPosition();
-	_camera.target = cam->getTargetPosition();
+	_camera.forward = cam->getForwardVector();
+	_camera.left = cam->getLeftVector();
+	_camera.up = cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -405,7 +407,9 @@ void Engine::Model::displayTransparent(GBuffer *gbuf, PerspCamera *cam)
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
 	_camera.position = cam->getCameraPosition();
-	_camera.target = cam->getTargetPosition();
+	_camera.forward = cam->getForwardVector();
+	_camera.left = cam->getLeftVector();
+	_camera.up = cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 

@@ -26,10 +26,9 @@ Engine::Audio::~Audio(void)
 	alcCloseDevice(_device);
 }
 
-void Engine::Audio::setListenerPosition(const glm::vec3 &pos, const glm::vec3 &view)
+void Engine::Audio::setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up)
 {
-	glm::vec3 at = glm::normalize(glm::vec3(view.x, 0.0f, view.z));
-	ALfloat listenerOri[] = { at.x, at.y, at.z, 0.0f, 1.0f, 0.0f };
+	ALfloat listenerOri[] = { at.x, at.y, at.z, up.x, up.y, up.z };
 
 	alListener3f(AL_POSITION, pos.x, pos.y, pos.z);
 	alListener3f(AL_VELOCITY, 0, 0, 0);

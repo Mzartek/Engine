@@ -133,7 +133,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 	// Camera config
 	camera->setCameraPosition(glm::vec3(30, 5, 0));
-	camera->setInitialAngle(-glm::pi<GLfloat>() / 2, 0);
 
 	rainEffect->init(camera->getCameraPosition(), 10000);
 
@@ -273,7 +272,8 @@ void Demo::idle(long long time)
 	UNREFERENCED_PARAMETER(time);
 
 	glm::vec3 camPosition;
-	glm::vec3 camView;
+	glm::vec3 camForward;
+	glm::vec3 camUp;
 
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
@@ -295,7 +295,8 @@ void Demo::idle(long long time)
 	camera->mouseMove(input->getMouseRelX(), input->getMouseRelY());
 	camera->position();
 	camPosition = camera->getCameraPosition();
-	camView = camera->getViewVector();
+	camForward = camera->getForwardVector();
+	camUp = camera->getUpVector();
 
 	moon->position(camPosition, 100, 250, 500);
 	torch->position(dMaps);
@@ -303,7 +304,7 @@ void Demo::idle(long long time)
 	smokeManager->updateParticles();
 	rainEffect->updateParticles(camPosition);
 
-	audio->setListenerPosition(camPosition, camView);
+	audio->setListenerPosition(camPosition, camForward, camUp);
 }
 
 void Demo::reshape(GLuint w, GLuint h)

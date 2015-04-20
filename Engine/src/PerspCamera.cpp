@@ -3,16 +3,20 @@
 Engine::PerspCamera::PerspCamera(void)
 {
 	_pcamera = new glm::vec3;
-	_ptarget = new glm::vec3;
-	_vview = new glm::vec3;
+	_vforward = new glm::vec3;
+	_vleft = new glm::vec3;
+	_vup = new glm::vec3;
+
 	_frusSpherePosition = new glm::vec3;
 }
 
 Engine::PerspCamera::~PerspCamera(void)
 {
 	delete _pcamera;
-	delete _ptarget;
-	delete _vview;
+	delete _vforward;
+	delete _vleft;
+	delete _vup;
+
 	delete _frusSpherePosition;
 }
 
@@ -21,9 +25,12 @@ void Engine::PerspCamera::setCameraPosition(const glm::vec3 &pos) const
 	*_pcamera = pos;
 }
 
-void Engine::PerspCamera::setTargetPosition(const glm::vec3 &pos) const
+void Engine::PerspCamera::setTargetPosition(const GLfloat &atheta, const GLfloat &aphi) const
 {
-	*_ptarget = pos;
+	GLfloat tmp = cosf(aphi);
+	*_vforward = glm::vec3(tmp * sinf(atheta), sinf(aphi), tmp * cosf(atheta));
+	*_vleft = glm::normalize(glm::vec3(_vforward->z, 0.0f, -_vforward->x));
+	*_vup = glm::cross(*_vforward, *_vleft);
 }
 
 void Engine::PerspCamera::setPerspective(const GLfloat &fov, const GLuint &width, const GLuint &height, const GLfloat &n, const GLfloat &f)
@@ -46,14 +53,19 @@ glm::vec3 Engine::PerspCamera::getCameraPosition(void) const
 	return *_pcamera;
 }
 
-glm::vec3 Engine::PerspCamera::getTargetPosition(void) const
+glm::vec3 Engine::PerspCamera::getForwardVector(void) const
 {
-	return *_ptarget;
+	return *_vforward;
 }
 
-glm::vec3 Engine::PerspCamera::getViewVector(void) const
+glm::vec3 Engine::PerspCamera::getLeftVector(void) const
 {
-	return *_vview;
+	return *_vleft;
+}
+
+glm::vec3 Engine::PerspCamera::getUpVector(void) const
+{
+	return *_vup;
 }
 
 GLfloat Engine::PerspCamera::getNear(void) const
@@ -88,9 +100,9 @@ glm::vec3 Engine::PerspCamera::getFrusSpherePosition(void) const
 
 void Engine::PerspCamera::position(void) const
 {
-	*_vview = glm::normalize(*_ptarget - *_pcamera);
-	*_frusSpherePosition = *_vview * _frusSphereDistance;
-	*_viewMatrix = glm::lookAt(*_pcamera, *_ptarget, glm::vec3(0.0f, 1.0f, 0.0f));
+	*_frusSpherePosition = *_vforward * _frusSphereDistance;
+
+	*_viewMatrix = glm::lookAt(*_pcamera, *_pcamera + *_vforward, *_vup);
 	*_VPMatrix = *_projectionMatrix * *_viewMatrix;
 	*_IVPMatrix = glm::inverse(*_VPMatrix);
 }

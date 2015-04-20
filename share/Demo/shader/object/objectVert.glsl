@@ -12,7 +12,9 @@ layout (binding = 0) uniform matrixBuffer
 layout (binding = 1) uniform cameraBuffer
 {
     vec3 camPosition;
-    vec3 camTarget;
+    vec3 camForward;
+	vec3 camLeft;
+	vec3 camUp;
 };
 
 layout(location = 0) in vec3 vertex;

@@ -43,19 +43,19 @@ inline GLboolean checkOctreeInCamSphere(const Engine::Octree *octree, const Engi
 inline GLboolean checkOctreeInCamFrus(const Engine::Octree *octree, const Engine::PerspCamera *cam)
 {
 	const glm::vec3 camera_position = cam->getCameraPosition();
-	const glm::vec3 view_vector = cam->getViewVector();
+	const glm::vec3 forward_vector = cam->getForwardVector();
 	const GLfloat fov_2 = cam->getFOV() / 2;
 
 	glm::vec3 position = octree->position;
 	glm::vec3 direction = glm::normalize(position - camera_position);
-	GLfloat dot = glm::dot(view_vector, direction);
+	GLfloat dot = glm::dot(forward_vector, direction);
 
 	if (acosf(dot) < fov_2) return GL_TRUE;
 	for (GLint i = 0; i < 8; i++)
 	{
 		position = octree->vertex[i];
 		direction = glm::normalize(position - camera_position);
-		dot = glm::dot(view_vector, direction);
+		dot = glm::dot(forward_vector, direction);
 
 		if (acosf(dot) < fov_2) return GL_TRUE;
 	}

@@ -14,7 +14,7 @@ namespace Engine
 	public:
 		Audio(void);
 		~Audio(void);
-		void setListenerPosition(const glm::vec3 &pos, const glm::vec3 &view);
+		void setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up);
 	};
 }
 
