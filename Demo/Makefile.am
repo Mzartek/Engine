@@ -5,12 +5,26 @@ bin_PROGRAMS = $(top_builddir)/bin/Demo
 
 __top_builddir__bin_Demo_SOURCES = \
 	src/Demo.hpp \
-	src/RainEffect.hpp \
 	src/Ground.hpp \
+	src/MoonLight.hpp \
+	src/NightBox.hpp \
+	src/RainEffect.hpp \
+	src/ScreenDisplay.hpp \
+	src/SmokeEffect.hpp \
+	src/TextDisplay.hpp \
+	src/TorchLight.hpp \
+	src/Tree.hpp \
 	\
 	src/Demo.cpp \
-	src/RainEffect.cpp \
 	src/Ground.cpp \
+	src/MoonLight.cpp \
+	src/NightBox.cpp \
+	src/RainEffect.cpp \
+	src/ScreenDisplay.cpp \
+	src/SmokeEffect.cpp \
+	src/TextDisplay.cpp \
+	src/TorchLight.cpp \
+	src/Tree.cpp \
 	src/main.cpp
 
 clean-local:

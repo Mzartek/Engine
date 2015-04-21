@@ -1,11 +1,25 @@
 #include "Ground.hpp"
 
-Ground::Ground(Engine::ShaderProgram *objectProgram, Engine::ShaderProgram *depthMapProgram)
+Ground::Ground(void)
 {
+	_objectProgram = new Engine::ShaderProgram(
+		"../share/Demo/shader/object/objectVert.glsl",
+		NULL,
+		NULL,
+		"../share/Demo/shader/object/objectGeom.glsl",
+		"../share/Demo/shader/object/objectFrag.glsl");
+
+	_depthMapProgram = new Engine::ShaderProgram(
+		"../share/Demo/shader/depthMap/depthMapVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
+
 	_texture = new Engine::Texture2D;
 	_material = new Engine::Material;
 	_mesh = new Engine::Mesh;
-	_model = new Engine::Model(objectProgram, depthMapProgram);
+	_model = new Engine::Model(_objectProgram, _depthMapProgram);
 
 	_texture->loadFromFile("../share/Demo/resources/textures/feuilles.png");
 	_material->setDiffuseTexture(_texture);
@@ -32,6 +46,8 @@ Ground::Ground(Engine::ShaderProgram *objectProgram, Engine::ShaderProgram *dept
 
 Ground::~Ground(void)
 {
+	delete _objectProgram;
+	delete _depthMapProgram;
 	delete _texture;
 	delete _material;
 	delete _mesh;

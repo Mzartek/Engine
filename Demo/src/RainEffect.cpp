@@ -2,8 +2,6 @@
 
 RainEffect::RainEffect(void)
 {
-	_direction = new glm::vec3(0.0f, -1.0f, 1.0f);
-
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
 	_physicsRainProgram = new Engine::ShaderProgram(
@@ -22,17 +20,19 @@ RainEffect::RainEffect(void)
 		"../share/Demo/shader/rainParticles/rainFrag.glsl");
 
 	_rainManager = new Engine::ParticlesManager(_physicsRainProgram, _displayRainProgram);
+
+	_rain_sound = new Engine::Sound;
 }
 
 RainEffect::~RainEffect(void)
 {
-	delete _direction;
 	delete _physicsRainProgram;
 	delete _displayRainProgram;
 	delete _rainManager;
+	delete _rain_sound;
 }
 
-void RainEffect::init(const glm::vec3 &position, const unsigned int &numParticles)
+void RainEffect::init(const glm::vec3 &position, const unsigned int &numParticles) const
 {
 	std::vector<Engine::Particle> rainParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
@@ -46,18 +46,12 @@ void RainEffect::init(const glm::vec3 &position, const unsigned int &numParticle
 	_rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
 }
 
-void RainEffect::setDirection(const glm::vec3 &direction)
+Engine::ParticlesManager *RainEffect::getParticlesManager() const
 {
-	*_direction = direction;
+	return _rainManager;
 }
 
-void RainEffect::updateParticles(const glm::vec3 &position)
+Engine::Sound *RainEffect::getSound(void) const
 {
-	_rainManager->setPosition(position);
-	_rainManager->updateParticles();
-}
-
-void RainEffect::display(Engine::GBuffer *gbuf, Engine::Camera *cam)
-{
-	_rainManager->display(gbuf, cam);
+	return _rain_sound;
 }
