@@ -8,12 +8,13 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 	gBuffer = new Engine::GBuffer;
 	dMaps = new Engine::DepthMap[3];
-	camera = new Engine::FreeCam;
+	camera = new Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0);
 
 	octreeSystem = new Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000);
 
 	nightBox = new NightBox;
 	tree = new Tree;
+	helicopter = new Helicopter;
 	ground = new Ground;
 	moonLight = new MoonLight;
 	torchLight = new TorchLight;
@@ -32,15 +33,22 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	camera->setCameraPosition(glm::vec3(30, 5, 0));
 
 	rainEffect->init(camera->getCameraPosition(), 10000);
-	smokeEffect->init(glm::vec3(0, 0, 0), 100);
+	smokeEffect->init(glm::vec3(-50, 0, 50), 100);
+
+	smokeEffect->getParticlesManager()->setPosition(glm::vec3(-50, 0, 50));
 
 	// Model config
 	tree->getModel()->setPosition(glm::vec3(50, 0, 50));
 	tree->getModel()->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
 	tree->getModel()->setScale(glm::vec3(5, 5, 5));
 
+	helicopter->getModel()->setPosition(glm::vec3(-50, 4, 50));
+	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
+    helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
+
 	octreeSystem->addModel(ground->getModel(), 1000);
 	octreeSystem->addModel(tree->getModel(), 40);
+	octreeSystem->addModel(helicopter->getModel(), 40);
 
 	torchLight->getLight()->setPosition(glm::vec3(25, 100, -25));
 	torchLight->getLight()->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
@@ -53,15 +61,15 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 		renderer->getWidth() / 10, renderer->getHeight() / 10,
 		renderer, "test");
 
-	rainEffect->getSound()->setGain(0.25f);
+	rainEffect->getSound()->setGain(0.10f);
 	rainEffect->getSound()->setPitch(1.0f);
 	rainEffect->getSound()->setLoop(AL_TRUE);
 	rainEffect->getSound()->loadFromFile("../share/Demo/resources/sound/rain_stereo.wav", 22050, AL_FORMAT_STEREO16);
 
-	smokeEffect->getSound()->setGain(1.0f);
+	smokeEffect->getSound()->setGain(0.75f);
 	smokeEffect->getSound()->setPitch(0.75f);
 	smokeEffect->getSound()->setLoop(AL_TRUE);
-	smokeEffect->getSound()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	smokeEffect->getSound()->setPosition(glm::vec3(-50.0f, 0.0f, 50.0f));
 	smokeEffect->getSound()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 	smokeEffect->getSound()->setDistances(1.0f, 100.0f);
 	smokeEffect->getSound()->loadFromFile("../share/Demo/resources/sound/fire_mono.wav", 44100, AL_FORMAT_MONO16);
@@ -79,6 +87,7 @@ Demo::~Demo(void)
 	delete moonLight;
 	delete torchLight;
 	delete ground;
+	delete helicopter;
 	delete tree;
 	delete nightBox;
 
@@ -94,7 +103,6 @@ void Demo::display(GLfloat state)
 	UNREFERENCED_PARAMETER(state);
 
 	static std::set<Engine::Model *> object;
-	static Engine::Model *tree_model = tree->getModel();
 	static Engine::DirLight *moon_light = moonLight->getLight();
 	static Engine::SpotLight *torch_light = torchLight->getLight();
 	static Engine::ParticlesManager *rain_particles = rainEffect->getParticlesManager();
@@ -116,15 +124,16 @@ void Demo::display(GLfloat state)
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
 		(*it)->display(gBuffer, camera);
 
-	// Lights
 	dMaps[0].clear();
 	dMaps[1].clear();
 	dMaps[2].clear();
-	tree_model->displayDepthMap(dMaps, moon_light);
+	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
+		(*it)->displayDepthMap(dMaps, moon_light);
 	moon_light->display(gBuffer, dMaps, camera);
 
 	dMaps[0].clear();
-	tree_model->displayDepthMap(dMaps, torch_light);
+	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
+		(*it)->displayDepthMap(dMaps, torch_light);
 	torch_light->display(gBuffer, dMaps, camera);
 
 	screen_display->background(gBuffer);
@@ -187,7 +196,6 @@ void Demo::idle(long long time)
 	torch_light->position(dMaps);
 
 	rain_particles->setPosition(camPosition);
-	smoke_particles->setPosition(glm::vec3(0, 0, 0));
 
 	rain_particles->updateParticles();
 	smoke_particles->updateParticles();

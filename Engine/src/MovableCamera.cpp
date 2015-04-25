@@ -5,6 +5,11 @@ Engine::MovableCamera::MovableCamera(void)
 {
 }
 
+Engine::MovableCamera::MovableCamera(const GLfloat &atheta, const GLfloat &aphi)
+	: _speed(1), _atheta(atheta), _aphi(aphi)
+{
+}
+
 Engine::MovableCamera::~MovableCamera(void)
 {
 }

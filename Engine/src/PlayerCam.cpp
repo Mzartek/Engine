@@ -4,6 +4,11 @@ Engine::PlayerCam::PlayerCam(void)
 {
 }
 
+Engine::PlayerCam::PlayerCam(const GLfloat &atheta, const GLfloat &aphi)
+    : MovableCamera(atheta, aphi)
+{
+}
+
 Engine::PlayerCam::~PlayerCam(void)
 {
 }

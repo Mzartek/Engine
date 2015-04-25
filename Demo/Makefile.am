@@ -14,6 +14,7 @@ __top_builddir__bin_Demo_SOURCES = \
 	src/TextDisplay.hpp \
 	src/TorchLight.hpp \
 	src/Tree.hpp \
+	src/Helicopter.hpp \
 	\
 	src/Demo.cpp \
 	src/Ground.cpp \
@@ -25,6 +26,7 @@ __top_builddir__bin_Demo_SOURCES = \
 	src/TextDisplay.cpp \
 	src/TorchLight.cpp \
 	src/Tree.cpp \
+	src/Helicopter.cpp \
 	src/main.cpp
 
 clean-local:
