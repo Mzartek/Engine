@@ -46,6 +46,12 @@ void SmokeEffect::init(const glm::vec3 &position, const unsigned int &numParticl
 	_smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 }
 
+void SmokeEffect::setPosition(const glm::vec3 &pos)
+{
+	_smokeManager->setPosition(pos);
+	_fire_sound->setPosition(pos);
+}
+
 Engine::ParticlesManager *SmokeEffect::getParticlesManager(void) const
 {
 	return _smokeManager;

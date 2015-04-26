@@ -35,7 +35,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	rainEffect->init(camera->getCameraPosition(), 10000);
 	smokeEffect->init(glm::vec3(-50, 0, 50), 100);
 
-	smokeEffect->getParticlesManager()->setPosition(glm::vec3(-50, 0, 50));
+	smokeEffect->setPosition(glm::vec3(-50, 0, 50));
 
 	// Model config
 	tree->getModel()->setPosition(glm::vec3(50, 0, 50));
@@ -69,7 +69,6 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	smokeEffect->getSound()->setGain(0.75f);
 	smokeEffect->getSound()->setPitch(0.75f);
 	smokeEffect->getSound()->setLoop(AL_TRUE);
-	smokeEffect->getSound()->setPosition(glm::vec3(-50.0f, 0.0f, 50.0f));
 	smokeEffect->getSound()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 	smokeEffect->getSound()->setDistances(1.0f, 100.0f);
 	smokeEffect->getSound()->loadFromFile("../share/Demo/resources/sound/fire_mono.wav", 44100, AL_FORMAT_MONO16);

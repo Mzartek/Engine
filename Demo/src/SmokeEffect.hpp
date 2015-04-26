@@ -14,6 +14,7 @@ public:
 	SmokeEffect(void);
 	~SmokeEffect(void);
 	void init(const glm::vec3 &position, const unsigned int &numParticles) const;
+	void setPosition(const glm::vec3 &pos);
 	Engine::ParticlesManager *getParticlesManager(void) const;
 	Engine::Sound *getSound(void) const;
 };
