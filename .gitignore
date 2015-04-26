@@ -49,6 +49,7 @@
 *.deps
 *.dirstamp
 *.opensdf
+*.codelite
 
 bin
 lib
