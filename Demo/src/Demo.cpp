@@ -141,7 +141,6 @@ void Demo::display(GLfloat state)
 	// Transparent Object
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
 		(*it)->displayTransparent(gBuffer, camera);
-
 	moon_light->display(gBuffer, camera);
 	torch_light->display(gBuffer, camera);
 

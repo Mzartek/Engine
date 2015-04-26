@@ -17,7 +17,7 @@ Tree::Tree()
 		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
 
 	_model = new Engine::Model(_objectProgram, _depthMapProgram);
-	
+
 	_model->loadFromFile("../share/Demo/resources/models/tree/Tree1.3ds");
 	_model->sortMesh();
 }

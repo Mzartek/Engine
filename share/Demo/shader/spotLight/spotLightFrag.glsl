@@ -89,7 +89,7 @@ void main(void)
 	vec3 L = normalize(lightPosition - position);
 
 	// For the angle
-	float cos_cur_angle = dot(-L, normalize(lightDirection));
+	float cos_cur_angle = dot(-L, lightDirection);
 	float cos_outer_cone_angle = cos(lightSpotCutOff);
 	float cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
 	float cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
@@ -103,6 +103,6 @@ void main(void)
 	     float tmp = min(current_distance, lightMaxDistance) - inner_distance;
 	     spot *= (LIMIT - tmp) / LIMIT;
 	}
-	
+
 	outLight = calcLight(diffColor, specColor, normal.xyz, L, normalize(camPosition - position), normal.w) * shadow * spot;
 }

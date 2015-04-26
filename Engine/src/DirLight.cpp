@@ -47,7 +47,7 @@ void Engine::DirLight::setColor(const glm::vec3 &color)
 
 void Engine::DirLight::setDirection(const glm::vec3 &dir)
 {
-	_lightInfo.direction = dir;
+	_lightInfo.direction = glm::normalize(dir);
 }
 
 glm::mat4 Engine::DirLight::getProjectionMatrix(const GLuint &num) const

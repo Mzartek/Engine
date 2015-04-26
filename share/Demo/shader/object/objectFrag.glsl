@@ -61,7 +61,7 @@ vec3 getNormal(void)
 	{
 		mat3 TBN = mat3(FragIn.tangent, FragIn.bitangent, FragIn.normal);
 		vec3 bumpMapNormal = texture(normalMap, vec2(FragIn.texCoord.x, 1.0f - FragIn.texCoord.y)).xyz;
-		
+
 		return TBN * (bumpMapNormal * 2.0 - 1.0);
 	}
 	else
@@ -72,7 +72,7 @@ void main(void)
 {
 	vec4 color = getColor();
 	vec3 normal = getNormal();
-	
+
 	if(color.a > 0.5)
 	{
 		outNormal = vec4(normal, matShininess);

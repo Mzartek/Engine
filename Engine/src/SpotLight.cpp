@@ -49,7 +49,7 @@ void Engine::SpotLight::setPosition(const glm::vec3 &pos)
 
 void Engine::SpotLight::setDirection(const glm::vec3 &dir)
 {
-	_lightInfo.direction = dir;
+	_lightInfo.direction = glm::normalize(dir);
 }
 
 void Engine::SpotLight::setSpotCutOff(const GLfloat &spot)

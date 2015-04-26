@@ -9,8 +9,13 @@ Engine::Material::Material(void)
 	_matBuffer = new Buffer;
 	_stateBuffer = new Buffer;
 
-	_matBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _mat, GL_STATIC_DRAW);
-	_stateBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _state, GL_STATIC_DRAW);
+	_mat.diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
+	_mat.specular = glm::vec3(0.0f, 0.0f, 0.0f);
+    _mat.ambient = glm::vec3(0.0f, 0.0f, 0.0f);
+    _mat.emissive = glm::vec3(0.0f, 0.0f, 0.0f);
+    _mat.shininess = 1.0f;
+    _mat.opacity = 1.0f;
+	_matBuffer->createStore(GL_UNIFORM_BUFFER, &_mat, sizeof _mat, GL_STATIC_DRAW);
 
 	_state.hasDiffuseTexture = GL_FALSE;
 	_state.hasSpecularTexture = GL_FALSE;
@@ -22,6 +27,7 @@ Engine::Material::Material(void)
 	_state.hasNormalMap = GL_FALSE;
 	_state.hasDisplacementMap = GL_FALSE;
 	_state.hasLightMap = GL_FALSE;
+	_stateBuffer->createStore(GL_UNIFORM_BUFFER, &_state, sizeof _state, GL_STATIC_DRAW);
 }
 
 Engine::Material::~Material(void)
