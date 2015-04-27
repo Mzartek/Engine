@@ -73,12 +73,12 @@ namespace Engine
 	  void setPosition(const glm::vec3 &position);
 	  void setScale(const glm::vec3 &scale);
 	  void setRotation(const glm::vec3 &rotation);
-	  void setRotation(const GLfloat &angle, const glm::vec3 &axis);
+	  void setRotation(const glm::vec3 &axis, const GLfloat &angle);
 	  void setCubeTexture(TextureCube *cubeTexture);
 	  glm::vec3 getPosition(void) const;
 	  glm::vec3 getScale(void) const;
 	  glm::vec3 getEulerAnglesRotation(void) const;
-	  std::pair<GLfloat, glm::vec3> getAxisAngleRotation(void) const;
+	  std::pair<glm::vec3, GLfloat> getAxisAngleRotation(void) const;
 	  Mesh *getMesh(const GLuint &num) const;
 	  void display(GBuffer *g, PerspCamera *cam);
 	  void displayTransparent(GBuffer *gbuf, PerspCamera *cam);

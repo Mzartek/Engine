@@ -45,7 +45,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	helicopter->getModel()->setPosition(glm::vec3(-50, 4, 50));
 	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
     helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
-
+		
 	octreeSystem->addModel(ground->getModel(), 1000);
 	octreeSystem->addModel(tree->getModel(), 40);
 	octreeSystem->addModel(helicopter->getModel(), 40);

@@ -324,7 +324,7 @@ void Engine::Model::setRotation(const glm::vec3 &rotation)
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::setRotation(const GLfloat &angle, const glm::vec3 &axis)
+void Engine::Model::setRotation(const glm::vec3 &axis, const GLfloat &angle)
 {
 	*_rotation = glm::angleAxis(angle, axis);
 	_needMatModel = GL_TRUE;
@@ -351,9 +351,9 @@ glm::vec3 Engine::Model::getEulerAnglesRotation(void) const
 	return glm::eulerAngles(*_rotation);
 }
 
-std::pair<GLfloat, glm::vec3> Engine::Model::getAxisAngleRotation(void) const
+std::pair<glm::vec3, GLfloat> Engine::Model::getAxisAngleRotation(void) const
 {
-	return std::pair<GLfloat, glm::vec3>(glm::angle(*_rotation), glm::axis(*_rotation));
+	return std::pair<glm::vec3, GLfloat>(glm::axis(*_rotation), glm::angle(*_rotation));
 }
 
 Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
