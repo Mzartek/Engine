@@ -326,7 +326,7 @@ void Engine::Model::setRotation(const glm::vec3 &rotation)
 
 void Engine::Model::setRotation(const glm::vec3 &axis, const GLfloat &angle)
 {
-	*_rotation = glm::angleAxis(angle, axis);
+	*_rotation = glm::angleAxis(fmod(angle, glm::pi<GLfloat>() * 2), axis);
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
