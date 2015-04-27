@@ -133,8 +133,8 @@ Engine::Model::~Model(void)
 	delete _matrixBuffer;
 	delete _cameraBuffer;
 	delete _position;
-	delete _rotation;
 	delete _scale;
+	delete _rotation;
 	delete _modelMatrix;
 	delete _normalMatrix;
 }
