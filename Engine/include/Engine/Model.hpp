@@ -77,7 +77,6 @@ namespace Engine
 	  void setCubeTexture(TextureCube *cubeTexture);
 	  glm::vec3 getPosition(void) const;
 	  glm::vec3 getScale(void) const;
-	  glm::vec3 getEulerAnglesRotation(void) const;
 	  std::pair<glm::vec3, GLfloat> getAxisAngleRotation(void) const;
 	  Mesh *getMesh(const GLuint &num) const;
 	  void display(GBuffer *g, PerspCamera *cam);

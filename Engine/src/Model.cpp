@@ -346,11 +346,6 @@ glm::vec3 Engine::Model::getScale(void) const
 	return *_scale;
 }
 
-glm::vec3 Engine::Model::getEulerAnglesRotation(void) const
-{
-	return glm::eulerAngles(*_rotation);
-}
-
 std::pair<glm::vec3, GLfloat> Engine::Model::getAxisAngleRotation(void) const
 {
 	return std::pair<glm::vec3, GLfloat>(glm::axis(*_rotation), glm::angle(*_rotation));
