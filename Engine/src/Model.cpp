@@ -31,7 +31,10 @@ inline std::string getDir(const GLchar *file)
 
 void Engine::Model::genMatModel(void) const
 {
-	*_modelMatrix = glm::translate(*_position) * glm::toMat4(*_rotation) * glm::scale(*_scale);
+	*_modelMatrix = 
+		glm::translate(*_position) * 
+		glm::toMat4(*_rotation) * 
+		glm::scale(*_scale);
 }
 
 void Engine::Model::genMatNormal(void) const
@@ -348,7 +351,7 @@ glm::vec3 Engine::Model::getEulerAnglesRotation(void) const
 	return glm::eulerAngles(*_rotation);
 }
 
-std::pair<GLfloat, glm::vec3> Engine::Model::getAngleAxisRotation(void) const
+std::pair<GLfloat, glm::vec3> Engine::Model::getAxisAngleRotation(void) const
 {
 	return std::pair<GLfloat, glm::vec3>(glm::angle(*_rotation), glm::axis(*_rotation));
 }

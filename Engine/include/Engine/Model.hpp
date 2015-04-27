@@ -78,7 +78,7 @@ namespace Engine
 	  glm::vec3 getPosition(void) const;
 	  glm::vec3 getScale(void) const;
 	  glm::vec3 getEulerAnglesRotation(void) const;
-	  std::pair<GLfloat, glm::vec3> getAngleAxisRotation(void) const;
+	  std::pair<GLfloat, glm::vec3> getAxisAngleRotation(void) const;
 	  Mesh *getMesh(const GLuint &num) const;
 	  void display(GBuffer *g, PerspCamera *cam);
 	  void displayTransparent(GBuffer *gbuf, PerspCamera *cam);
