@@ -46,8 +46,8 @@ namespace Engine
 	  Buffer *_cameraBuffer;
 	  
 	  glm::vec3 *_position;
-	  glm::vec3 *_rotation;
 	  glm::vec3 *_scale;
+	  glm::quat *_rotation;
 	  
 	  glm::mat4 *_modelMatrix;
 	  glm::mat4 *_normalMatrix;
@@ -71,12 +71,14 @@ namespace Engine
 	  void loadFromFile(const GLchar *inFile);
 	  void sortMesh(void);
 	  void setPosition(const glm::vec3 &position);
-	  void setRotation(const glm::vec3 &rotation);
 	  void setScale(const glm::vec3 &scale);
+	  void setRotation(const glm::vec3 &rotation);
+	  void setRotation(const GLfloat &angle, const glm::vec3 &axis);
 	  void setCubeTexture(TextureCube *cubeTexture);
 	  glm::vec3 getPosition(void) const;
-	  glm::vec3 getRotation(void) const;
 	  glm::vec3 getScale(void) const;
+	  glm::vec3 getEulerAnglesRotation(void) const;
+	  std::pair<GLfloat, glm::vec3> getAngleAxisRotation(void) const;
 	  Mesh *getMesh(const GLuint &num) const;
 	  void display(GBuffer *g, PerspCamera *cam);
 	  void displayTransparent(GBuffer *gbuf, PerspCamera *cam);

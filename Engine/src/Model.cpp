@@ -31,11 +31,7 @@ inline std::string getDir(const GLchar *file)
 
 void Engine::Model::genMatModel(void) const
 {
-	*_modelMatrix = glm::translate(*_position) *
-		glm::rotate(_rotation->x, glm::vec3(1, 0, 0)) *
-		glm::rotate(_rotation->y, glm::vec3(0, 1, 0)) *
-		glm::rotate(_rotation->z, glm::vec3(0, 0, 1)) *
-		glm::scale(*_scale);
+	*_modelMatrix = glm::translate(*_position) * glm::toMat4(*_rotation) * glm::scale(*_scale);
 }
 
 void Engine::Model::genMatNormal(void) const
@@ -65,13 +61,12 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	_matrixBuffer = new Buffer;
 	_cameraBuffer = new Buffer;
 	_position = new glm::vec3;
-	_rotation = new glm::vec3;
 	_scale = new glm::vec3;
+	_rotation = new glm::quat;
 	_modelMatrix = new glm::mat4;
 	_normalMatrix = new glm::mat4;
 
 	*_position = glm::vec3(0, 0, 0);
-	*_rotation = glm::vec3(0, 0, 0);
 	*_scale = glm::vec3(1, 1, 1);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
@@ -101,13 +96,12 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 	_matrixBuffer = new Buffer;
 	_cameraBuffer = new Buffer;
 	_position = new glm::vec3;
-	_rotation = new glm::vec3;
 	_scale = new glm::vec3;
+	_rotation = new glm::quat;
 	_modelMatrix = new glm::mat4;
 	_normalMatrix = new glm::mat4;
 
 	*_position = glm::vec3(0, 0, 0);
-	*_rotation = glm::vec3(0, 0, 0);
 	*_scale = glm::vec3(1, 1, 1);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
@@ -313,16 +307,23 @@ void Engine::Model::setPosition(const glm::vec3 &position)
 	_needMatModel = GL_TRUE;
 }
 
-void Engine::Model::setRotation(const glm::vec3 &rotation)
+void Engine::Model::setScale(const glm::vec3 &scale)
 {
-	*_rotation = rotation;
+	*_scale = scale;
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::setScale(const glm::vec3 &scale)
+void Engine::Model::setRotation(const glm::vec3 &rotation)
 {
-	*_scale = scale;
+	*_rotation = glm::quat(rotation);
+	_needMatModel = GL_TRUE;
+	_needMatNormal = GL_TRUE;
+}
+
+void Engine::Model::setRotation(const GLfloat &angle, const glm::vec3 &axis)
+{
+	*_rotation = glm::angleAxis(angle, axis);
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
@@ -337,14 +338,19 @@ glm::vec3 Engine::Model::getPosition(void) const
 	return *_position;
 }
 
-glm::vec3 Engine::Model::getRotation(void) const
-{
-	return *_rotation;
-}
-
 glm::vec3 Engine::Model::getScale(void) const
 {
 	return *_scale;
+}
+
+glm::vec3 Engine::Model::getEulerAnglesRotation(void) const
+{
+	return glm::eulerAngles(*_rotation);
+}
+
+std::pair<GLfloat, glm::vec3> Engine::Model::getAngleAxisRotation(void) const
+{
+	return std::pair<GLfloat, glm::vec3>(glm::angle(*_rotation), glm::axis(*_rotation));
 }
 
 Engine::Mesh *Engine::Model::getMesh(const GLuint &num) const
