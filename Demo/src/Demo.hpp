@@ -6,6 +6,7 @@
 
 #include "NightBox.hpp"
 #include "Tree.hpp"
+#include "ArmySoldier.hpp"
 #include "Helicopter.hpp"
 #include "Ground.hpp"
 #include "MoonLight.hpp"
@@ -31,6 +32,7 @@ private:
 
 	NightBox *nightBox;
 	Tree *tree;
+	ArmySoldier *armySoldier;
     Helicopter *helicopter;
 	Ground *ground;
 	MoonLight *moonLight;

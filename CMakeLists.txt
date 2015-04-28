@@ -71,8 +71,7 @@ target_link_libraries(Engine
 # Demo
 file(GLOB_RECURSE demo_header_files Demo/src/*.hpp)
 file(GLOB_RECURSE demo_source_files Demo/src/*.cpp)
-file(GLOB_RECURSE demo_shader_files share/Demo/shader/*.glsl)
-add_executable(Demo ${demo_header_files} ${demo_source_files} ${demo_shader_files})
+add_executable(Demo ${demo_header_files} ${demo_source_files})
 target_link_libraries(Demo Engine)
 
 # Install

@@ -14,6 +14,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 	nightBox = new NightBox;
 	tree = new Tree;
+	armySoldier = new ArmySoldier;
 	helicopter = new Helicopter;
 	ground = new Ground;
 	moonLight = new MoonLight;
@@ -48,6 +49,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 		
 	octreeSystem->addModel(ground->getModel(), 1000);
 	octreeSystem->addModel(tree->getModel(), 40);
+	octreeSystem->addModel(armySoldier->getModel(), 40);
 	octreeSystem->addModel(helicopter->getModel(), 40);
 
 	torchLight->getLight()->setPosition(glm::vec3(25, 100, -25));
@@ -87,6 +89,7 @@ Demo::~Demo(void)
 	delete torchLight;
 	delete ground;
 	delete helicopter;
+	delete armySoldier;
 	delete tree;
 	delete nightBox;
 
