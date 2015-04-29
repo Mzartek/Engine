@@ -7,7 +7,7 @@
 
 namespace Engine
 {
-	class SkeletalModel : public Model
+	class DLLAPI SkeletalModel : public Model
 	{
 	private:
 		struct

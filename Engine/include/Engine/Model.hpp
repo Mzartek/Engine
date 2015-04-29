@@ -5,7 +5,6 @@
 
 namespace Engine
 {
-	struct Vertex;
 	class Mesh;
 	class Buffer;
 	class ShaderProgram;

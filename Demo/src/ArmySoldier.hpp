@@ -2,6 +2,7 @@
 #define ARMYSOLDIER_HEADER
 
 #include <Engine/Engine.hpp>
+#include <Engine/StaticModel.hpp>
 
 class ArmySoldier
 {

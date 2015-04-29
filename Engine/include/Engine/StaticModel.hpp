@@ -5,7 +5,7 @@
 
 namespace Engine
 {
-	class StaticModel : public Model
+	class DLLAPI StaticModel : public Model
 	{
 	private:
 		struct

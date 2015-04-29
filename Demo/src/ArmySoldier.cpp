@@ -18,7 +18,7 @@ ArmySoldier::ArmySoldier()
 
 	_model = new Engine::StaticModel(_objectProgram, _depthMapProgram);
 
-	_model->loadFromFile("../share/Demo/resources/models/ArmyPilot/ArmyPilot.bvh");
+	//_model->loadFromFile("../share/Demo/resources/models/ArmyPilot/ArmyPilot.bvh");
 	_model->sortMesh();
 }
 
