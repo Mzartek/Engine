@@ -20,6 +20,8 @@ namespace Engine
 			glm::mat4 bones[SKELETAL_MODEL_MAX_BONES];
 		} _matrix;
 
+		glm::mat4 *_globalInverseTransform;
+
 	public:
 		SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram);
 		SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram);

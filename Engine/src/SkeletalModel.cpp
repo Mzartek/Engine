@@ -32,17 +32,22 @@ inline std::string getDir(const GLchar *file)
 Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(gProgram, smProgram)
 {
+	_globalInverseTransform = new glm::mat4;
+
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(model, gProgram, smProgram)
 {
+	_globalInverseTransform = new glm::mat4;
+
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::SkeletalModel::~SkeletalModel(void)
 {
+	delete _globalInverseTransform;
 }
 
 void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
@@ -58,7 +63,8 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
 	if (!pScene)
 	{
 		std::string error = "Failed to load File: ";
-		error.append(inFile);
+		error.append(inFile + '\n');
+		error.append(Importer.GetErrorString());
 		std::cout << error << std::endl;
 		exit(1);
 	}
@@ -68,6 +74,9 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
 		std::cerr << "The model is not animated" << std::endl;
 		exit(0);
 	}
+
+	aiMatrix4x4 tmp = pScene->mRootNode->mTransformation.Inverse();
+	memcpy(_globalInverseTransform, &tmp, sizeof(glm::mat4));
 
 	std::vector<SkeletalMesh::Vertex> vertices;
 	std::vector<GLuint> indices;

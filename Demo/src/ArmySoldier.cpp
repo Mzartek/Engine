@@ -3,22 +3,22 @@
 ArmySoldier::ArmySoldier()
 {
 	_objectProgram = new Engine::ShaderProgram(
-		"../share/Demo/shader/object/objectVert.glsl",
+		"../share/Demo/shader/skeletalObject/objectVert.glsl",
 		NULL,
 		NULL,
-		"../share/Demo/shader/object/objectGeom.glsl",
-		"../share/Demo/shader/object/objectFrag.glsl");
+		"../share/Demo/shader/skeletalObject/objectGeom.glsl",
+		"../share/Demo/shader/skeletalObject/objectFrag.glsl");
 
 	_depthMapProgram = new Engine::ShaderProgram(
-		"../share/Demo/shader/depthMap/depthMapVert.glsl",
+		"../share/Demo/shader/skeletalDepthMap/depthMapVert.glsl",
 		NULL,
 		NULL,
 		NULL,
-		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
+		"../share/Demo/shader/skeletalDepthMap/depthMapFrag.glsl");
 
-	_model = new Engine::StaticModel(_objectProgram, _depthMapProgram);
+	_model = new Engine::SkeletalModel(_objectProgram, _depthMapProgram);
 
-	//_model->loadFromFile("../share/Demo/resources/models/ArmyPilot/ArmyPilot.bvh");
+	_model->loadFromFile("../share/Demo/resources/models/anim_model/nightwing_anim.dae");
 	_model->sortMesh();
 }
 
@@ -29,7 +29,7 @@ ArmySoldier::~ArmySoldier(void)
 	delete _model;
 }
 
-Engine::StaticModel *ArmySoldier::getModel(void) const
+Engine::SkeletalModel *ArmySoldier::getModel(void) const
 {
 	return _model;
 }

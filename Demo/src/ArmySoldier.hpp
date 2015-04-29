@@ -2,18 +2,17 @@
 #define ARMYSOLDIER_HEADER
 
 #include <Engine/Engine.hpp>
-#include <Engine/StaticModel.hpp>
 
 class ArmySoldier
 {
 private:
 	Engine::ShaderProgram *_objectProgram;
 	Engine::ShaderProgram *_depthMapProgram;
-	Engine::StaticModel *_model;
+	Engine::SkeletalModel *_model;
 public:
 	ArmySoldier(void);
 	~ArmySoldier(void);
-	Engine::StaticModel *getModel(void) const;
+	Engine::SkeletalModel *getModel(void) const;
 };
 
 #endif

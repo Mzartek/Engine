@@ -43,6 +43,8 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	tree->getModel()->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
 	tree->getModel()->setScale(glm::vec3(5, 5, 5));
 
+	armySoldier->getModel()->setRotation(glm::vec3(0, 1, 0), glm::pi<GLfloat>() / 2);
+
 	helicopter->getModel()->setPosition(glm::vec3(-50, 4, 50));
 	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
     helicopter->getModel()->setScale(glm::vec3(2, 2, 2));

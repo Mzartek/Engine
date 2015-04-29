@@ -58,7 +58,8 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 	if (!pScene)
 	{
 		std::string error = "Failed to load File: ";
-		error.append(inFile);
+		error.append(inFile + '\n');
+		error.append(Importer.GetErrorString());
 		std::cout << error << std::endl;
 		exit(1);
 	}
