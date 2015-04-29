@@ -16,7 +16,7 @@ ArmySoldier::ArmySoldier()
 		NULL,
 		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
 
-	_model = new Engine::Model(_objectProgram, _depthMapProgram);
+	_model = new Engine::StaticModel(_objectProgram, _depthMapProgram);
 
 	_model->loadFromFile("../share/Demo/resources/models/ArmyPilot/ArmyPilot.bvh");
 	_model->sortMesh();
@@ -29,7 +29,7 @@ ArmySoldier::~ArmySoldier(void)
 	delete _model;
 }
 
-Engine::Model *ArmySoldier::getModel(void) const
+Engine::StaticModel *ArmySoldier::getModel(void) const
 {
 	return _model;
 }

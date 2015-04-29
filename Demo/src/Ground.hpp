@@ -10,12 +10,12 @@ private:
 	Engine::ShaderProgram *_depthMapProgram;
 	Engine::Texture2D *_texture;
 	Engine::Material *_material;
-	Engine::Mesh *_mesh;
-	Engine::Model *_model;
+	Engine::StaticMesh *_mesh;
+	Engine::StaticModel *_model;
 public:
 	Ground(void);
 	~Ground(void);
-	Engine::Model *getModel(void) const;
+	Engine::StaticModel *getModel(void) const;
 };
 
 #endif

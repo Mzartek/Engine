@@ -8,11 +8,11 @@ class Tree
 private:
 	Engine::ShaderProgram *_objectProgram;
 	Engine::ShaderProgram *_depthMapProgram;
-	Engine::Model *_model;
+	Engine::StaticModel *_model;
 public:
 	Tree(void);
 	~Tree(void);
-	Engine::Model *getModel(void) const;
+	Engine::StaticModel *getModel(void) const;
 };
 
 #endif

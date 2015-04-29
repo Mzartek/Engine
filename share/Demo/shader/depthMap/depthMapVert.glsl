@@ -1,7 +1,5 @@
 #version 440
 
-#define MODEL_MAX_BONES 200
-
 layout (binding = 0) uniform matrixBuffer
 {
 	mat4 MVP;
@@ -9,7 +7,6 @@ layout (binding = 0) uniform matrixBuffer
 	mat4 viewMatrix;
 	mat4 modelMatrix;
 	mat4 normalMatrix;
-	mat4 bonesMatrix[MODEL_MAX_BONES];
 };
 
 layout(location = 0) in vec3 vertex;

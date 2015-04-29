@@ -16,7 +16,7 @@ Tree::Tree()
 		NULL,
 		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
 
-	_model = new Engine::Model(_objectProgram, _depthMapProgram);
+	_model = new Engine::StaticModel(_objectProgram, _depthMapProgram);
 
 	_model->loadFromFile("../share/Demo/resources/models/tree/Tree1.3ds");
 	_model->sortMesh();
@@ -29,7 +29,7 @@ Tree::~Tree(void)
 	delete _model;
 }
 
-Engine::Model *Tree::getModel(void) const
+Engine::StaticModel *Tree::getModel(void) const
 {
 	return _model;
 }

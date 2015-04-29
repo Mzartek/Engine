@@ -16,7 +16,7 @@ Helicopter::Helicopter()
 		NULL,
 		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
 
-	_model = new Engine::Model(_objectProgram, _depthMapProgram);
+	_model = new Engine::StaticModel(_objectProgram, _depthMapProgram);
 
 	_model->loadFromFile("../share/Demo/resources/models/heli/corps.mobj");
 	_model->sortMesh();
@@ -29,7 +29,7 @@ Helicopter::~Helicopter(void)
 	delete _model;
 }
 
-Engine::Model *Helicopter::getModel(void) const
+Engine::StaticModel *Helicopter::getModel(void) const
 {
 	return _model;
 }
