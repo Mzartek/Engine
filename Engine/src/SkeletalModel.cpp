@@ -29,25 +29,32 @@ inline std::string getDir(const GLchar *file)
 	return path;
 }
 
+Engine::SkeletalModel::Skeleton::Skeleton(glm::mat4 *matrix)
+{
+	_matrix = matrix;
+	_parent = NULL;
+}
+
+Engine::SkeletalModel::Skeleton::~Skeleton(void)
+{
+	for (std::vector<Skeleton *>::iterator it = _children.begin(); it != _children.end(); it++)
+		delete *it;
+}
+
 Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(gProgram, smProgram)
 {
-	_globalInverseTransform = new glm::mat4;
-
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(model, gProgram, smProgram)
 {
-	_globalInverseTransform = new glm::mat4;
-
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::SkeletalModel::~SkeletalModel(void)
 {
-	delete _globalInverseTransform;
 }
 
 void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
@@ -55,8 +62,13 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
 	if (_isMirror == GL_TRUE)
 	{
 		std::cerr << "Error Model configuration" << std::endl;
-		exit(1);
+		abort();
 	}
+
+	for (std::vector<Object *>::iterator it = _tObject->begin(); it != _tObject->end(); it++)
+		delete *it;
+	_tObject->clear();
+	_tMesh->clear();
 
 	Assimp::Importer Importer;
 	const aiScene *pScene = Importer.ReadFile(inFile, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
@@ -65,18 +77,18 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
 		std::string error = "Failed to load File: ";
 		error.append(inFile + '\n');
 		error.append(Importer.GetErrorString());
-		std::cout << error << std::endl;
-		exit(1);
+		std::cerr << error << std::endl;
+		abort();
 	}
-
 	if (!pScene->HasAnimations())
 	{
 		std::cerr << "The model is not animated" << std::endl;
-		exit(0);
+		abort();
 	}
 
-	aiMatrix4x4 tmp = pScene->mRootNode->mTransformation.Inverse();
-	memcpy(_globalInverseTransform, &tmp, sizeof(glm::mat4));
+	std::map<GLuint, GLuint> map_vertex;
+	std::set<Skeleton *> set_skeleton;
+	GLuint bone_index = 0;
 
 	std::vector<SkeletalMesh::Vertex> vertices;
 	std::vector<GLuint> indices;
@@ -96,11 +108,45 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
 				{ pTexCoord.x, pTexCoord.y },
 				{ pNormal.x, pNormal.y, pNormal.z },
 				{ pTangent.x, pTangent.y, pTangent.z },
-				{ 0, 0, 0, 0 },
-				{ 0, 0, 0, 0 }
+				{ 0, 0, 0, 0 }, { 0, 0, 0, 0 },
+				{ 0, 0, 0, 0 }, { 0, 0, 0, 0 }
 			};
 
+			map_vertex[j] = 0;
+
 			vertices.push_back(newVertex);
+		}
+
+		// Load Bones
+		for (GLuint j = 0; j < pScene->mMeshes[i]->mNumBones; j++)
+		{
+			aiMatrix4x4 tmp_mat4 = pScene->mMeshes[i]->mBones[j]->mOffsetMatrix.Transpose();
+			memcpy(&_matrix.bones[bone_index], &tmp_mat4, sizeof(glm::mat4));
+
+			// Add the bone to the vertices
+			for (GLuint k = 0; k < pScene->mMeshes[i]->mBones[j]->mNumWeights; k++)
+			{
+				GLuint vertex_index = pScene->mMeshes[i]->mBones[j]->mWeights[k].mVertexId;
+				GLuint index = map_vertex[vertex_index]++;
+
+				if (index < 4)
+				{
+					vertices[vertex_index].index0[index] = bone_index;
+					vertices[vertex_index].weight0[index] = pScene->mMeshes[i]->mBones[j]->mWeights[k].mWeight;
+				}
+				else if (index < 8)
+				{
+					vertices[vertex_index].index0[index % 4] = bone_index;
+					vertices[vertex_index].weight0[index % 4] = pScene->mMeshes[i]->mBones[j]->mWeights[k].mWeight;
+				}
+				else
+				{
+					std::cerr << "No more space for bones" << std::endl;
+					abort();
+				}
+			}
+
+			bone_index++;
 		}
 
 		// Index Buffer

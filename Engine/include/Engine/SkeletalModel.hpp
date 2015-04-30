@@ -20,7 +20,16 @@ namespace Engine
 			glm::mat4 bones[SKELETAL_MODEL_MAX_BONES];
 		} _matrix;
 
-		glm::mat4 *_globalInverseTransform;
+		struct Skeleton
+		{
+			glm::mat4 *_matrix;
+			Skeleton *_parent;
+			std::vector<Skeleton *> _children;
+
+			Skeleton(glm::mat4 *matrix);
+			~Skeleton(void);
+		};
+		Skeleton *_skeleton;
 
 	public:
 		SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram);

@@ -131,7 +131,7 @@ void Engine::Model::addMesh(Mesh *mesh)
 	if (_isMirror == GL_TRUE)
 	{
 		std::cerr << "Error Model configuration" << std::endl;
-		exit(1);
+		abort();
 	}
 
 	_tMesh->push_back(mesh);

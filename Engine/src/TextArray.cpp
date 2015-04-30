@@ -45,7 +45,7 @@ void Engine::TextArray::setFont(const GLchar *font, const GLuint &size, const GL
 	if (_font == NULL)
 	{
 		std::cerr << "Error while loading fontFile: " << font << std::endl;
-		exit(1);
+		abort();
 	}
 
 	_color.r = b;

@@ -28,6 +28,7 @@
 #include <fstream>
 #include <vector>
 #include <set>
+#include <map>
 #include <string>
 #include <algorithm>
 
@@ -50,7 +51,7 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 
-#define BUFFER_OFFSET(i) ((GLbyte *)NULL + i)
+#define BUFFER_OFFSET(i) ((GLbyte *)NULL + (i))
 
 namespace Engine
 {

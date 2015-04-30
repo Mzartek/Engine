@@ -9,7 +9,7 @@ inline GLchar *readText(const GLchar *filename)
 	if(!file.is_open())
 	{
 		std::cerr << "Error while opening file: " << filename << std::endl;
-		exit(1);
+		abort();
 	}
 	// Lenght of the file
 	file.seekg(0, std::ifstream::end);
@@ -36,7 +36,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	if(id == 0)
 	{
 		std::cerr << "Error while creating shader" << std::endl;
-		exit(1);
+		abort();
 	}
 
 	content = readText(filename);
@@ -56,7 +56,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 
 		glDeleteShader(id);
 		delete[] log;
-		exit(1);
+		abort();
 	}
 
 	delete[] content;
@@ -74,7 +74,7 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	if (_idProgram == 0)
 	{
 		std::cerr << "Error while creating program" << std::endl;
-		exit(1);
+		abort();
 	}
 
 	if (vs != NULL)
@@ -121,7 +121,7 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
 		delete[] log;
-		exit(1);
+		abort();
 	}
 }
 
@@ -136,7 +136,7 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	if (_idProgram == 0)
 	{
 		std::cerr << "Error while creating program" << std::endl;
-		exit(1);
+		abort();
 	}
 
 	if (vs != NULL)
@@ -185,7 +185,7 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
 		delete[] log;
-		exit(1);
+		abort();
 	}
 }
 

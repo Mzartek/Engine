@@ -43,7 +43,7 @@ void Engine::TextureCube::loadFromFiles(
 		{
 			std::cerr << "Error while loading image: " << tex[i] << std::endl;
 			std::cerr << IMG_GetError() << std::endl;
-			exit(1);
+			abort();
 		}
 
 		switch (image[i]->format->format)

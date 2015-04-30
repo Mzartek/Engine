@@ -20,7 +20,7 @@ void Engine::Texture2D::loadFromFile(const GLchar *path)
 	{
 		std::cerr << "Error while loading image: " << path << std::endl;
 		std::cerr << IMG_GetError() << std::endl;
-		exit(1);
+		abort();
 	}
 
 	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);

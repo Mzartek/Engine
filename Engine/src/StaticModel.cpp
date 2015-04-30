@@ -50,8 +50,13 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 	if (_isMirror == GL_TRUE)
 	{
 		std::cerr << "Error Model configuration" << std::endl;
-		exit(1);
+		abort();
 	}
+	
+	for (std::vector<Object *>::iterator it = _tObject->begin(); it != _tObject->end(); it++)
+		delete *it;
+	_tObject->clear();
+	_tMesh->clear();
 
 	Assimp::Importer Importer;
 	const aiScene *pScene = Importer.ReadFile(inFile, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
@@ -60,14 +65,13 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 		std::string error = "Failed to load File: ";
 		error.append(inFile + '\n');
 		error.append(Importer.GetErrorString());
-		std::cout << error << std::endl;
-		exit(1);
+		std::cerr << error << std::endl;
+		abort();
 	}
-
 	if (pScene->HasAnimations())
 	{
 		std::cerr << "The model is not static" << std::endl;
-		exit(0);
+		abort();
 	}
 
 	std::vector<StaticMesh::Vertex> vertices;

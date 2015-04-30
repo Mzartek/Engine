@@ -14,8 +14,10 @@ namespace Engine
 			glm::vec2 texCoord;
 			glm::vec3 normal;
 			glm::vec3 tangent;
-			glm::ivec4 index;
-			glm::vec4 weight;
+			glm::ivec4 index0;
+			glm::ivec4 index1;
+			glm::vec4 weight0;
+			glm::vec4 weight1;
 		};
 
 		SkeletalMesh(void);

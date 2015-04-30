@@ -96,7 +96,7 @@ void Engine::DirLight::position(const glm::vec3 &pos, const GLfloat &dim0, const
 	std::to_string(mattest[2][0]) + " " + std::to_string(mattest[2][1]) + " " + std::to_string(mattest[2][2]) + " " + std::to_string(mattest[2][3]) + "\n" +
 	std::to_string(mattest[3][0]) + " " + std::to_string(mattest[3][1]) + " " + std::to_string(mattest[3][2]) + " " + std::to_string(mattest[3][3]) + "\n";
 	MessageBoxA(NULL, test.c_str(), "OpenGL", MB_OK);
-	exit(0);*/
+	abort();*/
 }
 
 void Engine::DirLight::display(GBuffer *gbuf, PerspCamera *cam)
