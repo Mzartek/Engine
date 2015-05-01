@@ -21,8 +21,8 @@ namespace Engine
 		StaticModel(ShaderProgram *gProgram, ShaderProgram *smProgram);
 		StaticModel(StaticModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram);
 		~StaticModel(void);
-
 		void loadFromFile(const GLchar *inFile);
+
 		void display(GBuffer *g, PerspCamera *cam);
 		void displayTransparent(GBuffer *gbuf, PerspCamera *cam);
 		void displayDepthMap(DepthMap *dmap, Camera *cam);

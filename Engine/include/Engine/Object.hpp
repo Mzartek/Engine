@@ -55,10 +55,16 @@
 
 namespace Engine
 {
+	extern DLLAPI std::string getDir(const GLchar *file);
+
 	class DLLAPI Object
 	{
 	private:
 		static GLint _memState;
+
+	protected:
+		std::set<Object *> *_tObject;
+
 	public:
 		Object(void);
 		virtual ~Object(void);
@@ -67,7 +73,6 @@ namespace Engine
 		void operator delete(void *p);
 		void operator delete[](void *p);
 		static GLint getMemoryState(void);
-		static void saveMemoryInfo(const GLchar *filename);
 	};
 }
 

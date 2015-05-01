@@ -18,6 +18,8 @@ namespace Engine
 
 	class DLLAPI Model : public Object
 	{
+		struct aiMaterial;
+
 	private:
 		glm::vec3 *_position;
 		glm::vec3 *_scale;
@@ -27,7 +29,7 @@ namespace Engine
 		GLboolean _needMatNormal;
 
 		void genMatModel(void) const;
-		void genMatNormal(void) const;
+		void genMatNormal(void) const; 
 
 	protected:
 		struct
@@ -41,7 +43,6 @@ namespace Engine
 		GLboolean _isMirror;
 
 		std::vector<Mesh *> *_tMesh;
-		std::vector<Object *> *_tObject;
 
 		Buffer *_matrixBuffer;
 		Buffer *_cameraBuffer;
@@ -73,7 +74,6 @@ namespace Engine
 		std::pair<glm::vec3, GLfloat> getAxisAngleRotation(void) const;
 		Mesh *getMesh(const GLuint &num) const;
 
-		virtual void loadFromFile(const GLchar *inFile) = 0;
 		virtual void display(GBuffer *g, PerspCamera *cam) = 0;
 		virtual void displayTransparent(GBuffer *gbuf, PerspCamera *cam) = 0;
 		virtual void displayDepthMap(DepthMap *dmap, Camera *cam) = 0;

@@ -11,53 +11,32 @@
 #include <Engine/TextureCube.hpp>
 #include <Engine/Material.hpp>
 
-#include <assimp/postprocess.h>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-
-inline std::string getDir(const GLchar *file)
-{
-	GLuint size, i;
-	std::string path;
-
-	for (size = i = 0; file[i] != '\0'; i++)
-		if (file[i] == '/')
-			size = i + 1;
-
-	path.insert(0, file, 0, size);
-
-	return path;
-}
-
-Engine::SkeletalModel::Skeleton::Skeleton(glm::mat4 *matrix)
-{
-	_matrix = matrix;
-	_parent = NULL;
-}
-
-Engine::SkeletalModel::Skeleton::~Skeleton(void)
-{
-	for (std::vector<Skeleton *>::iterator it = _children.begin(); it != _children.end(); it++)
-		delete *it;
-}
+#include "tools/AssimpTool.hpp"
 
 Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(gProgram, smProgram)
 {
+	_offsetMatrices = new std::vector < glm::mat4 > ;
+
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(model, gProgram, smProgram)
 {
+	_offsetMatrices = new std::vector < glm::mat4 >;
+
+	*_offsetMatrices = *model->_offsetMatrices;
+
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::SkeletalModel::~SkeletalModel(void)
 {
+	delete _offsetMatrices;
 }
 
-void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
+void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *node_name)
 {
 	if (_isMirror == GL_TRUE)
 	{
@@ -65,192 +44,51 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile)
 		abort();
 	}
 
-	for (std::vector<Object *>::iterator it = _tObject->begin(); it != _tObject->end(); it++)
-		delete *it;
-	_tObject->clear();
 	_tMesh->clear();
 
-	Assimp::Importer Importer;
-	const aiScene *pScene = Importer.ReadFile(inFile, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
-	if (!pScene)
-	{
-		std::string error = "Failed to load File: ";
-		error.append(inFile + '\n');
-		error.append(Importer.GetErrorString());
-		std::cerr << error << std::endl;
-		abort();
-	}
+	Assimp::Importer importer;
+	const aiScene *pScene = AssimpTool::openFile(importer, inFile);
 	if (!pScene->HasAnimations())
 	{
 		std::cerr << "The model is not animated" << std::endl;
 		abort();
 	}
 
-	std::map<GLuint, GLuint> map_vertex;
-	std::set<Skeleton *> set_skeleton;
 	GLuint bone_index = 0;
+	std::map<GLuint, GLuint> map_vertex;
+	std::vector<glm::mat4> tmp_vector;
 
-	std::vector<SkeletalMesh::Vertex> vertices;
-	std::vector<GLuint> indices;
+	std::pair<std::vector<SkeletalMesh::Vertex>, std::vector<GLuint>> vertices_index;
+	Material *material;
+	SkeletalMesh *mesh;
 	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
 	{
-		// Vertex Buffer
-		for (GLuint j = 0; j < pScene->mMeshes[i]->mNumVertices; j++)
-		{
-			const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
-			const aiVector3D pPos = pScene->mMeshes[i]->mVertices[j];
-			const aiVector3D pTexCoord = pScene->mMeshes[i]->HasTextureCoords(0) ? pScene->mMeshes[i]->mTextureCoords[0][j] : Zero3D;
-			const aiVector3D pNormal = pScene->mMeshes[i]->HasNormals() ? pScene->mMeshes[i]->mNormals[j] : Zero3D;
-			const aiVector3D pTangent = pScene->mMeshes[i]->HasTangentsAndBitangents() ? pScene->mMeshes[i]->mTangents[j] : Zero3D;
+		vertices_index = AssimpTool::loadSkeletalVertices(pScene->mMeshes[i], map_vertex);
+		material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
+		tmp_vector = AssimpTool::loadBones(pScene->mMeshes[i], bone_index, vertices_index.first, map_vertex);
 
-			SkeletalMesh::Vertex newVertex = {
-				{ pPos.x, pPos.y, pPos.z },
-				{ pTexCoord.x, pTexCoord.y },
-				{ pNormal.x, pNormal.y, pNormal.z },
-				{ pTangent.x, pTangent.y, pTangent.z },
-				{ 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-				{ 0, 0, 0, 0 }, { 0, 0, 0, 0 }
-			};
+		_offsetMatrices->insert(_offsetMatrices->end(), tmp_vector.begin(), tmp_vector.end());
 
-			map_vertex[j] = 0;
+		mesh = new SkeletalMesh;
+		_tObject->insert(mesh);
 
-			vertices.push_back(newVertex);
-		}
+		mesh->setMaterial(material);
+		mesh->load(vertices_index.first, vertices_index.second);
 
-		// Load Bones
-		for (GLuint j = 0; j < pScene->mMeshes[i]->mNumBones; j++)
-		{
-			aiMatrix4x4 tmp_mat4 = pScene->mMeshes[i]->mBones[j]->mOffsetMatrix.Transpose();
-			memcpy(&_matrix.bones[bone_index], &tmp_mat4, sizeof(glm::mat4));
+		vertices_index.first.clear();
+		vertices_index.second.clear();
 
-			// Add the bone to the vertices
-			for (GLuint k = 0; k < pScene->mMeshes[i]->mBones[j]->mNumWeights; k++)
-			{
-				GLuint vertex_index = pScene->mMeshes[i]->mBones[j]->mWeights[k].mVertexId;
-				GLuint index = map_vertex[vertex_index]++;
+		addMesh(mesh);
+	}
 
-				if (index < 4)
-				{
-					vertices[vertex_index].index0[index] = bone_index;
-					vertices[vertex_index].weight0[index] = pScene->mMeshes[i]->mBones[j]->mWeights[k].mWeight;
-				}
-				else if (index < 8)
-				{
-					vertices[vertex_index].index0[index % 4] = bone_index;
-					vertices[vertex_index].weight0[index % 4] = pScene->mMeshes[i]->mBones[j]->mWeights[k].mWeight;
-				}
-				else
-				{
-					std::cerr << "No more space for bones" << std::endl;
-					abort();
-				}
-			}
-
-			bone_index++;
-		}
-
-		// Index Buffer
-		for (GLuint j = 0; j < pScene->mMeshes[i]->mNumFaces; j++)
-		{
-			indices.push_back(pScene->mMeshes[i]->mFaces[j].mIndices[0]);
-			indices.push_back(pScene->mMeshes[i]->mFaces[j].mIndices[1]);
-			indices.push_back(pScene->mMeshes[i]->mFaces[j].mIndices[2]);
-		}
-		SkeletalMesh *newMesh = new SkeletalMesh;
-		Material *newMaterial = new Material;
-
-		_tObject->push_back(newMesh);
-		_tObject->push_back(newMaterial);
-
-		std::string dir = getDir(inFile);
-
-		const aiTextureType _textureType[] = {
-			aiTextureType_DIFFUSE, aiTextureType_SPECULAR,
-			aiTextureType_AMBIENT, aiTextureType_EMISSIVE,
-			aiTextureType_SHININESS, aiTextureType_OPACITY,
-			aiTextureType_HEIGHT, aiTextureType_NORMALS,
-			aiTextureType_DISPLACEMENT, aiTextureType_LIGHTMAP,
-		};
-
-		// Textures
-		for (GLuint j = 0; j < (sizeof _textureType / sizeof *_textureType); j++)
-		{
-			aiString path;
-			if (pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->GetTexture(_textureType[j], 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
-			{
-				std::string filePath = dir + path.C_Str();
-				Texture2D *newTexture = new Texture2D;
-				_tObject->push_back(newTexture);
-
-				newTexture->loadFromFile(filePath.c_str());
-
-				switch (_textureType[j])
-				{
-				case aiTextureType_DIFFUSE:
-					newMaterial->setDiffuseTexture(newTexture);
-					break;
-				case aiTextureType_SPECULAR:
-					newMaterial->setSpecularTexture(newTexture);
-					break;
-				case aiTextureType_AMBIENT:
-					newMaterial->setAmbientTexture(newTexture);
-					break;
-				case aiTextureType_EMISSIVE:
-					newMaterial->setEmissiveTexture(newTexture);
-					break;
-				case aiTextureType_SHININESS:
-					newMaterial->setShininessTexture(newTexture);
-					break;
-				case aiTextureType_OPACITY:
-					newMaterial->setOpacityTexture(newTexture);
-					break;
-				case aiTextureType_HEIGHT:
-					newMaterial->setBumpMap(newTexture);
-					break;
-				case aiTextureType_NORMALS:
-					newMaterial->setNormalMap(newTexture);
-					break;
-				case aiTextureType_DISPLACEMENT:
-					newMaterial->setDisplacementMap(newTexture);
-					break;
-				case aiTextureType_LIGHTMAP:
-					newMaterial->setLightMap(newTexture);
-					break;
-				default:
-					break;
-				}
-			}
-		}
-
-	  {
-		  aiColor4D mat;
-
-		  pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, mat);
-		  newMaterial->setDiffuse(glm::vec3(mat.r, mat.g, mat.b));
-
-		  pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_COLOR_SPECULAR, mat);
-		  newMaterial->setSpecular(glm::vec3(mat.r, mat.g, mat.b));
-
-		  pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_COLOR_AMBIENT, mat);
-		  newMaterial->setAmbient(glm::vec3(mat.r, mat.g, mat.b));
-
-		  pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_COLOR_EMISSIVE, mat);
-		  newMaterial->setEmissive(glm::vec3(mat.r, mat.g, mat.b));
-
-		  pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_SHININESS, mat);
-		  newMaterial->setShininess(mat.r);
-
-		  pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex]->Get(AI_MATKEY_OPACITY, mat);
-		  newMaterial->setOpacity(mat.r);
-	  }
-
-	  newMesh->setMaterial(newMaterial);
-	  newMesh->load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
-
-	  addMesh(newMesh);
-
-	  vertices.clear();
-	  indices.clear();
+	try
+	{
+		_skeleton = AssimpTool::loadSkeleton(pScene, node_name);
+	}
+	catch (std::exception exception)
+	{
+		std::cerr << inFile << " No node " << node_name << std::endl;
+		abort();
 	}
 }
 

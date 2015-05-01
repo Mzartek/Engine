@@ -18,8 +18,8 @@ namespace Engine
 
 		StaticMesh(void);
 		~StaticMesh(void);
-		void load(const GLsizei &numVertex, const Vertex *vertexArray,
-			const GLsizei &numIndex, const GLuint *indexArray);
+		void load(const GLsizei &numVertex, const Vertex *vertexArray, const GLsizei &numIndex, const GLuint *indexArray);
+		void load(std::vector<Vertex> vertices, std::vector<GLuint> indices);
 
 		MeshType getType(void) const;
 	};

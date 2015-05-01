@@ -11,10 +11,6 @@
 #include <Engine/TextureCube.hpp>
 #include <Engine/Material.hpp>
 
-#include <assimp/postprocess.h>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-
 void Engine::Model::genMatModel(void) const
 {
 	*_modelMatrix = 
@@ -46,7 +42,6 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: _isMirror(GL_FALSE), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_tMesh = new std::vector < Mesh * > ;
-	_tObject = new std::vector < Object * > ;
 	_matrixBuffer = new Buffer;
 	_cameraBuffer = new Buffer;
 	_position = new glm::vec3;
@@ -80,7 +75,6 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 	: _isMirror(GL_TRUE), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_tMesh = model->_tMesh;
-	_tObject = new std::vector < Object * > ;
 	_matrixBuffer = new Buffer;
 	_cameraBuffer = new Buffer;
 	_position = new glm::vec3;
@@ -112,10 +106,6 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 Engine::Model::~Model(void)
 {
 	if (!_isMirror) delete _tMesh;
-
-	for (std::vector<Object *>::iterator it = _tObject->begin(); it != _tObject->end(); it++)
-		delete *it;
-	delete _tObject;
 
 	delete _matrixBuffer;
 	delete _cameraBuffer;

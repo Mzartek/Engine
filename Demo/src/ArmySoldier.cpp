@@ -18,7 +18,7 @@ ArmySoldier::ArmySoldier()
 
 	_model = new Engine::SkeletalModel(_objectProgram, _depthMapProgram);
 
-	_model->loadFromFile("../share/Demo/resources/models/anim_model/nightwing_anim.dae");
+	_model->loadFromFile("../share/Demo/resources/models/anim_model/nightwing_anim.dae", "Armature");
 	_model->sortMesh();
 }
 

@@ -50,7 +50,7 @@ include_directories(${ENGINE_INCLUDE_DIRS}
 
 # Engine
 file(GLOB_RECURSE engine_header_files ${ENGINE_INCLUDE_DIRS}/*.hpp)
-file(GLOB_RECURSE engine_source_files Engine/src/*.cpp)
+file(GLOB_RECURSE engine_source_files Engine/src/*.hpp Engine/src/*.cpp)
 add_library(Engine SHARED ${engine_header_files} ${engine_source_files})
 set_target_properties(Engine
   PROPERTIES
@@ -69,9 +69,8 @@ target_link_libraries(Engine
   )
 
 # Demo
-file(GLOB_RECURSE demo_header_files Demo/src/*.hpp)
-file(GLOB_RECURSE demo_source_files Demo/src/*.cpp)
-add_executable(Demo ${demo_header_files} ${demo_source_files})
+file(GLOB_RECURSE demo_source_files Demo/src/*.hpp Demo/src/*.cpp)
+add_executable(Demo ${demo_source_files})
 target_link_libraries(Demo Engine)
 
 # Install

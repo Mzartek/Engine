@@ -7,6 +7,8 @@
 
 namespace Engine
 {
+	struct Skeleton;
+
 	class DLLAPI SkeletalModel : public Model
 	{
 	private:
@@ -20,23 +22,15 @@ namespace Engine
 			glm::mat4 bones[SKELETAL_MODEL_MAX_BONES];
 		} _matrix;
 
-		struct Skeleton
-		{
-			glm::mat4 *_matrix;
-			Skeleton *_parent;
-			std::vector<Skeleton *> _children;
-
-			Skeleton(glm::mat4 *matrix);
-			~Skeleton(void);
-		};
+		std::vector<glm::mat4> *_offsetMatrices;
 		Skeleton *_skeleton;
 
 	public:
 		SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram);
 		SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram);
 		~SkeletalModel(void);
+		void loadFromFile(const GLchar *inFile, const GLchar *node_name = NULL);
 
-		void loadFromFile(const GLchar *inFile);
 		void display(GBuffer *g, PerspCamera *cam);
 		void displayTransparent(GBuffer *gbuf, PerspCamera *cam);
 		void displayDepthMap(DepthMap *dmap, Camera *cam);

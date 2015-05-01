@@ -9,8 +9,7 @@ Engine::SkeletalMesh::~SkeletalMesh(void)
 {
 }
 
-void Engine::SkeletalMesh::load(const GLsizei &numVertex, const Vertex *vertexArray,
-	const GLsizei &numIndex, const GLuint *indexArray)
+void Engine::SkeletalMesh::load(const GLsizei &numVertex, const Vertex *vertexArray, const GLsizei &numIndex, const GLuint *indexArray)
 {
 	unsigned int stride = 27 * sizeof(GLfloat);
 
@@ -34,11 +33,16 @@ void Engine::SkeletalMesh::load(const GLsizei &numVertex, const Vertex *vertexAr
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(3 * sizeof(GLfloat)));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(5 * sizeof(GLfloat)));
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(8 * sizeof(GLfloat)));
-	glVertexAttribPointer(4, 4, GL_INT  , GL_FALSE, stride, BUFFER_OFFSET(11 * sizeof(GLfloat)));
-	glVertexAttribPointer(5, 4, GL_INT  , GL_FALSE, stride, BUFFER_OFFSET(15 * sizeof(GLfloat)));
+	glVertexAttribPointer(4, 4, GL_INT, GL_FALSE, stride, BUFFER_OFFSET(11 * sizeof(GLfloat)));
+	glVertexAttribPointer(5, 4, GL_INT, GL_FALSE, stride, BUFFER_OFFSET(15 * sizeof(GLfloat)));
 	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(19 * sizeof(GLfloat)));
 	glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(23 * sizeof(GLfloat)));
 	glBindVertexArray(0);
+}
+
+void Engine::SkeletalMesh::load(std::vector<Vertex> vertices, std::vector<GLuint> indices)
+{
+	load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
 }
 
 Engine::MeshType Engine::SkeletalMesh::getType(void) const
