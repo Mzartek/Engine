@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 	Engine::Renderer *renderer = new_ref(Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE));
 	Engine::Audio *audio = new_ref(Engine::Audio);
 	Engine::Input *input = new_ref(Engine::Input);
-	
+
 	Demo *demo = new_ref(Demo(renderer, input, audio));
 
 	demo->launch();

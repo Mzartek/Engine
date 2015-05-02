@@ -6,7 +6,7 @@
 #include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Mesh::Mesh(void)
-	: _numElement(0), _material(NULL)
+	: _material(NULL), _numElement(0)
 {
 	_vertexBuffer = new_ref(Buffer);
 	_indexBuffer = new_ref(Buffer);
@@ -20,7 +20,7 @@ Engine::Mesh::~Mesh(void)
 {
 	release_ref(_vertexBuffer);
 	release_ref(_indexBuffer);
-	
+
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
@@ -137,7 +137,7 @@ void Engine::Mesh::display(TextureCube *cubeTexture) const
 
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, _tex[9]);
-	
+
 	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTexture->getId());
 

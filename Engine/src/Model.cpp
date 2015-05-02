@@ -14,9 +14,9 @@
 
 void Engine::Model::genMatModel(void) const
 {
-	*_modelMatrix = 
-		glm::translate(*_position) * 
-		glm::toMat4(*_rotation) * 
+	*_modelMatrix =
+		glm::translate(*_position) *
+		glm::toMat4(*_rotation) *
 		glm::scale(*_scale);
 }
 
@@ -40,7 +40,7 @@ void Engine::Model::checkMatrix(void)
 }
 
 Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
-	: _isMirror(GL_FALSE), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
+	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_FALSE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_tMesh = new_ref(std::vector < Mesh * >);
 	_matrixBuffer = new_ref(Buffer);
@@ -73,7 +73,7 @@ Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 }
 
 Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
-	: _isMirror(GL_TRUE), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
+	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_tMesh = model->_tMesh;
 	_matrixBuffer = new_ref(Buffer);
@@ -155,7 +155,7 @@ void Engine::Model::setRotation(const glm::vec3 &rotation)
 
 void Engine::Model::setRotation(const glm::vec3 &axis, const GLfloat &angle)
 {
-	*_rotation = glm::angleAxis(fmod(angle, glm::pi<GLfloat>() * 2), axis);
+	*_rotation = glm::angleAxis(fmodf(angle, glm::pi<GLfloat>() * 2), axis);
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
