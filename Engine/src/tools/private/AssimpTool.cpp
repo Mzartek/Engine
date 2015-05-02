@@ -176,13 +176,14 @@ std::vector<glm::mat4> Engine::AssimpTool::loadBones(const aiMesh *mesh,
 	GLuint &bone_index, std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex)
 {
 	std::vector<glm::mat4> vector_vertices;
+	aiMatrix4x4 tmp_matrix0;
+	glm::mat4 tmp_matrix1;
 
 	for (GLuint i = 0; i < mesh->mNumBones; i++)
 	{
-		aiMatrix4x4 tmp_aimat4 = mesh->mBones[i]->mOffsetMatrix.Transpose();
-		glm::mat4 tmp_glmmat4;
-		memcpy(&tmp_glmmat4, &tmp_aimat4, sizeof(glm::mat4));
-		vector_vertices.push_back(tmp_glmmat4);
+		tmp_matrix0 = mesh->mBones[i]->mOffsetMatrix.Transpose();
+		memcpy(&tmp_matrix1, &tmp_matrix0, sizeof(glm::mat4));
+		vector_vertices.push_back(tmp_matrix1);
 
 		for (GLuint j = 0; j < mesh->mBones[i]->mNumWeights; j++)
 		{
@@ -214,7 +215,9 @@ std::vector<glm::mat4> Engine::AssimpTool::loadBones(const aiMesh *mesh,
 
 Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name, std::set<Object *> *tObject)
 {
-	aiNode *root_node;
+	aiNode *root_node, *tmp_node0, *tmp_node1;
+	Skeleton *root_skeleton, *tmp_skeleton0, *tmp_skeleton1;
+	aiMatrix4x4 tmp_matrix;
 
 	if (name != NULL)
 		root_node = scene->mRootNode->FindNode(name);
@@ -223,21 +226,38 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 
 	if (root_node == NULL) throw std::exception();
 
-	Skeleton *root_skeleton = new_ref(Skeleton(std::string(root_node->mName.C_Str())));
+	root_skeleton = new_ref(Skeleton(std::string(root_node->mName.C_Str())));
 	tObject->insert(root_skeleton);
 
-	std::queue<Skeleton *> queue0;
-	std::queue<aiNode *> queue1;
+	std::queue<aiNode *> queue0;
+	std::queue<Skeleton *> queue1;
 
-	queue0.push(root_skeleton);
-	queue1.push(root_node);
+	queue0.push(root_node);
+	queue1.push(root_skeleton);
 
-	/*while (!queue0.empty())
+	while (!queue0.empty() && !queue1.empty())
 	{
-		Skeleton *tmp_skeleton = queue0.front();
-		aiNode *tmp_node
-		width_queue.pop();
-	}*/
+		tmp_node0 = queue0.front();
+		tmp_skeleton0 = queue1.front();
 
-	return NULL;
+		tmp_matrix = tmp_node0->mTransformation.Transpose();
+		memcpy(&tmp_skeleton0->matrix, &tmp_matrix, sizeof(glm::mat4));		
+
+		for (GLuint i = 0; i < tmp_node0->mNumChildren; i++)
+		{
+			tmp_node1 = tmp_node0->mChildren[i];
+			tmp_skeleton1 = new_ref(Skeleton(std::string(tmp_node1->mName.C_Str())));
+
+			tmp_skeleton0->children.push_back(tmp_skeleton1);
+			tmp_skeleton1->parent = tmp_skeleton1;
+			
+			queue0.push(tmp_node1);
+			queue1.push(tmp_skeleton1);
+		}
+
+		queue0.pop();
+		queue1.pop();
+	}
+
+	return root_skeleton;
 }

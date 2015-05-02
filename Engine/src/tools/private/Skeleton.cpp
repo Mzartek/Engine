@@ -3,17 +3,17 @@
 
 Engine::Skeleton::Skeleton(void)
 {
-	_name = "";
-	_parent = NULL;
+	name = "";
+	parent = NULL;
 }
 
 Engine::Skeleton::Skeleton(const std::string &name)
 {
-	_name = name;
+	this->name = name;
 }
 
 Engine::Skeleton::~Skeleton(void)
 {
-	for (std::vector<Skeleton *>::iterator it = _children.begin(); it != _children.end(); it++)
+	for (std::vector<Skeleton *>::iterator it = children.begin(); it != children.end(); it++)
 		release_ref(*it);
 }
