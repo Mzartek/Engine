@@ -223,7 +223,7 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 
 	if (root_node == NULL) throw std::exception();
 
-	Skeleton *root_skeleton = new_ref(Skeleton);
+	Skeleton *root_skeleton = new_ref(Skeleton(std::string(root_node->mName.C_Str())));
 	tObject->insert(root_skeleton);
 
 	std::queue<Skeleton *> queue0;

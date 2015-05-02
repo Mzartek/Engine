@@ -23,7 +23,5 @@ int main(int argc, char **argv)
 
 	Engine::memory_state();
 
-	std::cout << "MemState " << Engine::Object::getMemoryState() << std::endl;
-
 	return 0;
 }

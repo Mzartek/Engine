@@ -3,7 +3,13 @@
 
 Engine::Skeleton::Skeleton(void)
 {
+	_name = "";
 	_parent = NULL;
+}
+
+Engine::Skeleton::Skeleton(const std::string &name)
+{
+	_name = name;
 }
 
 Engine::Skeleton::~Skeleton(void)

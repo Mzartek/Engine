@@ -62,20 +62,12 @@ namespace Engine
 
 	class DLLAPI Object
 	{
-	private:
-		static GLint _memState;
-
 	protected:
 		std::set<Object *> *_tObject;
 
 	public:
 		Object(void);
 		virtual ~Object(void);
-		void *operator new(size_t sz);
-		void *operator new[](size_t sz);
-		void operator delete(void *p);
-		void operator delete[](void *p);
-		static GLint getMemoryState(void);
 	};
 }
 
