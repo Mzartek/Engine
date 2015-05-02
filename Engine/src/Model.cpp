@@ -10,6 +10,7 @@
 #include <Engine/Texture2D.hpp>
 #include <Engine/TextureCube.hpp>
 #include <Engine/Material.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 void Engine::Model::genMatModel(void) const
 {
@@ -41,14 +42,14 @@ void Engine::Model::checkMatrix(void)
 Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: _isMirror(GL_FALSE), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
-	_tMesh = new std::vector < Mesh * > ;
-	_matrixBuffer = new Buffer;
-	_cameraBuffer = new Buffer;
-	_position = new glm::vec3;
-	_scale = new glm::vec3;
-	_rotation = new glm::quat;
-	_modelMatrix = new glm::mat4;
-	_normalMatrix = new glm::mat4;
+	_tMesh = new_ref(std::vector < Mesh * >);
+	_matrixBuffer = new_ref(Buffer);
+	_cameraBuffer = new_ref(Buffer);
+	_position = new_ref(glm::vec3);
+	_scale = new_ref(glm::vec3);
+	_rotation = new_ref(glm::quat);
+	_modelMatrix = new_ref(glm::mat4);
+	_normalMatrix = new_ref(glm::mat4);
 
 	*_position = glm::vec3(0, 0, 0);
 	*_scale = glm::vec3(1, 1, 1);
@@ -75,13 +76,13 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 	: _isMirror(GL_TRUE), _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_tMesh = model->_tMesh;
-	_matrixBuffer = new Buffer;
-	_cameraBuffer = new Buffer;
-	_position = new glm::vec3;
-	_scale = new glm::vec3;
-	_rotation = new glm::quat;
-	_modelMatrix = new glm::mat4;
-	_normalMatrix = new glm::mat4;
+	_matrixBuffer = new_ref(Buffer);
+	_cameraBuffer = new_ref(Buffer);
+	_position = new_ref(glm::vec3);
+	_scale = new_ref(glm::vec3);
+	_rotation = new_ref(glm::quat);
+	_modelMatrix = new_ref(glm::mat4);
+	_normalMatrix = new_ref(glm::mat4);
 
 	*_position = glm::vec3(0, 0, 0);
 	*_scale = glm::vec3(1, 1, 1);
@@ -105,15 +106,15 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 
 Engine::Model::~Model(void)
 {
-	if (!_isMirror) delete _tMesh;
+	if (!_isMirror) release_ref(_tMesh);
 
-	delete _matrixBuffer;
-	delete _cameraBuffer;
-	delete _position;
-	delete _scale;
-	delete _rotation;
-	delete _modelMatrix;
-	delete _normalMatrix;
+	release_ref(_matrixBuffer);
+	release_ref(_cameraBuffer);
+	release_ref(_position);
+	release_ref(_scale);
+	release_ref(_rotation);
+	release_ref(_modelMatrix);
+	release_ref(_normalMatrix);
 }
 
 void Engine::Model::addMesh(Mesh *mesh)

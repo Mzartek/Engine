@@ -1,5 +1,6 @@
 #include <Engine/SkeletalMesh.hpp>
 #include <Engine/Buffer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::SkeletalMesh::SkeletalMesh(void)
 {

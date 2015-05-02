@@ -2,20 +2,20 @@
 
 TorchLight::TorchLight(void)
 {
-	_spotLightProgram = new Engine::ShaderProgram(
+	_spotLightProgram = new_ref(Engine::ShaderProgram(
 		"../share/Demo/shader/spotLight/spotLightVert.glsl",
 		NULL,
 		NULL,
 		NULL,
-		"../share/Demo/shader/spotLight/spotLightFrag.glsl");
+		"../share/Demo/shader/spotLight/spotLightFrag.glsl"));
 
-	_light = new Engine::SpotLight(_spotLightProgram);
+	_light = new_ref(Engine::SpotLight(_spotLightProgram));
 }
 
 TorchLight::~TorchLight(void)
 {
-	delete _spotLightProgram;
-	delete _light;
+	release_ref(_spotLightProgram);
+	release_ref(_light);
 }
 
 Engine::SpotLight *TorchLight::getLight(void) const

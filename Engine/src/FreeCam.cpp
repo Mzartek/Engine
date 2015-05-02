@@ -1,4 +1,5 @@
 #include <Engine/FreeCam.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::FreeCam::FreeCam(void)
 {

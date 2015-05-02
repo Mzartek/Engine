@@ -1,4 +1,5 @@
 #include <Engine/PlayerCam.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::PlayerCam::PlayerCam(void)
 {

@@ -1,23 +1,24 @@
 #include <Engine/PerspCamera.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::PerspCamera::PerspCamera(void)
 {
-	_pcamera = new glm::vec3;
-	_vforward = new glm::vec3;
-	_vleft = new glm::vec3;
-	_vup = new glm::vec3;
+	_pcamera = new_ref(glm::vec3);
+	_vforward = new_ref(glm::vec3);
+	_vleft = new_ref(glm::vec3);
+	_vup = new_ref(glm::vec3);
 
-	_frusSpherePosition = new glm::vec3;
+	_frusSpherePosition = new_ref(glm::vec3);
 }
 
 Engine::PerspCamera::~PerspCamera(void)
 {
-	delete _pcamera;
-	delete _vforward;
-	delete _vleft;
-	delete _vup;
+	release_ref(_pcamera);
+	release_ref(_vforward);
+	release_ref(_vleft);
+	release_ref(_vup);
 
-	delete _frusSpherePosition;
+	release_ref(_frusSpherePosition);
 }
 
 void Engine::PerspCamera::setCameraPosition(const glm::vec3 &pos) const

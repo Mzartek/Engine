@@ -3,6 +3,7 @@
 #include <Engine/Model.hpp>
 #include <Engine/ParticlesManager.hpp>
 #include <Engine/GBuffer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 // The Octree struct
 
@@ -75,7 +76,7 @@ void Engine::OctreeSystem::_initOctree(const GLuint &depth, Octree *octree, cons
 	octree->dim = dim;
 	octree->dim_2 = newDim;
 	octree->radius = glm::length(glm::vec3(newDim));
-	octree->next = new Octree[8];
+	octree->next = new_ref_tab(Octree, 8);
 
 	octree->vertex[0] = glm::vec3(position.x - newDim, position.y - newDim, position.z - newDim);
 	octree->vertex[1] = glm::vec3(position.x - newDim, position.y - newDim, position.z + newDim);
@@ -102,7 +103,7 @@ void Engine::OctreeSystem::_destroyOctree(const GLuint &depth, Octree *octree) c
 
 	for (GLuint i = 0; i < 8; i++)
 		_destroyOctree(depth + 1, &(octree->next[i]));
-	delete[] octree->next;
+	release_ref(octree->next);
 }
 
 GLboolean Engine::OctreeSystem::_addModelOctree(const GLuint &depth, Octree *octree, Model *model, const GLfloat &dim) const
@@ -165,7 +166,7 @@ void Engine::OctreeSystem::_getModelsOctree(const GLuint &depth, Octree *octree,
 Engine::OctreeSystem::OctreeSystem(const GLuint &maxDepth, const glm::vec3 &pos, const GLfloat &dim)
 {
 	_maxDepth = maxDepth;
-	_octree = new Octree;
+	_octree = new_ref(Octree);
 
 	_initOctree(0, _octree, pos, dim);
 }
@@ -173,7 +174,7 @@ Engine::OctreeSystem::OctreeSystem(const GLuint &maxDepth, const glm::vec3 &pos,
 Engine::OctreeSystem::~OctreeSystem()
 {
 	_destroyOctree(0, _octree);
-	delete _octree;
+	release_ref(_octree);
 }
 
 void Engine::OctreeSystem::addModel(Model *model, const GLfloat &dim) const

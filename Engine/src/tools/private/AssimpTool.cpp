@@ -1,4 +1,5 @@
 #include "AssimpTool.hpp"
+#include <Engine/tools/ControllerMemory.hpp>
 
 const aiScene *Engine::AssimpTool::openFile(Assimp::Importer &importer, const GLchar *inFile)
 {
@@ -87,7 +88,7 @@ std::pair<std::vector<Engine::SkeletalMesh::Vertex>, std::vector<GLuint>> Engine
 
 Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, const std::string &dir, std::set<Engine::Object *> *tObject)
 {
-	Material *newMaterial = new Material;
+	Material *newMaterial = new_ref(Material);
 	tObject->insert(newMaterial);
 
 	const aiTextureType _textureType[] = {
@@ -105,7 +106,7 @@ Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, c
 		if (material->GetTexture(_textureType[i], 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string filePath = dir + path.C_Str();
-			Texture2D *newTexture = new Texture2D;
+			Texture2D *newTexture = new_ref(Texture2D);
 			tObject->insert(newTexture);
 
 			newTexture->loadFromFile(filePath.c_str());
@@ -211,7 +212,7 @@ std::vector<glm::mat4> Engine::AssimpTool::loadBones(const aiMesh *mesh,
 	return vector_vertices;
 }
 
-Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name)
+Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name, std::set<Object *> *tObject)
 {
 	aiNode *root_node;
 
@@ -222,7 +223,21 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 
 	if (root_node == NULL) throw std::exception();
 
-	std::cout << root_node->mName.C_Str() << std::endl;
+	Skeleton *root_skeleton = new_ref(Skeleton);
+	tObject->insert(root_skeleton);
+
+	std::queue<Skeleton *> queue0;
+	std::queue<aiNode *> queue1;
+
+	queue0.push(root_skeleton);
+	queue1.push(root_node);
+
+	/*while (!queue0.empty())
+	{
+		Skeleton *tmp_skeleton = queue0.front();
+		aiNode *tmp_node
+		width_queue.pop();
+	}*/
 
 	return NULL;
 }

@@ -1,4 +1,5 @@
 #include <Engine/TextureCube.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::TextureCube::TextureCube(void)
 {

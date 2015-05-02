@@ -2,14 +2,14 @@
 
 MoonLight::MoonLight(void)
 {
-	_dirLightProgram = new Engine::ShaderProgram(
+	_dirLightProgram = new_ref(Engine::ShaderProgram(
 		"../share/Demo/shader/dirLight/dirLightVert.glsl",
 		NULL,
 		NULL,
 		NULL,
-		"../share/Demo/shader/dirLight/dirLightFrag.glsl");
+		"../share/Demo/shader/dirLight/dirLightFrag.glsl"));
 
-	_light = new Engine::DirLight(_dirLightProgram);
+	_light = new_ref(Engine::DirLight(_dirLightProgram));
 
 	_light->setColor(glm::vec3(0.5f, 0.5f, 0.9f));
 	_light->setDirection(glm::vec3(0.5f, -1.0f, 0.0f));
@@ -17,8 +17,8 @@ MoonLight::MoonLight(void)
 
 MoonLight::~MoonLight(void)
 {
-	delete _dirLightProgram;
-	delete _light;
+	release_ref(_dirLightProgram);
+	release_ref(_light);
 }
 
 Engine::DirLight *MoonLight::getLight(void) const

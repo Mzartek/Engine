@@ -1,4 +1,5 @@
 #include <Engine/Buffer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Buffer::Buffer(void)
 	: _target(GL_ARRAY_BUFFER), _idBuffer(0), _size(0)

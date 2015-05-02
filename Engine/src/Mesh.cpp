@@ -3,12 +3,13 @@
 #include <Engine/TextureCube.hpp>
 #include <Engine/Buffer.hpp>
 #include <Engine/Material.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Mesh::Mesh(void)
 	: _numElement(0), _material(NULL)
 {
-	_vertexBuffer = new Buffer;
-	_indexBuffer = new Buffer;
+	_vertexBuffer = new_ref(Buffer);
+	_indexBuffer = new_ref(Buffer);
 
 	glGenVertexArrays(1, &_idVAO);
 
@@ -17,8 +18,8 @@ Engine::Mesh::Mesh(void)
 
 Engine::Mesh::~Mesh(void)
 {
-	delete _vertexBuffer;
-	delete _indexBuffer;
+	release_ref(_vertexBuffer);
+	release_ref(_indexBuffer);
 	
 	glDeleteVertexArrays(1, &_idVAO);
 }

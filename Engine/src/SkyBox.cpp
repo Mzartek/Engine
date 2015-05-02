@@ -4,14 +4,15 @@
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/PerspCamera.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::SkyBox::SkyBox(ShaderProgram *program)
 	: _program(program)
 {
-	_cubeTexture = new TextureCube;
-	_vertexBuffer = new Buffer;
-	_indexBuffer = new Buffer;
-	_MVPMatrixBuffer = new Buffer;
+	_cubeTexture = new_ref(TextureCube);
+	_vertexBuffer = new_ref(Buffer);
+	_indexBuffer = new_ref(Buffer);
+	_MVPMatrixBuffer = new_ref(Buffer);
 
 	GLfloat vertexArray[] =
 	{
@@ -52,10 +53,10 @@ Engine::SkyBox::SkyBox(ShaderProgram *program)
 
 Engine::SkyBox::~SkyBox(void)
 {
-	delete _cubeTexture;
-	delete _vertexBuffer;
-	delete _indexBuffer;
-	delete _MVPMatrixBuffer;
+	release_ref(_cubeTexture);
+	release_ref(_vertexBuffer);
+	release_ref(_indexBuffer);
+	release_ref(_MVPMatrixBuffer);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 

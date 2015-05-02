@@ -1,5 +1,6 @@
 #include <Engine/StaticMesh.hpp>
 #include <Engine/Buffer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::StaticMesh::StaticMesh(void)
 {

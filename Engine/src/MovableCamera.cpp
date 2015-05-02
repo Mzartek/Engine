@@ -1,4 +1,5 @@
 #include <Engine/MovableCamera.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::MovableCamera::MovableCamera(void)
 	: _speed(1), _atheta(0), _aphi(0)

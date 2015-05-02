@@ -10,8 +10,9 @@
 #include <Engine/Texture2D.hpp>
 #include <Engine/TextureCube.hpp>
 #include <Engine/Material.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
-#include "tools/AssimpTool.hpp"
+#include "tools/private/AssimpTool.hpp"
 
 Engine::StaticModel::StaticModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(gProgram, smProgram)
@@ -55,7 +56,7 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 		vertices_index = AssimpTool::loadStaticVertices(pScene->mMeshes[i]);
 		material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
 
-		mesh = new StaticMesh;
+		mesh = new_ref(StaticMesh);
 		_tObject->insert(mesh);
 
 		mesh->setMaterial(material);

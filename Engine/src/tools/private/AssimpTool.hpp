@@ -5,6 +5,7 @@
 #include <Engine/SkeletalMesh.hpp>
 #include <Engine/Material.hpp>
 #include <Engine/Texture2D.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
@@ -22,7 +23,7 @@ namespace Engine
 		extern DLLAPI Material *loadMaterial(const aiMaterial *material, const std::string &dir, std::set<Engine::Object *> *tObject);
 		extern DLLAPI std::vector<glm::mat4> loadBones(const aiMesh *mesh,
 			GLuint &bone_index, std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex);
-		extern DLLAPI Skeleton *loadSkeleton(const aiScene *scene, const GLchar *name);
+		extern DLLAPI Skeleton *loadSkeleton(const aiScene *scene, const GLchar *name, std::set<Object *> *tObject);
 	}
 }
 

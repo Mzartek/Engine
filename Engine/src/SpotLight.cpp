@@ -4,13 +4,14 @@
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/PerspCamera.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::SpotLight::SpotLight(ShaderProgram *program)
 	: Light(program)
 {
-	_projectionMatrix = new glm::mat4;
-	_viewMatrix = new glm::mat4;
-	_VPMatrix = new glm::mat4;
+	_projectionMatrix = new_ref(glm::mat4);
+	_viewMatrix = new_ref(glm::mat4);
+	_VPMatrix = new_ref(glm::mat4);
 
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
@@ -30,9 +31,9 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 
 Engine::SpotLight::~SpotLight(void)
 {
-	delete _projectionMatrix;
-	delete _viewMatrix;
-	delete _VPMatrix;
+	release_ref(_projectionMatrix);
+	release_ref(_viewMatrix);
+	release_ref(_VPMatrix);
 
 	glDeleteVertexArrays(1, &_idVAO);
 }

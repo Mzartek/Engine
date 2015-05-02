@@ -1,13 +1,14 @@
 #include <Engine/Material.hpp>
 #include <Engine/Texture2D.hpp>
 #include <Engine/Buffer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Material::Material(void)
 	: _diffuseTexture(NULL), _specularTexture(NULL), _ambientTexture(NULL), _emissiveTexture(NULL), _shininessTexture(NULL),
 	_opacityTexture(NULL), _bumpMap(NULL), _normalMap(NULL), _displacementMap(NULL), _lightMap(NULL)
 {
-	_matBuffer = new Buffer;
-	_stateBuffer = new Buffer;
+	_matBuffer = new_ref(Buffer);
+	_stateBuffer = new_ref(Buffer);
 
 	_mat.diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
 	_mat.specular = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -32,8 +33,8 @@ Engine::Material::Material(void)
 
 Engine::Material::~Material(void)
 {
-	delete _matBuffer;
-	delete _stateBuffer;
+	release_ref(_matBuffer);
+	release_ref(_stateBuffer);
 }
 
 void Engine::Material::setDiffuse(const glm::vec3 &color)

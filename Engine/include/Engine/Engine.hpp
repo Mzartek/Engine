@@ -36,4 +36,6 @@
 #include "Texture2D.hpp"
 #include "TextureCube.hpp"
 
+#include "Engine/tools/ControllerMemory.hpp"
+
 #endif

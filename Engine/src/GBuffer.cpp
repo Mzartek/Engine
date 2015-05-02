@@ -1,4 +1,5 @@
 #include <Engine/GBuffer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::GBuffer::GBuffer(void)
 {

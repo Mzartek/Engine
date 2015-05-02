@@ -3,14 +3,15 @@
 #include <Engine/Buffer.hpp>
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/Renderer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::TextArray::TextArray(ShaderProgram *program)
 	: _font(NULL), _program(program)
 {
-	_texture = new Texture2D;
-	_vertexBuffer = new Buffer;
-	_MVPMatrixBuffer = new Buffer;
-	_mat = new glm::mat4;
+	_texture = new_ref(Texture2D);
+	_vertexBuffer = new_ref(Buffer);
+	_MVPMatrixBuffer = new_ref(Buffer);
+	_mat = new_ref(glm::mat4);
 
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, NULL, 64, GL_STATIC_DRAW);
 	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
@@ -31,10 +32,10 @@ Engine::TextArray::TextArray(ShaderProgram *program)
 Engine::TextArray::~TextArray(void)
 {
 	if(_font) TTF_CloseFont(_font);
-	delete _texture;
-	delete _vertexBuffer;
-	delete _MVPMatrixBuffer;
-	delete _mat;
+	release_ref(_texture);
+	release_ref(_vertexBuffer);
+	release_ref(_MVPMatrixBuffer);
+	release_ref(_mat);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 

@@ -1,4 +1,5 @@
 #include <Engine/Object.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 GLint Engine::Object::_memState = 0;
 static std::set<void *> _tmem;
@@ -19,14 +20,14 @@ std::string Engine::getDir(const GLchar *file)
 
 Engine::Object::Object(void)
 {
-	_tObject = new std::set < Object * >;
+	_tObject = new_ref(std::set < Object * >);
 }
 
 Engine::Object::~Object(void)
 {
 	for (std::set<Object *>::iterator it = _tObject->begin(); it != _tObject->end(); it++)
-		delete *it;
-	delete _tObject;
+		release_ref(*it);
+	release_ref(_tObject);
 }
 
 void *Engine::Object::operator new(size_t sz)

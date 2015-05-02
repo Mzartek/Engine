@@ -10,13 +10,14 @@
 #include <Engine/Texture2D.hpp>
 #include <Engine/TextureCube.hpp>
 #include <Engine/Material.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
-#include "tools/AssimpTool.hpp"
+#include "tools/private/AssimpTool.hpp"
 
 Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(gProgram, smProgram)
 {
-	_offsetMatrices = new std::vector < glm::mat4 > ;
+	_offsetMatrices = new_ref(std::vector < glm::mat4 >);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
@@ -24,7 +25,7 @@ Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smP
 Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(model, gProgram, smProgram)
 {
-	_offsetMatrices = new std::vector < glm::mat4 >;
+	_offsetMatrices = new_ref(std::vector < glm::mat4 >);
 
 	*_offsetMatrices = *model->_offsetMatrices;
 
@@ -33,7 +34,7 @@ Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgr
 
 Engine::SkeletalModel::~SkeletalModel(void)
 {
-	delete _offsetMatrices;
+	release_ref(_offsetMatrices);
 }
 
 void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *node_name)
@@ -69,7 +70,7 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 
 		_offsetMatrices->insert(_offsetMatrices->end(), tmp_vector.begin(), tmp_vector.end());
 
-		mesh = new SkeletalMesh;
+		mesh = new_ref(SkeletalMesh);
 		_tObject->insert(mesh);
 
 		mesh->setMaterial(material);
@@ -83,7 +84,7 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 
 	try
 	{
-		_skeleton = AssimpTool::loadSkeleton(pScene, node_name);
+		_skeleton = AssimpTool::loadSkeleton(pScene, node_name, _tObject);
 	}
 	catch (std::exception exception)
 	{

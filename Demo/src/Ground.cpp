@@ -2,24 +2,24 @@
 
 Ground::Ground(void)
 {
-	_objectProgram = new Engine::ShaderProgram(
+	_objectProgram = new_ref(Engine::ShaderProgram(
 		"../share/Demo/shader/object/objectVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/object/objectGeom.glsl",
-		"../share/Demo/shader/object/objectFrag.glsl");
+		"../share/Demo/shader/object/objectFrag.glsl"));
 
-	_depthMapProgram = new Engine::ShaderProgram(
+	_depthMapProgram = new_ref(Engine::ShaderProgram(
 		"../share/Demo/shader/depthMap/depthMapVert.glsl",
 		NULL,
 		NULL,
 		NULL,
-		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
+		"../share/Demo/shader/depthMap/depthMapFrag.glsl"));
 
-	_texture = new Engine::Texture2D;
-	_material = new Engine::Material;
-	_mesh = new Engine::StaticMesh;
-	_model = new Engine::StaticModel(_objectProgram, _depthMapProgram);
+	_texture = new_ref(Engine::Texture2D);
+	_material = new_ref(Engine::Material);
+	_mesh = new_ref(Engine::StaticMesh);
+	_model = new_ref(Engine::StaticModel(_objectProgram, _depthMapProgram));
 
 	_texture->loadFromFile("../share/Demo/resources/textures/feuilles.png");
 	_material->setDiffuseTexture(_texture);
@@ -46,12 +46,12 @@ Ground::Ground(void)
 
 Ground::~Ground(void)
 {
-	delete _objectProgram;
-	delete _depthMapProgram;
-	delete _texture;
-	delete _material;
-	delete _mesh;
-	delete _model;
+	release_ref(_objectProgram);
+	release_ref(_depthMapProgram);
+	release_ref(_texture);
+	release_ref(_material);
+	release_ref(_mesh);
+	release_ref(_model);
 }
 
 Engine::StaticModel *Ground::getModel(void) const

@@ -4,32 +4,32 @@ SmokeEffect::SmokeEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsSmokeProgram = new Engine::ShaderProgram(
+	_physicsSmokeProgram = new_ref(Engine::ShaderProgram(
 		"../share/Demo/shader/smokeParticles/smokePhysics_v.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/smokeParticles/smokePhysics_g.glsl",
 		NULL,
-		varyings, sizeof(varyings) / sizeof(GLfloat *));
+		varyings, sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displaySmokeProgram = new Engine::ShaderProgram(
+	_displaySmokeProgram = new_ref(Engine::ShaderProgram(
 		"../share/Demo/shader/smokeParticles/smokeVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/smokeParticles/smokeGeom.glsl",
-		"../share/Demo/shader/smokeParticles/smokeFrag.glsl");
+		"../share/Demo/shader/smokeParticles/smokeFrag.glsl"));
 
-	_smokeManager = new Engine::ParticlesManager(_physicsSmokeProgram, _displaySmokeProgram);
+	_smokeManager = new_ref(Engine::ParticlesManager(_physicsSmokeProgram, _displaySmokeProgram));
 
-	_fire_sound = new Engine::Sound;
+	_fire_sound = new_ref(Engine::Sound);
 }
 
 SmokeEffect::~SmokeEffect(void)
 {
-	delete _physicsSmokeProgram;
-	delete _displaySmokeProgram;
-	delete _smokeManager;
-	delete _fire_sound;
+	release_ref(_physicsSmokeProgram);
+	release_ref(_displaySmokeProgram);
+	release_ref(_smokeManager);
+	release_ref(_fire_sound);
 }
 
 void SmokeEffect::init(const glm::vec3 &position, const unsigned int &numParticles) const

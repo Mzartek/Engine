@@ -1,4 +1,5 @@
 #include <Engine/DepthMap.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::DepthMap::DepthMap(void)
     : _idDepthTexture(0)

@@ -1,4 +1,5 @@
 #include <Engine/Audio.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Audio::Audio(void)
 {

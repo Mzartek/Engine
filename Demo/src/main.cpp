@@ -7,19 +7,21 @@ int main(int argc, char **argv)
 
 	srand((unsigned int)time(NULL));
 
-	Engine::Renderer *renderer = new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE);
-	Engine::Audio *audio = new Engine::Audio;
-	Engine::Input *input = new Engine::Input;
-
-	Demo *demo = new Demo(renderer, input, audio);
+	Engine::Renderer *renderer = new_ref(Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE));
+	Engine::Audio *audio = new_ref(Engine::Audio);
+	Engine::Input *input = new_ref(Engine::Input);
+	
+	Demo *demo = new_ref(Demo(renderer, input, audio));
 
 	demo->launch();
 
-	delete demo;
+	release_ref(demo);
 
-	delete input;
-	delete audio;
-	delete renderer;
+	release_ref(input);
+	release_ref(audio);
+	release_ref(renderer);
+
+	Engine::memory_state();
 
 	std::cout << "MemState " << Engine::Object::getMemoryState() << std::endl;
 

@@ -1,4 +1,5 @@
 #include <Engine/Input.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Input::Input(void)
 {

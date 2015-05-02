@@ -1,13 +1,14 @@
 #include <Engine/Light.hpp>
 #include <Engine/Buffer.hpp>
 #include <Engine/DepthMap.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Light::Light(ShaderProgram *program)
 	: _program(program)
 {
-	_vertexBuffer = new Buffer;
-	_mainInfoBuffer = new Buffer;
-	_lightInfoBuffer = new Buffer;
+	_vertexBuffer = new_ref(Buffer);
+	_mainInfoBuffer = new_ref(Buffer);
+	_lightInfoBuffer = new_ref(Buffer);
 
 	GLfloat vertex[] =
 	{
@@ -22,7 +23,7 @@ Engine::Light::Light(ShaderProgram *program)
 
 Engine::Light::~Light(void)
 {
-	delete _vertexBuffer;
-	delete _mainInfoBuffer;
-	delete _lightInfoBuffer;
+	release_ref(_vertexBuffer);
+	release_ref(_mainInfoBuffer);
+	release_ref(_lightInfoBuffer);
 }

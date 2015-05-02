@@ -3,12 +3,13 @@
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/Renderer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
 	: _backgroundProgram(backgroundProgram), _directProgram(directProgram)
 {
-	_vertexBuffer = new Buffer;
-	_colorBuffer = new Buffer;
+	_vertexBuffer = new_ref(Buffer);
+	_colorBuffer = new_ref(Buffer);
 
 	GLfloat vertex[] = {
 		-1, -1,
@@ -35,8 +36,8 @@ Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directPr
 
 Engine::Screen::~Screen(void)
 {
-	delete _vertexBuffer;
-	delete _colorBuffer;
+	release_ref(_vertexBuffer);
+	release_ref(_colorBuffer);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 

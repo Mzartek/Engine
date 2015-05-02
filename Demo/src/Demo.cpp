@@ -6,23 +6,23 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	input = i;
 	audio = a;
 
-	gBuffer = new Engine::GBuffer;
-	dMaps = new Engine::DepthMap[3];
-	camera = new Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0);
+	gBuffer = new_ref(Engine::GBuffer);
+	dMaps = new_ref_tab(Engine::DepthMap, 3);
+	camera = new_ref(Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0));
 
-	octreeSystem = new Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000);
+	octreeSystem = new_ref(Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000));
 
-	nightBox = new NightBox;
-	tree = new Tree;
-	armySoldier = new ArmySoldier;
-	helicopter = new Helicopter;
-	ground = new Ground;
-	moonLight = new MoonLight;
-	torchLight = new TorchLight;
-	rainEffect = new RainEffect;
-	smokeEffect = new SmokeEffect;
-	textDisplay = new TextDisplay;
-	screenDisplay = new ScreenDisplay;
+	nightBox = new_ref(NightBox);
+	tree = new_ref(Tree);
+	armySoldier = new_ref(ArmySoldier);
+	helicopter = new_ref(Helicopter);
+	ground = new_ref(Ground);
+	moonLight = new_ref(MoonLight);
+	torchLight = new_ref(TorchLight);
+	rainEffect = new_ref(RainEffect);
+	smokeEffect = new_ref(SmokeEffect);
+	textDisplay = new_ref(TextDisplay);
+	screenDisplay = new_ref(ScreenDisplay);
 
 	// GBuffer config
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
@@ -84,23 +84,22 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 Demo::~Demo(void)
 {
-	delete screenDisplay;
-	delete textDisplay;
-	delete smokeEffect;
-	delete rainEffect;
-	delete moonLight;
-	delete torchLight;
-	delete ground;
-	delete helicopter;
-	delete armySoldier;
-	delete tree;
-	delete nightBox;
+	release_ref(screenDisplay);
+	release_ref(textDisplay);
+	release_ref(smokeEffect);
+	release_ref(rainEffect);
+	release_ref(moonLight);
+	release_ref(torchLight);
+	release_ref(ground);
+	release_ref(helicopter);
+	release_ref(armySoldier);
+	release_ref(tree);
+	release_ref(nightBox);
+	release_ref(octreeSystem);
 
-	delete octreeSystem;
-
-	delete camera;
-	delete[] dMaps;
-	delete gBuffer;
+	release_ref(camera);
+	release_ref(dMaps);
+	release_ref(gBuffer);
 }
 
 void Demo::display(GLfloat state)

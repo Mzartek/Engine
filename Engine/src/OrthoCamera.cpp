@@ -1,15 +1,16 @@
 #include <Engine/OrthoCamera.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::OrthoCamera::OrthoCamera(void)
 {
-	_position = new glm::vec3;
-	_direction = new glm::vec3;
+	_position = new_ref(glm::vec3);
+	_direction = new_ref(glm::vec3);
 }
 
 Engine::OrthoCamera::~OrthoCamera(void)
 {
-	delete _position;
-	delete _direction;
+	release_ref(_position);
+	release_ref(_direction);
 }
 
 void Engine::OrthoCamera::setPosition(const glm::vec3 &pos) const

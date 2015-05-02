@@ -5,13 +5,14 @@
 #include <Engine/ShaderProgram.hpp>
 #include <Engine/GBuffer.hpp>
 #include <Engine/PerspCamera.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::DirLight::DirLight(ShaderProgram *program)
 	: Light(program)
 {
-	_projectionMatrix = new glm::mat4[CSM_NUM];
-	_viewMatrix = new glm::mat4[CSM_NUM];
-	_VPMatrix = new glm::mat4[CSM_NUM];
+	_projectionMatrix = new_ref_tab(glm::mat4, CSM_NUM);
+	_viewMatrix = new_ref_tab(glm::mat4, CSM_NUM);
+	_VPMatrix = new_ref_tab(glm::mat4, CSM_NUM);
 
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
@@ -33,9 +34,9 @@ Engine::DirLight::DirLight(ShaderProgram *program)
 
 Engine::DirLight::~DirLight(void)
 {
-	delete[] _projectionMatrix;
-	delete[] _viewMatrix;
-	delete[] _VPMatrix;
+	release_ref(_projectionMatrix);
+	release_ref(_viewMatrix);
+	release_ref(_VPMatrix);
 
 	glDeleteVertexArrays(1, &_idVAO);
 }

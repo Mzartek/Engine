@@ -1,4 +1,5 @@
 #include <Engine/Texture2D.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Texture2D::Texture2D(void)
 {

@@ -1,4 +1,5 @@
 #include <Engine/Texture.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Texture::Texture(void)
 	: _idTexture(0)

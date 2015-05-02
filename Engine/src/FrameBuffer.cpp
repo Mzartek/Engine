@@ -1,4 +1,5 @@
 #include <Engine/FrameBuffer.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::FrameBuffer::FrameBuffer(void)
 {
