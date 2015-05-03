@@ -9,10 +9,10 @@
 Engine::SkyBox::SkyBox(ShaderProgram *program)
 	: _program(program)
 {
-	_cubeTexture = new_ref(TextureCube);
-	_vertexBuffer = new_ref(Buffer);
-	_indexBuffer = new_ref(Buffer);
-	_MVPMatrixBuffer = new_ref(Buffer);
+	_cubeTexture = new_ptr(TextureCube);
+	_vertexBuffer = new_ptr(Buffer);
+	_indexBuffer = new_ptr(Buffer);
+	_MVPMatrixBuffer = new_ptr(Buffer);
 
 	GLfloat vertexArray[] =
 	{
@@ -53,10 +53,10 @@ Engine::SkyBox::SkyBox(ShaderProgram *program)
 
 Engine::SkyBox::~SkyBox(void)
 {
-	release_ref(_cubeTexture);
-	release_ref(_vertexBuffer);
-	release_ref(_indexBuffer);
-	release_ref(_MVPMatrixBuffer);
+	release_ptr(_cubeTexture);
+	release_ptr(_vertexBuffer);
+	release_ptr(_indexBuffer);
+	release_ptr(_MVPMatrixBuffer);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 

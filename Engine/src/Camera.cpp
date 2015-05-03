@@ -3,18 +3,18 @@
 
 Engine::Camera::Camera(void)
 {
-	_projectionMatrix = new_ref(glm::mat4);
-	_viewMatrix = new_ref(glm::mat4);
-	_VPMatrix = new_ref(glm::mat4);
-	_IVPMatrix = new_ref(glm::mat4);
+	_projectionMatrix = new_ptr(glm::mat4);
+	_viewMatrix = new_ptr(glm::mat4);
+	_VPMatrix = new_ptr(glm::mat4);
+	_IVPMatrix = new_ptr(glm::mat4);
 }
 
 Engine::Camera::~Camera(void)
 {
-	release_ref(_projectionMatrix);
-	release_ref(_viewMatrix);
-	release_ref(_VPMatrix);
-	release_ref(_IVPMatrix);
+	release_ptr(_projectionMatrix);
+	release_ptr(_viewMatrix);
+	release_ptr(_VPMatrix);
+	release_ptr(_IVPMatrix);
 }
 
 glm::mat4 Engine::Camera::getProjectionMatrix(void) const

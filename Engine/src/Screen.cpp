@@ -8,8 +8,8 @@
 Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
 	: _backgroundProgram(backgroundProgram), _directProgram(directProgram)
 {
-	_vertexBuffer = new_ref(Buffer);
-	_colorBuffer = new_ref(Buffer);
+	_vertexBuffer = new_ptr(Buffer);
+	_colorBuffer = new_ptr(Buffer);
 
 	GLfloat vertex[] = {
 		-1, -1,
@@ -36,8 +36,8 @@ Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directPr
 
 Engine::Screen::~Screen(void)
 {
-	release_ref(_vertexBuffer);
-	release_ref(_colorBuffer);
+	release_ptr(_vertexBuffer);
+	release_ptr(_colorBuffer);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 

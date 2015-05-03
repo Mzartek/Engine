@@ -3,22 +3,22 @@
 
 Engine::PerspCamera::PerspCamera(void)
 {
-	_pcamera = new_ref(glm::vec3);
-	_vforward = new_ref(glm::vec3);
-	_vleft = new_ref(glm::vec3);
-	_vup = new_ref(glm::vec3);
+	_pcamera = new_ptr(glm::vec3);
+	_vforward = new_ptr(glm::vec3);
+	_vleft = new_ptr(glm::vec3);
+	_vup = new_ptr(glm::vec3);
 
-	_frusSpherePosition = new_ref(glm::vec3);
+	_frusSpherePosition = new_ptr(glm::vec3);
 }
 
 Engine::PerspCamera::~PerspCamera(void)
 {
-	release_ref(_pcamera);
-	release_ref(_vforward);
-	release_ref(_vleft);
-	release_ref(_vup);
+	release_ptr(_pcamera);
+	release_ptr(_vforward);
+	release_ptr(_vleft);
+	release_ptr(_vup);
 
-	release_ref(_frusSpherePosition);
+	release_ptr(_frusSpherePosition);
 }
 
 void Engine::PerspCamera::setCameraPosition(const glm::vec3 &pos) const

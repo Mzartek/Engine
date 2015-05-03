@@ -7,19 +7,19 @@ int main(int argc, char **argv)
 
 	srand((unsigned int)time(NULL));
 
-	Engine::Renderer *renderer = new_ref(Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE));
-	Engine::Audio *audio = new_ref(Engine::Audio);
-	Engine::Input *input = new_ref(Engine::Input);
+	Engine::Renderer *renderer = new_ptr(Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE));
+	Engine::Audio *audio = new_ptr(Engine::Audio);
+	Engine::Input *input = new_ptr(Engine::Input);
 
-	Demo *demo = new_ref(Demo(renderer, input, audio));
+	Demo *demo = new_ptr(Demo(renderer, input, audio));
 
 	demo->launch();
 
-	release_ref(demo);
+	release_ptr(demo);
 
-	release_ref(input);
-	release_ref(audio);
-	release_ref(renderer);
+	release_ptr(input);
+	release_ptr(audio);
+	release_ptr(renderer);
 
 	Engine::memory_state();
 

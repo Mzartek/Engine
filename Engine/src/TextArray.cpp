@@ -8,10 +8,10 @@
 Engine::TextArray::TextArray(ShaderProgram *program)
 	: _font(NULL), _program(program)
 {
-	_texture = new_ref(Texture2D);
-	_vertexBuffer = new_ref(Buffer);
-	_MVPMatrixBuffer = new_ref(Buffer);
-	_mat = new_ref(glm::mat4);
+	_texture = new_ptr(Texture2D);
+	_vertexBuffer = new_ptr(Buffer);
+	_MVPMatrixBuffer = new_ptr(Buffer);
+	_mat = new_ptr(glm::mat4);
 
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, NULL, 64, GL_STATIC_DRAW);
 	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
@@ -32,10 +32,10 @@ Engine::TextArray::TextArray(ShaderProgram *program)
 Engine::TextArray::~TextArray(void)
 {
 	if(_font) TTF_CloseFont(_font);
-	release_ref(_texture);
-	release_ref(_vertexBuffer);
-	release_ref(_MVPMatrixBuffer);
-	release_ref(_mat);
+	release_ptr(_texture);
+	release_ptr(_vertexBuffer);
+	release_ptr(_MVPMatrixBuffer);
+	release_ptr(_mat);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 

@@ -9,9 +9,9 @@
 Engine::SpotLight::SpotLight(ShaderProgram *program)
 	: Light(program)
 {
-	_projectionMatrix = new_ref(glm::mat4);
-	_viewMatrix = new_ref(glm::mat4);
-	_VPMatrix = new_ref(glm::mat4);
+	_projectionMatrix = new_ptr(glm::mat4);
+	_viewMatrix = new_ptr(glm::mat4);
+	_VPMatrix = new_ptr(glm::mat4);
 
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
@@ -31,9 +31,9 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 
 Engine::SpotLight::~SpotLight(void)
 {
-	release_ref(_projectionMatrix);
-	release_ref(_viewMatrix);
-	release_ref(_VPMatrix);
+	release_ptr(_projectionMatrix);
+	release_ptr(_viewMatrix);
+	release_ptr(_VPMatrix);
 
 	glDeleteVertexArrays(1, &_idVAO);
 }

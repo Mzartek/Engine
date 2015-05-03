@@ -8,8 +8,8 @@
 Engine::Mesh::Mesh(void)
 	: _material(NULL), _numElement(0)
 {
-	_vertexBuffer = new_ref(Buffer);
-	_indexBuffer = new_ref(Buffer);
+	_vertexBuffer = new_ptr(Buffer);
+	_indexBuffer = new_ptr(Buffer);
 
 	glGenVertexArrays(1, &_idVAO);
 
@@ -18,8 +18,8 @@ Engine::Mesh::Mesh(void)
 
 Engine::Mesh::~Mesh(void)
 {
-	release_ref(_vertexBuffer);
-	release_ref(_indexBuffer);
+	release_ptr(_vertexBuffer);
+	release_ptr(_indexBuffer);
 
 	glDeleteVertexArrays(1, &_idVAO);
 }

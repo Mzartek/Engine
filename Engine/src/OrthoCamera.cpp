@@ -3,14 +3,14 @@
 
 Engine::OrthoCamera::OrthoCamera(void)
 {
-	_position = new_ref(glm::vec3);
-	_direction = new_ref(glm::vec3);
+	_position = new_ptr(glm::vec3);
+	_direction = new_ptr(glm::vec3);
 }
 
 Engine::OrthoCamera::~OrthoCamera(void)
 {
-	release_ref(_position);
-	release_ref(_direction);
+	release_ptr(_position);
+	release_ptr(_direction);
 }
 
 void Engine::OrthoCamera::setPosition(const glm::vec3 &pos) const

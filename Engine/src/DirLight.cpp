@@ -10,9 +10,9 @@
 Engine::DirLight::DirLight(ShaderProgram *program)
 	: Light(program)
 {
-	_projectionMatrix = new_ref_tab(glm::mat4, CSM_NUM);
-	_viewMatrix = new_ref_tab(glm::mat4, CSM_NUM);
-	_VPMatrix = new_ref_tab(glm::mat4, CSM_NUM);
+	_projectionMatrix = new_ptr_tab(glm::mat4, CSM_NUM);
+	_viewMatrix = new_ptr_tab(glm::mat4, CSM_NUM);
+	_VPMatrix = new_ptr_tab(glm::mat4, CSM_NUM);
 
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
@@ -34,9 +34,9 @@ Engine::DirLight::DirLight(ShaderProgram *program)
 
 Engine::DirLight::~DirLight(void)
 {
-	release_ref(_projectionMatrix);
-	release_ref(_viewMatrix);
-	release_ref(_VPMatrix);
+	release_ptr(_projectionMatrix);
+	release_ptr(_viewMatrix);
+	release_ptr(_VPMatrix);
 
 	glDeleteVertexArrays(1, &_idVAO);
 }

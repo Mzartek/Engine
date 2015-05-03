@@ -56,7 +56,7 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 		vertices_index = AssimpTool::loadStaticVertices(pScene->mMeshes[i]);
 		material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
 
-		mesh = new_ref(StaticMesh);
+		mesh = new_ptr(StaticMesh);
 		_tObject->insert(mesh);
 
 		mesh->setMaterial(material);

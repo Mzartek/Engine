@@ -42,14 +42,14 @@ void Engine::Model::checkMatrix(void)
 Engine::Model::Model(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_FALSE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
-	_tMesh = new_ref(std::vector < Mesh * >);
-	_matrixBuffer = new_ref(Buffer);
-	_cameraBuffer = new_ref(Buffer);
-	_position = new_ref(glm::vec3);
-	_scale = new_ref(glm::vec3);
-	_rotation = new_ref(glm::quat);
-	_modelMatrix = new_ref(glm::mat4);
-	_normalMatrix = new_ref(glm::mat4);
+	_tMesh = new_ptr(std::vector < Mesh * >);
+	_matrixBuffer = new_ptr(Buffer);
+	_cameraBuffer = new_ptr(Buffer);
+	_position = new_ptr(glm::vec3);
+	_scale = new_ptr(glm::vec3);
+	_rotation = new_ptr(glm::quat);
+	_modelMatrix = new_ptr(glm::mat4);
+	_normalMatrix = new_ptr(glm::mat4);
 
 	*_position = glm::vec3(0, 0, 0);
 	*_scale = glm::vec3(1, 1, 1);
@@ -76,13 +76,13 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_tMesh = model->_tMesh;
-	_matrixBuffer = new_ref(Buffer);
-	_cameraBuffer = new_ref(Buffer);
-	_position = new_ref(glm::vec3);
-	_scale = new_ref(glm::vec3);
-	_rotation = new_ref(glm::quat);
-	_modelMatrix = new_ref(glm::mat4);
-	_normalMatrix = new_ref(glm::mat4);
+	_matrixBuffer = new_ptr(Buffer);
+	_cameraBuffer = new_ptr(Buffer);
+	_position = new_ptr(glm::vec3);
+	_scale = new_ptr(glm::vec3);
+	_rotation = new_ptr(glm::quat);
+	_modelMatrix = new_ptr(glm::mat4);
+	_normalMatrix = new_ptr(glm::mat4);
 
 	*_position = glm::vec3(0, 0, 0);
 	*_scale = glm::vec3(1, 1, 1);
@@ -106,15 +106,15 @@ Engine::Model::Model(Model *model, ShaderProgram *gProgram, ShaderProgram *smPro
 
 Engine::Model::~Model(void)
 {
-	if (!_isMirror) release_ref(_tMesh);
+	if (!_isMirror) release_ptr(_tMesh);
 
-	release_ref(_matrixBuffer);
-	release_ref(_cameraBuffer);
-	release_ref(_position);
-	release_ref(_scale);
-	release_ref(_rotation);
-	release_ref(_modelMatrix);
-	release_ref(_normalMatrix);
+	release_ptr(_matrixBuffer);
+	release_ptr(_cameraBuffer);
+	release_ptr(_position);
+	release_ptr(_scale);
+	release_ptr(_rotation);
+	release_ptr(_modelMatrix);
+	release_ptr(_normalMatrix);
 }
 
 void Engine::Model::addMesh(Mesh *mesh)

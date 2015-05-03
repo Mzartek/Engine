@@ -18,7 +18,7 @@ inline GLchar *readText(const GLchar *filename)
 	file.seekg(0, std::ifstream::beg);
 
 	// Add content
-	content = new_ref_tab(GLchar, size + 1);
+	content = new_ptr_tab(GLchar, size + 1);
 	file.read(content, size);
 	content[size] = '\0';
 
@@ -49,18 +49,18 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	{
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
 
-		log = new_ref_tab(GLchar, logsize + 1);
+		log = new_ptr_tab(GLchar, logsize + 1);
 		log[logsize] = '\0';
 
 		glGetShaderInfoLog(id, logsize, &logsize, log);
 		std::cerr << "Error while compiling shader: " << filename << std::endl << log << std::endl;
 
 		glDeleteShader(id);
-		release_ref(log);
+		release_ptr(log);
 		abort();
 	}
 
-	release_ref(content);
+	release_ptr(content);
 	return id;
 }
 
@@ -115,13 +115,13 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	{
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
 
-		log = new_ref_tab(GLchar, logsize + 1);
+		log = new_ptr_tab(GLchar, logsize + 1);
 		log[logsize] = '\0';
 
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
-		release_ref(log);
+		release_ptr(log);
 		abort();
 	}
 }
@@ -179,13 +179,13 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	{
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
 
-		log = new_ref_tab(GLchar, logsize + 1);
+		log = new_ptr_tab(GLchar, logsize + 1);
 		log[logsize] = '\0';
 
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
-		release_ref(log);
+		release_ptr(log);
 		abort();
 	}
 }

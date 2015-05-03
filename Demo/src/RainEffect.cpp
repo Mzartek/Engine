@@ -4,7 +4,7 @@ RainEffect::RainEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsRainProgram = new_ref(Engine::ShaderProgram(
+	_physicsRainProgram = new_ptr(Engine::ShaderProgram(
 		"../share/Demo/shader/rainParticles/rainPhysics_v.glsl",
 		NULL,
 		NULL,
@@ -12,24 +12,24 @@ RainEffect::RainEffect(void)
 		NULL,
 		varyings, sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displayRainProgram = new_ref(Engine::ShaderProgram(
+	_displayRainProgram = new_ptr(Engine::ShaderProgram(
 		"../share/Demo/shader/rainParticles/rainVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/rainParticles/rainGeom.glsl",
 		"../share/Demo/shader/rainParticles/rainFrag.glsl"));
 
-	_rainManager = new_ref(Engine::ParticlesManager(_physicsRainProgram, _displayRainProgram));
+	_rainManager = new_ptr(Engine::ParticlesManager(_physicsRainProgram, _displayRainProgram));
 
-	_rain_sound = new_ref(Engine::Sound);
+	_rain_sound = new_ptr(Engine::Sound);
 }
 
 RainEffect::~RainEffect(void)
 {
-	release_ref(_physicsRainProgram);
-	release_ref(_displayRainProgram);
-	release_ref(_rainManager);
-	release_ref(_rain_sound);
+	release_ptr(_physicsRainProgram);
+	release_ptr(_displayRainProgram);
+	release_ptr(_rainManager);
+	release_ptr(_rain_sound);
 }
 
 void RainEffect::init(const glm::vec3 &position, const unsigned int &numParticles) const

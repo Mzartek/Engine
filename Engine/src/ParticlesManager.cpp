@@ -11,12 +11,12 @@
 Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, ShaderProgram *displayProgram)
 	: _physicsProgram(physicsProgram), _displayProgram(displayProgram), _numElement(0)
 {
-	_colorTexture = new_ref(Texture2D);
-	_positionBuffer = new_ref(Buffer);
-	_depthBuffer = new_ref(Buffer);
-	_matrixBuffer = new_ref(Buffer);
-	_vertexBuffer[0] = new_ref(Buffer);
-	_vertexBuffer[1] = new_ref(Buffer);
+	_colorTexture = new_ptr(Texture2D);
+	_positionBuffer = new_ptr(Buffer);
+	_depthBuffer = new_ptr(Buffer);
+	_matrixBuffer = new_ptr(Buffer);
+	_vertexBuffer[0] = new_ptr(Buffer);
+	_vertexBuffer[1] = new_ptr(Buffer);
 
 	_positionBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _position, GL_DYNAMIC_DRAW);
 	_depthBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _depth, GL_DYNAMIC_DRAW);
@@ -34,12 +34,12 @@ Engine::ParticlesManager::ParticlesManager(ShaderProgram *physicsProgram, Shader
 
 Engine::ParticlesManager::~ParticlesManager(void)
 {
-	release_ref(_colorTexture);
-	release_ref(_positionBuffer);
-	release_ref(_depthBuffer);
-	release_ref(_matrixBuffer);
-	release_ref(_vertexBuffer[0]);
-	release_ref(_vertexBuffer[1]);
+	release_ptr(_colorTexture);
+	release_ptr(_positionBuffer);
+	release_ptr(_depthBuffer);
+	release_ptr(_matrixBuffer);
+	release_ptr(_vertexBuffer[0]);
+	release_ptr(_vertexBuffer[1]);
 
 	glDeleteTransformFeedbacks(1, &_idTFO);
 	glDeleteVertexArrays(1, &_idVAO);

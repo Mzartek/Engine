@@ -6,23 +6,23 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	input = i;
 	audio = a;
 
-	gBuffer = new_ref(Engine::GBuffer);
-	dMaps = new_ref_tab(Engine::DepthMap, 3);
-	camera = new_ref(Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0));
+	gBuffer = new_ptr(Engine::GBuffer);
+	dMaps = new_ptr_tab(Engine::DepthMap, 3);
+	camera = new_ptr(Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0));
 
-	octreeSystem = new_ref(Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000));
+	octreeSystem = new_ptr(Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000));
 
-	nightBox = new_ref(NightBox);
-	tree = new_ref(Tree);
-	armySoldier = new_ref(ArmySoldier);
-	helicopter = new_ref(Helicopter);
-	ground = new_ref(Ground);
-	moonLight = new_ref(MoonLight);
-	torchLight = new_ref(TorchLight);
-	rainEffect = new_ref(RainEffect);
-	smokeEffect = new_ref(SmokeEffect);
-	textDisplay = new_ref(TextDisplay);
-	screenDisplay = new_ref(ScreenDisplay);
+	nightBox = new_ptr(NightBox);
+	tree = new_ptr(Tree);
+	armySoldier = new_ptr(ArmySoldier);
+	helicopter = new_ptr(Helicopter);
+	ground = new_ptr(Ground);
+	moonLight = new_ptr(MoonLight);
+	torchLight = new_ptr(TorchLight);
+	rainEffect = new_ptr(RainEffect);
+	smokeEffect = new_ptr(SmokeEffect);
+	textDisplay = new_ptr(TextDisplay);
+	screenDisplay = new_ptr(ScreenDisplay);
 
 	// GBuffer config
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
@@ -84,22 +84,22 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 Demo::~Demo(void)
 {
-	release_ref(screenDisplay);
-	release_ref(textDisplay);
-	release_ref(smokeEffect);
-	release_ref(rainEffect);
-	release_ref(moonLight);
-	release_ref(torchLight);
-	release_ref(ground);
-	release_ref(helicopter);
-	release_ref(armySoldier);
-	release_ref(tree);
-	release_ref(nightBox);
-	release_ref(octreeSystem);
+	release_ptr(screenDisplay);
+	release_ptr(textDisplay);
+	release_ptr(smokeEffect);
+	release_ptr(rainEffect);
+	release_ptr(moonLight);
+	release_ptr(torchLight);
+	release_ptr(ground);
+	release_ptr(helicopter);
+	release_ptr(armySoldier);
+	release_ptr(tree);
+	release_ptr(nightBox);
+	release_ptr(octreeSystem);
 
-	release_ref(camera);
-	release_ref(dMaps);
-	release_ref(gBuffer);
+	release_ptr(camera);
+	release_ptr(dMaps);
+	release_ptr(gBuffer);
 }
 
 void Demo::display(GLfloat state)

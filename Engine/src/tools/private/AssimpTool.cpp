@@ -88,7 +88,7 @@ std::pair<std::vector<Engine::SkeletalMesh::Vertex>, std::vector<GLuint>> Engine
 
 Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, const std::string &dir, std::set<Engine::Object *> *tObject)
 {
-	Material *newMaterial = new_ref(Material);
+	Material *newMaterial = new_ptr(Material);
 	tObject->insert(newMaterial);
 
 	const aiTextureType _textureType[] = {
@@ -106,7 +106,7 @@ Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, c
 		if (material->GetTexture(_textureType[i], 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string filePath = dir + path.C_Str();
-			Texture2D *newTexture = new_ref(Texture2D);
+			Texture2D *newTexture = new_ptr(Texture2D);
 			tObject->insert(newTexture);
 
 			newTexture->loadFromFile(filePath.c_str());
@@ -226,7 +226,7 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 
 	if (root_node == NULL) throw std::exception();
 
-	root_skeleton = new_ref(Skeleton(std::string(root_node->mName.C_Str())));
+	root_skeleton = new_ptr(Skeleton(std::string(root_node->mName.C_Str())));
 	tObject->insert(root_skeleton);
 
 	std::queue<aiNode *> queue0;
@@ -246,7 +246,7 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 		for (GLuint i = 0; i < tmp_node0->mNumChildren; i++)
 		{
 			tmp_node1 = tmp_node0->mChildren[i];
-			tmp_skeleton1 = new_ref(Skeleton(std::string(tmp_node1->mName.C_Str())));
+			tmp_skeleton1 = new_ptr(Skeleton(std::string(tmp_node1->mName.C_Str())));
 
 			tmp_skeleton0->children.push_back(tmp_skeleton1);
 			tmp_skeleton1->parent = tmp_skeleton1;

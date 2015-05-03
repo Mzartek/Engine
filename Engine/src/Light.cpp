@@ -6,9 +6,9 @@
 Engine::Light::Light(ShaderProgram *program)
 	: _program(program)
 {
-	_vertexBuffer = new_ref(Buffer);
-	_mainInfoBuffer = new_ref(Buffer);
-	_lightInfoBuffer = new_ref(Buffer);
+	_vertexBuffer = new_ptr(Buffer);
+	_mainInfoBuffer = new_ptr(Buffer);
+	_lightInfoBuffer = new_ptr(Buffer);
 
 	GLfloat vertex[] =
 	{
@@ -23,7 +23,7 @@ Engine::Light::Light(ShaderProgram *program)
 
 Engine::Light::~Light(void)
 {
-	release_ref(_vertexBuffer);
-	release_ref(_mainInfoBuffer);
-	release_ref(_lightInfoBuffer);
+	release_ptr(_vertexBuffer);
+	release_ptr(_mainInfoBuffer);
+	release_ptr(_lightInfoBuffer);
 }
