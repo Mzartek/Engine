@@ -19,13 +19,15 @@ namespace Engine
 {
 	namespace AssimpTool
 	{
-		extern DLLAPI const aiScene *openFile(Assimp::Importer &importer, const GLchar *inFile);
-		extern DLLAPI std::pair<std::vector<Engine::StaticMesh::Vertex>, std::vector<GLuint>> loadStaticVertices(const aiMesh *mesh);
-		extern DLLAPI std::pair<std::vector<Engine::SkeletalMesh::Vertex>, std::vector<GLuint>> loadSkeletalVertices(const aiMesh *mesh, std::map<GLuint, GLuint> &map_vertex);
-		extern DLLAPI Material *loadMaterial(const aiMaterial *material, const std::string &dir, std::set<Engine::Object *> *tObject);
-		extern DLLAPI std::vector<glm::mat4> loadBones(const aiMesh *mesh,
-			GLuint &bone_index, std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex);
-		extern DLLAPI Skeleton *loadSkeleton(const aiScene *scene, const GLchar *name, std::set<Object *> *tObject);
+		extern const aiScene *openFile(Assimp::Importer &importer, const GLchar *inFile);
+		extern std::vector<Engine::StaticMesh::Vertex> loadStaticVertices(const aiMesh *mesh);
+		extern std::vector<Engine::SkeletalMesh::Vertex> loadSkeletalVertices(const aiMesh *mesh, std::map<GLuint, GLuint> &map_vertex);
+		extern std::vector<GLuint> loadIndices(const aiMesh *mesh);
+		extern Material *loadMaterial(const aiMaterial *material, const std::string &dir, std::set<Engine::Object *> *tObject);
+		extern Skeleton *loadSkeleton(const aiScene *scene, const GLchar *name, std::set<Object *> *tObject);
+		extern std::vector<Engine::Bone *> loadBones(const aiMesh *mesh, Skeleton *skeleton, GLuint &bone_index, 
+			std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex, 
+			std::set<Object *> *tObject);
 	}
 }
 

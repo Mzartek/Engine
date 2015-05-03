@@ -9,6 +9,7 @@
 namespace Engine
 {
 	struct Skeleton;
+	struct Bone;
 
 	class DLLAPI SkeletalModel : public Model
 	{
@@ -23,8 +24,8 @@ namespace Engine
 			glm::mat4 bones[SKELETAL_MODEL_MAX_BONES];
 		} _matrix;
 
-		std::vector<glm::mat4> *_offsetMatrices;
 		Skeleton *_skeleton;
+		std::vector<Bone *> *_bones;
 
 	public:
 		SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram);

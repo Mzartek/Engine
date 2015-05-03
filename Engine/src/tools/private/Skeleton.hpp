@@ -17,6 +17,14 @@ namespace Engine
 		Skeleton(void);
 		Skeleton(const std::string &name);
 		~Skeleton(void);
+
+		Skeleton *searchByName(const std::string &name);
+	};
+
+	struct Bone : public Object
+	{
+		glm::mat4 offsetMatrix;
+		Skeleton *ptr_in_skeleton;
 	};
 }
 

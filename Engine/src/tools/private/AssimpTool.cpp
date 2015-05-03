@@ -15,9 +15,9 @@ const aiScene *Engine::AssimpTool::openFile(Assimp::Importer &importer, const GL
 	return pScene;
 }
 
-std::pair<std::vector<Engine::StaticMesh::Vertex>, std::vector<GLuint>> Engine::AssimpTool::loadStaticVertices(const aiMesh *mesh)
+std::vector<Engine::StaticMesh::Vertex> Engine::AssimpTool::loadStaticVertices(const aiMesh *mesh)
 {
-	std::pair<std::vector<StaticMesh::Vertex>, std::vector<GLuint>> vertices;
+	std::vector<Engine::StaticMesh::Vertex> vertices;
 
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -34,23 +34,15 @@ std::pair<std::vector<Engine::StaticMesh::Vertex>, std::vector<GLuint>> Engine::
 			{ pTangent.x, pTangent.y, pTangent.z }
 		};
 
-		vertices.first.push_back(newVertex);
-	}
-
-	std::vector<GLuint> indices;
-	for (GLuint i = 0; i < mesh->mNumFaces; i++)
-	{
-		vertices.second.push_back(mesh->mFaces[i].mIndices[0]);
-		vertices.second.push_back(mesh->mFaces[i].mIndices[1]);
-		vertices.second.push_back(mesh->mFaces[i].mIndices[2]);
+		vertices.push_back(newVertex);
 	}
 
 	return vertices;
 }
 
-std::pair<std::vector<Engine::SkeletalMesh::Vertex>, std::vector<GLuint>> Engine::AssimpTool::loadSkeletalVertices(const aiMesh *mesh, std::map<GLuint, GLuint> &map_vertex)
+std::vector<Engine::SkeletalMesh::Vertex> Engine::AssimpTool::loadSkeletalVertices(const aiMesh *mesh, std::map<GLuint, GLuint> &map_vertex)
 {
-	std::pair<std::vector<SkeletalMesh::Vertex>, std::vector<GLuint>> vertices;
+	std::vector<Engine::SkeletalMesh::Vertex> vertices;
 
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -71,18 +63,23 @@ std::pair<std::vector<Engine::SkeletalMesh::Vertex>, std::vector<GLuint>> Engine
 
 		map_vertex[i] = 0;
 
-		vertices.first.push_back(newVertex);
-	}
-
-	std::vector<GLuint> indices;
-	for (GLuint i = 0; i < mesh->mNumFaces; i++)
-	{
-		vertices.second.push_back(mesh->mFaces[i].mIndices[0]);
-		vertices.second.push_back(mesh->mFaces[i].mIndices[1]);
-		vertices.second.push_back(mesh->mFaces[i].mIndices[2]);
+		vertices.push_back(newVertex);
 	}
 
 	return vertices;
+}
+
+std::vector<GLuint> Engine::AssimpTool::loadIndices(const aiMesh *mesh)
+{
+	std::vector<GLuint> indices;
+	for (GLuint i = 0; i < mesh->mNumFaces; i++)
+	{
+		indices.push_back(mesh->mFaces[i].mIndices[0]);
+		indices.push_back(mesh->mFaces[i].mIndices[1]);
+		indices.push_back(mesh->mFaces[i].mIndices[2]);
+	}
+
+	return indices;
 }
 
 Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, const std::string &dir, std::set<Engine::Object *> *tObject)
@@ -171,47 +168,6 @@ Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, c
 	return newMaterial;
 }
 
-std::vector<glm::mat4> Engine::AssimpTool::loadBones(const aiMesh *mesh,
-	GLuint &bone_index, std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex)
-{
-	std::vector<glm::mat4> vector_vertices;
-	aiMatrix4x4 tmp_matrix0;
-	glm::mat4 tmp_matrix1;
-
-	for (GLuint i = 0; i < mesh->mNumBones; i++)
-	{
-		tmp_matrix0 = mesh->mBones[i]->mOffsetMatrix.Transpose();
-		memcpy(&tmp_matrix1, &tmp_matrix0, sizeof(glm::mat4));
-		vector_vertices.push_back(tmp_matrix1);
-
-		for (GLuint j = 0; j < mesh->mBones[i]->mNumWeights; j++)
-		{
-			GLuint vertex_index = mesh->mBones[i]->mWeights[j].mVertexId;
-			GLuint index = map_vertex[vertex_index]++;
-
-			if (index < 4)
-			{
-				vertices[vertex_index].index0[index] = bone_index;
-				vertices[vertex_index].weight0[index] = mesh->mBones[i]->mWeights[j].mWeight;
-			}
-			else if (index < 8)
-			{
-				vertices[vertex_index].index0[index % 4] = bone_index;
-				vertices[vertex_index].weight0[index % 4] = mesh->mBones[i]->mWeights[j].mWeight;
-			}
-			else
-			{
-				std::cerr << "No more space for bones" << std::endl;
-				abort();
-			}
-		}
-
-		bone_index++;
-	}
-
-	return vector_vertices;
-}
-
 Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name, std::set<Object *> *tObject)
 {
 	aiNode *root_node, *tmp_node0, *tmp_node1;
@@ -240,7 +196,7 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 		tmp_skeleton0 = queue1.front();
 
 		tmp_matrix = tmp_node0->mTransformation.Transpose();
-		memcpy(&tmp_skeleton0->matrix, &tmp_matrix, sizeof(glm::mat4));		
+		memcpy(&tmp_skeleton0->matrix, &tmp_matrix, sizeof(glm::mat4));
 
 		for (GLuint i = 0; i < tmp_node0->mNumChildren; i++)
 		{
@@ -249,7 +205,7 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 
 			tmp_skeleton0->children.push_back(tmp_skeleton1);
 			tmp_skeleton1->parent = tmp_skeleton1;
-			
+
 			queue0.push(tmp_node1);
 			queue1.push(tmp_skeleton1);
 		}
@@ -259,4 +215,50 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 	}
 
 	return root_skeleton;
+}
+
+std::vector<Engine::Bone *> Engine::AssimpTool::loadBones(const aiMesh *mesh, Skeleton *skeleton, GLuint &bone_index, 
+	std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex, 
+	std::set<Object *> *tObject)
+{
+	std::vector<Engine::Bone *> vector_bones;	
+
+	for (GLuint i = 0; i < mesh->mNumBones; i++)
+	{
+		aiMatrix4x4 tmp_matrix = mesh->mBones[i]->mOffsetMatrix.Transpose();
+
+		Engine::Bone *tmp_bone = new_ptr(Engine::Bone);
+		tObject->insert(tmp_bone);
+
+		memcpy(&tmp_bone->offsetMatrix, &tmp_matrix, sizeof(glm::mat4));
+		tmp_bone->ptr_in_skeleton = skeleton->searchByName(std::string(mesh->mBones[i]->mName.C_Str()));
+
+		vector_bones.push_back(tmp_bone);
+
+		for (GLuint j = 0; j < mesh->mBones[i]->mNumWeights; j++)
+		{
+			GLuint vertex_index = mesh->mBones[i]->mWeights[j].mVertexId;
+			GLuint index = map_vertex[vertex_index]++;
+
+			if (index < 4)
+			{
+				vertices[vertex_index].index0[index] = bone_index;
+				vertices[vertex_index].weight0[index] = mesh->mBones[i]->mWeights[j].mWeight;
+			}
+			else if (index < 8)
+			{
+				vertices[vertex_index].index0[index % 4] = bone_index;
+				vertices[vertex_index].weight0[index % 4] = mesh->mBones[i]->mWeights[j].mWeight;
+			}
+			else
+			{
+				std::cerr << "No more space for bones" << std::endl;
+				abort();
+			}
+		}
+
+		bone_index++;
+	}
+
+	return vector_bones;
 }

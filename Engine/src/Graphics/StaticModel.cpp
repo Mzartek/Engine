@@ -36,22 +36,22 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 		abort();
 	}
 
-	std::pair<std::vector<StaticMesh::Vertex>, std::vector<GLuint>> vertices_index;
-	Material *material;
-	StaticMesh *mesh;
+	std::vector<StaticMesh::Vertex> vertices;
+	std::vector<GLuint> indices;
 	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
 	{
-		vertices_index = AssimpTool::loadStaticVertices(pScene->mMeshes[i]);
-		material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
+		vertices = AssimpTool::loadStaticVertices(pScene->mMeshes[i]);
+		indices = AssimpTool::loadIndices(pScene->mMeshes[i]);
+		Material *material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
 
-		mesh = new_ptr(StaticMesh);
+		StaticMesh *mesh = new_ptr(StaticMesh);
 		_tObject->insert(mesh);
 
 		mesh->setMaterial(material);
-		mesh->load(vertices_index.first, vertices_index.second);
+		mesh->load(vertices, indices);
 
-		vertices_index.first.clear();
-		vertices_index.second.clear();
+		vertices.clear();
+		indices.clear();
 
 		addMesh(mesh);
 	}

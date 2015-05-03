@@ -5,7 +5,7 @@
 Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(gProgram, smProgram)
 {
-	_offsetMatrices = new_ptr(std::vector < glm::mat4 >);
+	_bones = new_ptr(std::vector < Bone *>);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
@@ -13,16 +13,16 @@ Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smP
 Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
 	: Model(model, gProgram, smProgram)
 {
-	_offsetMatrices = new_ptr(std::vector < glm::mat4 >);
+	_bones = new_ptr(std::vector < Bone *>);
 
-	*_offsetMatrices = *model->_offsetMatrices;
+	*_bones = *model->_bones;
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::SkeletalModel::~SkeletalModel(void)
 {
-	release_ptr(_offsetMatrices);
+	release_ptr(_bones);
 }
 
 void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *node_name)
@@ -43,33 +43,6 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 		abort();
 	}
 
-	GLuint bone_index = 0;
-	std::map<GLuint, GLuint> map_vertex;
-	std::vector<glm::mat4> tmp_vector;
-
-	std::pair<std::vector<SkeletalMesh::Vertex>, std::vector<GLuint>> vertices_index;
-	Material *material;
-	SkeletalMesh *mesh;
-	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
-	{
-		vertices_index = AssimpTool::loadSkeletalVertices(pScene->mMeshes[i], map_vertex);
-		material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
-		tmp_vector = AssimpTool::loadBones(pScene->mMeshes[i], bone_index, vertices_index.first, map_vertex);
-
-		_offsetMatrices->insert(_offsetMatrices->end(), tmp_vector.begin(), tmp_vector.end());
-
-		mesh = new_ptr(SkeletalMesh);
-		_tObject->insert(mesh);
-
-		mesh->setMaterial(material);
-		mesh->load(vertices_index.first, vertices_index.second);
-
-		vertices_index.first.clear();
-		vertices_index.second.clear();
-
-		addMesh(mesh);
-	}
-
 	try
 	{
 		_skeleton = AssimpTool::loadSkeleton(pScene, node_name, _tObject);
@@ -78,6 +51,31 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 	{
 		std::cerr << inFile << " No node " << node_name << std::endl;
 		abort();
+	}
+
+	GLuint bone_index = 0;
+	std::map<GLuint, GLuint> map_vertex;
+	std::vector<SkeletalMesh::Vertex> vertices;
+	std::vector<GLuint> indices;
+	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
+	{
+		vertices = AssimpTool::loadSkeletalVertices(pScene->mMeshes[i], map_vertex);
+		indices = AssimpTool::loadIndices(pScene->mMeshes[i]);
+		Material *material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
+		std::vector<Bone *> tmp_vector = AssimpTool::loadBones(pScene->mMeshes[i], _skeleton, bone_index, vertices, map_vertex, _tObject);
+
+		_bones->insert(_bones->end(), tmp_vector.begin(), tmp_vector.end());
+
+		SkeletalMesh *mesh = new_ptr(SkeletalMesh);
+		_tObject->insert(mesh);
+
+		mesh->setMaterial(material);
+		mesh->load(vertices, indices);
+
+		vertices.clear();
+		indices.clear();
+
+		addMesh(mesh);
 	}
 }
 
