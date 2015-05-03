@@ -1,7 +1,8 @@
 #ifndef GROUND_HEADER
 #define GROUND_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/ShaderProgram.hpp>
+#include <Engine/Graphics/StaticModel.hpp>
 
 class Ground
 {

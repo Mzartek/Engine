@@ -1,5 +1,4 @@
 #include "Skeleton.hpp"
-#include <Engine/tools/ControllerMemory.hpp>
 
 Engine::Skeleton::Skeleton(void)
 {

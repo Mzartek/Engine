@@ -1,11 +1,13 @@
 #ifndef ASSIMPTOOL_HEADER
 #define ASSIMPTOOL_HEADER
 
-#include <Engine/StaticMesh.hpp>
-#include <Engine/SkeletalMesh.hpp>
-#include <Engine/Material.hpp>
-#include <Engine/Texture2D.hpp>
-#include <Engine/tools/ControllerMemory.hpp>
+#include <Engine/Object.hpp>
+#include <Engine/Tools/ControllerMemory.hpp>
+
+#include <Engine/Graphics/StaticMesh.hpp>
+#include <Engine/Graphics/SkeletalMesh.hpp>
+#include <Engine/Graphics/Material.hpp>
+#include <Engine/Graphics/Texture2D.hpp>
 
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>

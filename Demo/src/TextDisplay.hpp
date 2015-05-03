@@ -1,7 +1,7 @@
 #ifndef TEXTDISPLAY_HEADER
 #define TEXTDISPLAY_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/TextArray.hpp>
 
 class TextDisplay
 {

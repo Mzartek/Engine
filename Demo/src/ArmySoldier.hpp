@@ -1,7 +1,7 @@
 #ifndef ARMYSOLDIER_HEADER
 #define ARMYSOLDIER_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/SkeletalModel.hpp>
 
 class ArmySoldier
 {

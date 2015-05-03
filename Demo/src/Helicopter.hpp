@@ -1,7 +1,7 @@
 #ifndef HELICOPTER_HEADER
 #define HELICOPTER_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/StaticModel.hpp>
 
 class Helicopter
 {

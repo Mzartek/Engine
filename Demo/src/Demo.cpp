@@ -10,7 +10,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	dMaps = new_ptr_tab(Engine::DepthMap, 3);
 	camera = new_ptr(Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0));
 
-	octreeSystem = new_ptr(Engine::OctreeSystem(4, glm::vec3(0, 0, 0), 1000));
+	octree = new_ptr(Engine::Octree(4, glm::vec3(0, 0, 0), 1000));
 
 	nightBox = new_ptr(NightBox);
 	tree = new_ptr(Tree);
@@ -50,10 +50,10 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
     helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
 		
-	octreeSystem->addModel(ground->getModel(), 1000);
-	octreeSystem->addModel(tree->getModel(), 40);
-	octreeSystem->addModel(armySoldier->getModel(), 40);
-	octreeSystem->addModel(helicopter->getModel(), 40);
+	octree->addModel(ground->getModel(), 1000);
+	octree->addModel(tree->getModel(), 40);
+	octree->addModel(armySoldier->getModel(), 40);
+	octree->addModel(helicopter->getModel(), 40);
 
 	torchLight->getLight()->setPosition(glm::vec3(25, 100, -25));
 	torchLight->getLight()->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
@@ -95,7 +95,7 @@ Demo::~Demo(void)
 	release_ptr(armySoldier);
 	release_ptr(tree);
 	release_ptr(nightBox);
-	release_ptr(octreeSystem);
+	release_ptr(octree);
 
 	release_ptr(camera);
 	release_ptr(dMaps);
@@ -116,7 +116,7 @@ void Demo::display(GLfloat state)
 
 	// We retrieve object to display from the octree
 	object.clear();
-	octreeSystem->getModels(gBuffer, camera, &object);
+	octree->getModels(camera, &object);
 
 	// Clear Buffers
 	renderer->clear();
@@ -170,7 +170,7 @@ void Demo::idle(long long time)
 	static glm::vec3 camPosition;
 	static glm::vec3 camForward;
 	static glm::vec3 camUp;
-
+	
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
 		renderer->stopLoop();

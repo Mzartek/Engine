@@ -1,7 +1,7 @@
 #ifndef NIGHTBOX_HEADER
 #define NIGHTBOX_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/SkyBox.hpp>
 
 class NightBox
 {

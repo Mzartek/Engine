@@ -1,7 +1,7 @@
 #ifndef CONTROLLERMEMORY_HEADER
 #define CONTROLLERMEMORY_HEADER
 
-#include <Engine/Object.hpp>
+#include "../Object.hpp"
 
 namespace Engine
 {

@@ -1,7 +1,7 @@
 #ifndef MOONLIGHT_HEADER
 #define MOONLIGHT_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/DirLight.hpp>
 
 class MoonLight
 {

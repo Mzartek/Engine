@@ -34,6 +34,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <ctime>
 
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
@@ -58,8 +59,6 @@
 
 namespace Engine
 {
-	extern DLLAPI std::string getDir(const GLchar *file);
-
 	class DLLAPI Object
 	{
 	protected:

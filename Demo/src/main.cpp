@@ -5,8 +5,6 @@ int main(int argc, char **argv)
 	UNREFERENCED_PARAMETER(argc);
 	UNREFERENCED_PARAMETER(argv);
 
-	srand((unsigned int)time(NULL));
-
 	Engine::Renderer *renderer = new_ptr(Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE));
 	Engine::Audio *audio = new_ptr(Engine::Audio);
 	Engine::Input *input = new_ptr(Engine::Input);

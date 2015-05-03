@@ -2,6 +2,7 @@
 #define SKELETON_HEADER
 
 #include <Engine/Object.hpp>
+#include <Engine/tools/ControllerMemory.hpp>
 
 namespace Engine
 {

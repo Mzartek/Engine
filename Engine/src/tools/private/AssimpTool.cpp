@@ -1,5 +1,4 @@
 #include "AssimpTool.hpp"
-#include <Engine/tools/ControllerMemory.hpp>
 
 const aiScene *Engine::AssimpTool::openFile(Assimp::Importer &importer, const GLchar *inFile)
 {

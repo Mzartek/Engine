@@ -1,8 +1,14 @@
 #ifndef DEMO_HEADER
 #define DEMO_HEADER
 
-#include <Engine/Engine.hpp>
-#include <ctime>
+#include <Engine/Graphics/Renderer.hpp>
+#include <Engine/Input/Input.hpp>
+#include <Engine/Audio/Audio.hpp>
+
+#include <Engine/Graphics/GBuffer.hpp>
+#include <Engine/Graphics/DepthMap.hpp>
+#include <Engine/Graphics/FreeCam.hpp>
+#include <Engine/Graphics/Octree.hpp>
 
 #include "NightBox.hpp"
 #include "Tree.hpp"
@@ -28,7 +34,7 @@ private:
 	Engine::DepthMap *dMaps;
 	Engine::FreeCam *camera;
 
-	Engine::OctreeSystem *octreeSystem;
+	Engine::Octree *octree;
 
 	NightBox *nightBox;
 	Tree *tree;

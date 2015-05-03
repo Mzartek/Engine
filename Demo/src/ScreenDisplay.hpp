@@ -1,7 +1,7 @@
 #ifndef SCREENDISPLAY_HEADER
 #define SCREENDISPLAY_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/Screen.hpp>
 
 class ScreenDisplay
 {

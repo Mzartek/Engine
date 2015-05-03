@@ -1,7 +1,8 @@
 #ifndef SMOKEEFFECT_HEADER
 #define SMOKEEFFECT_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Audio/Sound.hpp>
+#include <Engine/Graphics/ParticlesManager.hpp>
 
 class SmokeEffect
 {

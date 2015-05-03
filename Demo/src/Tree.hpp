@@ -1,7 +1,7 @@
 #ifndef TREE_HEADER
 #define TREE_HEADER
 
-#include <Engine/Engine.hpp>
+#include <Engine/Graphics/StaticModel.hpp>
 
 class Tree
 {
