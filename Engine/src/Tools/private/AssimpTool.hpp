@@ -2,7 +2,6 @@
 #define ASSIMPTOOL_HEADER
 
 #include <Engine/Object.hpp>
-#include <Engine/Tools/ControllerMemory.hpp>
 
 #include <Engine/Graphics/StaticMesh.hpp>
 #include <Engine/Graphics/SkeletalMesh.hpp>
@@ -25,9 +24,8 @@ namespace Engine
 		extern std::vector<GLuint> loadIndices(const aiMesh *mesh);
 		extern std::shared_ptr<Material> loadMaterial(const aiMaterial *material, const std::string &dir);
 		extern std::shared_ptr<Skeleton> loadSkeleton(const aiScene *scene, const GLchar *name);
-		extern std::vector<Engine::Bone *> loadBones(const aiMesh *mesh, Skeleton *skeleton, GLuint &bone_index, 
-			std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex, 
-			std::set<Object *> *tObject);
+		extern std::vector<std::shared_ptr<Engine::Bone>> loadBones(const aiMesh *mesh, const std::shared_ptr<Skeleton> &skeleton, GLuint bone_index, 
+			std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex);
 	}
 }
 

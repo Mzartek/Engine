@@ -2,7 +2,6 @@
 #define MESH_HEADER
 
 #include "../Object.hpp"
-#include "../Tools/ControllerMemory.hpp"
 
 #include "TextureCube.hpp"
 #include "Buffer.hpp"

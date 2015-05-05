@@ -4,9 +4,9 @@ inline bool Engine::Octree::checkCamInCube(const std::shared_ptr<Engine::PerspCa
 {
 	const glm::vec3 p = cam->getCameraPosition();
 
-	if (p.x >= (*_vertex)[0]->x && p.x < (*_vertex)[7]->x &&
-		p.y >= (*_vertex)[0]->y && p.y < (*_vertex)[7]->y &&
-		p.z >= (*_vertex)[0]->z && p.z < (*_vertex)[7]->z)
+	if (p.x >= (*_vertex)[0].x && p.x < (*_vertex)[7].x &&
+		p.y >= (*_vertex)[0].y && p.y < (*_vertex)[7].y &&
+		p.z >= (*_vertex)[0].z && p.z < (*_vertex)[7].z)
 		return true;
 	return false;
 }
@@ -33,7 +33,7 @@ inline bool Engine::Octree::checkInCamFrus(const std::shared_ptr<Engine::PerspCa
 	if (acosf(dot) < fov_2) return true;
 	for (GLint i = 0; i < 8; i++)
 	{
-		position = *(*_vertex)[i];
+		position = (*_vertex)[i];
 		direction = glm::normalize(position - camera_position);
 		dot = glm::dot(forward_vector, direction);
 
@@ -56,14 +56,14 @@ Engine::Octree::Octree(GLuint depth, const std::shared_ptr<glm::vec3> &position,
 	_dim_2 = newDim;
 	_radius = glm::length(glm::vec3(newDim));
 
-	(*_vertex)[0] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x - newDim, position->y - newDim, position->z - newDim));
-	(*_vertex)[1] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x - newDim, position->y - newDim, position->z + newDim));
-	(*_vertex)[2] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x - newDim, position->y + newDim, position->z - newDim));
-	(*_vertex)[3] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x - newDim, position->y + newDim, position->z + newDim));
-	(*_vertex)[4] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x + newDim, position->y - newDim, position->z - newDim));
-	(*_vertex)[5] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x + newDim, position->y - newDim, position->z + newDim));
-	(*_vertex)[6] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x + newDim, position->y + newDim, position->z - newDim));
-	(*_vertex)[7] = std::shared_ptr<glm::vec3>(new glm::vec3(position->x + newDim, position->y + newDim, position->z + newDim));
+	(*_vertex)[0] = glm::vec3(position->x - newDim, position->y - newDim, position->z - newDim);
+	(*_vertex)[1] = glm::vec3(position->x - newDim, position->y - newDim, position->z + newDim);
+	(*_vertex)[2] = glm::vec3(position->x - newDim, position->y + newDim, position->z - newDim);
+	(*_vertex)[3] = glm::vec3(position->x - newDim, position->y + newDim, position->z + newDim);
+	(*_vertex)[4] = glm::vec3(position->x + newDim, position->y - newDim, position->z - newDim);
+	(*_vertex)[5] = glm::vec3(position->x + newDim, position->y - newDim, position->z + newDim);
+	(*_vertex)[6] = glm::vec3(position->x + newDim, position->y + newDim, position->z - newDim);
+	(*_vertex)[7] = glm::vec3(position->x + newDim, position->y + newDim, position->z + newDim);
 
 	if (depth > 0)
 	{

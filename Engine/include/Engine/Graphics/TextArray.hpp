@@ -2,7 +2,6 @@
 #define TEXTARRAY_HEADER
 
 #include "../Object.hpp"
-#include "../Tools/ControllerMemory.hpp"
 
 #include "Texture2D.hpp"
 #include "Buffer.hpp"

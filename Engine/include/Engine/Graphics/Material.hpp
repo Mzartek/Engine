@@ -2,7 +2,6 @@
 #define MATERIAL_HEADER
 
 #include "../Object.hpp"
-#include "../Tools/ControllerMemory.hpp"
 
 #include <Engine/Graphics/Texture2D.hpp>
 #include <Engine/Graphics/Buffer.hpp>

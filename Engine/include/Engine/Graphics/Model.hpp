@@ -2,7 +2,6 @@
 #define MODEL_HEADER
 
 #include "../Object.hpp"
-#include "../Tools/ControllerMemory.hpp"
 #include "../Tools/StringManager.hpp"
 
 #include "Mesh.hpp"

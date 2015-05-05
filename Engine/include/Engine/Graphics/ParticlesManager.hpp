@@ -2,7 +2,6 @@
 #define PARTICLESMANAGER_HEADER
 
 #include "../Object.hpp"
-#include "../Tools/ControllerMemory.hpp"
 
 #include "ShaderProgram.hpp"
 #include "Texture2D.hpp"

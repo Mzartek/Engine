@@ -2,7 +2,6 @@
 #define OCTREE_HEADER
 
 #include "../Object.hpp"
-#include "../tools/ControllerMemory.hpp"
 
 #include "Model.hpp"
 
@@ -12,7 +11,7 @@ namespace Engine
 	{
 	private:
 		std::shared_ptr<glm::vec3> _position;
-		std::shared_ptr<std::vector<std::shared_ptr<glm::vec3>>> _vertex;
+		std::shared_ptr<std::vector<glm::vec3>> _vertex;
 
 		GLfloat _dim;
 		GLfloat _dim_2;

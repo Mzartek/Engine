@@ -14,7 +14,7 @@ Engine::Skeleton::Skeleton(const std::string &name)
 Engine::Skeleton::~Skeleton(void)
 {
 	for (std::vector<Skeleton *>::iterator it = children.begin(); it != children.end(); it++)
-		release_ptr(*it);
+		delete *it;
 }
 
 Engine::Skeleton *Engine::Skeleton::searchByName(const std::string &name)

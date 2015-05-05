@@ -169,7 +169,8 @@ std::shared_ptr<Engine::Material> Engine::AssimpTool::loadMaterial(const aiMater
 std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name)
 {
 	aiNode *root_node, *tmp_node0, *tmp_node1;
-	std::shared_ptr<Skeleton> root_skeleton, tmp_skeleton0, tmp_skeleton1;
+	std::shared_ptr<Skeleton> root_skeleton;
+	Skeleton *tmp_skeleton0, *tmp_skeleton1;
 	aiMatrix4x4 tmp_matrix;
 
 	if (name != NULL)
@@ -182,10 +183,10 @@ std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene
 	root_skeleton = std::shared_ptr<Skeleton>(new Skeleton(std::string(root_node->mName.C_Str())));
 
 	std::queue<aiNode *> queue0;
-	std::queue<std::shared_ptr<Skeleton>> queue1;
+	std::queue<Skeleton *> queue1;
 
 	queue0.push(root_node);
-	queue1.push(root_skeleton);
+	queue1.push(root_skeleton.get());
 
 	while (!queue0.empty() && !queue1.empty())
 	{
@@ -198,7 +199,7 @@ std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene
 		for (GLuint i = 0; i < tmp_node0->mNumChildren; i++)
 		{
 			tmp_node1 = tmp_node0->mChildren[i];
-			tmp_skeleton1 = std::shared_ptr<Skeleton>(new Skeleton(std::string(tmp_node1->mName.C_Str())));
+			tmp_skeleton1 = new Skeleton(std::string(tmp_node1->mName.C_Str()));
 
 			tmp_skeleton0->children.push_back(tmp_skeleton1);
 			tmp_skeleton1->parent = tmp_skeleton1;
@@ -214,18 +215,16 @@ std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene
 	return root_skeleton;
 }
 
-std::vector<Engine::Bone *> Engine::AssimpTool::loadBones(const aiMesh *mesh, Skeleton *skeleton, GLuint &bone_index, 
-	std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex, 
-	std::set<Object *> *tObject)
+std::vector<std::shared_ptr<Engine::Bone>> Engine::AssimpTool::loadBones(const aiMesh *mesh, const std::shared_ptr<Skeleton> &skeleton, GLuint bone_index,
+	std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex)
 {
-	std::vector<Engine::Bone *> vector_bones;	
+	std::vector<std::shared_ptr<Engine::Bone>> vector_bones;
 
 	for (GLuint i = 0; i < mesh->mNumBones; i++)
 	{
 		aiMatrix4x4 tmp_matrix = mesh->mBones[i]->mOffsetMatrix.Transpose();
 
-		Engine::Bone *tmp_bone = new_ptr(Engine::Bone);
-		tObject->insert(tmp_bone);
+		std::shared_ptr<Engine::Bone> tmp_bone = std::shared_ptr<Engine::Bone>(new Engine::Bone);
 
 		memcpy(&tmp_bone->offsetMatrix, &tmp_matrix, sizeof(glm::mat4));
 		tmp_bone->ptr_in_skeleton = skeleton->searchByName(std::string(mesh->mBones[i]->mName.C_Str()));

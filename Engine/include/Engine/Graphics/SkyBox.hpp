@@ -4,7 +4,6 @@
 #define SKYBOX_DIM 10
 
 #include "../Object.hpp"
-#include "../Tools/ControllerMemory.hpp"
 
 #include "TextureCube.hpp"
 #include "Buffer.hpp"
