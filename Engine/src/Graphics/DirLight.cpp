@@ -93,25 +93,25 @@ void Engine::DirLight::position(const glm::vec3 &pos, const GLfloat &dim0, const
 	abort();*/
 }
 
-void Engine::DirLight::display(GBuffer *gbuf, PerspCamera *cam)
+void Engine::DirLight::display(const GBuffer &gbuf, const PerspCamera &cam)
 {
-	gbuf->setLightState();
+	gbuf.setLightState();
 
 	glUseProgram(_program->getId());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_NORMAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_DEPTH_STENCIL));
 
-	_mainInfo.IVPMatrix = cam->getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.IVPMatrix = cam.getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf.getWidth(), gbuf.getHeight());
+	_mainInfo.camPosition = cam.getCameraPosition();
 	_mainInfo.withShadowMapping = GL_FALSE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
@@ -125,35 +125,35 @@ void Engine::DirLight::display(GBuffer *gbuf, PerspCamera *cam)
 	glBindVertexArray(0);
 }
 
-void Engine::DirLight::display(GBuffer *gbuf, DepthMap *dmaps, PerspCamera *cam)
+void Engine::DirLight::display(const GBuffer &gbuf, const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, const PerspCamera &cam)
 {
-	gbuf->setLightState();
+	gbuf.setLightState();
 
 	glUseProgram(_program->getId());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_NORMAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_DEPTH_STENCIL));
 
 	// ShadowMap
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, dmaps[0].getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, array_depthMap[0]->getIdDepthTexture());
 
 	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, dmaps[1].getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, array_depthMap[1]->getIdDepthTexture());
 
 	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, dmaps[2].getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, array_depthMap[2]->getIdDepthTexture());
 
-	_mainInfo.IVPMatrix = cam->getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.IVPMatrix = cam.getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf.getWidth(), gbuf.getHeight());
+	_mainInfo.camPosition = cam.getCameraPosition();
 	_mainInfo.withShadowMapping = GL_TRUE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);

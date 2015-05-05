@@ -73,11 +73,11 @@ namespace Engine
 		std::pair<glm::vec3, GLfloat> getAxisAngleRotation(void) const;
 		Mesh *getMesh(const GLuint &num) const;
 
-		virtual void display(GBuffer *g, PerspCamera *cam) = 0;
-		virtual void displayTransparent(GBuffer *gbuf, PerspCamera *cam) = 0;
-		virtual void displayDepthMap(DepthMap *dmap, Camera *cam) = 0;
-		virtual void displayDepthMap(DepthMap *dmaps, DirLight *light) = 0;
-		virtual void displayDepthMap(DepthMap *dmap, SpotLight *light) = 0;
+		virtual void display(const GBuffer &gbuf, const PerspCamera &cam) = 0;
+		virtual void displayTransparent(const GBuffer &gbuf, const PerspCamera &cam) = 0;
+		virtual void displayDepthMap(const DepthMap &depthMap, const Camera &cam) = 0;
+		virtual void displayDepthMap(const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light) = 0;
+		virtual void displayDepthMap(const DepthMap &depthMap, SpotLight *light) = 0;
 	};
 }
 

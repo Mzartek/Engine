@@ -58,8 +58,8 @@ namespace Engine
 		void setPosition(const glm::vec3 &pos);
 		glm::vec3 getPosition(void) const;
 		void updateParticles(void);
-		void updateParticles(DepthMap *dmap, Camera *cam);
-		void display(GBuffer *gbuf, Camera *cam);
+		void updateParticles(const DepthMap &depthMap, const Camera &cam);
+		void display(const GBuffer &gbuf, const Camera &cam);
 	};
 }
 

@@ -1,8 +1,8 @@
 #include <Engine/Graphics/Octree.hpp>
 
-inline bool Engine::Octree::checkCamInCube(const Engine::PerspCamera *cam) const
+inline bool Engine::Octree::checkCamInCube(const PerspCamera &cam) const
 {
-	const glm::vec3 p = cam->getCameraPosition();
+	const glm::vec3 p = cam.getCameraPosition();
 
 	if (p.x >= _vertex[0].x && p.x < _vertex[7].x &&
 		p.y >= _vertex[0].y && p.y < _vertex[7].y &&
@@ -11,20 +11,20 @@ inline bool Engine::Octree::checkCamInCube(const Engine::PerspCamera *cam) const
 	return false;
 }
 
-inline bool Engine::Octree::checkCamInSphere(const Engine::PerspCamera *cam) const
+inline bool Engine::Octree::checkCamInSphere(const PerspCamera &cam) const
 {
-	const GLfloat distance = glm::length(cam->getCameraPosition() - cam->getFrusSpherePosition());
+	const GLfloat distance = glm::length(cam.getCameraPosition() - cam.getFrusSpherePosition());
 
-	if (distance < _radius + cam->getFrusSphereRadius())
+	if (distance < _radius + cam.getFrusSphereRadius())
 		return true;
 	return false;
 }
 
-inline bool Engine::Octree::checkInCamFrus(const Engine::PerspCamera *cam) const
+inline bool Engine::Octree::checkInCamFrus(const PerspCamera &cam) const
 {
-	const glm::vec3 camera_position = cam->getCameraPosition();
-	const glm::vec3 forward_vector = cam->getForwardVector();
-	const GLfloat fov_2 = cam->getFOV() / 2;
+	const glm::vec3 camera_position = cam.getCameraPosition();
+	const glm::vec3 forward_vector = cam.getForwardVector();
+	const GLfloat fov_2 = cam.getFOV() / 2;
 
 	glm::vec3 position = *_position;
 	glm::vec3 direction = glm::normalize(position - camera_position);
@@ -125,7 +125,7 @@ void Engine::Octree::removeModel(Model *model)
 		(*it)->removeModel(model);
 }
 
-void Engine::Octree::getModels(PerspCamera *cam, std::set<Model *> *set_model)
+void Engine::Octree::getModels(const PerspCamera &cam, std::set<Model *> *set_model)
 {
 	if (!checkCamInCube(cam))
 	{

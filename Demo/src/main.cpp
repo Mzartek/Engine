@@ -5,21 +5,13 @@ int main(int argc, char **argv)
 	UNREFERENCED_PARAMETER(argc);
 	UNREFERENCED_PARAMETER(argv);
 
-	Engine::Renderer *renderer = new_ptr(Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE));
-	Engine::Audio *audio = new_ptr(Engine::Audio);
-	Engine::Input *input = new_ptr(Engine::Input);
-
-	Demo *demo = new_ptr(Demo(renderer, input, audio));
+	std::shared_ptr<Engine::Renderer> renderer(new Engine::Renderer("Demo OpenGL", 800, 600, GL_FALSE));
+	std::shared_ptr<Engine::Audio> audio(new Engine::Audio);
+	std::shared_ptr<Engine::Input> input(new Engine::Input);
+	
+	std::unique_ptr<Demo> demo(new Demo(renderer, input, audio));
 
 	demo->launch();
-
-	release_ptr(demo);
-
-	release_ptr(input);
-	release_ptr(audio);
-	release_ptr(renderer);
-
-	Engine::memory_state();
 
 	return 0;
 }

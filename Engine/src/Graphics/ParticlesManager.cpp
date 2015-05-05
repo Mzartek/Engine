@@ -99,16 +99,16 @@ void Engine::ParticlesManager::updateParticles(void)
 	std::swap(_vertexBuffer[0], _vertexBuffer[1]);
 }
 
-void Engine::ParticlesManager::updateParticles(DepthMap *dmap, Camera *cam)
+void Engine::ParticlesManager::updateParticles(const DepthMap &depthMap, const Camera &cam)
 {
 	glEnable(GL_RASTERIZER_DISCARD);
 
 	glUseProgram(_physicsProgram->getId());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, dmap->getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, depthMap.getIdDepthTexture());
 
-	_depth.depthMatrix = cam->getVPMatrix();
+	_depth.depthMatrix = cam.getVPMatrix();
 	_depthBuffer->updateStoreMap(&_depth);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _positionBuffer->getId());
@@ -144,14 +144,14 @@ void Engine::ParticlesManager::updateParticles(DepthMap *dmap, Camera *cam)
 	std::swap(_vertexBuffer[0], _vertexBuffer[1]);
 }
 
-void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam)
+void Engine::ParticlesManager::display(const GBuffer &gbuf, const Camera &cam)
 {
-	gbuf->setParticlesState();
+	gbuf.setParticlesState();
 
 	glUseProgram(_displayProgram->getId());
 
-	_matrix.projectionMatrix = cam->getProjectionMatrix();
-	_matrix.viewMatrix = cam->getViewMatrix();
+	_matrix.projectionMatrix = cam.getProjectionMatrix();
+	_matrix.viewMatrix = cam.getViewMatrix();
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -159,7 +159,7 @@ void Engine::ParticlesManager::display(GBuffer *gbuf, Camera *cam)
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_DEPTH_STENCIL));
 
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer[0]->getId());

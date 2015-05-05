@@ -36,33 +36,33 @@ Engine::Screen::~Screen(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Screen::background(GBuffer *gbuf) const
+void Engine::Screen::background(const GBuffer &gbuf) const
 {
-	gbuf->setBackgroundState();
+	gbuf.setBackgroundState();
 
 	glUseProgram(_backgroundProgram->getId());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_LIGHT));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_LIGHT));
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
-	gbuf->clearLight();
+	gbuf.clearLight();
 }
 
-void Engine::Screen::display(Renderer *renderer, GBuffer *gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a) const
+void Engine::Screen::display(const Renderer &renderer, const GBuffer &gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a) const
 {
-	renderer->setState();
+	renderer.setState();
 
 	glUseProgram(_directProgram->getId());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_BACKGROUND));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_BACKGROUND));
 
 	glm::vec4 color(r, g, b, a);
 	_colorBuffer->updateStoreMap(glm::value_ptr(color));

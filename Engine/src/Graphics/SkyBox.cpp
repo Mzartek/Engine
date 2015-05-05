@@ -66,11 +66,11 @@ Engine::TextureCube *Engine::SkyBox::getTexture(void) const
 	return _cubeTexture;
 }
 
-void Engine::SkyBox::display(GBuffer *gbuf, PerspCamera *cam) const
+void Engine::SkyBox::display(const GBuffer &gbuf, const PerspCamera &cam) const
 {
-	glm::mat4 pos = cam->getVPMatrix() * glm::translate(glm::vec3(cam->getCameraPosition()));
+	glm::mat4 pos = cam.getVPMatrix() * glm::translate(glm::vec3(cam.getCameraPosition()));
 
-	gbuf->setSkyboxState();
+	gbuf.setSkyboxState();
 
 	glUseProgram(_program->getId());
 

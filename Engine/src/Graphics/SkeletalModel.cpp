@@ -79,26 +79,26 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 	}
 }
 
-void Engine::SkeletalModel::display(GBuffer *gbuf, PerspCamera *cam)
+void Engine::SkeletalModel::display(const GBuffer &gbuf, const PerspCamera &cam)
 {
 	checkMatrix();
 
-	gbuf->setGeometryState();
+	gbuf.setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam->getProjectionMatrix();
-	_matrix.view = cam->getViewMatrix();
+	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
+	_matrix.projection = cam.getProjectionMatrix();
+	_matrix.view = cam.getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = cam->getCameraPosition();
-	_camera.forward = cam->getForwardVector();
-	_camera.left = cam->getLeftVector();
-	_camera.up = cam->getUpVector();
+	_camera.position = cam.getCameraPosition();
+	_camera.forward = cam.getForwardVector();
+	_camera.left = cam.getLeftVector();
+	_camera.up = cam.getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -112,26 +112,26 @@ void Engine::SkeletalModel::display(GBuffer *gbuf, PerspCamera *cam)
 		}
 }
 
-void Engine::SkeletalModel::displayTransparent(GBuffer *gbuf, PerspCamera *cam)
+void Engine::SkeletalModel::displayTransparent(const GBuffer &gbuf, const PerspCamera &cam)
 {
 	checkMatrix();
 
-	gbuf->setGeometryState();
+	gbuf.setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam->getProjectionMatrix();
-	_matrix.view = cam->getViewMatrix();
+	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
+	_matrix.projection = cam.getProjectionMatrix();
+	_matrix.view = cam.getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = cam->getCameraPosition();
-	_camera.forward = cam->getForwardVector();
-	_camera.left = cam->getLeftVector();
-	_camera.up = cam->getUpVector();
+	_camera.position = cam.getCameraPosition();
+	_camera.forward = cam.getForwardVector();
+	_camera.left = cam.getLeftVector();
+	_camera.up = cam.getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -145,17 +145,17 @@ void Engine::SkeletalModel::displayTransparent(GBuffer *gbuf, PerspCamera *cam)
 		}
 }
 
-void Engine::SkeletalModel::displayDepthMap(DepthMap *dmap, Camera *cam)
+void Engine::SkeletalModel::displayDepthMap(const DepthMap &depthMap, const Camera &cam)
 {
 	checkMatrix();
 
-	dmap->setState();
+	depthMap.setState();
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam->getProjectionMatrix();
-	_matrix.view = cam->getViewMatrix();
+	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
+	_matrix.projection = cam.getProjectionMatrix();
+	_matrix.view = cam.getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
@@ -166,7 +166,7 @@ void Engine::SkeletalModel::displayDepthMap(DepthMap *dmap, Camera *cam)
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::SkeletalModel::displayDepthMap(DepthMap *dmaps, DirLight *light)
+void Engine::SkeletalModel::displayDepthMap(const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light)
 {
 	checkMatrix();
 
@@ -177,7 +177,7 @@ void Engine::SkeletalModel::displayDepthMap(DepthMap *dmaps, DirLight *light)
 
 	for (GLuint i = 0; i < CSM_NUM; i++)
 	{
-		dmaps[i].setState();
+		array_depthMap[i]->setState();
 
 		_matrix.MVP = light->getVPMatrix(i) * *_modelMatrix;
 		_matrix.projection = light->getProjectionMatrix(i);
@@ -192,11 +192,11 @@ void Engine::SkeletalModel::displayDepthMap(DepthMap *dmaps, DirLight *light)
 	}
 }
 
-void Engine::SkeletalModel::displayDepthMap(DepthMap *dmap, SpotLight *light)
+void Engine::SkeletalModel::displayDepthMap(const DepthMap &depthMap, SpotLight *light)
 {
 	checkMatrix();
 
-	dmap->setState();
+	depthMap.setState();
 
 	glUseProgram(_smProgram->getId());
 

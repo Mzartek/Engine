@@ -11,7 +11,7 @@ private:
 public:
 	NightBox(void);
 	~NightBox(void);
-	void display(Engine::GBuffer *gbuf, Engine::PerspCamera *cam) const;
+	void display(const Engine::GBuffer &gbuf, const Engine::PerspCamera &cam) const;
 };
 
 #endif

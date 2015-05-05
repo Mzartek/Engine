@@ -8,8 +8,6 @@ Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, 
 {
 	Uint32 flags;
 
-	srand((unsigned int)time(NULL));
-
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cerr << "Error init SDL: " << SDL_GetError() << std::endl;

@@ -97,34 +97,34 @@ GLfloat Engine::SpotLight::getMaxDistance(void) const
 	return _lightInfo.maxDistance;
 }
 
-void Engine::SpotLight::position(DepthMap *dmap)
+void Engine::SpotLight::position(const DepthMap &depthMap)
 {
-	*_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)dmap->getWidth() / dmap->getHeight(), 0.1f, _lightInfo.maxDistance);
+	*_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)depthMap.getWidth() / depthMap.getHeight(), 0.1f, _lightInfo.maxDistance);
 	*_viewMatrix = glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
 	*_VPMatrix = *_projectionMatrix * *_viewMatrix;
 
 	_lightInfo.shadowMatrix = *_VPMatrix;
 }
 
-void Engine::SpotLight::display(GBuffer *gbuf, PerspCamera *cam)
+void Engine::SpotLight::display(const GBuffer &gbuf, const PerspCamera &cam)
 {
-	gbuf->setLightState();
+	gbuf.setLightState();
 
 	glUseProgram(_program->getId());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_NORMAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_DEPTH_STENCIL));
 
-	_mainInfo.IVPMatrix = cam->getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.IVPMatrix = cam.getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf.getWidth(), gbuf.getHeight());
+	_mainInfo.camPosition = cam.getCameraPosition();
 	_mainInfo.withShadowMapping = GL_FALSE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
@@ -138,29 +138,29 @@ void Engine::SpotLight::display(GBuffer *gbuf, PerspCamera *cam)
 	glBindVertexArray(0);
 }
 
-void Engine::SpotLight::display(GBuffer *gbuf, DepthMap *dmap, PerspCamera *cam)
+void Engine::SpotLight::display(const GBuffer &gbuf, const DepthMap &depthMap, const PerspCamera &cam)
 {
-	gbuf->setLightState();
+	gbuf.setLightState();
 
 	glUseProgram(_program->getId());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_NORMAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_DEPTH_STENCIL));
 
 	// ShadowMap
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, dmap->getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, depthMap.getIdDepthTexture());
 
-	_mainInfo.IVPMatrix = cam->getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	_mainInfo.camPosition = cam->getCameraPosition();
+	_mainInfo.IVPMatrix = cam.getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf.getWidth(), gbuf.getHeight());
+	_mainInfo.camPosition = cam.getCameraPosition();
 	_mainInfo.withShadowMapping = GL_TRUE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);

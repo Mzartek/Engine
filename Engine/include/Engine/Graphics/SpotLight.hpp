@@ -33,9 +33,9 @@ namespace Engine
 		glm::vec3 getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
 		GLfloat getMaxDistance(void) const;
-		void position(DepthMap *dmap);
-		void display(GBuffer *gbuf, PerspCamera *cam);
-		void display(GBuffer *gbuf, DepthMap *dmap, PerspCamera *cam);
+		void position(const DepthMap &depthMap);
+		void display(const GBuffer &gbuf, const PerspCamera &cam);
+		void display(const GBuffer &gbuf, const DepthMap &depthMap, const PerspCamera &cam);
 	};
 }
 

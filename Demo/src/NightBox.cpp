@@ -23,7 +23,7 @@ NightBox::~NightBox(void)
 	release_ptr(_skybox);
 }
 
-void NightBox::display(Engine::GBuffer *gbuf, Engine::PerspCamera *cam) const
+void NightBox::display(const Engine::GBuffer &gbuf, const Engine::PerspCamera &cam) const
 {
 	_skybox->display(gbuf, cam);
 }

@@ -33,11 +33,11 @@ namespace Engine
 		~SkeletalModel(void);
 		void loadFromFile(const GLchar *inFile, const GLchar *node_name = NULL);
 
-		void display(GBuffer *g, PerspCamera *cam);
-		void displayTransparent(GBuffer *gbuf, PerspCamera *cam);
-		void displayDepthMap(DepthMap *dmap, Camera *cam);
-		void displayDepthMap(DepthMap *dmaps, DirLight *light);
-		void displayDepthMap(DepthMap *dmap, SpotLight *light);
+		void display(const GBuffer &gbuf, const PerspCamera &cam);
+		void displayTransparent(const GBuffer &gbuf, const PerspCamera &cam);
+		void displayDepthMap(const DepthMap &depthMap, const Camera &cam);
+		void displayDepthMap(const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light);
+		void displayDepthMap(const DepthMap &depthMap, SpotLight *light);
 	};
 }
 

@@ -1,14 +1,14 @@
 #include "Demo.hpp"
 
-Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
+Demo::Demo(std::shared_ptr<Engine::Renderer> r, std::shared_ptr<Engine::Input> i, std::shared_ptr<Engine::Audio> a)
 {
 	renderer = r;
 	input = i;
 	audio = a;
 
-	gBuffer = new_ptr(Engine::GBuffer);
-	dMaps = new_ptr_tab(Engine::DepthMap, 3);
-	camera = new_ptr(Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0));
+	gBuffer = std::unique_ptr<Engine::GBuffer>(new Engine::GBuffer);
+	array_depthMap = std::unique_ptr<std::array<std::unique_ptr<Engine::DepthMap>, 3>>(new std::array<std::unique_ptr < Engine::DepthMap >, 3>);
+	camera = std::unique_ptr<Engine::FreeCam>(new Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0));
 
 	octree = new_ptr(Engine::Octree(4, glm::vec3(0, 0, 0), 1000));
 
@@ -26,9 +26,13 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 
 	// GBuffer config
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
-	dMaps[0].config(2048, 2048);
-	dMaps[1].config(2048, 2048);
-	dMaps[2].config(2048, 2048);
+
+	for (GLuint i = 0; i < CSM_NUM; i++)
+	{
+		Engine::DepthMap *depthMap = new Engine::DepthMap;
+		depthMap->config(2048, 2048);
+		(*array_depthMap)[i] = std::unique_ptr<Engine::DepthMap>(depthMap);
+	}
 
 	// Camera config
 	camera->setCameraPosition(glm::vec3(30, 5, 0));
@@ -64,7 +68,7 @@ Demo::Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a)
 	// Text config
 	textDisplay->getText()->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
 		renderer->getWidth() / 10, renderer->getHeight() / 10,
-		renderer, "test");
+		*renderer, "test");
 
 	rainEffect->getSound()->setGain(0.10f);
 	rainEffect->getSound()->setPitch(1.0f);
@@ -96,10 +100,6 @@ Demo::~Demo(void)
 	release_ptr(tree);
 	release_ptr(nightBox);
 	release_ptr(octree);
-
-	release_ptr(camera);
-	release_ptr(dMaps);
-	release_ptr(gBuffer);
 }
 
 void Demo::display(GLfloat state)
@@ -116,47 +116,45 @@ void Demo::display(GLfloat state)
 
 	// We retrieve object to display from the octree
 	object.clear();
-	octree->getModels(camera, &object);
+	octree->getModels(*camera, &object);
 
 	// Clear Buffers
 	renderer->clear();
 	gBuffer->clear();
 
-	nightBox->display(gBuffer, camera);
+	nightBox->display(*gBuffer, *camera);
 
 	// Opaque Object
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
-		(*it)->display(gBuffer, camera);
+		(*it)->display(*gBuffer, *camera);
 
-	dMaps[0].clear();
-	dMaps[1].clear();
-	dMaps[2].clear();
+	for (GLuint i = 0; i < CSM_NUM; i++) (*array_depthMap)[i]->clear();
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
-		(*it)->displayDepthMap(dMaps, moon_light);
-	moon_light->display(gBuffer, dMaps, camera);
+		(*it)->displayDepthMap(*array_depthMap, moon_light);
+	moon_light->display(*gBuffer, *array_depthMap, *camera);
 
-	dMaps[0].clear();
+	(*array_depthMap)[0]->clear();
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
-		(*it)->displayDepthMap(dMaps, torch_light);
-	torch_light->display(gBuffer, dMaps, camera);
+		(*it)->displayDepthMap(*(*array_depthMap)[0], torch_light);
+	torch_light->display(*gBuffer, *(*array_depthMap)[0], *camera);
 
-	screen_display->background(gBuffer);
+	screen_display->background(*gBuffer);
 
 	// Transparent Object
 	for (std::set<Engine::Model *>::iterator it = object.begin(); it != object.end(); it++)
-		(*it)->displayTransparent(gBuffer, camera);
-	moon_light->display(gBuffer, camera);
-	torch_light->display(gBuffer, camera);
+		(*it)->displayTransparent(*gBuffer, *camera);
+	moon_light->display(*gBuffer, *camera);
+	torch_light->display(*gBuffer, *camera);
 
-	screen_display->background(gBuffer);
+	screen_display->background(*gBuffer);
 
 	// Particles
-	rain_particles->display(gBuffer, camera);
-	smoke_particles->display(gBuffer, camera);
+	rain_particles->display(*gBuffer, *camera);
+	smoke_particles->display(*gBuffer, *camera);
 
-	screen_display->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+	screen_display->display(*renderer, *gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
-	text_display->display(renderer);
+	text_display->display(*renderer);
 }
 
 void Demo::idle(long long time)
@@ -196,7 +194,7 @@ void Demo::idle(long long time)
 	camUp = camera->getUpVector();
 
 	moon_light->position(camPosition, 100, 250, 500);
-	torch_light->position(dMaps);
+	torch_light->position(*(*array_depthMap)[0]);
 
 	rain_particles->setPosition(camPosition);
 

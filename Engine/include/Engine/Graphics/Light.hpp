@@ -34,8 +34,7 @@ namespace Engine
 	public:
 		Light(ShaderProgram *program);
 		~Light(void);
-		virtual void display(GBuffer *gbuf, PerspCamera *cam) = 0;
-		virtual void display(GBuffer *gbuf, DepthMap *dmap, PerspCamera *cam) = 0;
+		virtual void display(const GBuffer &gbuf, const PerspCamera &cam) = 0;
 	};
 }
 

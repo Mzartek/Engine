@@ -34,7 +34,8 @@
 #include <map>
 #include <string>
 #include <algorithm>
-#include <ctime>
+#include <memory>
+#include <array>
 
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>

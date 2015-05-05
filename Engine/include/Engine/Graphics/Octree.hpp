@@ -22,9 +22,9 @@ namespace Engine
 
 		std::vector<Octree *> *_children;
 
-		bool checkCamInCube(const Engine::PerspCamera *cam) const;
-		bool checkCamInSphere(const Engine::PerspCamera *cam) const;
-		bool checkInCamFrus(const Engine::PerspCamera *cam) const;
+		bool checkCamInCube(const Engine::PerspCamera &cam) const;
+		bool checkCamInSphere(const Engine::PerspCamera &cam) const;
+		bool checkInCamFrus(const Engine::PerspCamera &cam) const;
 
 	public:
 		Octree(const GLuint &depth, const glm::vec3 &position, const GLfloat &dim);
@@ -32,7 +32,7 @@ namespace Engine
 
 		bool addModel(Model *model, const GLfloat &dim);
 		void removeModel(Model *model);
-		void getModels(PerspCamera *cam, std::set<Model *> *set_model);
+		void getModels(const PerspCamera &cam, std::set<Model *> *set_model);
 	};
 }
 #endif

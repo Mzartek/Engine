@@ -31,7 +31,7 @@ namespace Engine
 			const GLchar *posy, const GLchar *negy,
 			const GLchar *posz, const GLchar *negz) const;
 		TextureCube *getTexture(void) const;
-		void display(GBuffer *gbuf, PerspCamera *cam) const;
+		void display(const GBuffer &gbuf, const PerspCamera &cam) const;
 	};
 }
 

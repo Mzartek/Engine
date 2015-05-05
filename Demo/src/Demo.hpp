@@ -26,13 +26,13 @@ class Demo : public Engine::GameLoop
 {
 private:
 	// System
-	Engine::Renderer *renderer;
-	Engine::Input *input;
-	Engine::Audio *audio;
+	std::shared_ptr<Engine::Renderer> renderer;
+	std::shared_ptr<Engine::Input> input;
+	std::shared_ptr<Engine::Audio> audio;
 
-	Engine::GBuffer *gBuffer;
-	Engine::DepthMap *dMaps;
-	Engine::FreeCam *camera;
+	std::unique_ptr<Engine::GBuffer> gBuffer;
+	std::unique_ptr<std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM>> array_depthMap;
+	std::unique_ptr<Engine::FreeCam> camera;
 
 	Engine::Octree *octree;
 
@@ -49,7 +49,7 @@ private:
 	ScreenDisplay *screenDisplay;
 
 public:
-	Demo(Engine::Renderer *r, Engine::Input *i, Engine::Audio *a);
+	Demo(std::shared_ptr<Engine::Renderer> r, std::shared_ptr<Engine::Input> i, std::shared_ptr<Engine::Audio> a);
 	~Demo(void);
 	void display(GLfloat state);
 	void idle(long long time);
