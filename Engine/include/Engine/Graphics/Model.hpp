@@ -76,7 +76,7 @@ namespace Engine
 		virtual void display(const GBuffer &gbuf, const PerspCamera &cam) = 0;
 		virtual void displayTransparent(const GBuffer &gbuf, const PerspCamera &cam) = 0;
 		virtual void displayDepthMap(const DepthMap &depthMap, const Camera &cam) = 0;
-		virtual void displayDepthMap(const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light) = 0;
+		virtual void displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light) = 0;
 		virtual void displayDepthMap(const DepthMap &depthMap, SpotLight *light) = 0;
 	};
 }

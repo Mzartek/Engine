@@ -6,12 +6,12 @@
 class MoonLight
 {
 private:
-	Engine::ShaderProgram *_dirLightProgram;
-	Engine::DirLight *_light;
+	std::shared_ptr<Engine::ShaderProgram> _dirLightProgram;
+	std::shared_ptr<Engine::DirLight> _light;
 public:
 	MoonLight(void);
 	~MoonLight(void);
-	Engine::DirLight *getLight(void) const;
+	const std::shared_ptr<Engine::DirLight> &getLight(void) const;
 };
 
 #endif

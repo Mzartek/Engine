@@ -62,9 +62,6 @@ namespace Engine
 {
 	class DLLAPI Object
 	{
-	protected:
-		std::set<Object *> *_tObject;
-
 	public:
 		Object(void);
 		virtual ~Object(void);

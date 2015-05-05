@@ -6,13 +6,13 @@
 class ArmySoldier
 {
 private:
-	Engine::ShaderProgram *_objectProgram;
-	Engine::ShaderProgram *_depthMapProgram;
-	Engine::SkeletalModel *_model;
+	std::shared_ptr<Engine::ShaderProgram> _objectProgram;
+	std::shared_ptr<Engine::ShaderProgram> _depthMapProgram;
+	std::shared_ptr<Engine::SkeletalModel> _model;
 public:
 	ArmySoldier(void);
 	~ArmySoldier(void);
-	Engine::SkeletalModel *getModel(void) const;
+	const std::shared_ptr<Engine::SkeletalModel> &getModel(void) const;
 };
 
 #endif

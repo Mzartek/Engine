@@ -7,16 +7,16 @@
 class RainEffect
 {
 private:
-	Engine::ShaderProgram *_physicsRainProgram;
-	Engine::ShaderProgram *_displayRainProgram;
-	Engine::ParticlesManager *_rainManager;
-	Engine::Sound *_rain_sound;
+	std::shared_ptr<Engine::ShaderProgram> _physicsRainProgram;
+	std::shared_ptr<Engine::ShaderProgram> _displayRainProgram;
+	std::shared_ptr<Engine::ParticlesManager> _rainManager;
+	std::shared_ptr<Engine::Sound> _rain_sound;
 public:
 	RainEffect(void);
 	~RainEffect(void);
-	void init(const glm::vec3 &position, const unsigned int &numParticles) const;
-	Engine::ParticlesManager *getParticlesManager(void) const;
-	Engine::Sound *getSound(void) const;
+	void init(const std::shared_ptr<glm::vec3> &position, GLuint numParticles) const;
+	const std::shared_ptr<Engine::ParticlesManager> &getParticlesManager(void) const;
+	const std::shared_ptr<Engine::Sound> &getSound(void) const;
 };
 
 #endif

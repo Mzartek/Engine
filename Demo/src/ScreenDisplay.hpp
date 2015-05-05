@@ -6,13 +6,13 @@
 class ScreenDisplay
 {
 private:
-	Engine::ShaderProgram *_backgroundProgram;
-	Engine::ShaderProgram *_screenProgram;
-	Engine::Screen *_screen;
+	std::shared_ptr<Engine::ShaderProgram> _backgroundProgram;
+	std::shared_ptr<Engine::ShaderProgram> _screenProgram;
+	std::shared_ptr<Engine::Screen> _screen;
 public:
 	ScreenDisplay(void);
 	~ScreenDisplay(void);
-	Engine::Screen *getScreen(void) const;
+	const std::shared_ptr<Engine::Screen> &getScreen(void) const;
 };
 
 #endif

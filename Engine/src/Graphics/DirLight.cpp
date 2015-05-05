@@ -125,7 +125,7 @@ void Engine::DirLight::display(const GBuffer &gbuf, const PerspCamera &cam)
 	glBindVertexArray(0);
 }
 
-void Engine::DirLight::display(const GBuffer &gbuf, const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, const PerspCamera &cam)
+void Engine::DirLight::display(const GBuffer &gbuf, const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, const PerspCamera &cam)
 {
 	gbuf.setLightState();
 

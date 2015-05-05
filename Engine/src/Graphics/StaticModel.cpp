@@ -144,7 +144,7 @@ void Engine::StaticModel::displayDepthMap(const DepthMap &depthMap, const Camera
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::StaticModel::displayDepthMap(const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light)
+void Engine::StaticModel::displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light)
 {
 	checkMatrix();
 

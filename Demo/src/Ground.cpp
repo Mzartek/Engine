@@ -2,24 +2,24 @@
 
 Ground::Ground(void)
 {
-	_objectProgram = new_ptr(Engine::ShaderProgram(
+	_objectProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
 		"../share/Demo/shader/object/objectVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/object/objectGeom.glsl",
 		"../share/Demo/shader/object/objectFrag.glsl"));
 
-	_depthMapProgram = new_ptr(Engine::ShaderProgram(
+	_depthMapProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
 		"../share/Demo/shader/depthMap/depthMapVert.glsl",
 		NULL,
 		NULL,
 		NULL,
 		"../share/Demo/shader/depthMap/depthMapFrag.glsl"));
 
-	_texture = new_ptr(Engine::Texture2D);
-	_material = new_ptr(Engine::Material);
-	_mesh = new_ptr(Engine::StaticMesh);
-	_model = new_ptr(Engine::StaticModel(_objectProgram, _depthMapProgram));
+	_texture = std::shared_ptr<Engine::Texture2D>(new Engine::Texture2D);
+	_material = std::shared_ptr<Engine::Material>(new Engine::Material);
+	_mesh = std::shared_ptr<Engine::StaticMesh>(new Engine::StaticMesh);
+	_model = std::shared_ptr<Engine::StaticModel>(new Engine::StaticModel(_objectProgram, _depthMapProgram));
 
 	_texture->loadFromFile("../share/Demo/resources/textures/feuilles.png");
 	_material->setDiffuseTexture(_texture);
@@ -46,15 +46,9 @@ Ground::Ground(void)
 
 Ground::~Ground(void)
 {
-	release_ptr(_objectProgram);
-	release_ptr(_depthMapProgram);
-	release_ptr(_texture);
-	release_ptr(_material);
-	release_ptr(_mesh);
-	release_ptr(_model);
 }
 
-Engine::StaticModel *Ground::getModel(void) const
+const std::shared_ptr<Engine::StaticModel> &Ground::getModel(void) const
 {
 	return _model;
 }

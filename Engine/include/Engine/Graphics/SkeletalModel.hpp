@@ -36,7 +36,7 @@ namespace Engine
 		void display(const GBuffer &gbuf, const PerspCamera &cam);
 		void displayTransparent(const GBuffer &gbuf, const PerspCamera &cam);
 		void displayDepthMap(const DepthMap &depthMap, const Camera &cam);
-		void displayDepthMap(const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light);
+		void displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light);
 		void displayDepthMap(const DepthMap &depthMap, SpotLight *light);
 	};
 }

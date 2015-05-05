@@ -82,10 +82,9 @@ std::vector<GLuint> Engine::AssimpTool::loadIndices(const aiMesh *mesh)
 	return indices;
 }
 
-Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, const std::string &dir, std::set<Engine::Object *> *tObject)
+std::shared_ptr<Engine::Material> Engine::AssimpTool::loadMaterial(const aiMaterial *material, const std::string &dir)
 {
-	Material *newMaterial = new_ptr(Material);
-	tObject->insert(newMaterial);
+	std::shared_ptr<Material> newMaterial = std::shared_ptr<Material>(new Material);
 
 	const aiTextureType _textureType[] = {
 		aiTextureType_DIFFUSE, aiTextureType_SPECULAR,
@@ -102,8 +101,7 @@ Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, c
 		if (material->GetTexture(_textureType[i], 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string filePath = dir + path.C_Str();
-			Texture2D *newTexture = new_ptr(Texture2D);
-			tObject->insert(newTexture);
+			std::shared_ptr<Texture2D> newTexture = std::shared_ptr<Texture2D>(new Texture2D);
 
 			newTexture->loadFromFile(filePath.c_str());
 
@@ -148,16 +146,16 @@ Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, c
 	aiColor4D tmp;
 
 	material->Get(AI_MATKEY_COLOR_DIFFUSE, tmp);
-	newMaterial->setDiffuse(glm::vec3(tmp.r, tmp.g, tmp.b));
+	newMaterial->setDiffuse(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
 
 	material->Get(AI_MATKEY_COLOR_SPECULAR, tmp);
-	newMaterial->setSpecular(glm::vec3(tmp.r, tmp.g, tmp.b));
+	newMaterial->setSpecular(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
 
 	material->Get(AI_MATKEY_COLOR_AMBIENT, tmp);
-	newMaterial->setAmbient(glm::vec3(tmp.r, tmp.g, tmp.b));
+	newMaterial->setAmbient(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
 
 	material->Get(AI_MATKEY_COLOR_EMISSIVE, tmp);
-	newMaterial->setEmissive(glm::vec3(tmp.r, tmp.g, tmp.b));
+	newMaterial->setEmissive(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
 
 	material->Get(AI_MATKEY_SHININESS, tmp);
 	newMaterial->setShininess(tmp.r);
@@ -168,10 +166,10 @@ Engine::Material *Engine::AssimpTool::loadMaterial(const aiMaterial *material, c
 	return newMaterial;
 }
 
-Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name, std::set<Object *> *tObject)
+std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name)
 {
 	aiNode *root_node, *tmp_node0, *tmp_node1;
-	Skeleton *root_skeleton, *tmp_skeleton0, *tmp_skeleton1;
+	std::shared_ptr<Skeleton> root_skeleton, tmp_skeleton0, tmp_skeleton1;
 	aiMatrix4x4 tmp_matrix;
 
 	if (name != NULL)
@@ -181,11 +179,10 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 
 	if (root_node == NULL) throw std::exception();
 
-	root_skeleton = new_ptr(Skeleton(std::string(root_node->mName.C_Str())));
-	tObject->insert(root_skeleton);
+	root_skeleton = std::shared_ptr<Skeleton>(new Skeleton(std::string(root_node->mName.C_Str())));
 
 	std::queue<aiNode *> queue0;
-	std::queue<Skeleton *> queue1;
+	std::queue<std::shared_ptr<Skeleton>> queue1;
 
 	queue0.push(root_node);
 	queue1.push(root_skeleton);
@@ -201,7 +198,7 @@ Engine::Skeleton *Engine::AssimpTool::loadSkeleton(const aiScene *scene, const G
 		for (GLuint i = 0; i < tmp_node0->mNumChildren; i++)
 		{
 			tmp_node1 = tmp_node0->mChildren[i];
-			tmp_skeleton1 = new_ptr(Skeleton(std::string(tmp_node1->mName.C_Str())));
+			tmp_skeleton1 = std::shared_ptr<Skeleton>(new Skeleton(std::string(tmp_node1->mName.C_Str())));
 
 			tmp_skeleton0->children.push_back(tmp_skeleton1);
 			tmp_skeleton1->parent = tmp_skeleton1;

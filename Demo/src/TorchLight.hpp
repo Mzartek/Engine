@@ -6,12 +6,12 @@
 class TorchLight
 {
 private:
-	Engine::ShaderProgram *_spotLightProgram;
-	Engine::SpotLight *_light;
+	std::shared_ptr<Engine::ShaderProgram> _spotLightProgram;
+	std::shared_ptr<Engine::SpotLight> _light;
 public:
 	TorchLight(void);
 	~TorchLight(void);
-	Engine::SpotLight *getLight(void) const;
+	const std::shared_ptr<Engine::SpotLight> &getLight(void) const;
 };
 
 #endif

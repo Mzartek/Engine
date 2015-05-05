@@ -20,7 +20,7 @@ GLuint Engine::Buffer::getId(void) const
 	return _idBuffer;
 }
 
-void Engine::Buffer::createStore(const GLenum &target, const GLvoid *data, const GLsizeiptr &size, const GLenum &usage)
+void Engine::Buffer::createStore(GLenum target, const GLvoid *data, GLsizeiptr size, GLenum usage)
 {
 	_target = target;
 	_size = size;

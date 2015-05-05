@@ -166,7 +166,7 @@ void Engine::SkeletalModel::displayDepthMap(const DepthMap &depthMap, const Came
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::SkeletalModel::displayDepthMap(const std::array<std::unique_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light)
+void Engine::SkeletalModel::displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light)
 {
 	checkMatrix();
 

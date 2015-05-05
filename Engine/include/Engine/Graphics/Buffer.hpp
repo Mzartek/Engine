@@ -17,7 +17,7 @@ namespace Engine
 		~Buffer(void);
 		GLenum getTarget(void) const;
 		GLuint getId(void) const;
-		void createStore(const GLenum &target, const GLvoid *data, const GLsizeiptr &size, const GLenum &usage);
+		void createStore(GLenum target, const GLvoid *data, GLsizeiptr size, GLenum usage);
 		void updateStoreSub(const GLvoid *data) const;
 		void updateStoreMap(const GLvoid *data) const;
 	};

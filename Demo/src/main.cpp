@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 	std::shared_ptr<Engine::Audio> audio(new Engine::Audio);
 	std::shared_ptr<Engine::Input> input(new Engine::Input);
 	
-	std::unique_ptr<Demo> demo(new Demo(renderer, input, audio));
+	std::shared_ptr<Demo> demo(new Demo(renderer, input, audio));
 
 	demo->launch();
 

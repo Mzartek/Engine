@@ -6,13 +6,13 @@
 class Tree
 {
 private:
-	Engine::ShaderProgram *_objectProgram;
-	Engine::ShaderProgram *_depthMapProgram;
-	Engine::StaticModel *_model;
+	std::shared_ptr<Engine::ShaderProgram> _objectProgram;
+	std::shared_ptr<Engine::ShaderProgram> _depthMapProgram;
+	std::shared_ptr<Engine::StaticModel> _model;
 public:
 	Tree(void);
 	~Tree(void);
-	Engine::StaticModel *getModel(void) const;
+	const std::shared_ptr<Engine::StaticModel> &getModel(void) const;
 };
 
 #endif

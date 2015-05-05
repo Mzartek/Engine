@@ -2,14 +2,14 @@
 
 NightBox::NightBox(void)
 {
-	_skyboxProgram = new_ptr(Engine::ShaderProgram(
+	_skyboxProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
 		"../share/Demo/shader/skybox/skyboxVert.glsl",
 		NULL,
 		NULL,
 		NULL,
 		"../share/Demo/shader/skybox/skyboxFrag.glsl"));
 
-	_skybox = new_ptr(Engine::SkyBox(_skyboxProgram));
+	_skybox = std::shared_ptr<Engine::SkyBox>(new Engine::SkyBox(_skyboxProgram));
 
 	_skybox->load(
 		"../share/Demo/resources/textures/skybox/nnksky01_right.jpg", "../share/Demo/resources/textures/skybox/nnksky01_left.jpg",
@@ -19,11 +19,9 @@ NightBox::NightBox(void)
 
 NightBox::~NightBox(void)
 {
-	release_ptr(_skyboxProgram);
-	release_ptr(_skybox);
 }
 
-void NightBox::display(const Engine::GBuffer &gbuf, const Engine::PerspCamera &cam) const
+void NightBox::display(const std::shared_ptr<Engine::GBuffer> &gbuf, const std::shared_ptr<Engine::PerspCamera> &cam) const
 {
 	_skybox->display(gbuf, cam);
 }

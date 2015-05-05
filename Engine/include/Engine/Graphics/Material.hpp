@@ -36,59 +36,64 @@ namespace Engine
 			GLint hasLightMap;
 		} _state;
 
-		Buffer *_matBuffer;
-		Buffer *_stateBuffer;
+		std::shared_ptr<Buffer> _matBuffer;
+		std::shared_ptr<Buffer> _stateBuffer;
+
+		std::shared_ptr<glm::vec3> _diffuseMaterial;
+		std::shared_ptr<glm::vec3> _specularMaterial;
+		std::shared_ptr<glm::vec3> _ambientMaterial;
+		std::shared_ptr<glm::vec3> _emissiveMaterial;
 		
-		Texture2D *_diffuseTexture;
-		Texture2D *_specularTexture;
-		Texture2D *_ambientTexture;
-		Texture2D *_emissiveTexture;
-		Texture2D *_shininessTexture;
-		Texture2D *_opacityTexture;
-		Texture2D *_bumpMap;
-		Texture2D *_normalMap;
-		Texture2D *_displacementMap;
-		Texture2D *_lightMap;
+		std::shared_ptr<Texture2D> _diffuseTexture;
+		std::shared_ptr<Texture2D> _specularTexture;
+		std::shared_ptr<Texture2D> _ambientTexture;
+		std::shared_ptr<Texture2D> _emissiveTexture;
+		std::shared_ptr<Texture2D> _shininessTexture;
+		std::shared_ptr<Texture2D> _opacityTexture;
+		std::shared_ptr<Texture2D> _bumpMap;
+		std::shared_ptr<Texture2D> _normalMap;
+		std::shared_ptr<Texture2D> _displacementMap;
+		std::shared_ptr<Texture2D> _lightMap;
 
 	public:
 		Material(void);
 		~Material(void);
 
-		void setDiffuse(const glm::vec3 &color);
-		void setSpecular(const glm::vec3 &color);
-		void setAmbient(const glm::vec3 &color);
-		void setEmissive(const glm::vec3 &color);
-		void setShininess(const GLfloat &shininess);
-		void setOpacity(const GLfloat &opacity);
+		void setDiffuse(const std::shared_ptr<glm::vec3> &color);
+		void setSpecular(const std::shared_ptr<glm::vec3> &color);
+		void setAmbient(const std::shared_ptr<glm::vec3> &color);
+		void setEmissive(const std::shared_ptr<glm::vec3> &color);
+		void setShininess(GLfloat shininess);
+		void setOpacity(GLfloat opacity);
 
-		void setDiffuseTexture(Texture2D *tex);
-		void setSpecularTexture(Texture2D *tex);
-		void setAmbientTexture(Texture2D *tex);
-		void setEmissiveTexture(Texture2D *tex);
-		void setShininessTexture(Texture2D *tex);
-		void setOpacityTexture(Texture2D *tex);
-		void setBumpMap(Texture2D *map);
-		void setNormalMap(Texture2D *map);
-		void setDisplacementMap(Texture2D *map);
-		void setLightMap(Texture2D *map);
+		void setDiffuseTexture(const std::shared_ptr<Texture2D> &tex);
+		void setSpecularTexture(const std::shared_ptr<Texture2D> &tex);
+		void setAmbientTexture(const std::shared_ptr<Texture2D> &tex);
+		void setEmissiveTexture(const std::shared_ptr<Texture2D> &tex);
+		void setShininessTexture(const std::shared_ptr<Texture2D> &tex);
+		void setOpacityTexture(const std::shared_ptr<Texture2D> &tex);
+		void setBumpMap(const std::shared_ptr<Texture2D> &tex);
+		void setNormalMap(const std::shared_ptr<Texture2D> &tex);
+		void setDisplacementMap(const std::shared_ptr<Texture2D> &tex);
+		void setLightMap(const std::shared_ptr<Texture2D> &tex);
 
-		glm::vec3 getDiffuse(void) const;
-		glm::vec3 getSpecular(void) const;
-		glm::vec3 getAmbient(void) const;
-		glm::vec3 getEmissive(void) const;
+		const std::shared_ptr<glm::vec3> &getDiffuse(void) const;
+		const std::shared_ptr<glm::vec3> &getSpecular(void) const;
+		const std::shared_ptr<glm::vec3> &getAmbient(void) const;
+		const std::shared_ptr<glm::vec3> &getEmissive(void) const;
 		GLfloat getShininess(void) const;
 		GLfloat getOpacity(void) const;
 		
-		Texture2D *getDiffuseTexture(void) const;
-		Texture2D *getSpecularTexture(void) const;
-		Texture2D *getAmbientTexture(void) const;
-		Texture2D *getEmissiveTexture(void) const;
-		Texture2D *getShininessTexture(void) const;
-		Texture2D *getOpacityTexture(void) const;
-		Texture2D *getBumpMap(void) const;
-		Texture2D *getNormalMap(void) const;
-		Texture2D *getDisplacementMap(void) const;
-		Texture2D *getLightMap(void) const;
+		const std::shared_ptr<Texture2D> &getDiffuseTexture(void) const;
+		const std::shared_ptr<Texture2D> &getSpecularTexture(void) const;
+		const std::shared_ptr<Texture2D> &getAmbientTexture(void) const;
+		const std::shared_ptr<Texture2D> &getEmissiveTexture(void) const;
+		const std::shared_ptr<Texture2D> &getShininessTexture(void) const;
+		const std::shared_ptr<Texture2D> &getOpacityTexture(void) const;
+		const std::shared_ptr<Texture2D> &getBumpMap(void) const;
+		const std::shared_ptr<Texture2D> &getNormalMap(void) const;
+		const std::shared_ptr<Texture2D> &getDisplacementMap(void) const;
+		const std::shared_ptr<Texture2D> &getLightMap(void) const;
 
 		GLboolean hasDiffuseTexture(void) const;
 		GLboolean hasSpecularTexture(void) const;
