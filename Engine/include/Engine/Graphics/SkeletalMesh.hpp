@@ -22,8 +22,8 @@ namespace Engine
 
 		SkeletalMesh(void);
 		~SkeletalMesh(void); 
-		void load(const GLsizei &numVertex, const Vertex *vertexArray, const GLsizei &numIndex, const GLuint *indexArray);
-		void load(std::vector<Vertex> vertices, std::vector<GLuint> indices);
+		void load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray);
+		void load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices);
 
 		MeshType getType(void) const;
 	};

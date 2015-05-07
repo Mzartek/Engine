@@ -2,27 +2,25 @@
 
 Engine::OrthoCamera::OrthoCamera(void)
 {
-	_position = new_ptr(glm::vec3);
-	_direction = new_ptr(glm::vec3);
+	_position = std::shared_ptr<glm::vec3>(new glm::vec3);
+	_direction = std::shared_ptr<glm::vec3>(new glm::vec3);
 }
 
 Engine::OrthoCamera::~OrthoCamera(void)
 {
-	release_ptr(_position);
-	release_ptr(_direction);
 }
 
-void Engine::OrthoCamera::setPosition(const glm::vec3 &pos) const
+void Engine::OrthoCamera::setPosition(const std::shared_ptr<glm::vec3> &pos)
 {
-	*_position = pos;
+	*_position = *pos;
 }
 
-void Engine::OrthoCamera::setDirection(const glm::vec3 &dir) const
+void Engine::OrthoCamera::setDirection(const std::shared_ptr<glm::vec3> &dir)
 {
-	*_direction = dir;
+	*_direction = *dir;
 }
 
-void Engine::OrthoCamera::setOrthogonal(const GLfloat &left, const GLfloat &right, const GLfloat &bottom, const GLfloat &top, const GLfloat &zNear, const GLfloat &zFar)
+void Engine::OrthoCamera::setOrthogonal(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar)
 {
 	*_projectionMatrix = glm::ortho(left, right, bottom, top, zNear, zFar);
 

@@ -10,7 +10,7 @@ Engine::FrameBuffer::~FrameBuffer(void)
 	glDeleteFramebuffers(1, &_idFBO);
 }
 
-void Engine::FrameBuffer::config(const GLuint &width, const GLuint &height)
+void Engine::FrameBuffer::config(GLuint width, GLuint height)
 {
 	_width = width;
 	_height = height;

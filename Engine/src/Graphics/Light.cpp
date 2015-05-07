@@ -1,11 +1,11 @@
 #include <Engine/Graphics/Light.hpp>
 
-Engine::Light::Light(ShaderProgram *program)
+Engine::Light::Light(std::shared_ptr<ShaderProgram> program)
 	: _program(program)
 {
-	_vertexBuffer = new_ptr(Buffer);
-	_mainInfoBuffer = new_ptr(Buffer);
-	_lightInfoBuffer = new_ptr(Buffer);
+	_vertexBuffer = std::shared_ptr<ShaderProgram>(new Buffer);
+	_mainInfoBuffer = std::shared_ptr<ShaderProgram>(new Buffer);
+	_lightInfoBuffer = std::shared_ptr<ShaderProgram>(new Buffer);
 
 	GLfloat vertex[] =
 	{
@@ -20,7 +20,4 @@ Engine::Light::Light(ShaderProgram *program)
 
 Engine::Light::~Light(void)
 {
-	release_ptr(_vertexBuffer);
-	release_ptr(_mainInfoBuffer);
-	release_ptr(_lightInfoBuffer);
 }

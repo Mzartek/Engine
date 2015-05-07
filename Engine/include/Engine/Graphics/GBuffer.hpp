@@ -19,8 +19,8 @@ namespace Engine
 	public:
 		GBuffer(void);
 		~GBuffer(void);
-		void config(const GLuint &width, const GLuint &height);
-		GLuint getIdTexture(const GLuint &num) const;
+		void config(GLuint width, GLuint height);
+		GLuint getIdTexture(GLuint num) const;
 		void setSkyboxState(void) const;
 		void setGeometryState(void) const;
 		void setLightState(void) const;

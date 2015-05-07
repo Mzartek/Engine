@@ -4,7 +4,7 @@ Engine::FreeCam::FreeCam(void)
 {
 }
 
-Engine::FreeCam::FreeCam(const GLfloat &atheta, const GLfloat &aphi)
+Engine::FreeCam::FreeCam(GLfloat atheta, GLfloat aphi)
     : MovableCamera(atheta, aphi)
 {
 }
@@ -13,7 +13,7 @@ Engine::FreeCam::~FreeCam(void)
 {
 }
 
-void Engine::FreeCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) const
+void Engine::FreeCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r) const
 {
 	if(f)
 		*_pcamera += *_vforward * _speed;

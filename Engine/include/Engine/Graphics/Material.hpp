@@ -37,11 +37,6 @@ namespace Engine
 
 		std::shared_ptr<Buffer> _matBuffer;
 		std::shared_ptr<Buffer> _stateBuffer;
-
-		std::shared_ptr<glm::vec3> _diffuseMaterial;
-		std::shared_ptr<glm::vec3> _specularMaterial;
-		std::shared_ptr<glm::vec3> _ambientMaterial;
-		std::shared_ptr<glm::vec3> _emissiveMaterial;
 		
 		std::shared_ptr<Texture2D> _diffuseTexture;
 		std::shared_ptr<Texture2D> _specularTexture;

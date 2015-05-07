@@ -14,7 +14,7 @@ Engine::Sound::~Sound(void)
 	if (alIsBuffer(_buffer)) alDeleteBuffers(1, &_buffer);
 }
 
-void Engine::Sound::loadFromFile(const ALchar *file, const ALsizei &frequency, const ALenum &format)
+void Engine::Sound::loadFromFile(const ALchar *file, ALsizei frequency, ALenum format)
 {
 	int state = 0;
 	switch (format)
@@ -59,32 +59,32 @@ void Engine::Sound::loadFromFile(const ALchar *file, const ALsizei &frequency, c
 	Mix_CloseAudio();
 }
 
-void Engine::Sound::setGain(const ALfloat &gain)
+void Engine::Sound::setGain(ALfloat gain)
 {
 	alSourcef(_source, AL_GAIN, gain);
 }
 
-void Engine::Sound::setPitch(const ALfloat &pitch)
+void Engine::Sound::setPitch(ALfloat pitch)
 {
 	alSourcef(_source, AL_PITCH, pitch);
 }
 
-void Engine::Sound::setLoop(const ALboolean &loop)
+void Engine::Sound::setLoop(ALboolean loop)
 {
 	alSourcei(_source, AL_LOOPING, loop);
 }
 
-void Engine::Sound::setPosition(const glm::vec3 &pos)
+void Engine::Sound::setPosition(const std::shared_ptr<glm::vec3> &pos)
 {
-	alSource3f(_source, AL_POSITION, pos.x, pos.y, pos.z);
+	alSource3f(_source, AL_POSITION, pos->x, pos->y, pos->z);
 }
 
-void Engine::Sound::setVelocity(const glm::vec3 &vel)
+void Engine::Sound::setVelocity(const std::shared_ptr<glm::vec3> &vel)
 {
-	alSource3f(_source, AL_VELOCITY, vel.x, vel.y, vel.z);
+	alSource3f(_source, AL_VELOCITY, vel->x, vel->y, vel->z);
 }
 
-void Engine::Sound::setDistances(const ALfloat &min_dist, const ALfloat &max_dist, const ALfloat &rolloff, const ALfloat &min_gain, const ALfloat &max_gain)
+void Engine::Sound::setDistances(ALfloat min_dist, ALfloat max_dist, ALfloat rolloff, ALfloat min_gain, ALfloat max_gain)
 {
 	alSourcef(_source, AL_REFERENCE_DISTANCE, min_dist);
 	alSourcef(_source, AL_MAX_DISTANCE, max_dist);

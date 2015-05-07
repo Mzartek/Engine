@@ -19,16 +19,17 @@ namespace Engine
 		} _matrix;
 
 	public:
-		StaticModel(ShaderProgram *gProgram, ShaderProgram *smProgram);
-		StaticModel(StaticModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram);
+		StaticModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
+		StaticModel(const std::shared_ptr<StaticModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
 		~StaticModel(void);
 		void loadFromFile(const GLchar *inFile);
 
-		void display(const GBuffer &gbuf, const PerspCamera &cam);
-		void displayTransparent(const GBuffer &gbuf, const PerspCamera &cam);
-		void displayDepthMap(const DepthMap &depthMap, const Camera &cam);
-		void displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light);
-		void displayDepthMap(const DepthMap &depthMap, SpotLight *light);
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
+		void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
+		void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam);
+		void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light);
+		void displayDepthMaps(const std::shared_ptr<DepthMap> &depthMap0, const std::shared_ptr<DepthMap> &depthMap1, const std::shared_ptr<DepthMap> &depthMap2,
+			const std::shared_ptr<DirLight> &light);
 	};
 }
 

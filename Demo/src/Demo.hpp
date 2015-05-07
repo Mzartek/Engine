@@ -31,7 +31,7 @@ private:
 	std::shared_ptr<Engine::Audio> audio;
 
 	std::shared_ptr<Engine::GBuffer> gBuffer;
-	std::shared_ptr<std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM>> array_depthMap;
+	std::shared_ptr<Engine::DepthMap> depthMaps[CSM_NUM];
 	std::shared_ptr<Engine::FreeCam> camera;
 
 	std::shared_ptr<Engine::Octree> octree;

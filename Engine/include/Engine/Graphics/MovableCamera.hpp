@@ -13,11 +13,11 @@ namespace Engine
 		GLfloat _aphi;
 	public:
 		MovableCamera(void);
-		MovableCamera(const GLfloat &atheta, const GLfloat &aphi);
+		MovableCamera(GLfloat atheta, GLfloat aphi);
 		~MovableCamera(void);
-		void setSpeed(const GLfloat &v);
-		void mouseMove(const GLint &xrel, const GLint &yrel);
-		virtual void keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) const = 0;
+		void setSpeed(GLfloat v);
+		void mouseMove(GLint xrel, GLint yrel);
+		virtual void keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r) const = 0;
 	};
 }
 

@@ -8,7 +8,7 @@ Engine::SkeletalMesh::~SkeletalMesh(void)
 {
 }
 
-void Engine::SkeletalMesh::load(const GLsizei &numVertex, const Vertex *vertexArray, const GLsizei &numIndex, const GLuint *indexArray)
+void Engine::SkeletalMesh::load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray)
 {
 	unsigned int stride = 27 * sizeof(GLfloat);
 
@@ -39,7 +39,7 @@ void Engine::SkeletalMesh::load(const GLsizei &numVertex, const Vertex *vertexAr
 	glBindVertexArray(0);
 }
 
-void Engine::SkeletalMesh::load(std::vector<Vertex> vertices, std::vector<GLuint> indices)
+void Engine::SkeletalMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
 {
 	load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
 }

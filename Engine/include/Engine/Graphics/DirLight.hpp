@@ -16,19 +16,24 @@ namespace Engine
 			glm::vec3 ALIGN(16) direction;
 			glm::mat4 ALIGN(16) shadowMatrix[CSM_NUM];
 		} _lightInfo;
+
+		std::shared_ptr<std::vector<std::shared_ptr<glm::mat4>>> _projectionMatrix;
+		std::shared_ptr<std::vector<std::shared_ptr<glm::mat4>>> _viewMatrix;
+		std::shared_ptr<std::vector<std::shared_ptr<glm::mat4>>> _VPMatrix;
 	public:
-		DirLight(ShaderProgram *program);
+		DirLight(const std::shared_ptr<ShaderProgram> &program);
 		~DirLight(void);
-		void setColor(const glm::vec3 &color);
-		void setDirection(const glm::vec3 &dir);
-		glm::mat4 getProjectionMatrix(const GLuint &num) const;
-		glm::mat4 getViewMatrix(const GLuint &num) const;
-		glm::mat4 getVPMatrix(const GLuint &num) const;
-		glm::vec3 getColor(void) const;
-		glm::vec3 getDirection(void) const;
-		void position(const glm::vec3 &pos, const GLfloat &dim0, const GLfloat &dim1, const GLfloat &dim2);
-		void display(const GBuffer &gbuf, const PerspCamera &cam);
-		void display(const GBuffer &gbuf, const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, const PerspCamera &cam);
+		void setColor(const std::shared_ptr<glm::vec3> &color);
+		void setDirection(const std::shared_ptr<glm::vec3> &dir);
+		const std::shared_ptr<glm::mat4> &getProjectionMatrix(GLuint num) const;
+		const std::shared_ptr<glm::mat4> &getViewMatrix(GLuint num) const;
+		const std::shared_ptr<glm::mat4> &getVPMatrix(GLuint num) const;
+		const std::shared_ptr<glm::vec3> &getColor(void) const;
+		const std::shared_ptr<glm::vec3> &getDirection(void) const;
+		void position(const std::shared_ptr<glm::vec3> &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2);
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, 
+			std::shared_ptr<Engine::DepthMap> &depthMap0, std::shared_ptr<Engine::DepthMap> &depthMap1, std::shared_ptr<Engine::DepthMap> &depthMap2);
 	};
 }
 

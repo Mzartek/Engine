@@ -14,8 +14,8 @@ namespace Engine
 {
 	struct Particle
 	{
-        std::shared_ptr<glm::vec3> position;
-		std::shared_ptr<glm::vec3> direction;
+        glm::vec3 position;
+		glm::vec3 direction;
 		GLfloat velocity;
         GLfloat life;
 	};
@@ -39,26 +39,26 @@ namespace Engine
 			glm::mat4 viewMatrix;
 		} _matrix;
 
-		ShaderProgram *_physicsProgram;
-		ShaderProgram *_displayProgram;
+		std::shared_ptr<ShaderProgram> _physicsProgram;
+		std::shared_ptr<ShaderProgram> _displayProgram;
 		GLuint _idTFO;
 		GLuint _idVAO;
-		Texture2D *_colorTexture;
-		Buffer *_positionBuffer;
-		Buffer *_depthBuffer;
-		Buffer *_matrixBuffer;
-		Buffer *_vertexBuffer[2];
+		std::shared_ptr<Texture2D> _colorTexture;
+		std::shared_ptr<Buffer> _positionBuffer;
+		std::shared_ptr<Buffer> _depthBuffer;
+		std::shared_ptr<Buffer> _matrixBuffer;
+		std::shared_ptr<Buffer> _vertexBuffer[2];
 		GLsizei _numElement;
 	public:
-		ParticlesManager(ShaderProgram *physicsProgram, ShaderProgram *displayProgram);
+		ParticlesManager(const std::shared_ptr<ShaderProgram> &physicsProgram, const std::shared_ptr<ShaderProgram> &displayProgram);
 		~ParticlesManager(void);
 		void loadTexture(const GLchar *path) const;
-		void setParticles(const Particle *particles, const GLsizei &numParticles);
-		void setPosition(const glm::vec3 &pos);
-		glm::vec3 getPosition(void) const;
+		void setParticles(const Particle *particles, GLsizei numParticles);
+		void setPosition(const std::shared_ptr<glm::vec3> &pos);
+		const std::shared_ptr<glm::vec3> &getPosition(void) const;
 		void updateParticles(void);
-		void updateParticles(const DepthMap &depthMap, const Camera &cam);
-		void display(const GBuffer &gbuf, const Camera &cam);
+		void updateParticles(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam);
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<Camera> &cam);
 	};
 }
 

@@ -2,13 +2,13 @@
 
 #include "../Tools/private/AssimpTool.hpp"
 
-Engine::StaticModel::StaticModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
+Engine::StaticModel::StaticModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
-Engine::StaticModel::StaticModel(StaticModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
+Engine::StaticModel::StaticModel(const std::shared_ptr<StaticModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(model, gProgram, smProgram)
 {
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
@@ -40,14 +40,12 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 	std::vector<GLuint> indices;
 	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
 	{
+		std::shared_ptr<StaticMesh> mesh = std::shared_ptr<StaticMesh>(new StaticMesh);
+
 		vertices = AssimpTool::loadStaticVertices(pScene->mMeshes[i]);
 		indices = AssimpTool::loadIndices(pScene->mMeshes[i]);
-		Material *material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
-
-		StaticMesh *mesh = new_ptr(StaticMesh);
-		_tObject->insert(mesh);
-
-		mesh->setMaterial(material);
+		mesh->setMaterial(AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile)));
+		
 		mesh->load(vertices, indices);
 
 		vertices.clear();
@@ -57,26 +55,26 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 	}
 }
 
-void Engine::StaticModel::display(const GBuffer &gbuf, const PerspCamera &cam)
+void Engine::StaticModel::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
-	gbuf.setGeometryState();
+	gbuf->setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam.getProjectionMatrix();
-	_matrix.view = cam.getViewMatrix();
+	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *cam->getProjectionMatrix();
+	_matrix.view = *cam->getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = cam.getCameraPosition();
-	_camera.forward = cam.getForwardVector();
-	_camera.left = cam.getLeftVector();
-	_camera.up = cam.getUpVector();
+	_camera.position = *cam->getCameraPosition();
+	_camera.forward = *cam->getForwardVector();
+	_camera.left = *cam->getLeftVector();
+	_camera.up = *cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -90,26 +88,26 @@ void Engine::StaticModel::display(const GBuffer &gbuf, const PerspCamera &cam)
 		}
 }
 
-void Engine::StaticModel::displayTransparent(const GBuffer &gbuf, const PerspCamera &cam)
+void Engine::StaticModel::displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
-	gbuf.setGeometryState();
+	gbuf->setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam.getProjectionMatrix();
-	_matrix.view = cam.getViewMatrix();
+	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *cam->getProjectionMatrix();
+	_matrix.view = *cam->getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = cam.getCameraPosition();
-	_camera.forward = cam.getForwardVector();
-	_camera.left = cam.getLeftVector();
-	_camera.up = cam.getUpVector();
+	_camera.position = *cam->getCameraPosition();
+	_camera.forward = *cam->getForwardVector();
+	_camera.left = *cam->getLeftVector();
+	_camera.up = *cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -123,17 +121,17 @@ void Engine::StaticModel::displayTransparent(const GBuffer &gbuf, const PerspCam
 		}
 }
 
-void Engine::StaticModel::displayDepthMap(const DepthMap &depthMap, const Camera &cam)
+void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
 {
 	checkMatrix();
 
-	depthMap.setState();
+	depthMap->setState();
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam.getProjectionMatrix();
-	_matrix.view = cam.getViewMatrix();
+	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *cam->getProjectionMatrix();
+	_matrix.view = *cam->getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
@@ -144,8 +142,32 @@ void Engine::StaticModel::displayDepthMap(const DepthMap &depthMap, const Camera
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::StaticModel::displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light)
+void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light)
 {
+	checkMatrix();
+
+	depthMap->setState();
+
+	glUseProgram(_smProgram->getId());
+
+	_matrix.MVP = *light->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *light->getProjectionMatrix();
+	_matrix.view = *light->getViewMatrix();
+	_matrix.model = *_modelMatrix;
+	_matrix.normal = *_normalMatrix;
+	_matrixBuffer->updateStoreMap(&_matrix);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+	for (GLuint i = 0; i < _tMesh->size(); i++)
+		if ((*_tMesh)[i]->getMaterial()->getOpacity() == 1.0f)
+			(*_tMesh)[i]->displayShadow();
+}
+
+void Engine::StaticModel::displayDepthMaps(const std::shared_ptr<DepthMap> &depthMap0, const std::shared_ptr<DepthMap> &depthMap1, const std::shared_ptr<DepthMap> &depthMap2,
+	const std::shared_ptr<DirLight> &light)
+{
+	DepthMap *array_depthMap[] = { depthMap0.get(), depthMap1.get(), depthMap2.get() };
+
 	checkMatrix();
 
 	glUseProgram(_smProgram->getId());
@@ -157,9 +179,9 @@ void Engine::StaticModel::displayDepthMap(const std::array<std::shared_ptr<Engin
 	{
 		array_depthMap[i]->setState();
 
-		_matrix.MVP = light->getVPMatrix(i) * *_modelMatrix;
-		_matrix.projection = light->getProjectionMatrix(i);
-		_matrix.view = light->getViewMatrix(i);
+		_matrix.MVP = *light->getVPMatrix(i) * *_modelMatrix;
+		_matrix.projection = *light->getProjectionMatrix(i);
+		_matrix.view = *light->getViewMatrix(i);
 
 		_matrixBuffer->updateStoreMap(&_matrix);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
@@ -168,25 +190,4 @@ void Engine::StaticModel::displayDepthMap(const std::array<std::shared_ptr<Engin
 			if ((*_tMesh)[j]->getMaterial()->getOpacity() == 1.0f)
 				(*_tMesh)[j]->displayShadow();
 	}
-}
-
-void Engine::StaticModel::displayDepthMap(const DepthMap &depthMap, SpotLight *light)
-{
-	checkMatrix();
-
-	depthMap.setState();
-
-	glUseProgram(_smProgram->getId());
-
-	_matrix.MVP = light->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = light->getProjectionMatrix();
-	_matrix.view = light->getViewMatrix();
-	_matrix.model = *_modelMatrix;
-	_matrix.normal = *_normalMatrix;
-	_matrixBuffer->updateStoreMap(&_matrix);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
-
-	for (GLuint i = 0; i < _tMesh->size(); i++)
-		if ((*_tMesh)[i]->getMaterial()->getOpacity() == 1.0f)
-			(*_tMesh)[i]->displayShadow();
 }

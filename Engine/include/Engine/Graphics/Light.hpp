@@ -22,18 +22,16 @@ namespace Engine
 			GLint withShadowMapping;
 		} _mainInfo;
 
-		Buffer *_vertexBuffer;
-		Buffer *_mainInfoBuffer;
-		Buffer *_lightInfoBuffer;
-		ShaderProgram *_program;
+		std::shared_ptr<Buffer> _vertexBuffer;
+		std::shared_ptr<Buffer> _mainInfoBuffer;
+		std::shared_ptr<Buffer> _lightInfoBuffer;
+		std::shared_ptr<ShaderProgram> _program;
 		GLuint _idVAO;
-		glm::mat4 *_projectionMatrix;
-		glm::mat4 *_viewMatrix;
-		glm::mat4 *_VPMatrix;
+
 	public:
-		Light(ShaderProgram *program);
+		Light(const std::shared_ptr<ShaderProgram> &program);
 		~Light(void);
-		virtual void display(const GBuffer &gbuf, const PerspCamera &cam) = 0;
+		virtual void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;
 	};
 }
 

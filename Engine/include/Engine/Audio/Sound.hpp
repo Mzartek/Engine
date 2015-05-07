@@ -13,13 +13,13 @@ namespace Engine
 	public:
 		Sound(void);
 		~Sound(void);
-		void loadFromFile(const ALchar *file, const ALsizei &frequency, const ALenum &format);
-		void setGain(const ALfloat &gain);
-		void setPitch(const ALfloat &pitch);
-		void setLoop(const ALboolean &loop);
-		void setPosition(const glm::vec3 &pos);
-		void setVelocity(const glm::vec3 &vel);
-		void setDistances(const ALfloat &min_dist, const ALfloat &max_dist, const ALfloat &rolloff = 1.0f, const ALfloat &min_gain = 0.0f, const ALfloat &max_gain = 1.0f);
+		void loadFromFile(const ALchar *file, ALsizei frequency, ALenum format);
+		void setGain(ALfloat gain);
+		void setPitch(ALfloat pitch);
+		void setLoop(ALboolean loop);
+		void setPosition(const std::shared_ptr<glm::vec3> &pos);
+		void setVelocity(const std::shared_ptr<glm::vec3> &vel);
+		void setDistances(ALfloat min_dist, ALfloat max_dist, ALfloat rolloff = 1.0f, ALfloat min_gain = 0.0f, ALfloat max_gain = 1.0f);
 		ALint getState(void);
 		void play(void);
 		void pause(void);

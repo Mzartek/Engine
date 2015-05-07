@@ -4,7 +4,7 @@ Engine::PlayerCam::PlayerCam(void)
 {
 }
 
-Engine::PlayerCam::PlayerCam(const GLfloat &atheta, const GLfloat &aphi)
+Engine::PlayerCam::PlayerCam(GLfloat atheta, GLfloat aphi)
     : MovableCamera(atheta, aphi)
 {
 }
@@ -13,7 +13,7 @@ Engine::PlayerCam::~PlayerCam(void)
 {
 }
 
-void Engine::PlayerCam::keyboardMove(const GLboolean &f, const GLboolean &b, const GLboolean &l, const GLboolean &r) const
+void Engine::PlayerCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r) const
 {
 	if(f)
 	{

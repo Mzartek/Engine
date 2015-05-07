@@ -2,18 +2,18 @@
 
 #include "../Tools/private/AssimpTool.hpp"
 
-Engine::SkeletalModel::SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram)
+Engine::SkeletalModel::SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
-	_bones = new_ptr(std::vector < Bone *>);
+	_bones = std::shared_ptr<std::vector<std::shared_ptr<Bone>>>(new std::vector<std::shared_ptr<Bone>>);
 
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
-Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram)
+Engine::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(model, gProgram, smProgram)
 {
-	_bones = new_ptr(std::vector < Bone *>);
+	_bones = std::shared_ptr<std::vector<std::shared_ptr<Bone>>>(new std::vector<std::shared_ptr<Bone>>);
 
 	*_bones = *model->_bones;
 
@@ -22,7 +22,6 @@ Engine::SkeletalModel::SkeletalModel(SkeletalModel *model, ShaderProgram *gProgr
 
 Engine::SkeletalModel::~SkeletalModel(void)
 {
-	release_ptr(_bones);
 }
 
 void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *node_name)
@@ -45,7 +44,7 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 
 	try
 	{
-		_skeleton = AssimpTool::loadSkeleton(pScene, node_name, _tObject);
+		_skeleton = AssimpTool::loadSkeleton(pScene, node_name);
 	}
 	catch (std::exception exception)
 	{
@@ -59,17 +58,15 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 	std::vector<GLuint> indices;
 	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
 	{
+		std::shared_ptr<SkeletalMesh> mesh = std::shared_ptr<SkeletalMesh>(new SkeletalMesh);
+
 		vertices = AssimpTool::loadSkeletalVertices(pScene->mMeshes[i], map_vertex);
 		indices = AssimpTool::loadIndices(pScene->mMeshes[i]);
-		Material *material = AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile), _tObject);
-		std::vector<Bone *> tmp_vector = AssimpTool::loadBones(pScene->mMeshes[i], _skeleton, bone_index, vertices, map_vertex, _tObject);
+		mesh->setMaterial(AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile)));
 
+		std::vector<std::shared_ptr<Engine::Bone>> tmp_vector = AssimpTool::loadBones(pScene->mMeshes[i], _skeleton, bone_index, vertices, map_vertex);
 		_bones->insert(_bones->end(), tmp_vector.begin(), tmp_vector.end());
 
-		SkeletalMesh *mesh = new_ptr(SkeletalMesh);
-		_tObject->insert(mesh);
-
-		mesh->setMaterial(material);
 		mesh->load(vertices, indices);
 
 		vertices.clear();
@@ -79,26 +76,26 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 	}
 }
 
-void Engine::SkeletalModel::display(const GBuffer &gbuf, const PerspCamera &cam)
+void Engine::SkeletalModel::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
-	gbuf.setGeometryState();
+	gbuf->setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam.getProjectionMatrix();
-	_matrix.view = cam.getViewMatrix();
+	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *cam->getProjectionMatrix();
+	_matrix.view = *cam->getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = cam.getCameraPosition();
-	_camera.forward = cam.getForwardVector();
-	_camera.left = cam.getLeftVector();
-	_camera.up = cam.getUpVector();
+	_camera.position = *cam->getCameraPosition();
+	_camera.forward = *cam->getForwardVector();
+	_camera.left = *cam->getLeftVector();
+	_camera.up = *cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -112,26 +109,26 @@ void Engine::SkeletalModel::display(const GBuffer &gbuf, const PerspCamera &cam)
 		}
 }
 
-void Engine::SkeletalModel::displayTransparent(const GBuffer &gbuf, const PerspCamera &cam)
+void Engine::SkeletalModel::displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
-	gbuf.setGeometryState();
+	gbuf->setGeometryState();
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam.getProjectionMatrix();
-	_matrix.view = cam.getViewMatrix();
+	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *cam->getProjectionMatrix();
+	_matrix.view = *cam->getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = cam.getCameraPosition();
-	_camera.forward = cam.getForwardVector();
-	_camera.left = cam.getLeftVector();
-	_camera.up = cam.getUpVector();
+	_camera.position = *cam->getCameraPosition();
+	_camera.forward = *cam->getForwardVector();
+	_camera.left = *cam->getLeftVector();
+	_camera.up = *cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -145,17 +142,17 @@ void Engine::SkeletalModel::displayTransparent(const GBuffer &gbuf, const PerspC
 		}
 }
 
-void Engine::SkeletalModel::displayDepthMap(const DepthMap &depthMap, const Camera &cam)
+void Engine::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
 {
 	checkMatrix();
 
-	depthMap.setState();
+	depthMap->setState();
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = cam.getVPMatrix() * *_modelMatrix;
-	_matrix.projection = cam.getProjectionMatrix();
-	_matrix.view = cam.getViewMatrix();
+	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *cam->getProjectionMatrix();
+	_matrix.view = *cam->getViewMatrix();
 	_matrix.model = *_modelMatrix;
 	_matrix.normal = *_normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
@@ -166,8 +163,32 @@ void Engine::SkeletalModel::displayDepthMap(const DepthMap &depthMap, const Came
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::SkeletalModel::displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light)
+void Engine::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light)
 {
+	checkMatrix();
+
+	depthMap->setState();
+
+	glUseProgram(_smProgram->getId());
+
+	_matrix.MVP = *light->getVPMatrix() * *_modelMatrix;
+	_matrix.projection = *light->getProjectionMatrix();
+	_matrix.view = *light->getViewMatrix();
+	_matrix.model = *_modelMatrix;
+	_matrix.normal = *_normalMatrix;
+	_matrixBuffer->updateStoreMap(&_matrix);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
+
+	for (GLuint i = 0; i < _tMesh->size(); i++)
+		if ((*_tMesh)[i]->getMaterial()->getOpacity() == 1.0f)
+			(*_tMesh)[i]->displayShadow();
+}
+
+void Engine::SkeletalModel::displayDepthMaps(const std::shared_ptr<DepthMap> &depthMap0, const std::shared_ptr<DepthMap> &depthMap1, const std::shared_ptr<DepthMap> &depthMap2,
+	const std::shared_ptr<DirLight> &light)
+{
+	DepthMap *array_depthMap[] = { depthMap0.get(), depthMap1.get(), depthMap2.get() };
+
 	checkMatrix();
 
 	glUseProgram(_smProgram->getId());
@@ -179,9 +200,9 @@ void Engine::SkeletalModel::displayDepthMap(const std::array<std::shared_ptr<Eng
 	{
 		array_depthMap[i]->setState();
 
-		_matrix.MVP = light->getVPMatrix(i) * *_modelMatrix;
-		_matrix.projection = light->getProjectionMatrix(i);
-		_matrix.view = light->getViewMatrix(i);
+		_matrix.MVP = *light->getVPMatrix(i) * *_modelMatrix;
+		_matrix.projection = *light->getProjectionMatrix(i);
+		_matrix.view = *light->getViewMatrix(i);
 
 		_matrixBuffer->updateStoreMap(&_matrix);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
@@ -190,25 +211,4 @@ void Engine::SkeletalModel::displayDepthMap(const std::array<std::shared_ptr<Eng
 			if ((*_tMesh)[j]->getMaterial()->getOpacity() == 1.0f)
 				(*_tMesh)[j]->displayShadow();
 	}
-}
-
-void Engine::SkeletalModel::displayDepthMap(const DepthMap &depthMap, SpotLight *light)
-{
-	checkMatrix();
-
-	depthMap.setState();
-
-	glUseProgram(_smProgram->getId());
-
-	_matrix.MVP = light->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = light->getProjectionMatrix();
-	_matrix.view = light->getViewMatrix();
-	_matrix.model = *_modelMatrix;
-	_matrix.normal = *_normalMatrix;
-	_matrixBuffer->updateStoreMap(&_matrix);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
-
-	for (GLuint i = 0; i < _tMesh->size(); i++)
-		if ((*_tMesh)[i]->getMaterial()->getOpacity() == 1.0f)
-			(*_tMesh)[i]->displayShadow();
 }

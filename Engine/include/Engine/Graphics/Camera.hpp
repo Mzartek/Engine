@@ -8,17 +8,17 @@ namespace Engine
 	class DLLAPI Camera : public Object
 	{
 	protected:
-		glm::mat4 *_projectionMatrix;
-		glm::mat4 *_viewMatrix;
-		glm::mat4 *_VPMatrix;
-		glm::mat4 *_IVPMatrix;
+		std::shared_ptr<glm::mat4> _projectionMatrix;
+		std::shared_ptr<glm::mat4> _viewMatrix;
+		std::shared_ptr<glm::mat4> _VPMatrix;
+		std::shared_ptr<glm::mat4> _IVPMatrix;
 	public:
 		Camera(void);
 		~Camera(void);
-		glm::mat4 getProjectionMatrix(void) const;
-		glm::mat4 getViewMatrix(void) const;
-		glm::mat4 getVPMatrix(void) const;
-		glm::mat4 getIVPMatrix(void) const;
+		const std::shared_ptr<glm::mat4> &getProjectionMatrix(void) const;
+		const std::shared_ptr<glm::mat4> &getViewMatrix(void) const;
+		const std::shared_ptr<glm::mat4> &getVPMatrix(void) const;
+		const std::shared_ptr<glm::mat4> &getIVPMatrix(void) const;
 		virtual void position(void) const = 0;
 	};
 }

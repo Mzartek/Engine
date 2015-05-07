@@ -8,7 +8,7 @@ Engine::StaticMesh::~StaticMesh(void)
 {
 }
 
-void Engine::StaticMesh::load(const GLsizei &numVertex, const Vertex *vertexArray, const GLsizei &numIndex, const GLuint *indexArray)
+void Engine::StaticMesh::load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray)
 {
 	unsigned int stride = 11 * sizeof(GLfloat);
 
@@ -31,7 +31,7 @@ void Engine::StaticMesh::load(const GLsizei &numVertex, const Vertex *vertexArra
 	glBindVertexArray(0);
 }
 
-void Engine::StaticMesh::load(std::vector<Vertex> vertices, std::vector<GLuint> indices)
+void Engine::StaticMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
 {
 	load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
 }

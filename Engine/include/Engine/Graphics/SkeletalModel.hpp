@@ -24,20 +24,21 @@ namespace Engine
 			glm::mat4 bones[SKELETAL_MODEL_MAX_BONES];
 		} _matrix;
 
-		Skeleton *_skeleton;
-		std::vector<Bone *> *_bones;
+		std::shared_ptr<Skeleton> _skeleton;
+		std::shared_ptr<std::vector<std::shared_ptr<Bone>>> _bones;
 
 	public:
-		SkeletalModel(ShaderProgram *gProgram, ShaderProgram *smProgram);
-		SkeletalModel(SkeletalModel *model, ShaderProgram *gProgram, ShaderProgram *smProgram);
+		SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
+		SkeletalModel(const std::shared_ptr<SkeletalModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
 		~SkeletalModel(void);
 		void loadFromFile(const GLchar *inFile, const GLchar *node_name = NULL);
 
-		void display(const GBuffer &gbuf, const PerspCamera &cam);
-		void displayTransparent(const GBuffer &gbuf, const PerspCamera &cam);
-		void displayDepthMap(const DepthMap &depthMap, const Camera &cam);
-		void displayDepthMap(const std::array<std::shared_ptr<Engine::DepthMap>, CSM_NUM> &array_depthMap, DirLight *light);
-		void displayDepthMap(const DepthMap &depthMap, SpotLight *light);
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
+		void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
+		void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam);
+		void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light);
+		void displayDepthMaps(const std::shared_ptr<DepthMap> &depthMap0, const std::shared_ptr<DepthMap> &depthMap1, const std::shared_ptr<DepthMap> &depthMap2,
+			const std::shared_ptr<DirLight> &light);
 	};
 }
 

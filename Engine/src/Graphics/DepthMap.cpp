@@ -10,7 +10,7 @@ Engine::DepthMap::~DepthMap(void)
 	if (glIsTexture(_idDepthTexture)) glDeleteTextures(1, &_idDepthTexture);
 }
 
-void Engine::DepthMap::config(const GLuint &width, const GLuint &height)
+void Engine::DepthMap::config(GLuint width, GLuint height)
 {
 	FrameBuffer::config(width, height);
 

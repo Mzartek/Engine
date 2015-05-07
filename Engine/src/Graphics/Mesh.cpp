@@ -3,8 +3,8 @@
 Engine::Mesh::Mesh(void)
 	: _material(NULL), _numElement(0)
 {
-	_vertexBuffer = new_ptr(Buffer);
-	_indexBuffer = new_ptr(Buffer);
+	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_indexBuffer = std::shared_ptr<Buffer>(new Buffer);
 
 	glGenVertexArrays(1, &_idVAO);
 
@@ -13,13 +13,10 @@ Engine::Mesh::Mesh(void)
 
 Engine::Mesh::~Mesh(void)
 {
-	release_ptr(_vertexBuffer);
-	release_ptr(_indexBuffer);
-
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Mesh::setMaterial(Material *material)
+void Engine::Mesh::setMaterial(const std::shared_ptr<Material> &material)
 {
 	memset(_tex, 0, sizeof _tex);
 
@@ -56,7 +53,7 @@ void Engine::Mesh::setMaterial(Material *material)
 		_tex[9] = _material->getLightMap()->getId();
 }
 
-Engine::Material *Engine::Mesh::getMaterial(void) const
+const std::shared_ptr<Engine::Material> &Engine::Mesh::getMaterial(void) const
 {
      return _material;
 }
@@ -101,7 +98,7 @@ void Engine::Mesh::display(void) const
 	glBindVertexArray(0);
 }
 
-void Engine::Mesh::display(TextureCube *cubeTexture) const
+void Engine::Mesh::display(const std::shared_ptr<TextureCube> &cubeTexture) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _tex[0]);
@@ -154,7 +151,7 @@ void Engine::Mesh::displayShadow(void) const
 	glBindVertexArray(0);
 }
 
-bool Engine::CompareMesh::operator()(const Mesh *first, const Mesh *second)
+bool Engine::CompareMesh::operator()(const std::shared_ptr<Mesh> &first, const std::shared_ptr<Mesh> &second)
 {
 	if (first->_material == NULL)
 		return false;

@@ -12,7 +12,7 @@ namespace Engine
 	public:
 		DepthMap(void);
 		~DepthMap(void);
-		void config(const GLuint &width, const GLuint &height);
+		void config(GLuint width, GLuint height);
 		GLuint getIdDepthTexture(void) const;
 		void setState(void) const;
 		void clear(void) const;

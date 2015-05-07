@@ -10,7 +10,7 @@ Engine::GBuffer::~GBuffer(void)
 	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
 }
 
-void Engine::GBuffer::config(const GLuint &width, const GLuint &height)
+void Engine::GBuffer::config(GLuint width, GLuint height)
 {
 	FrameBuffer::config(width, height);
 
@@ -57,7 +57,7 @@ void Engine::GBuffer::config(const GLuint &width, const GLuint &height)
 		std::cerr << "Framebuffer not complete" << std::endl;
 }
 
-GLuint Engine::GBuffer::getIdTexture(const GLuint &num) const
+GLuint Engine::GBuffer::getIdTexture(GLuint num) const
 {
 	return _idTexture[num];
 }

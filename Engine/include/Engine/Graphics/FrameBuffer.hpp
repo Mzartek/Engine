@@ -14,7 +14,7 @@ namespace Engine
 	public:
 		FrameBuffer(void);
 		~FrameBuffer(void);
-		virtual void config(const GLuint &width, const GLuint &height);
+		virtual void config(GLuint width, GLuint height);
 		GLuint getWidth(void) const;
 		GLuint getHeight(void) const;
 		GLuint getIdFBO(void) const;

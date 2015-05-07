@@ -1,11 +1,11 @@
 #include <Engine/Graphics/SpotLight.hpp>
 
-Engine::SpotLight::SpotLight(ShaderProgram *program)
+Engine::SpotLight::SpotLight(const std::shared_ptr<ShaderProgram> &program)
 	: Light(program)
 {
-	_projectionMatrix = new_ptr(glm::mat4);
-	_viewMatrix = new_ptr(glm::mat4);
-	_VPMatrix = new_ptr(glm::mat4);
+	_projectionMatrix = std::shared_ptr<glm::mat4>(new glm::mat4);
+	_viewMatrix = std::shared_ptr<glm::mat4>(new glm::mat4);
+	_VPMatrix = std::shared_ptr<glm::mat4>(new glm::mat4);
 
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
@@ -25,66 +25,62 @@ Engine::SpotLight::SpotLight(ShaderProgram *program)
 
 Engine::SpotLight::~SpotLight(void)
 {
-	release_ptr(_projectionMatrix);
-	release_ptr(_viewMatrix);
-	release_ptr(_VPMatrix);
-
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::SpotLight::setColor(const glm::vec3 &color)
+void Engine::SpotLight::setColor(const std::shared_ptr<glm::vec3> &color)
 {
-	_lightInfo.color = color;
+	_lightInfo.color = *color;
 }
 
-void Engine::SpotLight::setPosition(const glm::vec3 &pos)
+void Engine::SpotLight::setPosition(const std::shared_ptr<glm::vec3> &pos)
 {
-	_lightInfo.position = pos;
+	_lightInfo.position = *pos;
 }
 
-void Engine::SpotLight::setDirection(const glm::vec3 &dir)
+void Engine::SpotLight::setDirection(const std::shared_ptr<glm::vec3> &dir)
 {
-	_lightInfo.direction = glm::normalize(dir);
+	_lightInfo.direction = glm::normalize(*dir);
 }
 
-void Engine::SpotLight::setSpotCutOff(const GLfloat &spot)
+void Engine::SpotLight::setSpotCutOff(GLfloat spot)
 {
 	_lightInfo.spotCutOff = spot;
 }
 
-void Engine::SpotLight::setMaxDistance(const GLfloat &maxDistance)
+void Engine::SpotLight::setMaxDistance(GLfloat maxDistance)
 {
 	_lightInfo.maxDistance = maxDistance;
 }
 
-glm::mat4 Engine::SpotLight::getProjectionMatrix(void) const
+const std::shared_ptr<glm::mat4> &Engine::SpotLight::getProjectionMatrix(void) const
 {
-	return *_projectionMatrix;
+	return _projectionMatrix;
 }
 
-glm::mat4 Engine::SpotLight::getViewMatrix(void) const
+const std::shared_ptr<glm::mat4> &Engine::SpotLight::getViewMatrix(void) const
 {
-	return *_viewMatrix;
+	return _viewMatrix;
 }
 
-glm::mat4 Engine::SpotLight::getVPMatrix(void) const
+const std::shared_ptr<glm::mat4> &Engine::SpotLight::getVPMatrix(void) const
 {
-	return *_VPMatrix;
+	return _VPMatrix;
 }
 
-glm::vec3 Engine::SpotLight::getColor(void) const
+const std::shared_ptr<glm::vec3> &Engine::SpotLight::getColor(void) const
 {
-	return _lightInfo.color;
+	return std::shared_ptr<glm::vec3>(new glm::vec3(_lightInfo.color));
 }
 
-glm::vec3 Engine::SpotLight::getPosition(void) const
+const std::shared_ptr<glm::vec3> &Engine::SpotLight::getPosition(void) const
 {
-	return _lightInfo.position;
+	return std::shared_ptr<glm::vec3>(new glm::vec3(_lightInfo.position));
 }
 
-glm::vec3 Engine::SpotLight::getDirection(void) const
+const std::shared_ptr<glm::vec3> &Engine::SpotLight::getDirection(void) const
 {
-	return _lightInfo.direction;
+	return std::shared_ptr<glm::vec3>(new glm::vec3(_lightInfo.direction));
 }
 
 GLfloat Engine::SpotLight::getSpotCutOff(void) const
@@ -97,34 +93,34 @@ GLfloat Engine::SpotLight::getMaxDistance(void) const
 	return _lightInfo.maxDistance;
 }
 
-void Engine::SpotLight::position(const DepthMap &depthMap)
+void Engine::SpotLight::position(const std::shared_ptr<DepthMap> &depthMap)
 {
-	*_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)depthMap.getWidth() / depthMap.getHeight(), 0.1f, _lightInfo.maxDistance);
+	*_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)depthMap->getWidth() / depthMap->getHeight(), 0.1f, _lightInfo.maxDistance);
 	*_viewMatrix = glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
 	*_VPMatrix = *_projectionMatrix * *_viewMatrix;
 
 	_lightInfo.shadowMatrix = *_VPMatrix;
 }
 
-void Engine::SpotLight::display(const GBuffer &gbuf, const PerspCamera &cam)
+void Engine::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
-	gbuf.setLightState();
+	gbuf->setLightState();
 
 	glUseProgram(_program->getId());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
-	_mainInfo.IVPMatrix = cam.getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf.getWidth(), gbuf.getHeight());
-	_mainInfo.camPosition = cam.getCameraPosition();
+	_mainInfo.IVPMatrix = *cam->getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
+	_mainInfo.camPosition = *cam->getCameraPosition();
 	_mainInfo.withShadowMapping = GL_FALSE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
@@ -138,29 +134,29 @@ void Engine::SpotLight::display(const GBuffer &gbuf, const PerspCamera &cam)
 	glBindVertexArray(0);
 }
 
-void Engine::SpotLight::display(const GBuffer &gbuf, const DepthMap &depthMap, const PerspCamera &cam)
+void Engine::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::shared_ptr<DepthMap> &depthMap)
 {
-	gbuf.setLightState();
+	gbuf->setLightState();
 
 	glUseProgram(_program->getId());
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
 	// ShadowMap
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, depthMap.getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, depthMap->getIdDepthTexture());
 
-	_mainInfo.IVPMatrix = cam.getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf.getWidth(), gbuf.getHeight());
-	_mainInfo.camPosition = cam.getCameraPosition();
+	_mainInfo.IVPMatrix = *cam->getIVPMatrix();
+	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
+	_mainInfo.camPosition = *cam->getCameraPosition();
 	_mainInfo.withShadowMapping = GL_TRUE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);

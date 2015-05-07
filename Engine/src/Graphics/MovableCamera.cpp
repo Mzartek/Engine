@@ -5,7 +5,7 @@ Engine::MovableCamera::MovableCamera(void)
 {
 }
 
-Engine::MovableCamera::MovableCamera(const GLfloat &atheta, const GLfloat &aphi)
+Engine::MovableCamera::MovableCamera(GLfloat atheta, GLfloat aphi)
 	: _speed(1), _atheta(atheta), _aphi(aphi)
 {
 }
@@ -14,12 +14,12 @@ Engine::MovableCamera::~MovableCamera(void)
 {
 }
 
-void Engine::MovableCamera::setSpeed(const GLfloat &v)
+void Engine::MovableCamera::setSpeed(GLfloat v)
 {
 	_speed = v;
 }
 
-void Engine::MovableCamera::mouseMove(const GLint &xrel, const GLint &yrel)
+void Engine::MovableCamera::mouseMove(GLint xrel, GLint yrel)
 {
 	_atheta -= (GLfloat)xrel * glm::pi<GLfloat>() / 180;
 	_aphi -= (GLfloat)yrel * glm::pi<GLfloat>() / 180;

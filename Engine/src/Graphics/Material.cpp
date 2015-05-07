@@ -35,28 +35,24 @@ Engine::Material::~Material(void)
 void Engine::Material::setDiffuse(const std::shared_ptr<glm::vec3> &color)
 {
 	_mat.diffuse = *color;
-	_diffuseMaterial = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
 void Engine::Material::setSpecular(const std::shared_ptr<glm::vec3> &color)
 {
 	_mat.specular = *color;
-	_specularMaterial = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
 void Engine::Material::setAmbient(const std::shared_ptr<glm::vec3> &color)
 {
 	_mat.ambient = *color;
-	_ambientMaterial = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
 void Engine::Material::setEmissive(const std::shared_ptr<glm::vec3> &color)
 {
 	_mat.emissive = *color;
-	_emissiveMaterial = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
@@ -194,22 +190,22 @@ void Engine::Material::setLightMap(const std::shared_ptr<Texture2D> &tex)
 
 const std::shared_ptr<glm::vec3> &Engine::Material::getDiffuse(void) const
 {
-	return _diffuseMaterial;
+	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.diffuse));
 }
 
 const std::shared_ptr<glm::vec3> &Engine::Material::getSpecular(void) const
 {
-	return _specularMaterial;
+	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.specular));
 }
 
 const std::shared_ptr<glm::vec3> &Engine::Material::getAmbient(void) const
 {
-	return _ambientMaterial;
+	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.ambient));
 }
 
 const std::shared_ptr<glm::vec3> &Engine::Material::getEmissive(void) const
 {
-	return _emissiveMaterial;
+	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.emissive));
 }
 
 GLfloat Engine::Material::getShininess(void) const

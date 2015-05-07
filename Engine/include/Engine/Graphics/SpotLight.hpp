@@ -17,25 +17,30 @@ namespace Engine
 			GLfloat ALIGN(16) maxDistance;
 			glm::mat4 ALIGN(16) shadowMatrix;
 		} _lightInfo;
+
+		std::shared_ptr<glm::mat4> _projectionMatrix;
+		std::shared_ptr<glm::mat4> _viewMatrix;
+		std::shared_ptr<glm::mat4> _VPMatrix;
+
 	public:
-		SpotLight(ShaderProgram *program);
+		SpotLight(const std::shared_ptr<ShaderProgram> &program);
 		~SpotLight(void);
-		void setColor(const glm::vec3 &color);
-		void setPosition(const glm::vec3 &pos);
-		void setDirection(const glm::vec3 &dir);
-		void setSpotCutOff(const GLfloat &spot);
-		void setMaxDistance(const GLfloat &maxDistance);
-		glm::mat4 getProjectionMatrix(void) const;
-		glm::mat4 getViewMatrix(void) const;
-		glm::mat4 getVPMatrix(void) const;
-		glm::vec3 getColor(void) const;
-		glm::vec3 getPosition(void) const;
-		glm::vec3 getDirection(void) const;
+		void setColor(const std::shared_ptr<glm::vec3> &color);
+		void setPosition(const std::shared_ptr<glm::vec3> &pos);
+		void setDirection(const std::shared_ptr<glm::vec3> &dir);
+		void setSpotCutOff(GLfloat spot);
+		void setMaxDistance(GLfloat maxDistance);
+		const std::shared_ptr<glm::mat4> &getProjectionMatrix(void) const;
+		const std::shared_ptr<glm::mat4> &getViewMatrix(void) const;
+		const std::shared_ptr<glm::mat4> &getVPMatrix(void) const;
+		const std::shared_ptr<glm::vec3> &getColor(void) const;
+		const std::shared_ptr<glm::vec3> &getPosition(void) const;
+		const std::shared_ptr<glm::vec3> &getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
 		GLfloat getMaxDistance(void) const;
-		void position(const DepthMap &depthMap);
-		void display(const GBuffer &gbuf, const PerspCamera &cam);
-		void display(const GBuffer &gbuf, const DepthMap &depthMap, const PerspCamera &cam);
+		void position(const std::shared_ptr<DepthMap> &depthMap);
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::shared_ptr<DepthMap> &depthMap);
 	};
 }
 

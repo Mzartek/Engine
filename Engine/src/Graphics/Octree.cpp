@@ -2,18 +2,18 @@
 
 inline bool Engine::Octree::checkCamInCube(const std::shared_ptr<Engine::PerspCamera> &cam) const
 {
-	const glm::vec3 p = cam->getCameraPosition();
+	const std::shared_ptr<glm::vec3> &p = cam->getCameraPosition();
 
-	if (p.x >= (*_vertex)[0].x && p.x < (*_vertex)[7].x &&
-		p.y >= (*_vertex)[0].y && p.y < (*_vertex)[7].y &&
-		p.z >= (*_vertex)[0].z && p.z < (*_vertex)[7].z)
+	if (p->x >= (*_vertex)[0].x && p->x < (*_vertex)[7].x &&
+		p->y >= (*_vertex)[0].y && p->y < (*_vertex)[7].y &&
+		p->z >= (*_vertex)[0].z && p->z < (*_vertex)[7].z)
 		return true;
 	return false;
 }
 
 inline bool Engine::Octree::checkCamInSphere(const std::shared_ptr<Engine::PerspCamera> &cam) const
 {
-	const GLfloat distance = glm::length(cam->getCameraPosition() - cam->getFrusSpherePosition());
+	const GLfloat distance = glm::length(*cam->getCameraPosition() - *cam->getFrusSpherePosition());
 
 	if (distance < _radius + cam->getFrusSphereRadius())
 		return true;
@@ -22,20 +22,20 @@ inline bool Engine::Octree::checkCamInSphere(const std::shared_ptr<Engine::Persp
 
 inline bool Engine::Octree::checkInCamFrus(const std::shared_ptr<Engine::PerspCamera> &cam) const
 {
-	const glm::vec3 camera_position = cam->getCameraPosition();
-	const glm::vec3 forward_vector = cam->getForwardVector();
+	const std::shared_ptr<glm::vec3> &camera_position = cam->getCameraPosition();
+	const std::shared_ptr<glm::vec3> &forward_vector = cam->getForwardVector();
 	const GLfloat fov_2 = cam->getFOV() / 2;
 
 	glm::vec3 position = *_position;
-	glm::vec3 direction = glm::normalize(position - camera_position);
-	GLfloat dot = glm::dot(forward_vector, direction);
+	glm::vec3 direction = glm::normalize(position - *camera_position);
+	GLfloat dot = glm::dot(*forward_vector, direction);
 
 	if (acosf(dot) < fov_2) return true;
 	for (GLint i = 0; i < 8; i++)
 	{
 		position = (*_vertex)[i];
-		direction = glm::normalize(position - camera_position);
-		dot = glm::dot(forward_vector, direction);
+		direction = glm::normalize(position - *camera_position);
+		dot = glm::dot(*forward_vector, direction);
 
 		if (acosf(dot) < fov_2) return true;
 	}
@@ -93,12 +93,12 @@ bool Engine::Octree::addModel(const std::shared_ptr<Model> &model, GLfloat dim)
 {
 	if (dim > _dim)	return false;
 
-	glm::vec3 model_pos = model->getPosition();
+	const std::shared_ptr<glm::vec3> &model_pos = model->getPosition();
 
 	// Check the position
-	if (model_pos.x < (_position->x - _dim_2) || model_pos.x >= (_position->x + _dim_2) ||
-		model_pos.y < (_position->y - _dim_2) || model_pos.y >= (_position->y + _dim_2) ||
-		model_pos.z < (_position->z - _dim_2) || model_pos.z >= (_position->z + _dim_2))
+	if (model_pos->x < (_position->x - _dim_2) || model_pos->x >= (_position->x + _dim_2) ||
+		model_pos->y < (_position->y - _dim_2) || model_pos->y >= (_position->y + _dim_2) ||
+		model_pos->z < (_position->z - _dim_2) || model_pos->z >= (_position->z + _dim_2))
 		return false;
 
 	unsigned int res = 0;
