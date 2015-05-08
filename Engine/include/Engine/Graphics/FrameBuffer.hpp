@@ -11,6 +11,7 @@ namespace Engine
 		GLuint _width;
 		GLuint _height;
 		GLuint _idFBO;
+
 	public:
 		FrameBuffer(void);
 		~FrameBuffer(void);

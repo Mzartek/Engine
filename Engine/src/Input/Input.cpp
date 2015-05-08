@@ -1,10 +1,9 @@
 #include <Engine/Input/Input.hpp>
 
-Engine::Input Engine::Input::_instance = Input();
-
 Engine::Input &Engine::Input::Instance(void)
 {
-	return _instance;
+	static Input instance;
+	return instance;
 }
 
 Engine::Input::Input(void)
@@ -13,11 +12,6 @@ Engine::Input::Input(void)
 
 Engine::Input::~Input(void)
 {
-}
-
-void Engine::Input::init(void)
-{
-	this->refresh();
 }
 
 GLboolean Engine::Input::getKeyBoardState(GLubyte button) const

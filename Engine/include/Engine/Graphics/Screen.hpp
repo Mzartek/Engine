@@ -18,6 +18,7 @@ namespace Engine
 		std::shared_ptr<ShaderProgram> _backgroundProgram;
 		std::shared_ptr<ShaderProgram> _directProgram;
 		GLuint _idVAO;
+
 	public:
 		Screen(const std::shared_ptr<ShaderProgram> &backgroundProgram, const std::shared_ptr<ShaderProgram> &directProgram);
 		~Screen(void);

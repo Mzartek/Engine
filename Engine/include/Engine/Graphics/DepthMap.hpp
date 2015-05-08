@@ -9,6 +9,7 @@ namespace Engine
 	{
 	private:
 		GLuint _idDepthTexture;
+
 	public:
 		DepthMap(void);
 		~DepthMap(void);

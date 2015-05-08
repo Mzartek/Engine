@@ -23,6 +23,7 @@ namespace Engine
 		std::shared_ptr<ShaderProgram> _program;
 		GLuint _idVAO;
 		GLuint _numElement;
+
 	public:
 		SkyBox(const std::shared_ptr<ShaderProgram> &program);
 		~SkyBox(void);

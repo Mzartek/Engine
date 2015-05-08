@@ -14,6 +14,7 @@ namespace Engine
 		GLuint _idTessEvaluationShader;
 		GLuint _idGeometryShader;
 		GLuint _idFragmentShader;
+
 	public:
 		ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs);
 		ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, GLsizei count);

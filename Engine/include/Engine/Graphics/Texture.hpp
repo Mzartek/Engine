@@ -11,6 +11,7 @@ namespace Engine
 	{
 	protected:
 		GLuint _idTexture;
+
 	public:
 		Texture(void);
 		~Texture(void);

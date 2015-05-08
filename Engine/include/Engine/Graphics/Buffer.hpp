@@ -11,6 +11,7 @@ namespace Engine
 		GLenum _target;
 		GLuint _idBuffer;
 		GLsizeiptr _size;
+
 	public:
 		Buffer(void);
 		~Buffer(void);

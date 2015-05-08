@@ -1,25 +1,12 @@
 #include <Engine/Graphics/Renderer.hpp>
 
-Engine::Renderer Engine::Renderer::_instance = Renderer();
-
 Engine::Renderer &Engine::Renderer::Instance(void)
 {
-	return _instance;
+	static Renderer instance;
+	return instance;
 }
 
 Engine::Renderer::Renderer(void)
-	: _GLContext(NULL)
-{
-}
-
-Engine::Renderer::~Renderer(void)
-{
-	SDL_GL_DeleteContext(_GLContext);
-	TTF_Quit();
-	SDL_Quit();
-}
-
-void Engine::Renderer::init(void)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -43,6 +30,13 @@ void Engine::Renderer::init(void)
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+}
+
+Engine::Renderer::~Renderer(void)
+{
+	SDL_GL_DeleteContext(_GLContext);
+	TTF_Quit();
+	SDL_Quit();
 }
 
 void Engine::Renderer::setGLContext(const std::shared_ptr<Window> &window)

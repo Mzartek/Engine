@@ -16,6 +16,7 @@ namespace Engine
 	{
 	private:
 		GLuint _idTexture[GBUF_NUM_TEX];
+
 	public:
 		GBuffer(void);
 		~GBuffer(void);

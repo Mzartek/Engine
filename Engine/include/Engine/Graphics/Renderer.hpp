@@ -7,20 +7,17 @@
 
 namespace Engine
 {
-	class DLLAPI Renderer : public Object
+	class DLLAPI Renderer
 	{
 	private:
-		static Renderer _instance;
 		Renderer(void);
-		~Renderer(void);
-		
+		~Renderer(void);		
 
 		SDL_GLContext _GLContext;
 
 	public:
 		static Renderer &Instance(void);
 
-		void init(void);
 		void setGLContext(const std::shared_ptr<Window> &window);
 	};
 }
