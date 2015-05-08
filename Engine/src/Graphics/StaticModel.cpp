@@ -63,18 +63,18 @@ void Engine::StaticModel::display(const std::shared_ptr<GBuffer> &gbuf, const st
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = *cam->getProjectionMatrix();
-	_matrix.view = *cam->getViewMatrix();
-	_matrix.model = *_modelMatrix;
-	_matrix.normal = *_normalMatrix;
+	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_matrix.projection = cam->getProjectionMatrix();
+	_matrix.view = cam->getViewMatrix();
+	_matrix.model = _modelMatrix;
+	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = *cam->getCameraPosition();
-	_camera.forward = *cam->getForwardVector();
-	_camera.left = *cam->getLeftVector();
-	_camera.up = *cam->getUpVector();
+	_camera.position = cam->getCameraPosition();
+	_camera.forward = cam->getForwardVector();
+	_camera.left = cam->getLeftVector();
+	_camera.up = cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -96,18 +96,18 @@ void Engine::StaticModel::displayTransparent(const std::shared_ptr<GBuffer> &gbu
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = *cam->getProjectionMatrix();
-	_matrix.view = *cam->getViewMatrix();
-	_matrix.model = *_modelMatrix;
-	_matrix.normal = *_normalMatrix;
+	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_matrix.projection = cam->getProjectionMatrix();
+	_matrix.view = cam->getViewMatrix();
+	_matrix.model = _modelMatrix;
+	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
-	_camera.position = *cam->getCameraPosition();
-	_camera.forward = *cam->getForwardVector();
-	_camera.left = *cam->getLeftVector();
-	_camera.up = *cam->getUpVector();
+	_camera.position = cam->getCameraPosition();
+	_camera.forward = cam->getForwardVector();
+	_camera.left = cam->getLeftVector();
+	_camera.up = cam->getUpVector();
 	_cameraBuffer->updateStoreMap(&_camera);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
 
@@ -129,11 +129,11 @@ void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depth
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = *cam->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = *cam->getProjectionMatrix();
-	_matrix.view = *cam->getViewMatrix();
-	_matrix.model = *_modelMatrix;
-	_matrix.normal = *_normalMatrix;
+	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_matrix.projection = cam->getProjectionMatrix();
+	_matrix.view = cam->getViewMatrix();
+	_matrix.model = _modelMatrix;
+	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -150,11 +150,11 @@ void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depth
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = *light->getVPMatrix() * *_modelMatrix;
-	_matrix.projection = *light->getProjectionMatrix();
-	_matrix.view = *light->getViewMatrix();
-	_matrix.model = *_modelMatrix;
-	_matrix.normal = *_normalMatrix;
+	_matrix.MVP = light->getVPMatrix() * _modelMatrix;
+	_matrix.projection = light->getProjectionMatrix();
+	_matrix.view = light->getViewMatrix();
+	_matrix.model = _modelMatrix;
+	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -163,25 +163,28 @@ void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depth
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::StaticModel::displayDepthMaps(const std::shared_ptr<DepthMap> &depthMap0, const std::shared_ptr<DepthMap> &depthMap1, const std::shared_ptr<DepthMap> &depthMap2,
-	const std::shared_ptr<DirLight> &light)
+void Engine::StaticModel::displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light)
 {
-	DepthMap *array_depthMap[] = { depthMap0.get(), depthMap1.get(), depthMap2.get() };
+	if (depthMaps.size() != CSM_NUM)
+	{
+		std::cerr << "Wrong vector of depthMap size" << std::endl;
+		abort();
+	}
 
 	checkMatrix();
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.model = *_modelMatrix;
-	_matrix.normal = *_normalMatrix;
+	_matrix.model = _modelMatrix;
+	_matrix.normal = _normalMatrix;
 
 	for (GLuint i = 0; i < CSM_NUM; i++)
 	{
-		array_depthMap[i]->setState();
+		depthMaps[i]->setState();
 
-		_matrix.MVP = *light->getVPMatrix(i) * *_modelMatrix;
-		_matrix.projection = *light->getProjectionMatrix(i);
-		_matrix.view = *light->getViewMatrix(i);
+		_matrix.MVP = light->getVPMatrix(i) * _modelMatrix;
+		_matrix.projection = light->getProjectionMatrix(i);
+		_matrix.view = light->getViewMatrix(i);
 
 		_matrixBuffer->updateStoreMap(&_matrix);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());

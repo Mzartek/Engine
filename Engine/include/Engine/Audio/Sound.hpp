@@ -10,6 +10,7 @@ namespace Engine
 	private:
 		ALuint _source;
 		ALuint _buffer;
+
 	public:
 		Sound(void);
 		~Sound(void);
@@ -17,8 +18,8 @@ namespace Engine
 		void setGain(ALfloat gain);
 		void setPitch(ALfloat pitch);
 		void setLoop(ALboolean loop);
-		void setPosition(const std::shared_ptr<glm::vec3> &pos);
-		void setVelocity(const std::shared_ptr<glm::vec3> &vel);
+		void setPosition(const glm::vec3 &pos);
+		void setVelocity(const glm::vec3 &vel);
 		void setDistances(ALfloat min_dist, ALfloat max_dist, ALfloat rolloff = 1.0f, ALfloat min_gain = 0.0f, ALfloat max_gain = 1.0f);
 		ALint getState(void);
 		void play(void);

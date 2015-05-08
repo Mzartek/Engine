@@ -32,27 +32,27 @@ Engine::Material::~Material(void)
 {
 }
 
-void Engine::Material::setDiffuse(const std::shared_ptr<glm::vec3> &color)
+void Engine::Material::setDiffuse(const glm::vec3 &color)
 {
-	_mat.diffuse = *color;
+	_mat.diffuse = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setSpecular(const std::shared_ptr<glm::vec3> &color)
+void Engine::Material::setSpecular(const glm::vec3 &color)
 {
-	_mat.specular = *color;
+	_mat.specular = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setAmbient(const std::shared_ptr<glm::vec3> &color)
+void Engine::Material::setAmbient(const glm::vec3 &color)
 {
-	_mat.ambient = *color;
+	_mat.ambient = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setEmissive(const std::shared_ptr<glm::vec3> &color)
+void Engine::Material::setEmissive(const glm::vec3 &color)
 {
-	_mat.emissive = *color;
+	_mat.emissive = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
@@ -188,24 +188,24 @@ void Engine::Material::setLightMap(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-const std::shared_ptr<glm::vec3> &Engine::Material::getDiffuse(void) const
+const glm::vec3 &Engine::Material::getDiffuse(void) const
 {
-	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.diffuse));
+	return _mat.diffuse;
 }
 
-const std::shared_ptr<glm::vec3> &Engine::Material::getSpecular(void) const
+const glm::vec3 &Engine::Material::getSpecular(void) const
 {
-	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.specular));
+	return _mat.specular;
 }
 
-const std::shared_ptr<glm::vec3> &Engine::Material::getAmbient(void) const
+const glm::vec3 &Engine::Material::getAmbient(void) const
 {
-	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.ambient));
+	return _mat.ambient;
 }
 
-const std::shared_ptr<glm::vec3> &Engine::Material::getEmissive(void) const
+const glm::vec3 &Engine::Material::getEmissive(void) const
 {
-	return std::shared_ptr<glm::vec3>(new glm::vec3(_mat.emissive));
+	return _mat.emissive;
 }
 
 GLfloat Engine::Material::getShininess(void) const

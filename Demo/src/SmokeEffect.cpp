@@ -28,13 +28,13 @@ SmokeEffect::~SmokeEffect(void)
 {
 }
 
-void SmokeEffect::init(const std::shared_ptr<glm::vec3> &position, GLuint numParticles) const
+void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles) const
 {
 	std::vector<Engine::Particle> smokeParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
 	{
 		smokeParticles[i].position = position;
-		smokeParticles[i].direction = std::shared_ptr<glm::vec3>(new glm::vec3((GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX, 1.0f, (GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX));
+		smokeParticles[i].direction = glm::vec3((GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX, 1.0f, (GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX);
 		smokeParticles[i].velocity = 0.2f;
 		smokeParticles[i].life = (GLfloat)(rand() % 100);
 	}
@@ -42,7 +42,7 @@ void SmokeEffect::init(const std::shared_ptr<glm::vec3> &position, GLuint numPar
 	_smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 }
 
-void SmokeEffect::setPosition(const std::shared_ptr<glm::vec3> &pos)
+void SmokeEffect::setPosition(const glm::vec3 &pos)
 {
 	_smokeManager->setPosition(pos);
 	_fire_sound->setPosition(pos);

@@ -11,7 +11,7 @@ namespace Engine
 		FreeCam(void);
 		FreeCam(GLfloat atheta, GLfloat aphi);
 		~FreeCam(void);
-		void keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r) const;
+		void keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r);
 	};
 }
 

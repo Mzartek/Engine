@@ -26,11 +26,11 @@ Engine::Audio::~Audio(void)
 	alcCloseDevice(_device);
 }
 
-void Engine::Audio::setListenerPosition(const std::shared_ptr<glm::vec3> &pos, const std::shared_ptr<glm::vec3> &at, const std::shared_ptr<glm::vec3> &up) const
+void Engine::Audio::setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up) const
 {
-	ALfloat listenerOri[] = { at->x, at->y, at->z, up->x, up->y, up->z };
+	ALfloat listenerOri[] = { at.x, at.y, at.z, up.x, up.y, up.z };
 
-	alListener3f(AL_POSITION, pos->x, pos->y, pos->z);
+	alListener3f(AL_POSITION, pos.x, pos.y, pos.z);
 	alListener3f(AL_VELOCITY, 0, 0, 0);
 	alListenerfv(AL_ORIENTATION, listenerOri);
 }

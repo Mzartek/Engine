@@ -1,16 +1,16 @@
 #include <Engine/Graphics/Model.hpp>
 
-void Engine::Model::genMatModel(void) const
+void Engine::Model::genMatModel(void)
 {
-	*_modelMatrix =
-		glm::translate(*_position) *
-		glm::toMat4(*_rotation) *
-		glm::scale(*_scale);
+	_modelMatrix =
+		glm::translate(_position) *
+		glm::toMat4(_rotation) *
+		glm::scale(_scale);
 }
 
-void Engine::Model::genMatNormal(void) const
+void Engine::Model::genMatNormal(void)
 {
-	*_normalMatrix = glm::transpose(glm::inverse(*_modelMatrix));
+	_normalMatrix = glm::transpose(glm::inverse(_modelMatrix));
 }
 
 void Engine::Model::checkMatrix(void)
@@ -30,15 +30,13 @@ void Engine::Model::checkMatrix(void)
 Engine::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_FALSE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
-	_position = std::shared_ptr<glm::vec3>(new glm::vec3(0, 0, 0));
-	_scale = std::shared_ptr<glm::vec3>(new glm::vec3(1, 1, 1));
-	_rotation = std::shared_ptr<glm::quat>(new glm::quat);
+	_position = glm::vec3(0, 0, 0);
+	_scale = glm::vec3(1, 1, 1);
+	_rotation = glm::quat();
 
-	_tMesh = std::shared_ptr<std::vector<std::shared_ptr<Mesh>>>(new std::vector<std::shared_ptr<Mesh>>);
+	_tMesh = new std::vector < std::shared_ptr<Mesh> > ;
 	_matrixBuffer = std::shared_ptr<Buffer>(new Buffer);
 	_cameraBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_modelMatrix = std::shared_ptr<glm::mat4>(new glm::mat4);
-	_normalMatrix = std::shared_ptr<glm::mat4>(new glm::mat4);
 
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
@@ -61,15 +59,13 @@ Engine::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::
 Engine::Model::Model(const std::shared_ptr<Model> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
-	_position = std::shared_ptr<glm::vec3>(new glm::vec3(0, 0, 0));
-	_scale = std::shared_ptr<glm::vec3>(new glm::vec3(1, 1, 1));
-	_rotation = std::shared_ptr<glm::vec3>(new glm::quat);
+	_position = glm::vec3(0, 0, 0);
+	_scale = glm::vec3(1, 1, 1);
+	_rotation = glm::quat();
 
 	_tMesh = model->_tMesh;
 	_matrixBuffer = std::shared_ptr<Buffer>(new Buffer);
 	_cameraBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_modelMatrix = std::shared_ptr<glm::mat4>(new glm::mat4);
-	_normalMatrix = std::shared_ptr<glm::mat4>(new glm::mat4);
 
 	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
@@ -90,6 +86,7 @@ Engine::Model::Model(const std::shared_ptr<Model> &model, const std::shared_ptr<
 
 Engine::Model::~Model(void)
 {
+	if (!_isMirror) delete _tMesh;
 }
 
 void Engine::Model::addMesh(const std::shared_ptr<Mesh> &mesh)
@@ -108,29 +105,29 @@ void Engine::Model::sortMesh(void)
 	std::sort(_tMesh->begin(), _tMesh->end(), CompareMesh());
 }
 
-void Engine::Model::setPosition(const std::shared_ptr<glm::vec3> &position)
+void Engine::Model::setPosition(const glm::vec3 &position)
 {
-	*_position = *position;
+	_position = position;
 	_needMatModel = GL_TRUE;
 }
 
-void Engine::Model::setScale(const std::shared_ptr<glm::vec3> &scale)
+void Engine::Model::setScale(const glm::vec3 &scale)
 {
-	*_scale = *scale;
-	_needMatModel = GL_TRUE;
-	_needMatNormal = GL_TRUE;
-}
-
-void Engine::Model::setRotation(const std::shared_ptr<glm::vec3> &rotation)
-{
-	*_rotation = glm::quat(*rotation);
+	_scale = scale;
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::setRotation(const std::shared_ptr<glm::vec3> &axis, GLfloat angle)
+void Engine::Model::setRotation(const glm::vec3 &rotation)
 {
-	*_rotation = glm::angleAxis(fmodf(angle, glm::pi<GLfloat>() * 2), *axis);
+	_rotation = glm::quat(rotation);
+	_needMatModel = GL_TRUE;
+	_needMatNormal = GL_TRUE;
+}
+
+void Engine::Model::setRotation(const glm::vec3 &axis, GLfloat angle)
+{
+	_rotation = glm::angleAxis(fmodf(angle, glm::pi<GLfloat>() * 2), axis);
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
@@ -140,19 +137,19 @@ void Engine::Model::setCubeTexture(const std::shared_ptr<TextureCube> &cubeTextu
 	_cubeTexture = cubeTexture;
 }
 
-const std::shared_ptr<glm::vec3> &Engine::Model::getPosition(void) const
+const glm::vec3 &Engine::Model::getPosition(void) const
 {
 	return _position;
 }
 
-const std::shared_ptr<glm::vec3> &Engine::Model::getScale(void) const
+const glm::vec3 &Engine::Model::getScale(void) const
 {
 	return _scale;
 }
 
-std::pair<const std::shared_ptr<glm::vec3> &, GLfloat> Engine::Model::getAxisAngleRotation(void) const
+std::pair<const glm::vec3 &, GLfloat> Engine::Model::getAxisAngleRotation(void) const
 {
-	return std::pair<const std::shared_ptr<glm::vec3> &, GLfloat>(std::shared_ptr<glm::vec3>(new glm::vec3(glm::axis(*_rotation))), glm::angle(*_rotation));
+	return std::pair<const glm::vec3 &, GLfloat>(glm::vec3(glm::axis(_rotation)), glm::angle(_rotation));
 }
 
 const std::shared_ptr<Engine::Mesh> &Engine::Model::getMesh(GLuint num) const
@@ -160,7 +157,7 @@ const std::shared_ptr<Engine::Mesh> &Engine::Model::getMesh(GLuint num) const
 	if (num >= _tMesh->size())
 	{
 		std::cerr << "Bad num Mesh" << std::endl;
-		return NULL;
+		abort();
 	}
 	return (*_tMesh)[num];
 }

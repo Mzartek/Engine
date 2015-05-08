@@ -17,7 +17,7 @@ inline GLchar *readText(const GLchar *filename)
 	file.seekg(0, std::ifstream::beg);
 
 	// Add content
-	content = new_ptr_tab(GLchar, size + 1);
+	content = new GLchar[size + 1];
 	file.read(content, size);
 	content[size] = '\0';
 
@@ -48,18 +48,18 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	{
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
 
-		log = new_ptr_tab(GLchar, logsize + 1);
+		log = new GLchar[logsize + 1];
 		log[logsize] = '\0';
 
 		glGetShaderInfoLog(id, logsize, &logsize, log);
 		std::cerr << "Error while compiling shader: " << filename << std::endl << log << std::endl;
 
 		glDeleteShader(id);
-		release_ptr(log);
+		delete[] log;
 		abort();
 	}
 
-	release_ptr(content);
+	delete[] content;
 	return id;
 }
 
@@ -114,18 +114,18 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	{
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
 
-		log = new_ptr_tab(GLchar, logsize + 1);
+		log = new GLchar[logsize + 1];
 		log[logsize] = '\0';
 
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
-		release_ptr(log);
+		delete[] log;
 		abort();
 	}
 }
 
-Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, const GLsizei &count)
+Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, GLsizei count)
 	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
 {
 	GLchar *log;
@@ -178,13 +178,13 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	{
 		glGetProgramiv(_idProgram, GL_INFO_LOG_LENGTH, &logsize);
 
-		log = new_ptr_tab(GLchar, logsize + 1);
+		log = new GLchar[logsize + 1];
 		log[logsize] = '\0';
 
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
 		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
 
-		release_ptr(log);
+		delete[] log;
 		abort();
 	}
 }

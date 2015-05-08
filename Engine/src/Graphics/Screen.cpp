@@ -1,10 +1,10 @@
 #include <Engine/Graphics/Screen.hpp>
 
-Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram)
+Engine::Screen::Screen(const std::shared_ptr<ShaderProgram> &backgroundProgram, const std::shared_ptr<ShaderProgram> &directProgram)
 	: _backgroundProgram(backgroundProgram), _directProgram(directProgram)
 {
-	_vertexBuffer = new_ptr(Buffer);
-	_colorBuffer = new_ptr(Buffer);
+	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_colorBuffer = std::shared_ptr<Buffer>(new Buffer);
 
 	GLfloat vertex[] = {
 		-1, -1,
@@ -31,38 +31,36 @@ Engine::Screen::Screen(ShaderProgram *backgroundProgram, ShaderProgram *directPr
 
 Engine::Screen::~Screen(void)
 {
-	release_ptr(_vertexBuffer);
-	release_ptr(_colorBuffer);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Screen::background(const GBuffer &gbuf) const
+void Engine::Screen::background(const std::shared_ptr<GBuffer> &gbuf) const
 {
-	gbuf.setBackgroundState();
+	gbuf->setBackgroundState();
 
 	glUseProgram(_backgroundProgram->getId());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_LIGHT));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_LIGHT));
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 
-	gbuf.clearLight();
+	gbuf->clearLight();
 }
 
-void Engine::Screen::display(const Renderer &renderer, const GBuffer &gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a) const
+void Engine::Screen::display(const std::shared_ptr<Renderer> &renderer, const std::shared_ptr<GBuffer> &gbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a) const
 {
-	renderer.setState();
+	renderer->setState();
 
 	glUseProgram(_directProgram->getId());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf.getIdTexture(GBUF_BACKGROUND));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_BACKGROUND));
 
 	glm::vec4 color(r, g, b, a);
 	_colorBuffer->updateStoreMap(glm::value_ptr(color));

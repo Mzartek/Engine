@@ -10,10 +10,11 @@ namespace Engine
 	private:
 		ALCdevice *_device;
 		ALCcontext *_context;
+
 	public:
 		Audio(void);
 		~Audio(void);
-		void setListenerPosition(const std::shared_ptr<glm::vec3> &pos, const std::shared_ptr<glm::vec3> &at, const std::shared_ptr<glm::vec3> &up) const;
+		void setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up) const;
 	};
 }
 

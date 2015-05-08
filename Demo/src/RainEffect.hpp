@@ -11,10 +11,11 @@ private:
 	std::shared_ptr<Engine::ShaderProgram> _displayRainProgram;
 	std::shared_ptr<Engine::ParticlesManager> _rainManager;
 	std::shared_ptr<Engine::Sound> _rain_sound;
+
 public:
 	RainEffect(void);
 	~RainEffect(void);
-	void init(const std::shared_ptr<glm::vec3> &position, GLuint numParticles) const;
+	void init(const glm::vec3 &position, GLuint numParticles) const;
 	const std::shared_ptr<Engine::ParticlesManager> &getParticlesManager(void) const;
 	const std::shared_ptr<Engine::Sound> &getSound(void) const;
 };

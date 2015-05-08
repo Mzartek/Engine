@@ -7,10 +7,10 @@ Demo::Demo(const std::shared_ptr<Engine::Renderer> &r, const std::shared_ptr<Eng
 	audio = a;
 
 	gBuffer = std::shared_ptr<Engine::GBuffer>(new Engine::GBuffer);
-	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps[i] = std::shared_ptr<Engine::DepthMap>(new Engine::DepthMap);
+	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps.push_back(std::shared_ptr<Engine::DepthMap>(new Engine::DepthMap));
 	camera = std::shared_ptr<Engine::FreeCam>(new Engine::FreeCam(-glm::pi<GLfloat>() / 2, 0));
 
-	octree = std::shared_ptr<Engine::Octree>(new Engine::Octree(4, std::shared_ptr<glm::vec3>(new glm::vec3(0, 0, 0)), 1000));
+	octree = std::shared_ptr<Engine::Octree>(new Engine::Octree(4, glm::vec3(0, 0, 0), 1000));
 
 	nightBox = std::shared_ptr<NightBox>(new NightBox);
 	tree = std::shared_ptr<Tree>(new Tree);
@@ -28,40 +28,40 @@ Demo::Demo(const std::shared_ptr<Engine::Renderer> &r, const std::shared_ptr<Eng
 	gBuffer->config(renderer->getWidth(), renderer->getHeight());
 
 	// Camera config
-	camera->setCameraPosition(std::shared_ptr<glm::vec3>(new glm::vec3(30, 5, 0)));
+	camera->setCameraPosition(glm::vec3(30, 5, 0));
 
 	rainEffect->init(camera->getCameraPosition(), 10000);
-	smokeEffect->init(std::shared_ptr<glm::vec3>(new glm::vec3(-50, 0, 50)), 100);
+	smokeEffect->init(glm::vec3(-50, 0, 50), 100);
 
-	smokeEffect->setPosition(std::shared_ptr<glm::vec3>(new glm::vec3(-50, 0, 50)));
+	smokeEffect->setPosition(glm::vec3(-50, 0, 50));
 
 	// Model config
-	tree->getModel()->setPosition(std::shared_ptr<glm::vec3>(new glm::vec3(50, 0, 50)));
-	tree->getModel()->setRotation(std::shared_ptr<glm::vec3>(new glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0)));
-	tree->getModel()->setScale(std::shared_ptr<glm::vec3>(new glm::vec3(5, 5, 5)));
+	tree->getModel()->setPosition(glm::vec3(50, 0, 50));
+	tree->getModel()->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
+	tree->getModel()->setScale(glm::vec3(5, 5, 5));
 
-	armySoldier->getModel()->setPosition(std::shared_ptr<glm::vec3>(new glm::vec3(-25, 0, 25)));
-	armySoldier->getModel()->setRotation(std::shared_ptr<glm::vec3>(new glm::vec3(0, 1, 0), glm::pi<GLfloat>() / 2));
+	armySoldier->getModel()->setPosition(glm::vec3(-25, 0, 25));
+	armySoldier->getModel()->setRotation(glm::vec3(0, 1, 0), glm::pi<GLfloat>() / 2);
 
-	helicopter->getModel()->setPosition(std::shared_ptr<glm::vec3>(new glm::vec3(-50, 4, 50)));
-	helicopter->getModel()->setRotation(std::shared_ptr<glm::vec3>(new glm::vec3(-0.1f, 0, -0.5f)));
-	helicopter->getModel()->setScale(std::shared_ptr<glm::vec3>(new glm::vec3(2, 2, 2)));
+	helicopter->getModel()->setPosition(glm::vec3(-50, 4, 50));
+	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
+	helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
 		
 	octree->addModel(ground->getModel(), 1000);
 	octree->addModel(tree->getModel(), 40);
 	octree->addModel(armySoldier->getModel(), 40);
 	octree->addModel(helicopter->getModel(), 40);
 
-	torchLight->getLight()->setPosition(std::shared_ptr<glm::vec3>(new glm::vec3(25, 100, -25)));
-	torchLight->getLight()->setDirection(std::shared_ptr<glm::vec3>(new glm::vec3(-1.0f, -1.0f, 1.0f)));
-	torchLight->getLight()->setColor(std::shared_ptr<glm::vec3>(new glm::vec3(1.0f, 1.0f, 1.0f)));
+	torchLight->getLight()->setPosition(glm::vec3(25, 100, -25));
+	torchLight->getLight()->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
+	torchLight->getLight()->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torchLight->getLight()->setSpotCutOff(glm::pi<GLfloat>() / 4);
 	torchLight->getLight()->setMaxDistance(250);
 
 	// Text config
 	textDisplay->getText()->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
 		renderer->getWidth() / 10, renderer->getHeight() / 10,
-		*renderer, "test");
+		renderer, "test");
 
 	rainEffect->getSound()->setGain(0.10f);
 	rainEffect->getSound()->setPitch(1.0f);
@@ -71,7 +71,7 @@ Demo::Demo(const std::shared_ptr<Engine::Renderer> &r, const std::shared_ptr<Eng
 	smokeEffect->getSound()->setGain(0.75f);
 	smokeEffect->getSound()->setPitch(0.75f);
 	smokeEffect->getSound()->setLoop(AL_TRUE);
-	smokeEffect->getSound()->setVelocity(std::shared_ptr<glm::vec3>(new glm::vec3(0.0f, 0.0f, 0.0f)));
+	smokeEffect->getSound()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 	smokeEffect->getSound()->setDistances(1.0f, 100.0f);
 	smokeEffect->getSound()->loadFromFile("../share/Demo/resources/sound/fire_mono.wav", 44100, AL_FORMAT_MONO16);
 
@@ -87,7 +87,7 @@ void Demo::display(GLfloat state)
 {
 	UNREFERENCED_PARAMETER(state);
 
-	static const std::shared_ptr<std::set<Engine::Model *>> object = std::shared_ptr<std::set<Engine::Model *>>(new std::set<Engine::Model *>);
+	static std::set<std::shared_ptr<Engine::Model>> object;
 	static const std::shared_ptr<Engine::DirLight> moon_light = moonLight->getLight();
 	static const std::shared_ptr<Engine::SpotLight> torch_light = torchLight->getLight();
 	static const std::shared_ptr<Engine::ParticlesManager> rain_particles = rainEffect->getParticlesManager();
@@ -96,7 +96,7 @@ void Demo::display(GLfloat state)
 	static const std::shared_ptr<Engine::Screen> screen_display = screenDisplay->getScreen();
 
 	// We retrieve object to display from the octree
-	object->clear();
+	object.clear();
 	octree->getModels(camera, object);
 
 	// Clear Buffers
@@ -106,36 +106,36 @@ void Demo::display(GLfloat state)
 	nightBox->display(gBuffer, camera);
 
 	// Opaque Object
-	for (std::set<Engine::Model *>::iterator it = object->begin(); it != object->end(); it++)
+	for (std::set<std::shared_ptr<Engine::Model>>::iterator it = object.begin(); it != object.end(); it++)
 		(*it)->display(gBuffer, camera);
 
 	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps[i]->clear();
-	for (std::set<Engine::Model *>::iterator it = object->begin(); it != object->end(); it++)
-		(*it)->displayDepthMaps(depthMaps[0], depthMaps[1], depthMaps[2], moon_light);
-	moon_light->display(gBuffer, camera, depthMaps[0], depthMaps[1], depthMaps[2]);
+	for (std::set<std::shared_ptr<Engine::Model>>::iterator it = object.begin(); it != object.end(); it++)
+		(*it)->displayDepthMaps(depthMaps, moon_light);
+	moon_light->display(gBuffer, camera, depthMaps);
 
 	depthMaps[0]->clear();
-	for (std::set<Engine::Model *>::iterator it = object->begin(); it != object->end(); it++)
+	for (std::set<std::shared_ptr<Engine::Model>>::iterator it = object.begin(); it != object.end(); it++)
 		(*it)->displayDepthMap(depthMaps[0], torch_light);
 	torch_light->display(gBuffer, camera, depthMaps[0]);
 
-	screen_display->background(*gBuffer);
+	screen_display->background(gBuffer);
 
 	// Transparent Object
-	for (std::set<Engine::Model *>::iterator it = object->begin(); it != object->end(); it++)
+	for (std::set<std::shared_ptr<Engine::Model>>::iterator it = object.begin(); it != object.end(); it++)
 		(*it)->displayTransparent(gBuffer, camera);
 	moon_light->display(gBuffer, camera);
 	torch_light->display(gBuffer, camera);
 
-	screen_display->background(*gBuffer);
+	screen_display->background(gBuffer);
 
 	// Particles
 	rain_particles->display(gBuffer, camera);
 	smoke_particles->display(gBuffer, camera);
 
-	screen_display->display(*renderer, *gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+	screen_display->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
-	text_display->display(*renderer);
+	text_display->display(renderer);
 }
 
 void Demo::idle(long long time)
@@ -146,9 +146,9 @@ void Demo::idle(long long time)
 	static const std::shared_ptr<Engine::SpotLight> torch_light = torchLight->getLight();
 	static const std::shared_ptr<Engine::ParticlesManager> rain_particles = rainEffect->getParticlesManager();
 	static const std::shared_ptr<Engine::ParticlesManager> smoke_particles = smokeEffect->getParticlesManager();
-	static const std::shared_ptr<glm::vec3> camPosition = camera->getCameraPosition();
-	static const std::shared_ptr<glm::vec3> camForward = camera->getForwardVector();
-	static const std::shared_ptr<glm::vec3> camUp = camera->getUpVector();
+	static const glm::vec3 camPosition = camera->getCameraPosition();
+	static const glm::vec3 camForward = camera->getForwardVector();
+	static const glm::vec3 camUp = camera->getUpVector();
 	
 	input->refresh();
 	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
@@ -184,9 +184,4 @@ void Demo::idle(long long time)
 void Demo::reshape(GLuint w, GLuint h)
 {
 	camera->setPerspective(glm::pi<GLfloat>() / 2, w, h, 0.1f, 1000.0f);
-}
-
-void Demo::launch(void)
-{
-	renderer->mainLoop(this);
 }

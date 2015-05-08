@@ -16,21 +16,21 @@ namespace Engine
 	class DLLAPI SkyBox : public Object
 	{
 	private:
-		TextureCube *_cubeTexture;
-		Buffer *_vertexBuffer;
-		Buffer *_indexBuffer;
-		Buffer *_MVPMatrixBuffer;
-		ShaderProgram *_program;
+		std::shared_ptr<TextureCube> _cubeTexture;
+		std::shared_ptr<Buffer> _vertexBuffer;
+		std::shared_ptr<Buffer> _indexBuffer;
+		std::shared_ptr<Buffer> _MVPMatrixBuffer;
+		std::shared_ptr<ShaderProgram> _program;
 		GLuint _idVAO;
 		GLuint _numElement;
 	public:
-		SkyBox(ShaderProgram *program);
+		SkyBox(const std::shared_ptr<ShaderProgram> &program);
 		~SkyBox(void);
 		void load(const GLchar *posx, const GLchar *negx,
 			const GLchar *posy, const GLchar *negy,
 			const GLchar *posz, const GLchar *negz) const;
-		TextureCube *getTexture(void) const;
-		void display(const GBuffer &gbuf, const PerspCamera &cam) const;
+		const std::shared_ptr<TextureCube> &getTexture(void) const;
+		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) const;
 	};
 }
 

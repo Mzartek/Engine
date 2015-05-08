@@ -74,14 +74,14 @@ void Engine::Sound::setLoop(ALboolean loop)
 	alSourcei(_source, AL_LOOPING, loop);
 }
 
-void Engine::Sound::setPosition(const std::shared_ptr<glm::vec3> &pos)
+void Engine::Sound::setPosition(const glm::vec3 &pos)
 {
-	alSource3f(_source, AL_POSITION, pos->x, pos->y, pos->z);
+	alSource3f(_source, AL_POSITION, pos.x, pos.y, pos.z);
 }
 
-void Engine::Sound::setVelocity(const std::shared_ptr<glm::vec3> &vel)
+void Engine::Sound::setVelocity(const glm::vec3 &vel)
 {
-	alSource3f(_source, AL_VELOCITY, vel->x, vel->y, vel->z);
+	alSource3f(_source, AL_VELOCITY, vel.x, vel.y, vel.z);
 }
 
 void Engine::Sound::setDistances(ALfloat min_dist, ALfloat max_dist, ALfloat rolloff, ALfloat min_gain, ALfloat max_gain)

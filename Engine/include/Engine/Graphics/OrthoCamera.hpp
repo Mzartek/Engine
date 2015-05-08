@@ -8,21 +8,22 @@ namespace Engine
 	class DLLAPI OrthoCamera : public Camera
 	{
 	protected:
-		std::shared_ptr<glm::vec3> _position;
-		std::shared_ptr<glm::vec3> _direction;
+		glm::vec3 _position;
+		glm::vec3 _direction;
 		GLfloat _left;
 		GLfloat _right;
 		GLfloat _bottom;
 		GLfloat _top;
 		GLfloat _zNear;
 		GLfloat _zFar;
+
 	public:
 		OrthoCamera(void);
 		~OrthoCamera(void);
-		void setPosition(const std::shared_ptr<glm::vec3> &pos);
-		void setDirection(const std::shared_ptr<glm::vec3> &dir);
+		void setPosition(const glm::vec3 &pos);
+		void setDirection(const glm::vec3 &dir);
 		void setOrthogonal(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar);
-		void position(void) const;
+		void position(void);
 	};
 }
 

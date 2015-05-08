@@ -43,15 +43,15 @@ void Engine::ParticlesManager::setParticles(const Particle *particles, GLsizei n
 	_vertexBuffer[1]->createStore(GL_ARRAY_BUFFER, NULL, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
 }
 
-void Engine::ParticlesManager::setPosition(const std::shared_ptr<glm::vec3> &pos)
+void Engine::ParticlesManager::setPosition(const glm::vec3 &pos)
 {
-	_position.position = *pos;
+	_position.position = pos;
 	_positionBuffer->updateStoreMap(&_position);
 }
 
-const std::shared_ptr<glm::vec3> &Engine::ParticlesManager::getPosition(void) const
+const glm::vec3 &Engine::ParticlesManager::getPosition(void) const
 {
-	return std::shared_ptr<glm::vec3>(new glm::vec3(_position.position));
+	return _position.position;
 }
 
 void Engine::ParticlesManager::updateParticles(void)
@@ -101,7 +101,7 @@ void Engine::ParticlesManager::updateParticles(const std::shared_ptr<DepthMap> &
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, depthMap->getIdDepthTexture());
 
-	_depth.depthMatrix = *cam->getVPMatrix();
+	_depth.depthMatrix = cam->getVPMatrix();
 	_depthBuffer->updateStoreMap(&_depth);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _positionBuffer->getId());
@@ -143,8 +143,8 @@ void Engine::ParticlesManager::display(const std::shared_ptr<GBuffer> &gbuf, con
 
 	glUseProgram(_displayProgram->getId());
 
-	_matrix.projectionMatrix = *cam->getProjectionMatrix();
-	_matrix.viewMatrix = *cam->getViewMatrix();
+	_matrix.projectionMatrix = cam->getProjectionMatrix();
+	_matrix.viewMatrix = cam->getViewMatrix();
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 

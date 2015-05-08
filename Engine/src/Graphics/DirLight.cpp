@@ -3,16 +3,9 @@
 Engine::DirLight::DirLight(const std::shared_ptr<ShaderProgram> &program)
 	: Light(program)
 {
-	_projectionMatrix = std::shared_ptr<std::vector<std::shared_ptr<glm::mat4>>>(new std::vector<std::shared_ptr<glm::mat4>>);
-	_viewMatrix = std::shared_ptr<std::vector<std::shared_ptr<glm::mat4>>>(new std::vector<std::shared_ptr<glm::mat4>>);
-	_VPMatrix = std::shared_ptr<std::vector<std::shared_ptr<glm::mat4>>>(new std::vector<std::shared_ptr<glm::mat4>>);
-
-	for (GLuint i = 0; i < CSM_NUM; i++)
-	{
-		_projectionMatrix->push_back(std::shared_ptr<glm::mat4>(new glm::mat4));
-		_viewMatrix->push_back(std::shared_ptr<glm::mat4>(new glm::mat4));
-		_VPMatrix->push_back(std::shared_ptr<glm::mat4>(new glm::mat4));
-	}
+	_projectionMatrix.reserve(3);
+	_viewMatrix.reserve(3);
+	_VPMatrix.reserve(3);
 
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
@@ -37,55 +30,55 @@ Engine::DirLight::~DirLight(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::DirLight::setColor(const std::shared_ptr<glm::vec3> &color)
+void Engine::DirLight::setColor(const glm::vec3 &color)
 {
-	_lightInfo.color = *color;
+	_lightInfo.color = color;
 }
 
-void Engine::DirLight::setDirection(const std::shared_ptr<glm::vec3> &dir)
+void Engine::DirLight::setDirection(const glm::vec3 &dir)
 {
-	_lightInfo.direction = glm::normalize(*dir);
+	_lightInfo.direction = glm::normalize(dir);
 }
 
-const std::shared_ptr<glm::mat4> &Engine::DirLight::getProjectionMatrix(GLuint num) const
+const glm::mat4 &Engine::DirLight::getProjectionMatrix(GLuint num) const
 {
-	return (*_projectionMatrix)[num];
+	return _projectionMatrix[num];
 }
 
-const std::shared_ptr<glm::mat4> &Engine::DirLight::getViewMatrix(GLuint num) const
+const glm::mat4 &Engine::DirLight::getViewMatrix(GLuint num) const
 {
-	return (*_viewMatrix)[num];
+	return _viewMatrix[num];
 }
 
-const std::shared_ptr<glm::mat4> &Engine::DirLight::getVPMatrix(GLuint num) const
+const glm::mat4 &Engine::DirLight::getVPMatrix(GLuint num) const
 {
-	return (*_VPMatrix)[num];
+	return _VPMatrix[num];
 }
 
-const std::shared_ptr<glm::vec3> &Engine::DirLight::getColor(void) const
+const glm::vec3 &Engine::DirLight::getColor(void) const
 {
-	return std::shared_ptr<glm::vec3>(new glm::vec3(_lightInfo.color));
+	return _lightInfo.color;
 }
 
-const std::shared_ptr<glm::vec3> &Engine::DirLight::getDirection(void) const
+const glm::vec3 &Engine::DirLight::getDirection(void) const
 {
-	return std::shared_ptr<glm::vec3>(new glm::vec3(_lightInfo.direction));
+	return _lightInfo.direction;
 }
 
-void Engine::DirLight::position(const std::shared_ptr<glm::vec3> &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2)
+void Engine::DirLight::position(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2)
 {
 	GLfloat dim[3] = { dim0, dim1, dim2 };
 
 	for (GLuint i = 0; i < CSM_NUM; i++)
 	{
-		*(*_projectionMatrix)[i] = glm::ortho(-dim[i], dim[i], -dim[i], dim[i], -dim[i], dim[i]);
-		*(*_viewMatrix)[i] = glm::lookAt(*pos - _lightInfo.direction, *pos, glm::vec3(0.0f, 1.0f, 0.0f));
-		*(*_VPMatrix)[i] = *(*_projectionMatrix)[i] * *(*_viewMatrix)[i];
+		_projectionMatrix[i] = glm::ortho(-dim[i], dim[i], -dim[i], dim[i], -dim[i], dim[i]);
+		_viewMatrix[i] = glm::lookAt(pos - _lightInfo.direction, pos, glm::vec3(0.0f, 1.0f, 0.0f));
+		_VPMatrix[i] = _projectionMatrix[i] * _viewMatrix[i];
 	}
 
-	_lightInfo.shadowMatrix[0] = *(*_VPMatrix)[0];
-	_lightInfo.shadowMatrix[1] = *(*_VPMatrix)[1];
-	_lightInfo.shadowMatrix[2] = *(*_VPMatrix)[2];
+	_lightInfo.shadowMatrix[0] = _VPMatrix[0];
+	_lightInfo.shadowMatrix[1] = _VPMatrix[1];
+	_lightInfo.shadowMatrix[2] = _VPMatrix[2];
 }
 
 void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
@@ -104,9 +97,9 @@ void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
 
-	_mainInfo.IVPMatrix = *cam->getIVPMatrix();
+	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	_mainInfo.camPosition = *cam->getCameraPosition();
+	_mainInfo.camPosition = cam->getCameraPosition();
 	_mainInfo.withShadowMapping = GL_FALSE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);
@@ -120,9 +113,14 @@ void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::
 	glBindVertexArray(0);
 }
 
-void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam,
-	std::shared_ptr<Engine::DepthMap> &depthMap0, std::shared_ptr<Engine::DepthMap> &depthMap1, std::shared_ptr<Engine::DepthMap> &depthMap2)
+void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::vector<std::shared_ptr<Engine::DepthMap>> &depthMaps)
 {
+	if (depthMaps.size() != CSM_NUM)
+	{
+		std::cerr << "Wrong vector of depthMap size" << std::endl;
+		abort();
+	}
+
 	gbuf->setLightState();
 
 	glUseProgram(_program->getId());
@@ -139,17 +137,17 @@ void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::
 
 	// ShadowMap
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, depthMap0->getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, depthMaps[0]->getIdDepthTexture());
 
 	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, depthMap1->getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, depthMaps[1]->getIdDepthTexture());
 
 	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, depthMap2->getIdDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, depthMaps[2]->getIdDepthTexture());
 
-	_mainInfo.IVPMatrix = *cam->getIVPMatrix();
+	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
-	_mainInfo.camPosition = *cam->getCameraPosition();
+	_mainInfo.camPosition = cam->getCameraPosition();
 	_mainInfo.withShadowMapping = GL_TRUE;
 
 	_mainInfoBuffer->updateStoreMap(&_mainInfo);

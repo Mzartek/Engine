@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 	
 	std::shared_ptr<Demo> demo(new Demo(renderer, input, audio));
 
-	demo->launch();
+	renderer->mainLoop(demo);
 
 	return 0;
 }

@@ -18,24 +18,24 @@ namespace Engine
 			glm::mat4 ALIGN(16) shadowMatrix;
 		} _lightInfo;
 
-		std::shared_ptr<glm::mat4> _projectionMatrix;
-		std::shared_ptr<glm::mat4> _viewMatrix;
-		std::shared_ptr<glm::mat4> _VPMatrix;
+		glm::mat4 _projectionMatrix;
+		glm::mat4 _viewMatrix;
+		glm::mat4 _VPMatrix;
 
 	public:
 		SpotLight(const std::shared_ptr<ShaderProgram> &program);
 		~SpotLight(void);
-		void setColor(const std::shared_ptr<glm::vec3> &color);
-		void setPosition(const std::shared_ptr<glm::vec3> &pos);
-		void setDirection(const std::shared_ptr<glm::vec3> &dir);
+		void setColor(const glm::vec3 &color);
+		void setPosition(const glm::vec3 &pos);
+		void setDirection(const glm::vec3 &dir);
 		void setSpotCutOff(GLfloat spot);
 		void setMaxDistance(GLfloat maxDistance);
-		const std::shared_ptr<glm::mat4> &getProjectionMatrix(void) const;
-		const std::shared_ptr<glm::mat4> &getViewMatrix(void) const;
-		const std::shared_ptr<glm::mat4> &getVPMatrix(void) const;
-		const std::shared_ptr<glm::vec3> &getColor(void) const;
-		const std::shared_ptr<glm::vec3> &getPosition(void) const;
-		const std::shared_ptr<glm::vec3> &getDirection(void) const;
+		const glm::mat4 &getProjectionMatrix(void) const;
+		const glm::mat4 &getViewMatrix(void) const;
+		const glm::mat4 &getVPMatrix(void) const;
+		const glm::vec3 &getColor(void) const;
+		const glm::vec3 &getPosition(void) const;
+		const glm::vec3 &getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
 		GLfloat getMaxDistance(void) const;
 		void position(const std::shared_ptr<DepthMap> &depthMap);

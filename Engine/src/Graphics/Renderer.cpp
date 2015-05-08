@@ -3,7 +3,7 @@
 Engine::GameLoop::GameLoop(void){}
 Engine::GameLoop::~GameLoop(void){}
 
-Engine::Renderer::Renderer(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen)
+Engine::Renderer::Renderer(const GLchar *title, GLint w, GLint h, GLboolean fullScreen)
 	: _width(w), _height(h)
 {
 	Uint32 flags;
@@ -86,7 +86,7 @@ SDL_Window *Engine::Renderer::getWindow(void) const
 	return _Window;
 }
 
-void Engine::Renderer::mainLoop(GameLoop *gameLoop)
+void Engine::Renderer::mainLoop(const std::shared_ptr<GameLoop> &gameLoop)
 {
 	SDL_Event event;
 	long long startTime, currentTime, newTime, frameTime;

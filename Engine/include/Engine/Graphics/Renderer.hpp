@@ -24,12 +24,12 @@ namespace Engine
 		SDL_Window *_Window;
 		SDL_GLContext _GLContext;
 	public:
-		Renderer(const GLchar *title, const GLint &w, const GLint &h, const GLboolean &fullScreen);
+		Renderer(const GLchar *title, GLint w, GLint h, GLboolean fullScreen);
 		~Renderer(void);
 		GLuint getWidth(void) const;
 		GLuint getHeight(void) const;
 		SDL_Window *getWindow(void) const;
-		void mainLoop(GameLoop *gameLoop);
+		void mainLoop(const std::shared_ptr<GameLoop> &gameLoop);
 		void stopLoop(void);
 		void setState(void) const;
 		void clear(void) const;

@@ -8,12 +8,12 @@ Engine::Input::~Input(void)
 {
 }
 
-GLboolean Engine::Input::getKeyBoardState(const GLubyte &button) const
+GLboolean Engine::Input::getKeyBoardState(GLubyte button) const
 {
 	return _keyState[button];
 }
 
-GLboolean Engine::Input::getMouseState(const GLubyte &button) const
+GLboolean Engine::Input::getMouseState(GLubyte button) const
 {
 	if (_mouseState.buttons & button)
 		return GL_TRUE;

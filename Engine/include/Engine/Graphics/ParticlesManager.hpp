@@ -49,13 +49,14 @@ namespace Engine
 		std::shared_ptr<Buffer> _matrixBuffer;
 		std::shared_ptr<Buffer> _vertexBuffer[2];
 		GLsizei _numElement;
+
 	public:
 		ParticlesManager(const std::shared_ptr<ShaderProgram> &physicsProgram, const std::shared_ptr<ShaderProgram> &displayProgram);
 		~ParticlesManager(void);
 		void loadTexture(const GLchar *path) const;
 		void setParticles(const Particle *particles, GLsizei numParticles);
-		void setPosition(const std::shared_ptr<glm::vec3> &pos);
-		const std::shared_ptr<glm::vec3> &getPosition(void) const;
+		void setPosition(const glm::vec3 &pos);
+		const glm::vec3 &getPosition(void) const;
 		void updateParticles(void);
 		void updateParticles(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam);
 		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<Camera> &cam);

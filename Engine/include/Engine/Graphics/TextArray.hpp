@@ -14,20 +14,20 @@ namespace Engine
 	{
 	private:
 		TTF_Font *_font;
-		Texture2D *_texture;
-		Buffer *_vertexBuffer;
-		Buffer *_MVPMatrixBuffer;
-		glm::mat4 *_mat;
-		ShaderProgram *_program;
+		std::shared_ptr<Texture2D> _texture;
+		std::shared_ptr<Buffer> _vertexBuffer;
+		std::shared_ptr<Buffer> _MVPMatrixBuffer;
+		glm::mat4 _mat;
+		std::shared_ptr<ShaderProgram> _program;
 		GLuint _idVAO;
 		SDL_Color _color;
 	public:
-		TextArray(ShaderProgram *program);
+		TextArray(const std::shared_ptr<ShaderProgram> &program);
 		~TextArray(void);
-		void setFont(const GLchar *font, const GLuint &size, const GLubyte &r, const GLubyte &g, const GLubyte &b);
-		void writeScreen(const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, const Renderer &renderer, const GLchar *text) const;
+		void setFont(const GLchar *font, GLuint size, GLubyte r, GLubyte g, GLubyte b);
+		void writeScreen(GLuint x, GLuint y, GLuint w, GLuint h, const std::shared_ptr<Renderer> &renderer, const GLchar *text);
 		void writeScreen(const GLchar *text) const;
-		void display(const Renderer &renderer) const;
+		void display(const std::shared_ptr<Renderer> &renderer) const;
 	};
 }
 

@@ -13,6 +13,7 @@
 #define ALIGN(X) __declspec(align(X))
 #pragma warning(disable:4324)
 #pragma warning(disable:4201)
+#pragma warning(disable:4251)
 #endif
 #include <Windows.h>
 #include <GL/glew.h>

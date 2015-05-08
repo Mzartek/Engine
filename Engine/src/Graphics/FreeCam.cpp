@@ -13,14 +13,14 @@ Engine::FreeCam::~FreeCam(void)
 {
 }
 
-void Engine::FreeCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r) const
+void Engine::FreeCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r)
 {
 	if(f)
-		*_pcamera += *_vforward * _speed;
+		_pcamera += _vforward * _speed;
 	if(b)
-		*_pcamera -= *_vforward * _speed;
+		_pcamera -= _vforward * _speed;
 	if(l)
-		*_pcamera += *_vleft * _speed;
+		_pcamera += _vleft * _speed;
 	if(r)
-		*_pcamera -= *_vleft * _speed;
+		_pcamera -= _vleft * _speed;
 }

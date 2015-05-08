@@ -1,12 +1,11 @@
 #include <Engine/Graphics/TextArray.hpp>
 
-Engine::TextArray::TextArray(ShaderProgram *program)
+Engine::TextArray::TextArray(const std::shared_ptr<ShaderProgram> &program)
 	: _font(NULL), _program(program)
 {
-	_texture = new_ptr(Texture2D);
-	_vertexBuffer = new_ptr(Buffer);
-	_MVPMatrixBuffer = new_ptr(Buffer);
-	_mat = new_ptr(glm::mat4);
+	_texture = std::shared_ptr<Texture2D>(new Texture2D);
+	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_MVPMatrixBuffer = std::shared_ptr<Buffer>(new Buffer);
 
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, NULL, 64, GL_STATIC_DRAW);
 	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
@@ -27,14 +26,10 @@ Engine::TextArray::TextArray(ShaderProgram *program)
 Engine::TextArray::~TextArray(void)
 {
 	if(_font) TTF_CloseFont(_font);
-	release_ptr(_texture);
-	release_ptr(_vertexBuffer);
-	release_ptr(_MVPMatrixBuffer);
-	release_ptr(_mat);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::TextArray::setFont(const GLchar *font, const GLuint &size, const GLubyte &r, const GLubyte &g, const GLubyte &b)
+void Engine::TextArray::setFont(const GLchar *font, GLuint size, GLubyte r, GLubyte g, GLubyte b)
 {
 	if (_font) TTF_CloseFont(_font);
 	_font = TTF_OpenFont(font, size);
@@ -50,7 +45,7 @@ void Engine::TextArray::setFont(const GLchar *font, const GLuint &size, const GL
 	_color.a = 0;
 }
 
-void Engine::TextArray::writeScreen(const GLuint &x, const GLuint &y, const GLuint &w, const GLuint &h, const Renderer &renderer, const GLchar *text) const
+void Engine::TextArray::writeScreen(GLuint x, GLuint y, GLuint w, GLuint h, const std::shared_ptr<Renderer> &renderer, const GLchar *text)
 {
 	SDL_Surface *t;
 	
@@ -70,7 +65,7 @@ void Engine::TextArray::writeScreen(const GLuint &x, const GLuint &y, const GLui
 		1, 1,
 	};
 	_vertexBuffer->updateStoreSub(vertexArray);
-	*_mat = glm::ortho(0.0f, (GLfloat)renderer.getWidth(), 0.0f, (GLfloat)renderer.getHeight(), -1.0f, 1.0f);
+	_mat = glm::ortho(0.0f, (GLfloat)renderer->getWidth(), 0.0f, (GLfloat)renderer->getHeight(), -1.0f, 1.0f);
 }
 
 void Engine::TextArray::writeScreen(const GLchar *text) const
@@ -82,13 +77,13 @@ void Engine::TextArray::writeScreen(const GLchar *text) const
 	SDL_FreeSurface(t);
 }
 
-void Engine::TextArray::display(const Renderer &renderer) const
+void Engine::TextArray::display(const std::shared_ptr<Renderer> &renderer) const
 {
-	renderer.setState();
+	renderer->setState();
 
 	glUseProgram(_program->getId());
 
-	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(*_mat));
+	_MVPMatrixBuffer->updateStoreMap(glm::value_ptr(_mat));
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _MVPMatrixBuffer->getId());
 
 	glActiveTexture(GL_TEXTURE0);

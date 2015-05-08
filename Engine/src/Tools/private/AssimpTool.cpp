@@ -146,16 +146,16 @@ std::shared_ptr<Engine::Material> Engine::AssimpTool::loadMaterial(const aiMater
 	aiColor4D tmp;
 
 	material->Get(AI_MATKEY_COLOR_DIFFUSE, tmp);
-	newMaterial->setDiffuse(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
+	newMaterial->setDiffuse(glm::vec3(tmp.r, tmp.g, tmp.b));
 
 	material->Get(AI_MATKEY_COLOR_SPECULAR, tmp);
-	newMaterial->setSpecular(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
+	newMaterial->setSpecular(glm::vec3(tmp.r, tmp.g, tmp.b));
 
 	material->Get(AI_MATKEY_COLOR_AMBIENT, tmp);
-	newMaterial->setAmbient(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
+	newMaterial->setAmbient(glm::vec3(tmp.r, tmp.g, tmp.b));
 
 	material->Get(AI_MATKEY_COLOR_EMISSIVE, tmp);
-	newMaterial->setEmissive(std::shared_ptr<glm::vec3>(new glm::vec3(tmp.r, tmp.g, tmp.b)));
+	newMaterial->setEmissive(glm::vec3(tmp.r, tmp.g, tmp.b));
 
 	material->Get(AI_MATKEY_SHININESS, tmp);
 	newMaterial->setShininess(tmp.r);

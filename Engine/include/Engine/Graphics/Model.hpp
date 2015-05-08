@@ -19,15 +19,15 @@ namespace Engine
 	class DLLAPI Model : public Object
 	{
 	private:
-		std::shared_ptr<glm::vec3> _position;
-		std::shared_ptr<glm::vec3> _scale;
-		std::shared_ptr<glm::quat> _rotation;
+		glm::vec3 _position;
+		glm::vec3 _scale;
+		glm::quat _rotation;
 
 		GLboolean _needMatModel;
 		GLboolean _needMatNormal;
 
-		void genMatModel(void) const;
-		void genMatNormal(void) const; 
+		void genMatModel(void);
+		void genMatNormal(void); 
 
 	protected:
 		struct
@@ -40,13 +40,13 @@ namespace Engine
 
 		GLboolean _isMirror;
 
-		std::shared_ptr<std::vector<std::shared_ptr<Mesh>>> _tMesh;
+		std::vector<std::shared_ptr<Mesh>> *_tMesh;
 
 		std::shared_ptr<Buffer> _matrixBuffer;
 		std::shared_ptr<Buffer> _cameraBuffer;
 
-		std::shared_ptr<glm::mat4> _modelMatrix;
-		std::shared_ptr<glm::mat4> _normalMatrix;
+		glm::mat4 _modelMatrix;
+		glm::mat4 _normalMatrix;
 
 		std::shared_ptr<TextureCube> _cubeTexture;
 
@@ -62,22 +62,21 @@ namespace Engine
 
 		void addMesh(const std::shared_ptr<Mesh> &mesh);
 		void sortMesh(void);
-		void setPosition(const std::shared_ptr<glm::vec3> &position);
-		void setScale(const std::shared_ptr<glm::vec3> &scale);
-		void setRotation(const std::shared_ptr<glm::vec3> &rotation);
-		void setRotation(const std::shared_ptr<glm::vec3> &axis, GLfloat angle);
+		void setPosition(const glm::vec3 &position);
+		void setScale(const glm::vec3 &scale);
+		void setRotation(const glm::vec3 &rotation);
+		void setRotation(const glm::vec3 &axis, GLfloat angle);
 		void setCubeTexture(const std::shared_ptr<TextureCube> &cubeTexture);
-		const std::shared_ptr<glm::vec3> &getPosition(void) const;
-		const std::shared_ptr<glm::vec3> &getScale(void) const;
-		std::pair<const std::shared_ptr<glm::vec3> &, GLfloat> getAxisAngleRotation(void) const;
+		const glm::vec3 &getPosition(void) const;
+		const glm::vec3 &getScale(void) const;
+		std::pair<const glm::vec3 &, GLfloat> getAxisAngleRotation(void) const;
 		const std::shared_ptr<Mesh> &getMesh(GLuint num) const;
 
 		virtual void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;
 		virtual void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;
 		virtual void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam) = 0;
 		virtual void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light) = 0;
-		virtual void displayDepthMaps(const std::shared_ptr<DepthMap> &depthMap0, const std::shared_ptr<DepthMap> &depthMap1, const std::shared_ptr<DepthMap> &depthMap2, 
-			const std::shared_ptr<DirLight> &light) = 0;
+		virtual void displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light) = 0;
 	};
 }
 

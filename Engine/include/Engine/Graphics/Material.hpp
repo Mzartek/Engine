@@ -53,10 +53,10 @@ namespace Engine
 		Material(void);
 		~Material(void);
 
-		void setDiffuse(const std::shared_ptr<glm::vec3> &color);
-		void setSpecular(const std::shared_ptr<glm::vec3> &color);
-		void setAmbient(const std::shared_ptr<glm::vec3> &color);
-		void setEmissive(const std::shared_ptr<glm::vec3> &color);
+		void setDiffuse(const glm::vec3 &color);
+		void setSpecular(const glm::vec3 &color);
+		void setAmbient(const glm::vec3 &color);
+		void setEmissive(const glm::vec3 &color);
 		void setShininess(GLfloat shininess);
 		void setOpacity(GLfloat opacity);
 
@@ -71,10 +71,10 @@ namespace Engine
 		void setDisplacementMap(const std::shared_ptr<Texture2D> &tex);
 		void setLightMap(const std::shared_ptr<Texture2D> &tex);
 
-		const std::shared_ptr<glm::vec3> &getDiffuse(void) const;
-		const std::shared_ptr<glm::vec3> &getSpecular(void) const;
-		const std::shared_ptr<glm::vec3> &getAmbient(void) const;
-		const std::shared_ptr<glm::vec3> &getEmissive(void) const;
+		const glm::vec3 &getDiffuse(void) const;
+		const glm::vec3 &getSpecular(void) const;
+		const glm::vec3 &getAmbient(void) const;
+		const glm::vec3 &getEmissive(void) const;
 		GLfloat getShininess(void) const;
 		GLfloat getOpacity(void) const;
 		

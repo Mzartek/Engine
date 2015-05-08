@@ -31,7 +31,7 @@ private:
 	std::shared_ptr<Engine::Audio> audio;
 
 	std::shared_ptr<Engine::GBuffer> gBuffer;
-	std::shared_ptr<Engine::DepthMap> depthMaps[CSM_NUM];
+	std::vector<std::shared_ptr<Engine::DepthMap>> depthMaps;
 	std::shared_ptr<Engine::FreeCam> camera;
 
 	std::shared_ptr<Engine::Octree> octree;
@@ -54,7 +54,6 @@ public:
 	void display(GLfloat state);
 	void idle(long long time);
 	void reshape(GLuint w, GLuint h);
-	void launch(void);
 };
 
 

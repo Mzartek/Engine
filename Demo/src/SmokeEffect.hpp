@@ -11,11 +11,12 @@ private:
 	std::shared_ptr<Engine::ShaderProgram> _displaySmokeProgram;
 	std::shared_ptr<Engine::ParticlesManager> _smokeManager;
 	std::shared_ptr<Engine::Sound> _fire_sound;
+
 public:
 	SmokeEffect(void);
 	~SmokeEffect(void);
-	void init(const std::shared_ptr<glm::vec3> &position, GLuint numParticles) const;
-	void setPosition(const std::shared_ptr<glm::vec3> &pos);
+	void init(const glm::vec3 &position, GLuint numParticles) const;
+	void setPosition(const glm::vec3 &pos);
 	const std::shared_ptr<Engine::ParticlesManager> &getParticlesManager(void) const;
 	const std::shared_ptr<Engine::Sound> &getSound(void) const;
 };

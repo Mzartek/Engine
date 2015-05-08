@@ -13,16 +13,16 @@ namespace Engine
 	class DLLAPI Screen : public Object
 	{
 	private:
-		Buffer *_vertexBuffer;
-		Buffer *_colorBuffer;
-		ShaderProgram *_backgroundProgram;
-		ShaderProgram *_directProgram;
+		std::shared_ptr<Buffer> _vertexBuffer;
+		std::shared_ptr<Buffer> _colorBuffer;
+		std::shared_ptr<ShaderProgram> _backgroundProgram;
+		std::shared_ptr<ShaderProgram> _directProgram;
 		GLuint _idVAO;
 	public:
-		Screen(ShaderProgram *backgroundProgram, ShaderProgram *directProgram);
+		Screen(const std::shared_ptr<ShaderProgram> &backgroundProgram, const std::shared_ptr<ShaderProgram> &directProgram);
 		~Screen(void);
-		void background(const GBuffer &gbuf) const;
-		void display(const Renderer &renderer, const GBuffer &gbuf, const GLfloat &r, const GLfloat &g, const GLfloat &b, const GLfloat &a) const;
+		void background(const std::shared_ptr<GBuffer> &gbuf) const;
+		void display(const std::shared_ptr<Renderer> &renderer, const std::shared_ptr<GBuffer> &gbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a) const;
 	};
 }
 

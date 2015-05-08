@@ -25,7 +25,7 @@ namespace Engine
 		} _matrix;
 
 		std::shared_ptr<Skeleton> _skeleton;
-		std::shared_ptr<std::vector<std::shared_ptr<Bone>>> _bones;
+		std::vector<std::shared_ptr<Bone>> _bones;
 
 	public:
 		SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
@@ -37,8 +37,7 @@ namespace Engine
 		void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
 		void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam);
 		void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light);
-		void displayDepthMaps(const std::shared_ptr<DepthMap> &depthMap0, const std::shared_ptr<DepthMap> &depthMap1, const std::shared_ptr<DepthMap> &depthMap2,
-			const std::shared_ptr<DirLight> &light);
+		void displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light);
 	};
 }
 
