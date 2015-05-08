@@ -4,6 +4,7 @@
 #include <Engine/Graphics/Renderer.hpp>
 #include <Engine/Input/Input.hpp>
 #include <Engine/Audio/Audio.hpp>
+#include <Engine/Graphics/Window.hpp>
 
 #include <Engine/Graphics/GBuffer.hpp>
 #include <Engine/Graphics/DepthMap.hpp>
@@ -26,9 +27,7 @@ class Demo : public Engine::GameLoop
 {
 private:
 	// System
-	std::shared_ptr<Engine::Renderer> renderer;
-	std::shared_ptr<Engine::Input> input;
-	std::shared_ptr<Engine::Audio> audio;
+	std::shared_ptr<Engine::Window> window;
 
 	std::shared_ptr<Engine::GBuffer> gBuffer;
 	std::vector<std::shared_ptr<Engine::DepthMap>> depthMaps;
@@ -49,7 +48,7 @@ private:
 	std::shared_ptr<ScreenDisplay> screenDisplay;
 
 public:
-	Demo(const std::shared_ptr<Engine::Renderer> &r, const std::shared_ptr<Engine::Input> &i, const std::shared_ptr<Engine::Audio> &a);
+	Demo(const std::shared_ptr<Engine::Window> &w);
 	~Demo(void);
 	void display(GLfloat state);
 	void idle(long long time);

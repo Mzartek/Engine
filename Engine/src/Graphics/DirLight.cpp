@@ -3,9 +3,12 @@
 Engine::DirLight::DirLight(const std::shared_ptr<ShaderProgram> &program)
 	: Light(program)
 {
-	_projectionMatrix.reserve(3);
-	_viewMatrix.reserve(3);
-	_VPMatrix.reserve(3);
+	for (GLuint i = 0; i < CSM_NUM; i++)
+	{
+		_projectionMatrix.push_back(glm::mat4());
+		_viewMatrix.push_back(glm::mat4());
+		_VPMatrix.push_back(glm::mat4());
+	}
 
 	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 

@@ -53,9 +53,9 @@ void Engine::Screen::background(const std::shared_ptr<GBuffer> &gbuf) const
 	gbuf->clearLight();
 }
 
-void Engine::Screen::display(const std::shared_ptr<Renderer> &renderer, const std::shared_ptr<GBuffer> &gbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a) const
+void Engine::Screen::display(const std::shared_ptr<Window> &window, const std::shared_ptr<GBuffer> &gbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a) const
 {
-	renderer->setState();
+	window->setState();
 
 	glUseProgram(_directProgram->getId());
 

@@ -6,7 +6,7 @@
 #include "Texture2D.hpp"
 #include "Buffer.hpp"
 #include "ShaderProgram.hpp"
-#include "Renderer.hpp"
+#include "Window.hpp"
 
 namespace Engine
 {
@@ -21,13 +21,14 @@ namespace Engine
 		std::shared_ptr<ShaderProgram> _program;
 		GLuint _idVAO;
 		SDL_Color _color;
+
 	public:
 		TextArray(const std::shared_ptr<ShaderProgram> &program);
 		~TextArray(void);
 		void setFont(const GLchar *font, GLuint size, GLubyte r, GLubyte g, GLubyte b);
-		void writeScreen(GLuint x, GLuint y, GLuint w, GLuint h, const std::shared_ptr<Renderer> &renderer, const GLchar *text);
+		void writeScreen(GLuint x, GLuint y, GLuint w, GLuint h, const std::shared_ptr<Window> &window, const GLchar *text);
 		void writeScreen(const GLchar *text) const;
-		void display(const std::shared_ptr<Renderer> &renderer) const;
+		void display(const std::shared_ptr<Window> &window) const;
 	};
 }
 

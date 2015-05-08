@@ -8,6 +8,10 @@ namespace Engine
 	class DLLAPI Input : public Object
 	{
 	private:
+		static Input _instance;
+		Input(void);
+		~Input(void);
+
 		const GLubyte *_keyState;
 		struct MOUSESTATE
 		{
@@ -15,9 +19,11 @@ namespace Engine
 			GLint y;
 			GLuint buttons;
 		} _mouseState;
+
 	public:
-		Input(void);
-		~Input(void);
+		static Input &Instance(void);
+
+		void init(void);
 		GLboolean getKeyBoardState(GLubyte button) const;
 		GLboolean getMouseState(GLubyte button) const;
 		GLint getMouseRelX(void) const;

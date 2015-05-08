@@ -1,10 +1,9 @@
 #include "Demo.hpp"
 
-Demo::Demo(const std::shared_ptr<Engine::Renderer> &r, const std::shared_ptr<Engine::Input> &i, const std::shared_ptr<Engine::Audio> &a)
+Demo::Demo(const std::shared_ptr<Engine::Window> &w)
+	: window(w)
 {
-	renderer = r;
-	input = i;
-	audio = a;
+	Engine::Renderer::Instance().setGLContext(window);
 
 	gBuffer = std::shared_ptr<Engine::GBuffer>(new Engine::GBuffer);
 	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps.push_back(std::shared_ptr<Engine::DepthMap>(new Engine::DepthMap));
@@ -25,7 +24,8 @@ Demo::Demo(const std::shared_ptr<Engine::Renderer> &r, const std::shared_ptr<Eng
 	screenDisplay = std::shared_ptr<ScreenDisplay>(new ScreenDisplay);
 
 	// GBuffer config
-	gBuffer->config(renderer->getWidth(), renderer->getHeight());
+	gBuffer->config(window->getWidth(), window->getHeight());
+	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps[i]->config(2048, 2048);
 
 	// Camera config
 	camera->setCameraPosition(glm::vec3(30, 5, 0));
@@ -59,9 +59,9 @@ Demo::Demo(const std::shared_ptr<Engine::Renderer> &r, const std::shared_ptr<Eng
 	torchLight->getLight()->setMaxDistance(250);
 
 	// Text config
-	textDisplay->getText()->writeScreen(0 + (renderer->getWidth() - (renderer->getWidth() / 10)), 0,
-		renderer->getWidth() / 10, renderer->getHeight() / 10,
-		renderer, "test");
+	textDisplay->getText()->writeScreen(0 + (window->getWidth() - (window->getWidth() / 10)), 0,
+		window->getWidth() / 10, window->getHeight() / 10,
+		window, "test");
 
 	rainEffect->getSound()->setGain(0.10f);
 	rainEffect->getSound()->setPitch(1.0f);
@@ -100,7 +100,7 @@ void Demo::display(GLfloat state)
 	octree->getModels(camera, object);
 
 	// Clear Buffers
-	renderer->clear();
+	window->clear();
 	gBuffer->clear();
 
 	nightBox->display(gBuffer, camera);
@@ -133,9 +133,9 @@ void Demo::display(GLfloat state)
 	rain_particles->display(gBuffer, camera);
 	smoke_particles->display(gBuffer, camera);
 
-	screen_display->display(renderer, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+	screen_display->display(window, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
-	text_display->display(renderer);
+	text_display->display(window);
 }
 
 void Demo::idle(long long time)
@@ -146,30 +146,30 @@ void Demo::idle(long long time)
 	static const std::shared_ptr<Engine::SpotLight> torch_light = torchLight->getLight();
 	static const std::shared_ptr<Engine::ParticlesManager> rain_particles = rainEffect->getParticlesManager();
 	static const std::shared_ptr<Engine::ParticlesManager> smoke_particles = smokeEffect->getParticlesManager();
-	static const glm::vec3 camPosition = camera->getCameraPosition();
-	static const glm::vec3 camForward = camera->getForwardVector();
-	static const glm::vec3 camUp = camera->getUpVector();
+	static const glm::vec3 &camPosition = camera->getCameraPosition();
+	static const glm::vec3 &camForward = camera->getForwardVector();
+	static const glm::vec3 &camUp = camera->getUpVector();
 	
-	input->refresh();
-	if (input->getKeyBoardState(SDL_SCANCODE_ESCAPE))
-		renderer->stopLoop();
+	Engine::Input::Instance().refresh();
+	if (Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_ESCAPE))
+		window->stopLoop();
 
 	// Player control
-	if (input->getKeyBoardState(SDL_SCANCODE_LSHIFT))
+	if (Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_LSHIFT))
 		camera->setSpeed(0.05f);
-	else if (input->getMouseState(SDL_BUTTON_LEFT))
+	else if (Engine::Input::Instance().getMouseState(SDL_BUTTON_LEFT))
 		camera->setSpeed(5.0f);
 	else
 		camera->setSpeed(0.25f);
 
 	camera->keyboardMove(
-		input->getKeyBoardState(SDL_SCANCODE_W),
-		input->getKeyBoardState(SDL_SCANCODE_S),
-		input->getKeyBoardState(SDL_SCANCODE_A),
-		input->getKeyBoardState(SDL_SCANCODE_D));
-	camera->mouseMove(input->getMouseRelX(), input->getMouseRelY());
+		Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_W),
+		Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_S),
+		Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_A),
+		Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_D));
+	camera->mouseMove(Engine::Input::Instance().getMouseRelX(), Engine::Input::Instance().getMouseRelY());
 	camera->position();
-
+	
 	moon_light->position(camPosition, 100, 250, 500);
 	torch_light->position(depthMaps[0]);
 
@@ -178,7 +178,7 @@ void Demo::idle(long long time)
 	rain_particles->updateParticles();
 	smoke_particles->updateParticles();
 
-	audio->setListenerPosition(camPosition, camForward, camUp);
+	Engine::Audio::Instance().setListenerPosition(camPosition, camForward, camUp);
 }
 
 void Demo::reshape(GLuint w, GLuint h)
