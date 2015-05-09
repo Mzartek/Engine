@@ -38,6 +38,17 @@ vec3 getPosition(vec2 fragCoord)
 	return tmp2.xyz / tmp2.w;
 }
 
+bool checkInside(vec3 position, float distance, float angle)
+{
+	if (distance > lightMaxDistance)
+		return false;
+		
+	if (angle > lightSpotCutOff)
+		return false;
+		
+	return true;
+}
+
 float lookUp(vec4 coord, vec2 offSet, ivec2 texSize)
 {
 	coord.x = 0.5f + (coord.x / coord.w * 0.5f);
@@ -76,7 +87,15 @@ vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, vec3 V, float shi
 
 void main(void)
 {
-	vec3 position = getPosition(gl_FragCoord.xy);
+	vec3 position = getPosition(gl_FragCoord.xy);	
+	vec3 L = lightPosition - position;
+	float current_distance = length(L);
+	L = normalize(L);
+	float current_angle = acos(dot(-L, lightDirection));
+	
+	if (!checkInside(position, current_distance, current_angle))
+		discard;
+	
 	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
 	uvec4 material = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
 
@@ -86,17 +105,8 @@ void main(void)
 	float shadow = 1.0;
 	if (withShadowMapping)
 		shadow = calcShadow(shadowMatrix * vec4(position, 1.0), 1.0);
-	vec3 L = normalize(lightPosition - position);
 
-	// For the angle
-	float cos_cur_angle = dot(-L, lightDirection);
-	float cos_outer_cone_angle = cos(lightSpotCutOff);
-	float cos_inner_cone_angle = cos_outer_cone_angle + 0.01;
-	float cos_inner_minus_outer_angle = cos_inner_cone_angle - cos_outer_cone_angle;
-	float spot = clamp((cos_cur_angle - cos_outer_cone_angle) / cos_inner_minus_outer_angle, 0.0, 1.0);
-
-	// For the distance
-	float current_distance = length(lightPosition - position);
+	float spot = 1.0;
 	float inner_distance = lightMaxDistance - LIMIT;
 	if (current_distance >= inner_distance)
 	{
