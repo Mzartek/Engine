@@ -132,6 +132,33 @@ void Engine::Model::setRotation(const glm::vec3 &axis, GLfloat angle)
 	_needMatNormal = GL_TRUE;
 }
 
+void Engine::Model::addPosition(const glm::vec3 &position)
+{
+    _position += position;
+	_needMatModel = GL_TRUE;
+}
+
+void Engine::Model::addScale(const glm::vec3 &scale)
+{
+    _scale += scale;
+	_needMatModel = GL_TRUE;
+	_needMatNormal = GL_TRUE;
+}
+
+void Engine::Model::addRotation(const glm::vec3 &rotation)
+{
+	_rotation = glm::quat(rotation) * _rotation;
+	_needMatModel = GL_TRUE;
+	_needMatNormal = GL_TRUE;
+}
+
+void Engine::Model::addRotation(const glm::vec3 &axis, GLfloat angle)
+{
+	_rotation = glm::angleAxis(fmodf(angle, glm::pi<GLfloat>() * 2), axis) * _rotation;
+	_needMatModel = GL_TRUE;
+	_needMatNormal = GL_TRUE;
+}
+
 void Engine::Model::setCubeTexture(const std::shared_ptr<TextureCube> &cubeTexture)
 {
 	_cubeTexture = cubeTexture;

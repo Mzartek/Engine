@@ -27,7 +27,7 @@ namespace Engine
 		GLboolean _needMatNormal;
 
 		void genMatModel(void);
-		void genMatNormal(void); 
+		void genMatNormal(void);
 
 	protected:
 		struct
@@ -62,14 +62,23 @@ namespace Engine
 
 		void addMesh(const std::shared_ptr<Mesh> &mesh);
 		void sortMesh(void);
+
 		void setPosition(const glm::vec3 &position);
 		void setScale(const glm::vec3 &scale);
 		void setRotation(const glm::vec3 &rotation);
 		void setRotation(const glm::vec3 &axis, GLfloat angle);
+
+		void addPosition(const glm::vec3 &position);
+		void addScale(const glm::vec3 &scale);
+		void addRotation(const glm::vec3 &rotation);
+		void addRotation(const glm::vec3 &axis, GLfloat angle);
+
 		void setCubeTexture(const std::shared_ptr<TextureCube> &cubeTexture);
+
 		const glm::vec3 &getPosition(void) const;
 		const glm::vec3 &getScale(void) const;
 		std::pair<const glm::vec3 &, GLfloat> getAxisAngleRotation(void) const;
+
 		const std::shared_ptr<Mesh> &getMesh(GLuint num) const;
 
 		virtual void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;

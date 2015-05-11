@@ -28,7 +28,7 @@ SmokeEffect::~SmokeEffect(void)
 {
 }
 
-void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles) const
+void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles)
 {
 	std::vector<Engine::Particle> smokeParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
@@ -40,6 +40,7 @@ void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles) const
 	}
 	_smokeManager->loadTexture("../share/Demo/resources/textures/smoke.png");
 	_smokeManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
+	this->setPosition(position);
 }
 
 void SmokeEffect::setPosition(const glm::vec3 &pos)

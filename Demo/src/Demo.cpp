@@ -30,11 +30,6 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	// Camera config
 	camera->setCameraPosition(glm::vec3(30, 5, 0));
 
-	rainEffect->init(camera->getCameraPosition(), 10000);
-	smokeEffect->init(glm::vec3(-50, 0, 50), 100);
-
-	smokeEffect->setPosition(glm::vec3(-50, 0, 50));
-
 	// Model config
 	tree->getModel()->setPosition(glm::vec3(50, 0, 50));
 	tree->getModel()->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
@@ -43,10 +38,13 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	armySoldier->getModel()->setPosition(glm::vec3(-25, 0, 25));
 	armySoldier->getModel()->setRotation(glm::vec3(0, 1, 0), glm::pi<GLfloat>() / 2);
 
-	helicopter->getModel()->setPosition(glm::vec3(-50, 4, 50));
+	helicopter->getModel()->setPosition(glm::vec3(-50, 304, 50));
 	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
 	helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
-		
+
+	rainEffect->init(camera->getCameraPosition(), 10000);
+	smokeEffect->init(helicopter->getModel()->getPosition(), 100);
+
 	octree->addModel(ground->getModel(), 1000);
 	octree->addModel(tree->getModel(), 40);
 	octree->addModel(armySoldier->getModel(), 40);
@@ -149,7 +147,7 @@ void Demo::idle(long long time)
 	static const glm::vec3 &camPosition = camera->getCameraPosition();
 	static const glm::vec3 &camForward = camera->getForwardVector();
 	static const glm::vec3 &camUp = camera->getUpVector();
-	
+
 	Engine::Input::Instance().refresh();
 	if (Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_ESCAPE))
 		window->stopLoop();
@@ -169,11 +167,15 @@ void Demo::idle(long long time)
 		Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_D));
 	camera->mouseMove(Engine::Input::Instance().getMouseRelX(), Engine::Input::Instance().getMouseRelY());
 	camera->position();
-	
+
+	helicopter->getModel()->addRotation(glm::vec3(0, 1, 0), 0.025f);
+	helicopter->getModel()->addPosition(glm::vec3(0, -1, 0));
+
 	moon_light->position(camPosition, 100, 250, 500);
 	torch_light->position(depthMaps[0]);
 
 	rain_particles->setPosition(camPosition);
+	smoke_particles->setPosition(helicopter->getModel()->getPosition());
 
 	rain_particles->updateParticles();
 	smoke_particles->updateParticles();

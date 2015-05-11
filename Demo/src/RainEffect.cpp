@@ -40,6 +40,7 @@ void RainEffect::init(const glm::vec3 &position, GLuint numParticles) const
 	}
 	_rainManager->loadTexture("../share/Demo/resources/textures/goutte.png");
 	_rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
+	_rainManager->setPosition(position);
 }
 
 const std::shared_ptr<Engine::ParticlesManager> &RainEffect::getParticlesManager() const
