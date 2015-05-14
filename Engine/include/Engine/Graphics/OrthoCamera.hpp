@@ -23,7 +23,7 @@ namespace Engine
 		void setPosition(const glm::vec3 &pos);
 		void setDirection(const glm::vec3 &dir);
 		void setOrthogonal(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar);
-		void position(void);
+		void updateData(void);
 	};
 }
 

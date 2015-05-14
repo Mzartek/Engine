@@ -10,6 +10,9 @@ namespace Engine
 	struct DLLAPI Octree : public Object
 	{
 	private:
+		GLboolean _isRoot;
+		std::map<Model *, Octree *> *_map_model;
+
 		glm::vec3 _position;
 		std::vector<glm::vec3> _vertex;
 
@@ -17,21 +20,22 @@ namespace Engine
 		GLfloat _dim_2;
 		GLfloat _radius;
 
-		std::set<std::shared_ptr<Model>> _modelContainer;
-
+		std::set<Model *> _modelContainer;
 		std::vector<Octree *> _children;
 
 		bool checkCamInCube(const std::shared_ptr<Engine::PerspCamera> &cam) const;
 		bool checkCamInSphere(const std::shared_ptr<Engine::PerspCamera> &cam) const;
 		bool checkInCamFrus(const std::shared_ptr<Engine::PerspCamera> &cam) const;
 
+		Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std::map<Model *, Octree *> *map_model);
+
 	public:
 		Octree(GLuint depth, const glm::vec3 &position, GLfloat dim);
 		~Octree(void);
 
-		bool addModel(const std::shared_ptr<Model> &model, GLfloat dim);
-		void removeModel(const std::shared_ptr<Model> &model);
-		void getModels(const std::shared_ptr<PerspCamera> &cam, std::set<std::shared_ptr<Model>> &set_model);
+		bool addModel(Model *model, GLfloat dim);
+		void removeModel(Model *model);
+		void getModels(const std::shared_ptr<PerspCamera> &cam, std::set<Model *> &set_model);
 	};
 }
 #endif

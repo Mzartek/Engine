@@ -42,10 +42,9 @@ inline bool Engine::Octree::checkInCamFrus(const std::shared_ptr<Engine::PerspCa
 	return false;
 }
 
-Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
+Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std::map<Model *, Octree *> *map_model)
+	: _isRoot(GL_FALSE), _map_model(map_model), _position(position)
 {
-	_position = position;
-
 	GLfloat newDim = dim / 2;
 	GLfloat tmp = newDim / 2;
 
@@ -53,14 +52,14 @@ Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
 	_dim_2 = newDim;
 	_radius = glm::length(glm::vec3(newDim));
 
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z - newDim));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z + newDim));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z - newDim));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z + newDim));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z - newDim));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z + newDim));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z - newDim));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z + newDim));
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
 
 	if (depth > 0)
 	{
@@ -76,17 +75,55 @@ Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
 		};
 
 		for (GLuint i = 0; i < 8; i++)
-			_children.push_back(new Octree(depth - 1, newPositions[i], newDim));
+			_children.push_back(new Octree(depth - 1, newPositions[i], newDim, _map_model));
+	}
+}
+
+Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
+	: _isRoot(GL_TRUE), _map_model(new std::map<Model *, Octree *>), _position(position)
+{
+	GLfloat newDim = dim / 2;
+	GLfloat tmp = newDim / 2;
+
+	_dim = dim;
+	_dim_2 = newDim;
+	_radius = glm::length(glm::vec3(newDim));
+
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+
+	if (depth > 0)
+	{
+		glm::vec3 newPositions[] = {
+			glm::vec3(_position.x - tmp, _position.y - tmp, _position.z - tmp),
+			glm::vec3(_position.x - tmp, _position.y - tmp, _position.z + tmp),
+			glm::vec3(_position.x - tmp, _position.y + tmp, _position.z - tmp),
+			glm::vec3(_position.x - tmp, _position.y + tmp, _position.z + tmp),
+			glm::vec3(_position.x + tmp, _position.y - tmp, _position.z - tmp),
+			glm::vec3(_position.x + tmp, _position.y - tmp, _position.z + tmp),
+			glm::vec3(_position.x + tmp, _position.y + tmp, _position.z - tmp),
+			glm::vec3(_position.x + tmp, _position.y + tmp, _position.z + tmp),
+		};
+
+		for (GLuint i = 0; i < 8; i++)
+			_children.push_back(new Octree(depth - 1, newPositions[i], newDim, _map_model));
 	}
 }
 
 Engine::Octree::~Octree(void)
 {
+	if (_isRoot) delete _map_model;
 	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
 		delete *it;
 }
 
-bool Engine::Octree::addModel(const std::shared_ptr<Model> &model, GLfloat dim)
+bool Engine::Octree::addModel(Model *model, GLfloat dim)
 {
 	if (dim > _dim)	return false;
 
@@ -98,26 +135,23 @@ bool Engine::Octree::addModel(const std::shared_ptr<Model> &model, GLfloat dim)
 		model_pos.z < (_position.z - _dim_2) || model_pos.z >= (_position.z + _dim_2))
 		return false;
 
-	unsigned int res = 0;
-
 	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
-		res += (*it)->addModel(model, dim);
+		if ((*it)->addModel(model, dim)) return true;
 	
-	if (res == 0)
-		_modelContainer.insert(model);
+	_modelContainer.insert(model);
+ 	(*_map_model)[model] = this;
 
 	return true;
 }
 
-void Engine::Octree::removeModel(const std::shared_ptr<Model> &model)
+void Engine::Octree::removeModel(Model *model)
 {
-	_modelContainer.erase(model);
+	std::map<Model *, Octree *>::iterator map_it = _map_model->find(model);
 
-	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
-		(*it)->removeModel(model);
+	if (map_it != _map_model->end()) map_it->second->_modelContainer.erase(model);
 }
 
-void Engine::Octree::getModels(const std::shared_ptr<PerspCamera> &cam, std::set<std::shared_ptr<Model>> &set_model)
+void Engine::Octree::getModels(const std::shared_ptr<PerspCamera> &cam, std::set<Model *> &set_model)
 {
 	if (!checkCamInCube(cam))
 	{

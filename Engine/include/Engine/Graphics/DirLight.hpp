@@ -31,7 +31,7 @@ namespace Engine
 		const glm::mat4 &getVPMatrix(GLuint num) const;
 		const glm::vec3 &getColor(void) const;
 		const glm::vec3 &getDirection(void) const;
-		void position(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2);
+		void updateData(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2);
 		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
 		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::vector<std::shared_ptr<Engine::DepthMap>> &depthMaps);
 	};

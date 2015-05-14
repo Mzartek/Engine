@@ -89,7 +89,7 @@ GLfloat Engine::SpotLight::getMaxDistance(void) const
 	return _lightInfo.maxDistance;
 }
 
-void Engine::SpotLight::position(const std::shared_ptr<DepthMap> &depthMap)
+void Engine::SpotLight::updateData(const std::shared_ptr<DepthMap> &depthMap)
 {
 	_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)depthMap->getWidth() / depthMap->getHeight(), 0.1f, _lightInfo.maxDistance);
 	_viewMatrix = glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));

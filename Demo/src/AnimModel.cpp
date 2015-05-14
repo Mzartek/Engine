@@ -1,6 +1,6 @@
-#include "ArmySoldier.hpp"
+#include "AnimModel.hpp"
 
-ArmySoldier::ArmySoldier()
+AnimModel::AnimModel()
 {
 	_objectProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
 		"../share/Demo/shader/skeletalObject/objectVert.glsl",
@@ -22,11 +22,11 @@ ArmySoldier::ArmySoldier()
 	_model->sortMesh();
 }
 
-ArmySoldier::~ArmySoldier(void)
+AnimModel::~AnimModel(void)
 {
 }
 
-const std::shared_ptr<Engine::SkeletalModel> &ArmySoldier::getModel(void) const
+const std::shared_ptr<Engine::SkeletalModel> &AnimModel::getModel(void) const
 {
 	return _model;
 }

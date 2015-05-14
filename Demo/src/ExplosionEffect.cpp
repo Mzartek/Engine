@@ -1,6 +1,6 @@
-#include "SmokeEffect.hpp"
+#include "ExplosionEffect.hpp"
 
-SmokeEffect::SmokeEffect(void)
+ExplosionEffect::ExplosionEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
@@ -24,11 +24,11 @@ SmokeEffect::SmokeEffect(void)
 	_sound = std::shared_ptr<Engine::Sound>(new Engine::Sound);
 }
 
-SmokeEffect::~SmokeEffect(void)
+ExplosionEffect::~ExplosionEffect(void)
 {
 }
 
-void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles)
+void ExplosionEffect::init(const glm::vec3 &position, GLuint numParticles)
 {
 	std::vector<Engine::Particle> smokeParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
@@ -43,23 +43,23 @@ void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles)
 	this->setPosition(position);
 }
 
-void SmokeEffect::setPosition(const glm::vec3 &pos)
+void ExplosionEffect::setPosition(const glm::vec3 &pos)
 {
 	_manager->setPosition(pos);
 	_sound->setPosition(pos);
 }
 
-const std::shared_ptr<Engine::ParticlesManager> &SmokeEffect::getParticlesManager(void) const
+const std::shared_ptr<Engine::ParticlesManager> &ExplosionEffect::getParticlesManager(void) const
 {
 	return _manager;
 }
 
-const std::shared_ptr<Engine::Sound> &SmokeEffect::getSound(void) const
+const std::shared_ptr<Engine::Sound> &ExplosionEffect::getSound(void) const
 {
 	return _sound;
 }
 
-void SmokeEffect::updateParticles(void) const
+void ExplosionEffect::updateParticles(void) const
 {
 	_manager->updateParticles();
 }

@@ -86,7 +86,7 @@ const glm::vec3 &Engine::PerspCamera::getFrusSpherePosition(void) const
 	return _frusSpherePosition;
 }
 
-void Engine::PerspCamera::position(void)
+void Engine::PerspCamera::updateData(void)
 {
 	_frusSpherePosition = _vforward * _frusSphereDistance;
 

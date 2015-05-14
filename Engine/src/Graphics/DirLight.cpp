@@ -68,7 +68,7 @@ const glm::vec3 &Engine::DirLight::getDirection(void) const
 	return _lightInfo.direction;
 }
 
-void Engine::DirLight::position(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2)
+void Engine::DirLight::updateData(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2)
 {
 	GLfloat dim[3] = { dim0, dim1, dim2 };
 

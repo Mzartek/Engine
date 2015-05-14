@@ -1,28 +1,15 @@
 #include <Engine/Graphics/Model.hpp>
 
-void Engine::Model::genMatModel(void)
-{
-	_modelMatrix =
-		glm::translate(_position) *
-		glm::toMat4(_rotation) *
-		glm::scale(_scale);
-}
-
-void Engine::Model::genMatNormal(void)
-{
-	_normalMatrix = glm::transpose(glm::inverse(_modelMatrix));
-}
-
 void Engine::Model::checkMatrix(void)
 {
 	if (_needMatModel == GL_TRUE)
 	{
-		genMatModel();
+		_modelMatrix = glm::translate(_position) * glm::toMat4(_rotation) * glm::scale(_scale);
 		_needMatModel = GL_FALSE;
 	}
 	if (_needMatNormal == GL_TRUE)
 	{
-		genMatNormal();
+		_normalMatrix = glm::transpose(glm::inverse(_modelMatrix));
 		_needMatNormal = GL_FALSE;
 	}
 }

@@ -38,7 +38,7 @@ namespace Engine
 		const glm::vec3 &getDirection(void) const;
 		GLfloat getSpotCutOff(void) const;
 		GLfloat getMaxDistance(void) const;
-		void position(const std::shared_ptr<DepthMap> &depthMap);
+		void updateData(const std::shared_ptr<DepthMap> &depthMap);
 		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
 		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::shared_ptr<DepthMap> &depthMap);
 	};

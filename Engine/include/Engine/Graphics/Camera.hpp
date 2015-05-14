@@ -20,7 +20,7 @@ namespace Engine
 		const glm::mat4 &getViewMatrix(void) const;
 		const glm::mat4 &getVPMatrix(void) const;
 		const glm::mat4 &getIVPMatrix(void) const;
-		virtual void position(void) = 0;
+		virtual void updateData(void) = 0;
 	};
 }
 

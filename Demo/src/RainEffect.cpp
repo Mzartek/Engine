@@ -4,7 +4,7 @@ RainEffect::RainEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsRainProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_physicsProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
 		"../share/Demo/shader/rainParticles/rainPhysics_v.glsl",
 		NULL,
 		NULL,
@@ -12,23 +12,23 @@ RainEffect::RainEffect(void)
 		NULL,
 		varyings, sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displayRainProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_displayProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
 		"../share/Demo/shader/rainParticles/rainVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/rainParticles/rainGeom.glsl",
 		"../share/Demo/shader/rainParticles/rainFrag.glsl"));
 
-	_rainManager = std::shared_ptr<Engine::ParticlesManager>(new Engine::ParticlesManager(_physicsRainProgram, _displayRainProgram));
+	_manager = std::shared_ptr<Engine::ParticlesManager>(new Engine::ParticlesManager(_physicsProgram, _displayProgram));
 
-	_rain_sound = std::shared_ptr<Engine::Sound>(new Engine::Sound);
+	_sound = std::shared_ptr<Engine::Sound>(new Engine::Sound);
 }
 
 RainEffect::~RainEffect(void)
 {
 }
 
-void RainEffect::init(const glm::vec3 &position, GLuint numParticles) const
+void RainEffect::init(const glm::vec3 &position, GLuint numParticles)
 {
 	std::vector<Engine::Particle> rainParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
@@ -38,17 +38,27 @@ void RainEffect::init(const glm::vec3 &position, GLuint numParticles) const
 		rainParticles[i].direction = glm::vec3(0, -1, 0);
 		rainParticles[i].velocity = 2.0f;
 	}
-	_rainManager->loadTexture("../share/Demo/resources/textures/goutte.png");
-	_rainManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
-	_rainManager->setPosition(position);
+	_manager->loadTexture("../share/Demo/resources/textures/goutte.png");
+	_manager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
+	this->setPosition(position);
+}
+
+void RainEffect::setPosition(const glm::vec3 &pos)
+{
+	_manager->setPosition(pos);
 }
 
 const std::shared_ptr<Engine::ParticlesManager> &RainEffect::getParticlesManager() const
 {
-	return _rainManager;
+	return _manager;
 }
 
 const std::shared_ptr<Engine::Sound> &RainEffect::getSound(void) const
 {
-	return _rain_sound;
+	return _sound;
+}
+
+void RainEffect::updateParticles(void) const
+{
+	_manager->updateParticles();
 }

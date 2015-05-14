@@ -77,8 +77,16 @@ void Engine::Window::mainLoop(const std::shared_ptr<GameLoop> &gameLoop)
 		frameTime = newTime - currentTime;
 		currentTime = newTime;
 
-		for (accumulator += frameTime; accumulator >= dt; accumulator -= dt)
-			gameLoop->idle(currentTime);
+		accumulator += frameTime;
+		if (accumulator >= dt)
+		{
+			while (accumulator >= dt)
+			{
+				gameLoop->state(currentTime);
+				accumulator -= dt;
+			}
+			gameLoop->last_state();
+		}
 
 		gameLoop->display((GLfloat)accumulator / dt);
 		SDL_GL_SwapWindow(_Window);

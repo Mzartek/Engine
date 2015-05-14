@@ -13,7 +13,7 @@
 
 #include "NightBox.hpp"
 #include "Tree.hpp"
-#include "ArmySoldier.hpp"
+#include "AnimModel.hpp"
 #include "Helicopter.hpp"
 #include "Ground.hpp"
 #include "MoonLight.hpp"
@@ -34,10 +34,11 @@ private:
 	std::shared_ptr<Engine::FreeCam> camera;
 
 	std::shared_ptr<Engine::Octree> octree;
+	std::set<Engine::Model *> object_display;
 
 	std::shared_ptr<NightBox> nightBox;
 	std::shared_ptr<Tree> tree;
-	std::shared_ptr<ArmySoldier> armySoldier;
+	std::shared_ptr<AnimModel> animModel;
 	std::shared_ptr<Helicopter> helicopter;
 	std::shared_ptr<Ground> ground;
 	std::shared_ptr<MoonLight> moonLight;
@@ -47,11 +48,22 @@ private:
 	std::shared_ptr<TextDisplay> textDisplay;
 	std::shared_ptr<ScreenDisplay> screenDisplay;
 
+	std::shared_ptr<Engine::DirLight> moon_light;
+	std::shared_ptr<Engine::SpotLight> torch_light;
+	std::shared_ptr<Engine::ParticlesManager> rain_particles;
+	std::shared_ptr<Engine::ParticlesManager> smoke_particles;
+	std::shared_ptr<Engine::TextArray> text_display;
+	std::shared_ptr<Engine::Screen> screen_display;
+	std::shared_ptr<Engine::StaticModel> helicopter_model;
+
+	void manage_input(void);
+
 public:
 	Demo(const std::shared_ptr<Engine::Window> &w);
 	~Demo(void);
 	void display(GLfloat state);
-	void idle(long long time);
+	void state(long long time);
+	void last_state(void);
 	void reshape(GLuint w, GLuint h);
 };
 

@@ -30,7 +30,7 @@ void Engine::OrthoCamera::setOrthogonal(GLfloat left, GLfloat right, GLfloat bot
 	_zFar = zFar;
 }
 
-void Engine::OrthoCamera::position(void)
+void Engine::OrthoCamera::updateData(void)
 {
 	_viewMatrix = glm::lookAt(_position - _direction, _position, glm::vec3(0.0f, 1.0f, 0.0f));
 	_VPMatrix = _projectionMatrix * _viewMatrix;
