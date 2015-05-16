@@ -17,6 +17,7 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	helicopter = std::shared_ptr<Helicopter>(new Helicopter);
 	ground = std::shared_ptr<Ground>(new Ground);
 	moonLight = std::shared_ptr<MoonLight>(new MoonLight);
+	thunderLight = std::shared_ptr<ThunderLight>(new ThunderLight);
 	torchLight = std::shared_ptr<TorchLight>(new TorchLight);
 	rainEffect = std::shared_ptr<RainEffect>(new RainEffect);
 	smokeEffect = std::shared_ptr<SmokeEffect>(new SmokeEffect);
@@ -66,8 +67,11 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	smokeEffect->getSound()->play();
 
 	_step = 0;
+	_flash = 0;
+	_generateRandomFlash = false;
 	
 	moon_light = moonLight->getLight();
+	thunder_light = thunderLight->getLight();
 	torch_light = torchLight->getLight();
 	rain_particles = rainEffect->getParticlesManager();
 	smoke_particles = smokeEffect->getParticlesManager();

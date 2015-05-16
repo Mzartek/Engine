@@ -4,6 +4,8 @@ void Demo::display(GLfloat state)
 {
 	UNREFERENCED_PARAMETER(state);
 
+	if (_flash) _flash--;
+
 	// Clear Buffers
 	window->clear();
 	gBuffer->clear();
@@ -23,6 +25,7 @@ void Demo::display(GLfloat state)
 	for (std::set<Engine::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMap(depthMaps[0], torch_light);
 	torch_light->display(gBuffer, camera, depthMaps[0]);
+	if (_flash) thunder_light->display(gBuffer, camera);
 
 	screen_display->background(gBuffer);
 
@@ -31,6 +34,7 @@ void Demo::display(GLfloat state)
 		(*it)->displayTransparent(gBuffer, camera);
 	moon_light->display(gBuffer, camera);
 	torch_light->display(gBuffer, camera);
+	if (_flash) thunder_light->display(gBuffer, camera);
 
 	screen_display->background(gBuffer);
 
@@ -54,8 +58,7 @@ void Demo::state(long long time)
 {
 	static GLfloat rotation = 0;
 	static glm::mat4 movement;
-	static glm::vec3 tmp;
-	static bool trigger;
+	static glm::vec3 tmp[2];
 
 	const glm::vec3 &camPosition = camera->getCameraPosition();
 
@@ -64,18 +67,21 @@ void Demo::state(long long time)
 	switch (_step)
 	{
 	case 0:
-		tmp = tree_model->getPosition() + glm::vec3(0, 10, 0);
+		tmp[0] = tree_model->getPosition() + glm::vec3(0, 10, 0);
 
-		movement = glm::translate(tmp);
+		movement = glm::translate(tmp[0]);
 		movement *= glm::rotate(rotation, glm::vec3(0, 1, 0));
 		movement *= glm::translate(glm::vec3(30, -5, 0));
 		rotation += 0.001f;
 
-		camera->setPositionAndTarget(glm::vec3(movement[3]), tmp);
+		camera->setPositionAndTarget(glm::vec3(movement[3]), tmp[0]);
 
 		if (time > 10000)
 		{
-			trigger = false;
+			thunderLight->playRandomSound();
+			thunderLight->generateDirection();
+			_flash = 10;
+			_generateRandomFlash = true;
 			_step++;
 		}
 		break;
@@ -88,21 +94,16 @@ void Demo::state(long long time)
 		}
 		else
 		{
-			trigger = true;
+			explosionEffect->init(helicopter->getModel()->getPosition() - glm::vec3(0, 5, 0), 1000);
+			explosionEffect->getSound()->play();
 			_step++;
 		}
 		break;
 
 	case 2:
-		if (trigger)
-		{
-			explosionEffect->init(helicopter->getModel()->getPosition() - glm::vec3(0, 5, 0), 1000);
-			explosionEffect->getSound()->play();
-			trigger = false;
-		}
 		explosionEffect->updateParticles();
 
-		if (time > 20000)
+		if (time > 35000)
 		{
 			rotation = glm::pi<GLfloat>();
 			_step++;
@@ -110,14 +111,27 @@ void Demo::state(long long time)
 		break;
 
 	case 3:
-		tmp = helicopter_model->getPosition();
+		tmp[0] = helicopter_model->getPosition();
 
-		movement = glm::translate(tmp);
+		movement = glm::translate(tmp[0]);
 		movement *= glm::rotate(rotation, glm::vec3(0, 1, 0));
 		movement *= glm::translate(glm::vec3(30, 5, 0));
 		rotation += 0.001f;
 
-		camera->setPositionAndTarget(glm::vec3(movement[3]), tmp);
+		camera->setPositionAndTarget(glm::vec3(movement[3]), tmp[0]);
+
+		if (time > 60000)
+		{
+			tmp[1] = glm::vec3(movement[3]);
+			_step++;
+		}
+		break;
+
+	case 4:
+		tmp[0] += glm::vec3(0, 0.1f, 0);
+		tmp[1] += glm::vec3(0, 0.1f, 0);
+
+		camera->setPositionAndTarget(tmp[1], tmp[0]);
 		break;
 	}
 
@@ -143,6 +157,17 @@ void Demo::last_state(void)
 	octree->removeModel(helicopter_model.get());
 	octree->addModel(helicopter_model.get(), 40);
 	octree->getModels(camera, object_display);
+
+	//RandomFlash
+	if (_generateRandomFlash)
+	{
+		if (rand() > RAND_MAX - 50)
+		{
+			thunderLight->playRandomSound();
+			thunderLight->generateDirection();
+			_flash = 10;
+		}
+	}
 
 	Engine::Audio::Instance().setListenerPosition(camPosition, camForward, camUp);
 }

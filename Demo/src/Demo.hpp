@@ -17,6 +17,7 @@
 #include "Helicopter.hpp"
 #include "Ground.hpp"
 #include "MoonLight.hpp"
+#include "ThunderLight.hpp"
 #include "TorchLight.hpp"
 #include "RainEffect.hpp"
 #include "SmokeEffect.hpp"
@@ -43,6 +44,7 @@ private:
 	std::shared_ptr<Helicopter> helicopter;
 	std::shared_ptr<Ground> ground;
 	std::shared_ptr<MoonLight> moonLight;
+	std::shared_ptr<ThunderLight> thunderLight;
 	std::shared_ptr<TorchLight> torchLight;
 	std::shared_ptr<RainEffect> rainEffect;
 	std::shared_ptr<SmokeEffect> smokeEffect;
@@ -50,7 +52,9 @@ private:
 	std::shared_ptr<TextDisplay> textDisplay;
 	std::shared_ptr<ScreenDisplay> screenDisplay;
 
+	// Easy access
 	std::shared_ptr<Engine::DirLight> moon_light;
+	std::shared_ptr<Engine::DirLight> thunder_light;
 	std::shared_ptr<Engine::SpotLight> torch_light;
 	std::shared_ptr<Engine::ParticlesManager> rain_particles;
 	std::shared_ptr<Engine::ParticlesManager> smoke_particles;
@@ -60,7 +64,10 @@ private:
 	std::shared_ptr<Engine::StaticModel> helicopter_model;
 	std::shared_ptr<Engine::StaticModel> tree_model;
 
+	// For the demo
 	GLuint _step;
+	GLuint _flash;
+	bool _generateRandomFlash;
 
 	void manage_input(void);
 

@@ -26,13 +26,20 @@ void main(void)
 {
 	if(life < 100)
 	{
-		VertOut.position = position + vec3(normalize(direction) * velocity);
-		if(life < 20)
+		if(life < 50)
+		{	
+			VertOut.position = position + vec3(normalize(direction) * velocity);
 			VertOut.direction = direction;
+			VertOut.velocity = velocity;
+			VertOut.life = life + 2;
+		}
 		else
-			VertOut.direction = normalize(direction + vec3(0, -0.01, 0));
-		VertOut.velocity = velocity;
-		VertOut.life = life + 0.5;
+		{
+			VertOut.position = position + vec3(normalize(direction) * velocity);
+			VertOut.direction = direction + vec3(0, 0.025, 0);
+			VertOut.velocity = velocity;
+			VertOut.life = life + 0.05;
+		}
 	}
 	else
 	{
