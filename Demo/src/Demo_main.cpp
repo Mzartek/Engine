@@ -38,7 +38,7 @@ void Demo::display(GLfloat state)
 	rain_particles->display(gBuffer, camera);
 	smoke_particles->display(gBuffer, camera);
 
-	screen_display->display(window, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+	screen_display->display(window, gBuffer, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	text_display->display(window);
 }

@@ -53,7 +53,7 @@ void Engine::Screen::background(const std::shared_ptr<GBuffer> &gbuf) const
 	gbuf->clearLight();
 }
 
-void Engine::Screen::display(const std::shared_ptr<Window> &window, const std::shared_ptr<GBuffer> &gbuf, GLfloat r, GLfloat g, GLfloat b, GLfloat a) const
+void Engine::Screen::display(const std::shared_ptr<Window> &window, const std::shared_ptr<GBuffer> &gbuf, const glm::vec4 &color) const
 {
 	window->setState();
 
@@ -62,7 +62,6 @@ void Engine::Screen::display(const std::shared_ptr<Window> &window, const std::s
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_BACKGROUND));
 
-	glm::vec4 color(r, g, b, a);
 	_colorBuffer->updateStoreMap(glm::value_ptr(color));
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer->getId());
 
