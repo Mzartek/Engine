@@ -25,7 +25,8 @@ namespace Engine
 		~PerspCamera(void);
 
 		void setCameraPosition(const glm::vec3 &pos);
-		void setTargetPosition(GLfloat atheta, GLfloat aphi);
+		void setAngle(GLfloat atheta, GLfloat aphi);
+		void setPositionAndTarget(const glm::vec3 &pos, const glm::vec3 &tar);
 		void setPerspective(GLfloat fov, GLuint width, GLuint height, GLfloat n, GLfloat f);
 
 		const glm::vec3 &getCameraPosition(void) const;

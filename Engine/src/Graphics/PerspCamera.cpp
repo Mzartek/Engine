@@ -13,10 +13,18 @@ void Engine::PerspCamera::setCameraPosition(const glm::vec3 &pos)
 	_pcamera = pos;
 }
 
-void Engine::PerspCamera::setTargetPosition(GLfloat atheta, GLfloat aphi)
+void Engine::PerspCamera::setAngle(GLfloat atheta, GLfloat aphi)
 {
 	GLfloat tmp = cosf(aphi);
 	_vforward = glm::vec3(tmp * sinf(atheta), sinf(aphi), tmp * cosf(atheta));
+	_vleft = glm::normalize(glm::vec3(_vforward.z, 0.0f, -_vforward.x));
+	_vup = glm::cross(_vforward, _vleft);
+}
+
+void Engine::PerspCamera::setPositionAndTarget(const glm::vec3 &pos, const glm::vec3 &tar)
+{
+	_pcamera = pos;
+	_vforward = glm::normalize(tar - pos);
 	_vleft = glm::normalize(glm::vec3(_vforward.z, 0.0f, -_vforward.x));
 	_vup = glm::cross(_vforward, _vleft);
 }

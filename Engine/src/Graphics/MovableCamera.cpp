@@ -27,5 +27,5 @@ void Engine::MovableCamera::mouseMove(GLint xrel, GLint yrel)
 	if (_aphi >= glm::pi<GLfloat>() / 2) _aphi = 89.0f * glm::pi<GLfloat>() / 180;
 	else if (_aphi <= -glm::pi<GLfloat>() / 2) _aphi = -89.0f * glm::pi<GLfloat>() / 180;
 
-	this->setTargetPosition(_atheta, _aphi);
+	this->setAngle(_atheta, _aphi);
 }
