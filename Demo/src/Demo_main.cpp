@@ -38,6 +38,13 @@ void Demo::display(GLfloat state)
 	rain_particles->display(gBuffer, camera);
 	smoke_particles->display(gBuffer, camera);
 
+	switch (_step)
+	{
+	case 2:
+		explosion_particles->display(gBuffer, camera);
+		break;
+	}
+
 	screen_display->display(window, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
 
 	text_display->display(window);
@@ -45,20 +52,77 @@ void Demo::display(GLfloat state)
 
 void Demo::state(long long time)
 {
-	UNREFERENCED_PARAMETER(time);
+	static GLfloat rotation = 0;
+	static glm::mat4 movement;
+	static glm::vec3 tmp;
+	static bool trigger;
 
 	const glm::vec3 &camPosition = camera->getCameraPosition();
 
 	this->manage_input();
 
-	if (helicopter_model->getPosition().y > 3)
+	switch (_step)
 	{
-		helicopter_model->addRotation(glm::vec3(0, 1, 0), 0.025f);
-		helicopter_model->addPosition(glm::vec3(0, -1, 0));
+	case 0:
+		tmp = tree_model->getPosition() + glm::vec3(0, 10, 0);
+
+		movement = glm::translate(tmp);
+		movement *= glm::rotate(rotation, glm::vec3(0, 1, 0));
+		movement *= glm::translate(glm::vec3(30, -5, 0));
+		rotation += 0.001f;
+
+		camera->setPositionAndTarget(glm::vec3(movement[3]), tmp);
+
+		if (time > 10000)
+		{
+			trigger = false;
+			_step++;
+		}
+		break;
+
+	case 1:
+		if (helicopter_model->getPosition().y > 3)
+		{
+			helicopter_model->addRotation(glm::vec3(0, 1, 0), 0.025f);
+			helicopter_model->addPosition(glm::vec3(0, -1, 0));
+		}
+		else
+		{
+			trigger = true;
+			_step++;
+		}
+		break;
+
+	case 2:
+		if (trigger)
+		{
+			explosionEffect->init(helicopter->getModel()->getPosition() - glm::vec3(0, 5, 0), 1000);
+			explosionEffect->getSound()->play();
+			trigger = false;
+		}
+		explosionEffect->updateParticles();
+
+		if (time > 20000)
+		{
+			rotation = glm::pi<GLfloat>();
+			_step++;
+		}
+		break;
+
+	case 3:
+		tmp = helicopter_model->getPosition();
+
+		movement = glm::translate(tmp);
+		movement *= glm::rotate(rotation, glm::vec3(0, 1, 0));
+		movement *= glm::translate(glm::vec3(30, 5, 0));
+		rotation += 0.001f;
+
+		camera->setPositionAndTarget(glm::vec3(movement[3]), tmp);
+		break;
 	}
 
 	rainEffect->setPosition(camPosition);
-	smokeEffect->setPosition(helicopter_model->getPosition());
+	smokeEffect->setPosition(helicopter_model->getPosition() - glm::vec3(0, 5, 0));
 
 	rainEffect->updateParticles();
 	smokeEffect->updateParticles();

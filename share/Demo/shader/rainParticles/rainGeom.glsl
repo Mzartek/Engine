@@ -23,7 +23,7 @@ out VertexData
 
 void main(void)
 {
-     float xdim = 0.2;
+     float xdim = 0.1;
      float ydim = 1.0;
 
      vec4 particle = GeomIn[0].particle;

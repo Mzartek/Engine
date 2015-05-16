@@ -2,6 +2,10 @@
 
 Engine::PerspCamera::PerspCamera(void)
 {
+	_pcamera = glm::vec3(0, 0, 0);
+	_vforward = glm::vec3(0, 0, 1);
+	_vleft = glm::normalize(glm::vec3(_vforward.z, 0.0f, -_vforward.x));
+	_vup = glm::cross(_vforward, _vleft);
 }
 
 Engine::PerspCamera::~PerspCamera(void)

@@ -8,7 +8,7 @@
 
 #include <Engine/Graphics/GBuffer.hpp>
 #include <Engine/Graphics/DepthMap.hpp>
-#include <Engine/Graphics/FreeCam.hpp>
+#include <Engine/Graphics/PerspCamera.hpp>
 #include <Engine/Graphics/Octree.hpp>
 
 #include "NightBox.hpp"
@@ -20,6 +20,7 @@
 #include "TorchLight.hpp"
 #include "RainEffect.hpp"
 #include "SmokeEffect.hpp"
+#include "ExplosionEffect.hpp"
 #include "TextDisplay.hpp"
 #include "ScreenDisplay.hpp"
 
@@ -31,7 +32,7 @@ private:
 
 	std::shared_ptr<Engine::GBuffer> gBuffer;
 	std::vector<std::shared_ptr<Engine::DepthMap>> depthMaps;
-	std::shared_ptr<Engine::FreeCam> camera;
+	std::shared_ptr<Engine::PerspCamera> camera;
 
 	std::shared_ptr<Engine::Octree> octree;
 	std::set<Engine::Model *> object_display;
@@ -45,6 +46,7 @@ private:
 	std::shared_ptr<TorchLight> torchLight;
 	std::shared_ptr<RainEffect> rainEffect;
 	std::shared_ptr<SmokeEffect> smokeEffect;
+	std::shared_ptr<ExplosionEffect> explosionEffect;
 	std::shared_ptr<TextDisplay> textDisplay;
 	std::shared_ptr<ScreenDisplay> screenDisplay;
 
@@ -52,9 +54,13 @@ private:
 	std::shared_ptr<Engine::SpotLight> torch_light;
 	std::shared_ptr<Engine::ParticlesManager> rain_particles;
 	std::shared_ptr<Engine::ParticlesManager> smoke_particles;
+	std::shared_ptr<Engine::ParticlesManager> explosion_particles;
 	std::shared_ptr<Engine::TextArray> text_display;
 	std::shared_ptr<Engine::Screen> screen_display;
 	std::shared_ptr<Engine::StaticModel> helicopter_model;
+	std::shared_ptr<Engine::StaticModel> tree_model;
+
+	GLuint _step;
 
 	void manage_input(void);
 

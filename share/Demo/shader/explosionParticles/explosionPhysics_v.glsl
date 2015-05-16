@@ -27,18 +27,18 @@ void main(void)
 	if(life < 100)
 	{
 		VertOut.position = position + vec3(normalize(direction) * velocity);
-		VertOut.direction = direction;
+		if(life < 20)
+			VertOut.direction = direction;
+		else
+			VertOut.direction = normalize(direction + vec3(0, -0.01, 0));
 		VertOut.velocity = velocity;
-		VertOut.life = life + 1.0;
+		VertOut.life = life + 0.5;
 	}
 	else
 	{
-		float num0 = (rand(direction.xz) * 2) - 1;
-		float num1 = (rand(direction.zx) * 2) - 1;
-
-		VertOut.position = origin;
-		VertOut.direction = normalize(vec3(num0, direction.y, num1));
+		VertOut.position = position;
+		VertOut.direction = direction;
 		VertOut.velocity = velocity;
-		VertOut.life = rand(vec2(num0, num1));
+		VertOut.life = life;
 	}
 }
