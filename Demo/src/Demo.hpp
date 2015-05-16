@@ -68,6 +68,7 @@ private:
 	GLuint _step;
 	GLuint _flash;
 	bool _generateRandomFlash;
+	glm::vec4 _screenColor;
 
 	void manage_input(void);
 

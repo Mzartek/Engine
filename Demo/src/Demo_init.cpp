@@ -69,6 +69,7 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	_step = 0;
 	_flash = 0;
 	_generateRandomFlash = false;
+	_screenColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	
 	moon_light = moonLight->getLight();
 	thunder_light = thunderLight->getLight();

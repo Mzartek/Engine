@@ -49,7 +49,7 @@ void Demo::display(GLfloat state)
 		break;
 	}
 
-	screen_display->display(window, gBuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+	screen_display->display(window, gBuffer, _screenColor);
 
 	text_display->display(window);
 }
@@ -103,7 +103,7 @@ void Demo::state(long long time)
 	case 2:
 		explosionEffect->updateParticles();
 
-		if (time > 35000)
+		if (time > 32000)
 		{
 			rotation = glm::pi<GLfloat>();
 			_step++;
@@ -123,6 +123,7 @@ void Demo::state(long long time)
 		if (time > 60000)
 		{
 			tmp[1] = glm::vec3(movement[3]);
+			_generateRandomFlash = false;
 			_step++;
 		}
 		break;
@@ -132,6 +133,8 @@ void Demo::state(long long time)
 		tmp[1] += glm::vec3(0, 0.1f, 0);
 
 		camera->setPositionAndTarget(tmp[1], tmp[0]);
+
+		if (_screenColor.x > 0)	_screenColor += glm::vec4(-0.0025f, -0.0025f, -0.0025f, 0);
 		break;
 	}
 
