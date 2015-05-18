@@ -53,7 +53,7 @@ float lookUp(vec4 coord, vec2 offSet, ivec2 texSize)
 {
 	coord.x = 0.5f + (coord.x / coord.w * 0.5f);
 	coord.y = 0.5f + (coord.y / coord.w * 0.5f);
-	coord.z = 0.5f + ((coord.z - 0.005) / coord.w * 0.5f);
+	coord.z = 0.5f + ((coord.z - 0.00025) / coord.w * 0.5f);
 
 	coord.x += offSet.x * (1.0/texSize.x);
 	coord.y += offSet.y * (1.0/texSize.y);

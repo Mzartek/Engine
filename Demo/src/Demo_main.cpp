@@ -33,7 +33,7 @@ void Demo::display(GLfloat state)
      for (std::set<Engine::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 	  (*it)->displayTransparent(gBuffer, camera);
      moon_light->display(gBuffer, camera);
-     torch_light->display(gBuffer, camera);
+     //torch_light->display(gBuffer, camera);
      if (_flash) thunder_light->display(gBuffer, camera);
 
      screen_display->background(gBuffer);
@@ -80,7 +80,7 @@ void Demo::state(long long time)
 	  {
 	       thunderLight->playRandomSound();
 	       thunderLight->generateDirection();
-	       _flash = 10;
+	       _flash = 25;
 	       _generateRandomFlash = true;
 	       _step++;
 	  }
@@ -89,7 +89,7 @@ void Demo::state(long long time)
      case 1:
 	  if (helicopter_model->getPosition().y > 3)
 	  {
-	       helicopter_model->addRotation(glm::vec3(0, 1, 0), 0.025f);
+	       helicopter_model->addRotation(glm::vec3(0, 1, 0), 0.050f);
 	       helicopter_model->addPosition(glm::vec3(0, -1, 0));
 	  }
 	  else
@@ -134,9 +134,11 @@ void Demo::state(long long time)
 
 	  camera->setPositionAndTarget(tmp[1], tmp[0]);
 
-	  if (_screenColor.x > 0)	_screenColor += glm::vec4(-0.0025f, -0.0025f, -0.0025f, 0);
+	  if (_screenColor.x > 0) _screenColor += glm::vec4(-0.0025f, -0.0025f, -0.0025f, 0);
 	  break;
      }
+     
+     torch_light->setPosition(helicopter->getModel()->getPosition() + glm::vec3(0, 100, -100));
 
      rainEffect->setPosition(camPosition);
      smokeEffect->setPosition(helicopter_model->getPosition() - glm::vec3(0, 5, 0));
@@ -167,9 +169,9 @@ void Demo::last_state(void)
 	  if ((GLfloat)rand() / RAND_MAX > 0.999f)
 	  {
 	       thunderLight->playRandomSound();
-	       thunderLight->generateDirection();
-	       _flash = 10;
+	       _flash = 25;
 	  }
+	  if (_flash) thunderLight->generateDirection();
      }
 
      Engine::Audio::Instance().setListenerPosition(camPosition, camForward, camUp);

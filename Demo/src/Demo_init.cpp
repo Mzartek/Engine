@@ -52,8 +52,8 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	//octree->addModel(animModel->getModel().get(), 40);
 	octree->addModel(helicopter->getModel().get(), 40);
 
-	torchLight->getLight()->setPosition(glm::vec3(25, 100, -25));
-	torchLight->getLight()->setDirection(glm::vec3(-1.0f, -1.0f, 1.0f));
+	torchLight->getLight()->setPosition(helicopter->getModel()->getPosition() + glm::vec3(0, 100, -100));
+	torchLight->getLight()->setDirection(glm::vec3(0.0f, -1.0f, 0.5f));
 	torchLight->getLight()->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torchLight->getLight()->setSpotCutOff(glm::pi<GLfloat>() / 4);
 	torchLight->getLight()->setMaxDistance(250);

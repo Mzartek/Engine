@@ -14,6 +14,7 @@ layout (triangle_strip, max_vertices = 4) out;
 in VertexData
 {
      vec4 particle;
+     vec4 direction;
      float life;
 } GeomIn[];
 
@@ -23,34 +24,40 @@ out VertexData
      float life;
 } GeomOut;
 
+#define M_PI 3.1415926535897932384626433832795
+
 void main(void)
 {
      float dim = 1.0 + (GeomIn[0].life / 10);
+     float rot;
+
+     if (GeomIn[0].direction.x > 0.0) rot = (GeomIn[0].life * 2 * M_PI / 100) * 4;
+     else rot = -(GeomIn[0].life * 2 * M_PI / 100) * 4;
 
      vec4 particle = GeomIn[0].particle;
 
-	 mat4 finalMatrix = mat4(
-		1.0, 0.0, 0.0, 0.0,
-		0.0, 1.0, 0.0, 0.0,
-		0.0, 0.0, 1.0, 0.0,
-		particle.x, particle.y, particle.z, 1.0
-	 );
+     mat4 finalMatrix = mat4(
+	  1.0, 0.0, 0.0, 0.0,
+	  0.0, 1.0, 0.0, 0.0,
+	  0.0, 0.0, 1.0, 0.0,
+	  particle.x, particle.y, particle.z, 1.0
+	  );
 
-	 finalMatrix = viewMatrix * finalMatrix;
+     finalMatrix = viewMatrix * finalMatrix;
 	 
-	 finalMatrix[0][0] = 1;
-	 finalMatrix[0][1] = 0;
-	 finalMatrix[0][2] = 0;
+     finalMatrix[0][0] = cos(rot);
+     finalMatrix[0][1] = sin(rot);
+     finalMatrix[0][2] = 0;
 
-	 finalMatrix[1][0] = 0;
-	 finalMatrix[1][1] = 1;
-	 finalMatrix[1][2] = 0;
+     finalMatrix[1][0] = -sin(rot);
+     finalMatrix[1][1] = cos(rot);
+     finalMatrix[1][2] = 0;
 
-	 finalMatrix[2][0] = 0;
-	 finalMatrix[2][1] = 0;
-	 finalMatrix[2][2] = 1;
+     finalMatrix[2][0] = 0;
+     finalMatrix[2][1] = 0;
+     finalMatrix[2][2] = 1;
 
-	 finalMatrix = projectionMatrix * finalMatrix;
+     finalMatrix = projectionMatrix * finalMatrix;
 
      gl_Position = finalMatrix * vec4(-dim, -dim, 0, 1);
      GeomOut.texCoord = vec2(1, 1);

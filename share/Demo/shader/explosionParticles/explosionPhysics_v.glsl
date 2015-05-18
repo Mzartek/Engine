@@ -30,7 +30,7 @@ void main(void)
 	  VertOut.direction = direction;
 	  VertOut.velocity = velocity;
 	  if(life < 50) VertOut.life = life + 2;
-	  else VertOut.life = life + 0.1;
+	  else VertOut.life = life + 0.25;
      }
      else
      {
