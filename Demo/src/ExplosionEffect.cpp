@@ -43,10 +43,10 @@ void ExplosionEffect::init(const glm::vec3 &position, GLuint numParticles)
 		smokeParticles[i].position = position;
 		smokeParticles[i].direction = glm::vec3(
 			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX, 
-			0.1f,
+			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX,
 			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX);
-		smokeParticles[i].velocity = (GLfloat)rand() / RAND_MAX;
-		smokeParticles[i].life = 0;
+		smokeParticles[i].velocity = ((GLfloat)rand() / RAND_MAX) * 1.8f;
+		smokeParticles[i].life = rand() % 100;
 	}
 	_manager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 	this->setPosition(position);

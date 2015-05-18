@@ -29,7 +29,7 @@ void main(void)
 		VertOut.position = position + vec3(normalize(direction) * velocity);
 		VertOut.direction = direction;
 		VertOut.velocity = velocity;
-		VertOut.life = life + 1.0;
+		VertOut.life = life + 0.25;
 	}
 	else
 	{

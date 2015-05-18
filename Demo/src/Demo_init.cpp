@@ -45,7 +45,7 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
 
 	rainEffect->init(camera->getCameraPosition(), 10000);
-	smokeEffect->init(helicopter->getModel()->getPosition(), 100);
+	smokeEffect->init(helicopter->getModel()->getPosition(), 1000);
 
 	octree->addModel(ground->getModel().get(), 1000);
 	octree->addModel(tree->getModel().get(), 40);

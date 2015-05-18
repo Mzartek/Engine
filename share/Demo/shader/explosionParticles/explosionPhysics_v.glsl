@@ -2,7 +2,7 @@
 
 layout (binding = 0) uniform positionBuffer
 {
-	vec3 origin;
+     vec3 origin;
 };
 
 layout(location = 0) in vec3 position;
@@ -12,40 +12,31 @@ layout(location = 3) in float life;
 
 out VertexData
 {
-	vec3 position;
-	vec3 direction;
-	float velocity;
-	float life;
+     vec3 position;
+     vec3 direction;
+     float velocity;
+     float life;
 } VertOut;
 
 float rand(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 void main(void)
 {
-	if(life < 100)
-	{
-		if(life < 50)
-		{	
-			VertOut.position = position + vec3(normalize(direction) * velocity);
-			VertOut.direction = direction;
-			VertOut.velocity = velocity;
-			VertOut.life = life + 2;
-		}
-		else
-		{
-			VertOut.position = position + vec3(normalize(direction) * velocity);
-			VertOut.direction = direction + vec3(0, 0.025, 0);
-			VertOut.velocity = velocity;
-			VertOut.life = life + 0.05;
-		}
-	}
-	else
-	{
-		VertOut.position = position;
-		VertOut.direction = direction;
-		VertOut.velocity = velocity;
-		VertOut.life = life;
-	}
+     if(life < 100)
+     {	
+	  VertOut.position = position + vec3(normalize(direction) * velocity);
+	  VertOut.direction = direction;
+	  VertOut.velocity = velocity;
+	  if(life < 50) VertOut.life = life + 2;
+	  else VertOut.life = life + 0.1;
+     }
+     else
+     {
+	  VertOut.position = position;
+	  VertOut.direction = direction;
+	  VertOut.velocity = velocity;
+	  VertOut.life = life;
+     }
 }
