@@ -1,9 +1,12 @@
 #include "Demo.hpp"
+#include <ctime>
 
 int main(int argc, char **argv)
 {
 	UNREFERENCED_PARAMETER(argc);
 	UNREFERENCED_PARAMETER(argv);
+
+	srand(time(NULL));
 
 	// We call the instance for init
 	Engine::Renderer::Instance();

@@ -33,26 +33,27 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	camera->setPositionAndTarget(glm::vec3(30, 5, 0), glm::vec3(50, 10, 50));
 
 	// Model config
-	tree->getModel()->setPosition(glm::vec3(50, 0, 50));
+	tree->getModel()->setPosition(glm::vec3(50, -5, 50));
 	tree->getModel()->setRotation(glm::vec3(-glm::pi<GLfloat>() / 2, 0, 0));
 	tree->getModel()->setScale(glm::vec3(5, 5, 5));
 
 	//animModel->getModel()->setPosition(glm::vec3(-25, 0, 25));
 	//animModel->getModel()->setRotation(glm::vec3(0, 1, 0), glm::pi<GLfloat>() / 2);
 
-	helicopter->getModel()->setPosition(glm::vec3(-50, 304, 50));
-	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
-	helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
+	helicopter->setPosition(glm::vec3(-50, 304, 50));
+	helicopter->setRotation(glm::vec3(-0.1f, 0, -0.5f));
+	helicopter->setScale(glm::vec3(2, 2, 2));
 
 	rainEffect->init(camera->getCameraPosition(), 10000);
-	smokeEffect->init(helicopter->getModel()->getPosition(), 1000);
+	smokeEffect->init(helicopter->getCorpsModel()->getPosition(), 1000);
 
 	octree->addModel(ground->getModel().get(), 1000);
 	octree->addModel(tree->getModel().get(), 40);
 	//octree->addModel(animModel->getModel().get(), 40);
-	octree->addModel(helicopter->getModel().get(), 40);
+	octree->addModel(helicopter->getCorpsModel().get(), 40);
+	octree->addModel(helicopter->getRotorModel().get(), 40);
 
-	torchLight->getLight()->setPosition(helicopter->getModel()->getPosition() + glm::vec3(0, 100, -100));
+	torchLight->getLight()->setPosition(helicopter->getCorpsModel()->getPosition() + glm::vec3(0, 100, -100));
 	torchLight->getLight()->setDirection(glm::vec3(0.0f, -1.0f, 0.5f));
 	torchLight->getLight()->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	torchLight->getLight()->setSpotCutOff(glm::pi<GLfloat>() / 4);
@@ -79,7 +80,8 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	explosion_particles = explosionEffect->getParticlesManager();
 	text_display = textDisplay->getText();
 	screen_display = screenDisplay->getScreen();
-	helicopter_model = helicopter->getModel();
+	helicoptercorps_model = helicopter->getCorpsModel();
+	helicoptergrotor_model = helicopter->getRotorModel();
 	tree_model = tree->getModel();
 }
 

@@ -59,6 +59,8 @@ void Demo::state(long long time)
      static GLfloat rotation = 0;
      static glm::mat4 movement;
      static glm::vec3 tmp[2];
+     static GLfloat velocity;
+     static long long saveTime = 0;
 
      const glm::vec3 &camPosition = camera->getCameraPosition();
 
@@ -67,51 +69,78 @@ void Demo::state(long long time)
      switch (_step)
      {
      case 0:
-	  tmp[0] = tree_model->getPosition() + glm::vec3(0, 10, 0);
+	  tmp[0] = tree_model->getPosition() + glm::vec3(0, 15, 0);
 
 	  movement = glm::translate(tmp[0]);
 	  movement *= glm::rotate(rotation, glm::vec3(0, 1, 0));
 	  movement *= glm::translate(glm::vec3(30, -5, 0));
-	  rotation += 0.001f;
+	  rotation += 0.002f;
 
 	  camera->setPositionAndTarget(glm::vec3(movement[3]), tmp[0]);
 
-	  if (time > 10000)
+	  if (time > saveTime + 55000)
 	  {
 	       thunderLight->playRandomSound();
 	       thunderLight->generateDirection();
 	       _flash = 25;
 	       _generateRandomFlash = true;
 	       _step++;
+	       saveTime = time;
 	  }
 	  break;
 
      case 1:
-	  if (helicopter_model->getPosition().y > 3)
+	  if (helicoptercorps_model->getPosition().y > 3)
 	  {
-	       helicopter_model->addRotation(glm::vec3(0, 1, 0), 0.050f);
-	       helicopter_model->addPosition(glm::vec3(0, -1, 0));
+	       helicopter->addRotation(glm::vec3(0, 1, 0), 0.1f);
+	       helicopter->addPosition(glm::vec3(0, -1, 0));
 	  }
 	  else
 	  {
-	       explosionEffect->init(helicopter->getModel()->getPosition() - glm::vec3(0, 5, 0), 1000);
+	       helicopter->setMount(false);
+	       explosionEffect->init(helicoptercorps_model->getPosition() - glm::vec3(0, 5, 0), 1000);
 	       explosionEffect->getSound()->play();
+	       rotation = glm::pi<GLfloat>()/4;
+	       velocity = 1.0f;
 	       _step++;
+	       saveTime = time;
 	  }
 	  break;
 
      case 2:
 	  explosionEffect->updateParticles();
 
-	  if (time > 32000)
+	  if (helicoptergrotor_model->getPosition().x < tree_model->getPosition().x)
+	  {
+	       helicoptergrotor_model->addPosition(glm::vec3(1.0f, 0.0f, 0.0));
+	       helicoptergrotor_model->addRotation(glm::vec3(0, 1, 0), velocity);
+	  }
+	  else if (rotation > 0.0f)
+	  {
+	       helicoptergrotor_model->addPosition(glm::vec3(0.25f, -0.025f, -0.25f));
+	       helicoptergrotor_model->addRotation(glm::vec3(0, 1, 0), velocity);
+	       if (velocity > 0.0f) velocity -= 0.02f;
+	       
+	       tree_model->addRotation(glm::vec3(-1, 0, 1), -0.025f);
+	       rotation -= 0.025f;
+	  }
+	  else if (helicoptergrotor_model->getPosition().y > 4.0f)
+	  {
+	       helicoptergrotor_model->addPosition(glm::vec3(0.25f, -0.025f, -0.25f));
+	       helicoptergrotor_model->addRotation(glm::vec3(0, 1, 0), velocity);
+	       if (velocity > 0.0f) velocity -= 0.025f;
+	  }
+
+	  if (time > saveTime + 7000)
 	  {
 	       rotation = glm::pi<GLfloat>();
 	       _step++;
+	       saveTime = time;
 	  }
 	  break;
 
      case 3:
-	  tmp[0] = helicopter_model->getPosition();
+	  tmp[0] = helicoptercorps_model->getPosition();
 
 	  movement = glm::translate(tmp[0]);
 	  movement *= glm::rotate(rotation, glm::vec3(0, 1, 0));
@@ -120,11 +149,12 @@ void Demo::state(long long time)
 
 	  camera->setPositionAndTarget(glm::vec3(movement[3]), tmp[0]);
 
-	  if (time > 60000)
+	  if (time > saveTime + 10000)
 	  {
 	       tmp[1] = glm::vec3(movement[3]);
 	       _generateRandomFlash = false;
 	       _step++;
+	       saveTime = time;
 	  }
 	  break;
 
@@ -138,10 +168,10 @@ void Demo::state(long long time)
 	  break;
      }
      
-     torch_light->setPosition(helicopter->getModel()->getPosition() + glm::vec3(0, 100, -100));
+     torch_light->setPosition(helicoptercorps_model->getPosition() + glm::vec3(0, 100, -100));
 
      rainEffect->setPosition(camPosition);
-     smokeEffect->setPosition(helicopter_model->getPosition() - glm::vec3(0, 5, 0));
+     smokeEffect->setPosition(helicoptercorps_model->getPosition() - glm::vec3(0, 5, 0));
 
      rainEffect->updateParticles();
      smokeEffect->updateParticles();
@@ -159,8 +189,13 @@ void Demo::last_state(void)
 
      // We retrieve object to display from the octree
      object_display.clear();
-     octree->removeModel(helicopter_model.get());
-     octree->addModel(helicopter_model.get(), 40);
+     
+     octree->removeModel(helicoptercorps_model.get());
+     octree->removeModel(helicoptergrotor_model.get());
+     
+     octree->addModel(helicoptercorps_model.get(), 40);
+     octree->addModel(helicoptergrotor_model.get(), 40);
+     
      octree->getModels(camera, object_display);
 
      //RandomFlash

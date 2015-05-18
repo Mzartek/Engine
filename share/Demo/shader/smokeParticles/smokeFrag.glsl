@@ -19,5 +19,6 @@ void main(void)
 
 	if (depth < gl_FragCoord.z)
 		discard;
+	
 	outColor = vec4(color.xyz, color.a * ((100 - FragIn.life) / 100) * 0.5);
 }

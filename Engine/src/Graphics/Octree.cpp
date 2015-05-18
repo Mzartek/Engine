@@ -45,7 +45,7 @@ inline bool Engine::Octree::checkInCamFrus(const std::shared_ptr<Engine::PerspCa
 Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std::map<Model *, Octree *> *map_model)
 	: _isRoot(GL_FALSE), _map_model(map_model), _position(position)
 {
-	GLfloat newDim = dim / 2;
+	GLfloat newDim = dim;
 	GLfloat tmp = newDim / 2;
 
 	_dim = dim;

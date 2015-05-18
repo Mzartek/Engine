@@ -61,7 +61,8 @@ private:
 	std::shared_ptr<Engine::ParticlesManager> explosion_particles;
 	std::shared_ptr<Engine::TextArray> text_display;
 	std::shared_ptr<Engine::Screen> screen_display;
-	std::shared_ptr<Engine::StaticModel> helicopter_model;
+	std::shared_ptr<Engine::StaticModel> helicoptercorps_model;
+	std::shared_ptr<Engine::StaticModel> helicoptergrotor_model;
 	std::shared_ptr<Engine::StaticModel> tree_model;
 
 	// For the demo
