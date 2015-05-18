@@ -50,8 +50,8 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	octree->addModel(ground->getModel().get(), 1000);
 	octree->addModel(tree->getModel().get(), 40);
 	//octree->addModel(animModel->getModel().get(), 40);
-	octree->addModel(helicopter->getCorpsModel().get(), 40);
-	octree->addModel(helicopter->getRotorModel().get(), 40);
+	//octree->addModel(helicopter->getCorpsModel().get(), 40);
+	//octree->addModel(helicopter->getRotorModel().get(), 40);
 
 	torchLight->getLight()->setPosition(helicopter->getCorpsModel()->getPosition() + glm::vec3(0, 100, -100));
 	torchLight->getLight()->setDirection(glm::vec3(0.0f, -1.0f, 0.5f));

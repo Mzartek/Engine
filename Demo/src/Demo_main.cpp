@@ -190,11 +190,14 @@ void Demo::last_state(void)
      // We retrieve object to display from the octree
      object_display.clear();
      
-     octree->removeModel(helicoptercorps_model.get());
-     octree->removeModel(helicoptergrotor_model.get());
-     
-     octree->addModel(helicoptercorps_model.get(), 40);
-     octree->addModel(helicoptergrotor_model.get(), 40);
+	 if (_step > 0)
+	 {
+		 octree->removeModel(helicoptercorps_model.get());
+		 octree->removeModel(helicoptergrotor_model.get());
+
+		 octree->addModel(helicoptercorps_model.get(), 40);
+		 octree->addModel(helicoptergrotor_model.get(), 40);
+	 }
      
      octree->getModels(camera, object_display);
 
