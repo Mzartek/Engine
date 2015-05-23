@@ -38,7 +38,7 @@ Demo::Demo(const std::shared_ptr<Engine::Window> &w)
 	animModel->getModel()->setPosition(glm::vec3(-25, 0, 25));
 	animModel->getModel()->setRotation(glm::vec3(0, 1, 0), glm::pi<GLfloat>() / 2);
 
-	helicopter->getModel()->setPosition(glm::vec3(-50, 304, 50));
+	helicopter->getModel()->setPosition(glm::vec3(-50, 5, 50));
 	helicopter->getModel()->setRotation(glm::vec3(-0.1f, 0, -0.5f));
 	helicopter->getModel()->setScale(glm::vec3(2, 2, 2));
 

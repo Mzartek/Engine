@@ -46,32 +46,32 @@ Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std
 	: _isRoot(GL_FALSE), _map_model(map_model), _position(position)
 {
 	GLfloat newDim = dim / 2;
-	GLfloat tmp = newDim / 2;
+	GLfloat newDim_2 = newDim / 2;
 
 	_dim = dim;
 	_dim_2 = newDim;
-	_radius = glm::length(glm::vec3(newDim));
+	_radius = glm::length(glm::vec3(_dim));
 
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y - _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y - _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y + _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y + _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y - _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y - _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y + _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y + _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
 
 	if (depth > 0)
 	{
 		glm::vec3 newPositions[] = {
-			glm::vec3(_position.x - tmp, _position.y - tmp, _position.z - tmp),
-			glm::vec3(_position.x - tmp, _position.y - tmp, _position.z + tmp),
-			glm::vec3(_position.x - tmp, _position.y + tmp, _position.z - tmp),
-			glm::vec3(_position.x - tmp, _position.y + tmp, _position.z + tmp),
-			glm::vec3(_position.x + tmp, _position.y - tmp, _position.z - tmp),
-			glm::vec3(_position.x + tmp, _position.y - tmp, _position.z + tmp),
-			glm::vec3(_position.x + tmp, _position.y + tmp, _position.z - tmp),
-			glm::vec3(_position.x + tmp, _position.y + tmp, _position.z + tmp),
+			glm::vec3(_position.x - newDim_2, _position.y - newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x - newDim_2, _position.y - newDim_2, _position.z + newDim_2),
+			glm::vec3(_position.x - newDim_2, _position.y + newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x - newDim_2, _position.y + newDim_2, _position.z + newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y - newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y - newDim_2, _position.z + newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y + newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y + newDim_2, _position.z + newDim_2),
 		};
 
 		for (GLuint i = 0; i < 8; i++)
@@ -83,32 +83,32 @@ Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
 	: _isRoot(GL_TRUE), _map_model(new std::map<Model *, Octree *>), _position(position)
 {
 	GLfloat newDim = dim / 2;
-	GLfloat tmp = newDim / 2;
+	GLfloat newDim_2 = newDim / 2;
 
 	_dim = dim;
 	_dim_2 = newDim;
-	_radius = glm::length(glm::vec3(newDim));
+	_radius = glm::length(glm::vec3(_dim));
 
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y - newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z - newDim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + newDim, _position.y + newDim, _position.z + newDim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y - _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y - _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y + _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y + _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y - _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y - _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y + _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
+	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y + _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
 
 	if (depth > 0)
 	{
 		glm::vec3 newPositions[] = {
-			glm::vec3(_position.x - tmp, _position.y - tmp, _position.z - tmp),
-			glm::vec3(_position.x - tmp, _position.y - tmp, _position.z + tmp),
-			glm::vec3(_position.x - tmp, _position.y + tmp, _position.z - tmp),
-			glm::vec3(_position.x - tmp, _position.y + tmp, _position.z + tmp),
-			glm::vec3(_position.x + tmp, _position.y - tmp, _position.z - tmp),
-			glm::vec3(_position.x + tmp, _position.y - tmp, _position.z + tmp),
-			glm::vec3(_position.x + tmp, _position.y + tmp, _position.z - tmp),
-			glm::vec3(_position.x + tmp, _position.y + tmp, _position.z + tmp),
+			glm::vec3(_position.x - newDim_2, _position.y - newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x - newDim_2, _position.y - newDim_2, _position.z + newDim_2),
+			glm::vec3(_position.x - newDim_2, _position.y + newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x - newDim_2, _position.y + newDim_2, _position.z + newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y - newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y - newDim_2, _position.z + newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y + newDim_2, _position.z - newDim_2),
+			glm::vec3(_position.x + newDim_2, _position.y + newDim_2, _position.z + newDim_2),
 		};
 
 		for (GLuint i = 0; i < 8; i++)

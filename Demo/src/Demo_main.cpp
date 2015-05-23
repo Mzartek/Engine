@@ -51,12 +51,6 @@ void Demo::state(long long time)
 
 	this->manage_input();
 
-	if (helicopter_model->getPosition().y > 3)
-	{
-		helicopter_model->addRotation(glm::vec3(0, 1, 0), 0.025f);
-		helicopter_model->addPosition(glm::vec3(0, -1, 0));
-	}
-
 	rainEffect->setPosition(camPosition);
 	smokeEffect->setPosition(helicopter_model->getPosition());
 
@@ -76,8 +70,6 @@ void Demo::last_state(void)
 
 	// We retrieve object to display from the octree
 	object_display.clear();
-	octree->removeModel(helicopter_model.get());
-	octree->addModel(helicopter_model.get(), 40);
 	octree->getModels(camera, object_display);
 
 	Engine::Audio::Instance().setListenerPosition(camPosition, camForward, camUp);
