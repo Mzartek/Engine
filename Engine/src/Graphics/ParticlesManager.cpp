@@ -1,6 +1,6 @@
 #include <Engine/Graphics/ParticlesManager.hpp>
 
-Engine::ParticlesManager::ParticlesManager(const std::shared_ptr<ShaderProgram> &physicsProgram, const std::shared_ptr<ShaderProgram> &displayProgram)
+Engine::Graphics::ParticlesManager::ParticlesManager(const std::shared_ptr<ShaderProgram> &physicsProgram, const std::shared_ptr<ShaderProgram> &displayProgram)
 	: _physicsProgram(physicsProgram), _displayProgram(displayProgram), _numElement(0)
 {
 	_colorTexture = std::shared_ptr<Texture2D>(new Texture2D);
@@ -24,18 +24,18 @@ Engine::ParticlesManager::ParticlesManager(const std::shared_ptr<ShaderProgram> 
 	glGenVertexArrays(1, &_idVAO);
 }
 
-Engine::ParticlesManager::~ParticlesManager(void)
+Engine::Graphics::ParticlesManager::~ParticlesManager(void)
 {
 	glDeleteTransformFeedbacks(1, &_idTFO);
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::ParticlesManager::loadTexture(const GLchar *path) const
+void Engine::Graphics::ParticlesManager::loadTexture(const GLchar *path) const
 {
 	_colorTexture->loadFromFile(path);
 }
 
-void Engine::ParticlesManager::setParticles(const Particle *particles, GLsizei numParticles)
+void Engine::Graphics::ParticlesManager::setParticles(const Particle *particles, GLsizei numParticles)
 {
 	_numElement = numParticles;
 
@@ -43,18 +43,18 @@ void Engine::ParticlesManager::setParticles(const Particle *particles, GLsizei n
 	_vertexBuffer[1]->createStore(GL_ARRAY_BUFFER, NULL, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
 }
 
-void Engine::ParticlesManager::setPosition(const glm::vec3 &pos)
+void Engine::Graphics::ParticlesManager::setPosition(const glm::vec3 &pos)
 {
 	_position.position = pos;
 	_positionBuffer->updateStoreMap(&_position);
 }
 
-const glm::vec3 &Engine::ParticlesManager::getPosition(void) const
+const glm::vec3 &Engine::Graphics::ParticlesManager::getPosition(void) const
 {
 	return _position.position;
 }
 
-void Engine::ParticlesManager::updateParticles(void)
+void Engine::Graphics::ParticlesManager::updateParticles(void)
 {
 	glEnable(GL_RASTERIZER_DISCARD);
 
@@ -92,7 +92,7 @@ void Engine::ParticlesManager::updateParticles(void)
 	std::swap(_vertexBuffer[0], _vertexBuffer[1]);
 }
 
-void Engine::ParticlesManager::updateParticles(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
+void Engine::Graphics::ParticlesManager::updateParticles(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
 {
 	glEnable(GL_RASTERIZER_DISCARD);
 
@@ -137,7 +137,7 @@ void Engine::ParticlesManager::updateParticles(const std::shared_ptr<DepthMap> &
 	std::swap(_vertexBuffer[0], _vertexBuffer[1]);
 }
 
-void Engine::ParticlesManager::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<Camera> &cam)
+void Engine::Graphics::ParticlesManager::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<Camera> &cam)
 {
 	gbuf->setParticlesState();
 

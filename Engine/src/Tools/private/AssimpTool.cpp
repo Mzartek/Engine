@@ -1,6 +1,6 @@
 #include "AssimpTool.hpp"
 
-const aiScene *Engine::AssimpTool::openFile(Assimp::Importer &importer, const GLchar *inFile)
+const aiScene *Engine::ToolsPrivate::openFile(Assimp::Importer &importer, const GLchar *inFile)
 {
 	const aiScene *pScene = importer.ReadFile(inFile, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
 	if (!pScene)
@@ -15,9 +15,9 @@ const aiScene *Engine::AssimpTool::openFile(Assimp::Importer &importer, const GL
 	return pScene;
 }
 
-std::vector<Engine::StaticMesh::Vertex> Engine::AssimpTool::loadStaticVertices(const aiMesh *mesh)
+std::vector<Engine::Graphics::StaticMesh::Vertex> Engine::ToolsPrivate::loadStaticVertices(const aiMesh *mesh)
 {
-	std::vector<Engine::StaticMesh::Vertex> vertices;
+	std::vector<Graphics::StaticMesh::Vertex> vertices;
 
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -27,7 +27,7 @@ std::vector<Engine::StaticMesh::Vertex> Engine::AssimpTool::loadStaticVertices(c
 		const aiVector3D pNormal = mesh->HasNormals() ? mesh->mNormals[i] : Zero3D;
 		const aiVector3D pTangent = mesh->HasTangentsAndBitangents() ? mesh->mTangents[i] : Zero3D;
 
-		StaticMesh::Vertex newVertex = {
+		Graphics::StaticMesh::Vertex newVertex = {
 			{ pPos.x, pPos.y, pPos.z },
 			{ pTexCoord.x, pTexCoord.y },
 			{ pNormal.x, pNormal.y, pNormal.z },
@@ -40,9 +40,9 @@ std::vector<Engine::StaticMesh::Vertex> Engine::AssimpTool::loadStaticVertices(c
 	return vertices;
 }
 
-std::vector<Engine::SkeletalMesh::Vertex> Engine::AssimpTool::loadSkeletalVertices(const aiMesh *mesh, std::map<GLuint, GLuint> &map_vertex)
+std::vector<Engine::Graphics::SkeletalMesh::Vertex> Engine::ToolsPrivate::loadSkeletalVertices(const aiMesh *mesh, std::map<GLuint, GLuint> &map_vertex)
 {
-	std::vector<Engine::SkeletalMesh::Vertex> vertices;
+	std::vector<Graphics::SkeletalMesh::Vertex> vertices;
 
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -52,7 +52,7 @@ std::vector<Engine::SkeletalMesh::Vertex> Engine::AssimpTool::loadSkeletalVertic
 		const aiVector3D pNormal = mesh->HasNormals() ? mesh->mNormals[i] : Zero3D;
 		const aiVector3D pTangent = mesh->HasTangentsAndBitangents() ? mesh->mTangents[i] : Zero3D;
 
-		SkeletalMesh::Vertex newVertex = {
+		Graphics::SkeletalMesh::Vertex newVertex = {
 			{ pPos.x, pPos.y, pPos.z },
 			{ pTexCoord.x, pTexCoord.y },
 			{ pNormal.x, pNormal.y, pNormal.z },
@@ -69,7 +69,7 @@ std::vector<Engine::SkeletalMesh::Vertex> Engine::AssimpTool::loadSkeletalVertic
 	return vertices;
 }
 
-std::vector<GLuint> Engine::AssimpTool::loadIndices(const aiMesh *mesh)
+std::vector<GLuint> Engine::ToolsPrivate::loadIndices(const aiMesh *mesh)
 {
 	std::vector<GLuint> indices;
 	for (GLuint i = 0; i < mesh->mNumFaces; i++)
@@ -82,9 +82,9 @@ std::vector<GLuint> Engine::AssimpTool::loadIndices(const aiMesh *mesh)
 	return indices;
 }
 
-std::shared_ptr<Engine::Material> Engine::AssimpTool::loadMaterial(const aiMaterial *material, const std::string &dir)
+std::shared_ptr<Engine::Graphics::Material> Engine::ToolsPrivate::loadMaterial(const aiMaterial *material, const std::string &dir)
 {
-	std::shared_ptr<Material> newMaterial = std::shared_ptr<Material>(new Material);
+	std::shared_ptr<Graphics::Material> newMaterial = std::shared_ptr<Graphics::Material>(new Graphics::Material);
 
 	const aiTextureType _textureType[] = {
 		aiTextureType_DIFFUSE, aiTextureType_SPECULAR,
@@ -101,7 +101,7 @@ std::shared_ptr<Engine::Material> Engine::AssimpTool::loadMaterial(const aiMater
 		if (material->GetTexture(_textureType[i], 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
 			std::string filePath = dir + path.C_Str();
-			std::shared_ptr<Texture2D> newTexture = std::shared_ptr<Texture2D>(new Texture2D);
+			std::shared_ptr<Graphics::Texture2D> newTexture = std::shared_ptr<Graphics::Texture2D>(new Graphics::Texture2D);
 
 			newTexture->loadFromFile(filePath.c_str());
 
@@ -166,11 +166,11 @@ std::shared_ptr<Engine::Material> Engine::AssimpTool::loadMaterial(const aiMater
 	return newMaterial;
 }
 
-std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene *scene, const GLchar *name)
+std::shared_ptr<Engine::Graphics::Skeleton> Engine::ToolsPrivate::loadSkeleton(const aiScene *scene, const GLchar *name)
 {
 	aiNode *root_node, *tmp_node0, *tmp_node1;
-	std::shared_ptr<Skeleton> root_skeleton;
-	Skeleton *tmp_skeleton0, *tmp_skeleton1;
+	std::shared_ptr<Graphics::Skeleton> root_skeleton;
+	Graphics::Skeleton *tmp_skeleton0, *tmp_skeleton1;
 	aiMatrix4x4 tmp_matrix;
 
 	if (name != NULL)
@@ -180,10 +180,10 @@ std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene
 
 	if (root_node == NULL) throw std::exception();
 
-	root_skeleton = std::shared_ptr<Skeleton>(new Skeleton(std::string(root_node->mName.C_Str())));
+	root_skeleton = std::shared_ptr<Graphics::Skeleton>(new Graphics::Skeleton(std::string(root_node->mName.C_Str())));
 
 	std::queue<aiNode *> queue0;
-	std::queue<Skeleton *> queue1;
+	std::queue<Graphics::Skeleton *> queue1;
 
 	queue0.push(root_node);
 	queue1.push(root_skeleton.get());
@@ -199,7 +199,7 @@ std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene
 		for (GLuint i = 0; i < tmp_node0->mNumChildren; i++)
 		{
 			tmp_node1 = tmp_node0->mChildren[i];
-			tmp_skeleton1 = new Skeleton(std::string(tmp_node1->mName.C_Str()));
+			tmp_skeleton1 = new Graphics::Skeleton(std::string(tmp_node1->mName.C_Str()));
 
 			tmp_skeleton0->children.push_back(tmp_skeleton1);
 			tmp_skeleton1->parent = tmp_skeleton1;
@@ -215,16 +215,16 @@ std::shared_ptr<Engine::Skeleton> Engine::AssimpTool::loadSkeleton(const aiScene
 	return root_skeleton;
 }
 
-std::vector<std::shared_ptr<Engine::Bone>> Engine::AssimpTool::loadBones(const aiMesh *mesh, const std::shared_ptr<Skeleton> &skeleton, GLuint bone_index,
-	std::vector<Engine::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex)
+std::vector<std::shared_ptr<Engine::Graphics::Bone>> Engine::ToolsPrivate::loadBones(const aiMesh *mesh, const std::shared_ptr<Graphics::Skeleton> &skeleton, GLuint bone_index,
+	std::vector<Graphics::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex)
 {
-	std::vector<std::shared_ptr<Engine::Bone>> vector_bones;
+	std::vector<std::shared_ptr<Graphics::Bone>> vector_bones;
 
 	for (GLuint i = 0; i < mesh->mNumBones; i++)
 	{
 		aiMatrix4x4 tmp_matrix = mesh->mBones[i]->mOffsetMatrix.Transpose();
 
-		std::shared_ptr<Engine::Bone> tmp_bone = std::shared_ptr<Engine::Bone>(new Engine::Bone);
+		std::shared_ptr<Graphics::Bone> tmp_bone = std::shared_ptr<Graphics::Bone>(new Graphics::Bone);
 
 		memcpy(&tmp_bone->offsetMatrix, &tmp_matrix, sizeof(glm::mat4));
 		tmp_bone->ptr_in_skeleton = skeleton->searchByName(std::string(mesh->mBones[i]->mName.C_Str()));

@@ -1,16 +1,16 @@
 #include <Engine/Graphics/GBuffer.hpp>
 
-Engine::GBuffer::GBuffer(void)
+Engine::Graphics::GBuffer::GBuffer(void)
 {
     memset(_idTexture, 0, sizeof _idTexture);
 }
 
-Engine::GBuffer::~GBuffer(void)
+Engine::Graphics::GBuffer::~GBuffer(void)
 {
 	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
 }
 
-void Engine::GBuffer::config(GLuint width, GLuint height)
+void Engine::Graphics::GBuffer::config(GLuint width, GLuint height)
 {
 	FrameBuffer::config(width, height);
 
@@ -57,12 +57,12 @@ void Engine::GBuffer::config(GLuint width, GLuint height)
 		std::cerr << "Framebuffer not complete" << std::endl;
 }
 
-GLuint Engine::GBuffer::getIdTexture(GLuint num) const
+GLuint Engine::Graphics::GBuffer::getIdTexture(GLuint num) const
 {
 	return _idTexture[num];
 }
 
-void Engine::GBuffer::setSkyboxState(void) const
+void Engine::Graphics::GBuffer::setSkyboxState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -84,7 +84,7 @@ void Engine::GBuffer::setSkyboxState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setGeometryState(void) const
+void Engine::Graphics::GBuffer::setGeometryState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -114,7 +114,7 @@ void Engine::GBuffer::setGeometryState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setLightState(void) const
+void Engine::Graphics::GBuffer::setLightState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -140,7 +140,7 @@ void Engine::GBuffer::setLightState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setParticlesState(void) const
+void Engine::Graphics::GBuffer::setParticlesState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -164,7 +164,7 @@ void Engine::GBuffer::setParticlesState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::setBackgroundState(void) const
+void Engine::Graphics::GBuffer::setBackgroundState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -190,7 +190,7 @@ void Engine::GBuffer::setBackgroundState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::GBuffer::clear(void) const
+void Engine::Graphics::GBuffer::clear(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -214,7 +214,7 @@ void Engine::GBuffer::clear(void) const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-void Engine::GBuffer::clearLight(void) const
+void Engine::Graphics::GBuffer::clearLight(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 

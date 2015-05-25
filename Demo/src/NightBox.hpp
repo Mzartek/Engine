@@ -3,15 +3,18 @@
 
 #include <Engine/Graphics/SkyBox.hpp>
 
+using namespace Engine;
+
 class NightBox
 {
 private:
-	std::shared_ptr<Engine::ShaderProgram> _skyboxProgram;
-	std::shared_ptr<Engine::SkyBox> _skybox;
+	std::shared_ptr<Graphics::ShaderProgram> _skyboxProgram;
+	std::shared_ptr<Graphics::SkyBox> _skybox;
+
 public:
 	NightBox(void);
 	~NightBox(void);
-	void display(const std::shared_ptr<Engine::GBuffer> &gbuf, const std::shared_ptr<Engine::PerspCamera> &cam) const;
+	void display(const std::shared_ptr<Graphics::GBuffer> &gbuf, const std::shared_ptr<Graphics::PerspCamera> &cam) const;
 };
 
 #endif

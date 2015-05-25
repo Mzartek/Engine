@@ -1,12 +1,12 @@
-#include <Engine/Graphics/Renderer.hpp>
+#include <Engine/Graphics/GraphicsRenderer.hpp>
 
-Engine::Renderer &Engine::Renderer::Instance(void)
+Engine::Graphics::GraphicsRenderer &Engine::Graphics::GraphicsRenderer::Instance(void)
 {
-	static Renderer instance;
+	static GraphicsRenderer instance;
 	return instance;
 }
 
-Engine::Renderer::Renderer(void)
+Engine::Graphics::GraphicsRenderer::GraphicsRenderer(void)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -32,14 +32,14 @@ Engine::Renderer::Renderer(void)
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 }
 
-Engine::Renderer::~Renderer(void)
+Engine::Graphics::GraphicsRenderer::~GraphicsRenderer(void)
 {
 	SDL_GL_DeleteContext(_GLContext);
 	TTF_Quit();
 	SDL_Quit();
 }
 
-void Engine::Renderer::setGLContext(const std::shared_ptr<Window> &window)
+void Engine::Graphics::GraphicsRenderer::setGLContext(const std::shared_ptr<Window> &window)
 {
 	static bool first = true;
 	if (first)

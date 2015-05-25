@@ -1,16 +1,16 @@
 #include <Engine/Graphics/DepthMap.hpp>
 
-Engine::DepthMap::DepthMap(void)
+Engine::Graphics::DepthMap::DepthMap(void)
     : _idDepthTexture(0)
 {
 }
 
-Engine::DepthMap::~DepthMap(void)
+Engine::Graphics::DepthMap::~DepthMap(void)
 {
 	if (glIsTexture(_idDepthTexture)) glDeleteTextures(1, &_idDepthTexture);
 }
 
-void Engine::DepthMap::config(GLuint width, GLuint height)
+void Engine::Graphics::DepthMap::config(GLuint width, GLuint height)
 {
 	FrameBuffer::config(width, height);
 
@@ -40,12 +40,12 @@ void Engine::DepthMap::config(GLuint width, GLuint height)
 		std::cerr << "Framebuffer not complete" << std::endl;
 }
 
-GLuint Engine::DepthMap::getIdDepthTexture(void) const
+GLuint Engine::Graphics::DepthMap::getIdDepthTexture(void) const
 {
 	return _idDepthTexture;
 }
 
-void Engine::DepthMap::setState(void) const
+void Engine::Graphics::DepthMap::setState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
@@ -63,7 +63,7 @@ void Engine::DepthMap::setState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::DepthMap::clear(void) const
+void Engine::Graphics::DepthMap::clear(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 

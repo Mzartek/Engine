@@ -1,6 +1,6 @@
 #include <Engine/Graphics/TextArray.hpp>
 
-Engine::TextArray::TextArray(const std::shared_ptr<ShaderProgram> &program)
+Engine::Graphics::TextArray::TextArray(const std::shared_ptr<ShaderProgram> &program)
 	: _font(NULL), _program(program)
 {
 	_texture = std::shared_ptr<Texture2D>(new Texture2D);
@@ -23,12 +23,12 @@ Engine::TextArray::TextArray(const std::shared_ptr<ShaderProgram> &program)
 	glBindVertexArray(0);
 }
 
-Engine::TextArray::~TextArray(void)
+Engine::Graphics::TextArray::~TextArray(void)
 {
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::TextArray::setFont(const GLchar *font, GLuint size, GLubyte r, GLubyte g, GLubyte b)
+void Engine::Graphics::TextArray::setFont(const GLchar *font, GLuint size, GLubyte r, GLubyte g, GLubyte b)
 {
 	if (_font) TTF_CloseFont(_font);
 	_font = TTF_OpenFont(font, size);
@@ -44,7 +44,7 @@ void Engine::TextArray::setFont(const GLchar *font, GLuint size, GLubyte r, GLub
 	_color.a = 0;
 }
 
-void Engine::TextArray::writeScreen(GLuint x, GLuint y, GLuint w, GLuint h, const std::shared_ptr<Window> &window, const GLchar *text)
+void Engine::Graphics::TextArray::writeScreen(GLuint x, GLuint y, GLuint w, GLuint h, const std::shared_ptr<Window> &window, const GLchar *text)
 {
 	SDL_Surface *t;
 	
@@ -67,7 +67,7 @@ void Engine::TextArray::writeScreen(GLuint x, GLuint y, GLuint w, GLuint h, cons
 	_mat = glm::ortho(0.0f, (GLfloat)window->getWidth(), 0.0f, (GLfloat)window->getHeight(), -1.0f, 1.0f);
 }
 
-void Engine::TextArray::writeScreen(const GLchar *text) const
+void Engine::Graphics::TextArray::writeScreen(const GLchar *text) const
 {
 	SDL_Surface *t;
 
@@ -76,7 +76,7 @@ void Engine::TextArray::writeScreen(const GLchar *text) const
 	SDL_FreeSurface(t);
 }
 
-void Engine::TextArray::display(const std::shared_ptr<Window> &window) const
+void Engine::Graphics::TextArray::display(const std::shared_ptr<Window> &window) const
 {
 	window->setState();
 

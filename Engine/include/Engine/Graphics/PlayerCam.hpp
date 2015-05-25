@@ -5,14 +5,17 @@
 
 namespace Engine
 {
-	class DLLAPI PlayerCam : public MovableCamera
+	namespace Graphics
 	{
-	public:
-		PlayerCam(void);
-		PlayerCam(GLfloat atheta, GLfloat aphi);
-		~PlayerCam(void);
-		void keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r);
-	};
+		class DLLAPI PlayerCam : public MovableCamera
+		{
+		public:
+			PlayerCam(void);
+			PlayerCam(GLfloat atheta, GLfloat aphi);
+			~PlayerCam(void);
+			void keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r);
+		};
+	}
 }
 
 #endif

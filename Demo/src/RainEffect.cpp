@@ -4,7 +4,7 @@ RainEffect::RainEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_physicsProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/rainParticles/rainPhysics_v.glsl",
 		NULL,
 		NULL,
@@ -12,17 +12,17 @@ RainEffect::RainEffect(void)
 		NULL,
 		varyings, sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displayProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_displayProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/rainParticles/rainVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/rainParticles/rainGeom.glsl",
 		"../share/Demo/shader/rainParticles/rainFrag.glsl"));
 
-	_manager = std::shared_ptr<Engine::ParticlesManager>(new Engine::ParticlesManager(_physicsProgram, _displayProgram));
+	_manager = std::shared_ptr<Graphics::ParticlesManager>(new Graphics::ParticlesManager(_physicsProgram, _displayProgram));
 	_manager->loadTexture("../share/Demo/resources/textures/goutte.png");
 
-	_sound = std::shared_ptr<Engine::Sound>(new Engine::Sound);
+	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 	_sound->setGain(0.0f);
 	_sound->setPitch(1.0f);
 	_sound->setLoop(AL_TRUE);
@@ -35,7 +35,7 @@ RainEffect::~RainEffect(void)
 
 void RainEffect::init(const glm::vec3 &position, GLuint numParticles)
 {
-	std::vector<Engine::Particle> rainParticles(numParticles);
+	std::vector<Graphics::Particle> rainParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
 	{
 		rainParticles[i].life = (GLfloat)(rand() % 100);
@@ -54,12 +54,12 @@ void RainEffect::setPosition(const glm::vec3 &pos)
 	_manager->setPosition(pos);
 }
 
-const std::shared_ptr<Engine::ParticlesManager> &RainEffect::getParticlesManager() const
+const std::shared_ptr<Graphics::ParticlesManager> &RainEffect::getParticlesManager() const
 {
 	return _manager;
 }
 
-const std::shared_ptr<Engine::Sound> &RainEffect::getSound(void) const
+const std::shared_ptr<Audio::Sound> &RainEffect::getSound(void) const
 {
 	return _sound;
 }

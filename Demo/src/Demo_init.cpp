@@ -1,15 +1,15 @@
 #include "Demo.hpp"
 
-Demo::Demo(const std::shared_ptr<Engine::Window> &w)
+Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	: window(w)
 {
-	Engine::Renderer::Instance().setGLContext(window);
+	Graphics::GraphicsRenderer::Instance().setGLContext(window);
 
-	gBuffer = std::shared_ptr<Engine::GBuffer>(new Engine::GBuffer);
-	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps.push_back(std::shared_ptr<Engine::DepthMap>(new Engine::DepthMap));
-	camera = std::shared_ptr<Engine::PerspCamera>(new Engine::PerspCamera);
+	gBuffer = std::shared_ptr<Graphics::GBuffer>(new Graphics::GBuffer);
+	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
+	camera = std::shared_ptr<Graphics::PerspCamera>(new Graphics::PerspCamera);
 
-	octree = std::shared_ptr<Engine::Octree>(new Engine::Octree(4, glm::vec3(0, 0, 0), 1000));
+	octree = std::shared_ptr<Graphics::Octree>(new Graphics::Octree(4, glm::vec3(0, 0, 0), 1000));
 
 	nightBox = std::shared_ptr<NightBox>(new NightBox);
 	tree = std::shared_ptr<Tree>(new Tree);

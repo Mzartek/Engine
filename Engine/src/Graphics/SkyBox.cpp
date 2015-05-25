@@ -1,6 +1,6 @@
 #include <Engine/Graphics/SkyBox.hpp>
 
-Engine::SkyBox::SkyBox(const std::shared_ptr<ShaderProgram> &program)
+Engine::Graphics::SkyBox::SkyBox(const std::shared_ptr<ShaderProgram> &program)
 	: _program(program)
 {
 	_cubeTexture = std::shared_ptr<TextureCube>(new TextureCube);
@@ -45,24 +45,24 @@ Engine::SkyBox::SkyBox(const std::shared_ptr<ShaderProgram> &program)
 	glBindVertexArray(0);
 }
 
-Engine::SkyBox::~SkyBox(void)
+Engine::Graphics::SkyBox::~SkyBox(void)
 {
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::SkyBox::load(const GLchar *posx, const GLchar *negx,
+void Engine::Graphics::SkyBox::load(const GLchar *posx, const GLchar *negx,
 	const GLchar *posy, const GLchar *negy,
 	const GLchar *posz, const GLchar *negz) const
 {
 	_cubeTexture->loadFromFiles(posx, negx, posy, negy, posz, negz);
 }
 
-const std::shared_ptr<Engine::TextureCube> &Engine::SkyBox::getTexture(void) const
+const std::shared_ptr<Engine::Graphics::TextureCube> &Engine::Graphics::SkyBox::getTexture(void) const
 {
 	return _cubeTexture;
 }
 
-void Engine::SkyBox::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) const
+void Engine::Graphics::SkyBox::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) const
 {
 	glm::mat4 pos = cam->getVPMatrix() * glm::translate(cam->getCameraPosition());
 

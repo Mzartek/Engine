@@ -2,19 +2,19 @@
 
 #define CHUNK_SIZE 4096
 
-Engine::Sound::Sound(void)
+Engine::Audio::Sound::Sound(void)
 	: _buffer(0)
 {
 	alGenSources(1, &_source);
 }
 
-Engine::Sound::~Sound(void)
+Engine::Audio::Sound::~Sound(void)
 {
 	alDeleteSources(1, &_source);
 	if (alIsBuffer(_buffer)) alDeleteBuffers(1, &_buffer);
 }
 
-void Engine::Sound::loadFromFile(const ALchar *file, ALsizei frequency, ALenum format)
+void Engine::Audio::Sound::loadFromFile(const ALchar *file, ALsizei frequency, ALenum format)
 {
 	int state = 0;
 	switch (format)
@@ -59,32 +59,32 @@ void Engine::Sound::loadFromFile(const ALchar *file, ALsizei frequency, ALenum f
 	Mix_CloseAudio();
 }
 
-void Engine::Sound::setGain(ALfloat gain)
+void Engine::Audio::Sound::setGain(ALfloat gain)
 {
 	alSourcef(_source, AL_GAIN, gain);
 }
 
-void Engine::Sound::setPitch(ALfloat pitch)
+void Engine::Audio::Sound::setPitch(ALfloat pitch)
 {
 	alSourcef(_source, AL_PITCH, pitch);
 }
 
-void Engine::Sound::setLoop(ALboolean loop)
+void Engine::Audio::Sound::setLoop(ALboolean loop)
 {
 	alSourcei(_source, AL_LOOPING, loop);
 }
 
-void Engine::Sound::setPosition(const glm::vec3 &pos)
+void Engine::Audio::Sound::setPosition(const glm::vec3 &pos)
 {
 	alSource3f(_source, AL_POSITION, pos.x, pos.y, pos.z);
 }
 
-void Engine::Sound::setVelocity(const glm::vec3 &vel)
+void Engine::Audio::Sound::setVelocity(const glm::vec3 &vel)
 {
 	alSource3f(_source, AL_VELOCITY, vel.x, vel.y, vel.z);
 }
 
-void Engine::Sound::setDistances(ALfloat min_dist, ALfloat max_dist, ALfloat rolloff, ALfloat min_gain, ALfloat max_gain)
+void Engine::Audio::Sound::setDistances(ALfloat min_dist, ALfloat max_dist, ALfloat rolloff, ALfloat min_gain, ALfloat max_gain)
 {
 	alSourcef(_source, AL_REFERENCE_DISTANCE, min_dist);
 	alSourcef(_source, AL_MAX_DISTANCE, max_dist);
@@ -93,24 +93,24 @@ void Engine::Sound::setDistances(ALfloat min_dist, ALfloat max_dist, ALfloat rol
 	alSourcef(_source, AL_MAX_GAIN, max_gain);
 }
 
-ALint Engine::Sound::getState(void)
+ALint Engine::Audio::Sound::getState(void)
 {
 	ALint state;
 	alGetSourcei(_source, AL_SOURCE_STATE, &state);
 	return state;
 }
 
-void Engine::Sound::play(void)
+void Engine::Audio::Sound::play(void)
 {
 	alSourcePlay(_source);
 }
 
-void Engine::Sound::pause(void)
+void Engine::Audio::Sound::pause(void)
 {
 	alSourcePause(_source);
 }
 
-void Engine::Sound::stop(void)
+void Engine::Audio::Sound::stop(void)
 {
 	alSourceStop(_source);
 }

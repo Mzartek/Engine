@@ -1,19 +1,19 @@
 #include <Engine/Graphics/TextureCube.hpp>
 
-Engine::TextureCube::TextureCube(void)
+Engine::Graphics::TextureCube::TextureCube(void)
 {
 }
 
-Engine::TextureCube::~TextureCube(void)
+Engine::Graphics::TextureCube::~TextureCube(void)
 {
 }
 
-Engine::TextureType Engine::TextureCube::getType(void) const
+Engine::Graphics::TextureType Engine::Graphics::TextureCube::getType(void) const
 {
 	return TEXTURE_CUBE_TYPE;
 }
 
-void Engine::TextureCube::loadFromFiles(
+void Engine::Graphics::TextureCube::loadFromFiles(
 	const GLchar *posx, const GLchar *negx,
 	const GLchar *posy, const GLchar *negy,
 	const GLchar *posz, const GLchar *negz)

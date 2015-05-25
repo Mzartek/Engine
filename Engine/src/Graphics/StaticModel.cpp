@@ -2,23 +2,23 @@
 
 #include "../Tools/private/AssimpTool.hpp"
 
-Engine::StaticModel::StaticModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
+Engine::Graphics::StaticModel::StaticModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
-Engine::StaticModel::StaticModel(const std::shared_ptr<StaticModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
+Engine::Graphics::StaticModel::StaticModel(const std::shared_ptr<StaticModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(model, gProgram, smProgram)
 {
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
-Engine::StaticModel::~StaticModel(void)
+Engine::Graphics::StaticModel::~StaticModel(void)
 {
 }
 
-void Engine::StaticModel::loadFromFile(const GLchar *inFile)
+void Engine::Graphics::StaticModel::loadFromFile(const GLchar *inFile)
 {
 	if (_isMirror == GL_TRUE)
 	{
@@ -29,7 +29,7 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 	_tMesh->clear();
 
 	Assimp::Importer importer;
-	const aiScene *pScene = AssimpTool::openFile(importer, inFile);
+	const aiScene *pScene = ToolsPrivate::openFile(importer, inFile);
 	if (pScene->HasAnimations())
 	{
 		std::cerr << "The model is not static" << std::endl;
@@ -42,9 +42,9 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 	{
 		std::shared_ptr<StaticMesh> mesh = std::shared_ptr<StaticMesh>(new StaticMesh);
 
-		vertices = AssimpTool::loadStaticVertices(pScene->mMeshes[i]);
-		indices = AssimpTool::loadIndices(pScene->mMeshes[i]);
-		mesh->setMaterial(AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile)));
+		vertices = ToolsPrivate::loadStaticVertices(pScene->mMeshes[i]);
+		indices = ToolsPrivate::loadIndices(pScene->mMeshes[i]);
+		mesh->setMaterial(ToolsPrivate::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], Tools::getDir(inFile)));
 		
 		mesh->load(vertices, indices);
 
@@ -55,7 +55,7 @@ void Engine::StaticModel::loadFromFile(const GLchar *inFile)
 	}
 }
 
-void Engine::StaticModel::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
+void Engine::Graphics::StaticModel::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
@@ -88,7 +88,7 @@ void Engine::StaticModel::display(const std::shared_ptr<GBuffer> &gbuf, const st
 		}
 }
 
-void Engine::StaticModel::displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
+void Engine::Graphics::StaticModel::displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
@@ -121,7 +121,7 @@ void Engine::StaticModel::displayTransparent(const std::shared_ptr<GBuffer> &gbu
 		}
 }
 
-void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
+void Engine::Graphics::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
 {
 	checkMatrix();
 
@@ -142,7 +142,7 @@ void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depth
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light)
+void Engine::Graphics::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light)
 {
 	checkMatrix();
 
@@ -163,7 +163,7 @@ void Engine::StaticModel::displayDepthMap(const std::shared_ptr<DepthMap> &depth
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::StaticModel::displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light)
+void Engine::Graphics::StaticModel::displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light)
 {
 	if (depthMaps.size() != CSM_NUM)
 	{

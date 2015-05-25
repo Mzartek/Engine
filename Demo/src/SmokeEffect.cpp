@@ -4,7 +4,7 @@ SmokeEffect::SmokeEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_physicsProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/smokeParticles/smokePhysics_v.glsl",
 		NULL,
 		NULL,
@@ -12,17 +12,17 @@ SmokeEffect::SmokeEffect(void)
 		NULL,
 		varyings, sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displayProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_displayProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/smokeParticles/smokeVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/smokeParticles/smokeGeom.glsl",
 		"../share/Demo/shader/smokeParticles/smokeFrag.glsl"));
 
-	_manager = std::shared_ptr<Engine::ParticlesManager>(new Engine::ParticlesManager(_physicsProgram, _displayProgram));
+	_manager = std::shared_ptr<Graphics::ParticlesManager>(new Graphics::ParticlesManager(_physicsProgram, _displayProgram));
 	_manager->loadTexture("../share/Demo/resources/textures/smoke.png");
 
-	_sound = std::shared_ptr<Engine::Sound>(new Engine::Sound);
+	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 	_sound->setGain(0.75f);
 	_sound->setPitch(0.75f);
 	_sound->setLoop(AL_TRUE);
@@ -37,7 +37,7 @@ SmokeEffect::~SmokeEffect(void)
 
 void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles)
 {
-	std::vector<Engine::Particle> smokeParticles(numParticles);
+	std::vector<Graphics::Particle> smokeParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
 	{
 		smokeParticles[i].position = position;
@@ -58,12 +58,12 @@ void SmokeEffect::setPosition(const glm::vec3 &pos)
 	_sound->setPosition(pos);
 }
 
-const std::shared_ptr<Engine::ParticlesManager> &SmokeEffect::getParticlesManager(void) const
+const std::shared_ptr<Graphics::ParticlesManager> &SmokeEffect::getParticlesManager(void) const
 {
 	return _manager;
 }
 
-const std::shared_ptr<Engine::Sound> &SmokeEffect::getSound(void) const
+const std::shared_ptr<Audio::Sound> &SmokeEffect::getSound(void) const
 {
 	return _sound;
 }

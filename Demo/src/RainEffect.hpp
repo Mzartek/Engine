@@ -4,21 +4,23 @@
 #include <Engine/Audio/Sound.hpp>
 #include <Engine/Graphics/ParticlesManager.hpp>
 
+using namespace Engine;
+
 class RainEffect
 {
 private:
-	std::shared_ptr<Engine::ShaderProgram> _physicsProgram;
-	std::shared_ptr<Engine::ShaderProgram> _displayProgram;
-	std::shared_ptr<Engine::ParticlesManager> _manager;
-	std::shared_ptr<Engine::Sound> _sound;
+	std::shared_ptr<Graphics::ShaderProgram> _physicsProgram;
+	std::shared_ptr<Graphics::ShaderProgram> _displayProgram;
+	std::shared_ptr<Graphics::ParticlesManager> _manager;
+	std::shared_ptr<Audio::Sound> _sound;
 
 public:
 	RainEffect(void);
 	~RainEffect(void);
 	void init(const glm::vec3 &position, GLuint numParticles);
 	void setPosition(const glm::vec3 &pos);
-	const std::shared_ptr<Engine::ParticlesManager> &getParticlesManager(void) const;
-	const std::shared_ptr<Engine::Sound> &getSound(void) const;
+	const std::shared_ptr<Graphics::ParticlesManager> &getParticlesManager(void) const;
+	const std::shared_ptr<Audio::Sound> &getSound(void) const;
 	void updateParticles(void) const;
 };
 

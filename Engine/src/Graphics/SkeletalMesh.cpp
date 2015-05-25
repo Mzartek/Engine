@@ -1,14 +1,14 @@
 #include <Engine/Graphics/SkeletalMesh.hpp>
 
-Engine::SkeletalMesh::SkeletalMesh(void)
+Engine::Graphics::SkeletalMesh::SkeletalMesh(void)
 {
 }
 
-Engine::SkeletalMesh::~SkeletalMesh(void)
+Engine::Graphics::SkeletalMesh::~SkeletalMesh(void)
 {
 }
 
-void Engine::SkeletalMesh::load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray)
+void Engine::Graphics::SkeletalMesh::load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray)
 {
 	unsigned int stride = 27 * sizeof(GLfloat);
 
@@ -39,12 +39,12 @@ void Engine::SkeletalMesh::load(GLsizei numVertex, const Vertex *vertexArray, GL
 	glBindVertexArray(0);
 }
 
-void Engine::SkeletalMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
+void Engine::Graphics::SkeletalMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
 {
 	load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
 }
 
-Engine::MeshType Engine::SkeletalMesh::getType(void) const
+Engine::Graphics::MeshType Engine::Graphics::SkeletalMesh::getType(void) const
 {
 	return SKELETAL_MESH;
 }

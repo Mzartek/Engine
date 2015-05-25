@@ -1,6 +1,6 @@
 #include <Engine/Graphics/Octree.hpp>
 
-inline bool Engine::Octree::checkCamInCube(const std::shared_ptr<Engine::PerspCamera> &cam) const
+inline bool Engine::Graphics::Octree::checkCamInCube(const std::shared_ptr<Graphics::PerspCamera> &cam) const
 {
 	const glm::vec3 &p = cam->getCameraPosition();
 
@@ -11,7 +11,7 @@ inline bool Engine::Octree::checkCamInCube(const std::shared_ptr<Engine::PerspCa
 	return false;
 }
 
-inline bool Engine::Octree::checkCamInSphere(const std::shared_ptr<Engine::PerspCamera> &cam) const
+inline bool Engine::Graphics::Octree::checkCamInSphere(const std::shared_ptr<Graphics::PerspCamera> &cam) const
 {
 	const GLfloat distance = glm::length(cam->getCameraPosition() - cam->getFrusSpherePosition());
 
@@ -20,7 +20,7 @@ inline bool Engine::Octree::checkCamInSphere(const std::shared_ptr<Engine::Persp
 	return false;
 }
 
-inline bool Engine::Octree::checkInCamFrus(const std::shared_ptr<Engine::PerspCamera> &cam) const
+inline bool Engine::Graphics::Octree::checkInCamFrus(const std::shared_ptr<Graphics::PerspCamera> &cam) const
 {
 	const glm::vec3 &camera_position = cam->getCameraPosition();
 	const glm::vec3 &forward_vector = cam->getForwardVector();
@@ -42,7 +42,7 @@ inline bool Engine::Octree::checkInCamFrus(const std::shared_ptr<Engine::PerspCa
 	return false;
 }
 
-Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std::map<Model *, Octree *> *map_model)
+Engine::Graphics::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std::map<Model *, Octree *> *map_model)
 	: _isRoot(GL_FALSE), _map_model(map_model), _position(position)
 {
 	GLfloat newDim = dim / 2;
@@ -79,7 +79,7 @@ Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std
 	}
 }
 
-Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
+Engine::Graphics::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
 	: _isRoot(GL_TRUE), _map_model(new std::map<Model *, Octree *>), _position(position)
 {
 	GLfloat newDim = dim / 2;
@@ -116,14 +116,14 @@ Engine::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
 	}
 }
 
-Engine::Octree::~Octree(void)
+Engine::Graphics::Octree::~Octree(void)
 {
 	if (_isRoot) delete _map_model;
 	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
 		delete *it;
 }
 
-bool Engine::Octree::addModel(Model *model, GLfloat dim)
+bool Engine::Graphics::Octree::addModel(Model *model, GLfloat dim)
 {
 	if (dim > _dim)	return false;
 
@@ -144,14 +144,14 @@ bool Engine::Octree::addModel(Model *model, GLfloat dim)
 	return true;
 }
 
-void Engine::Octree::removeModel(Model *model)
+void Engine::Graphics::Octree::removeModel(Model *model)
 {
 	std::map<Model *, Octree *>::iterator map_it = _map_model->find(model);
 
 	if (map_it != _map_model->end()) map_it->second->_modelContainer.erase(model);
 }
 
-void Engine::Octree::getModels(const std::shared_ptr<PerspCamera> &cam, std::set<Model *> &set_model)
+void Engine::Graphics::Octree::getModels(const std::shared_ptr<PerspCamera> &cam, std::set<Model *> &set_model)
 {
 	if (!checkCamInCube(cam))
 	{

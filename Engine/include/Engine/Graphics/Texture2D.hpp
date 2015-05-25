@@ -5,16 +5,19 @@
 
 namespace Engine
 {
-	class DLLAPI Texture2D : public Texture
+	namespace Graphics
 	{
-	public:
-		Texture2D(void);
-		~Texture2D(void);
-		TextureType getType(void) const;
+		class DLLAPI Texture2D : public Texture
+		{
+		public:
+			Texture2D(void);
+			~Texture2D(void);
+			TextureType getType(void) const;
 
-		void loadFromFile(const GLchar *path);
-		void loadFromSDL_Surface(const SDL_Surface *surface);
-	};
+			void loadFromFile(const GLchar *path);
+			void loadFromSDL_Surface(const SDL_Surface *surface);
+		};
+	}
 }
 
 #endif

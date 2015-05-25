@@ -1,6 +1,6 @@
 #include <Engine/Graphics/Light.hpp>
 
-Engine::Light::Light(const std::shared_ptr<ShaderProgram> &program)
+Engine::Graphics::Light::Light(const std::shared_ptr<ShaderProgram> &program)
 	: _program(program)
 {
 	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
@@ -18,6 +18,6 @@ Engine::Light::Light(const std::shared_ptr<ShaderProgram> &program)
 	_mainInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _mainInfo, GL_DYNAMIC_DRAW);
 }
 
-Engine::Light::~Light(void)
+Engine::Graphics::Light::~Light(void)
 {
 }

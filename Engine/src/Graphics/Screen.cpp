@@ -1,6 +1,6 @@
 #include <Engine/Graphics/Screen.hpp>
 
-Engine::Screen::Screen(const std::shared_ptr<ShaderProgram> &backgroundProgram, const std::shared_ptr<ShaderProgram> &directProgram)
+Engine::Graphics::Screen::Screen(const std::shared_ptr<ShaderProgram> &backgroundProgram, const std::shared_ptr<ShaderProgram> &directProgram)
 	: _backgroundProgram(backgroundProgram), _directProgram(directProgram)
 {
 	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
@@ -29,12 +29,12 @@ Engine::Screen::Screen(const std::shared_ptr<ShaderProgram> &backgroundProgram, 
 	glBindVertexArray(0);
 }
 
-Engine::Screen::~Screen(void)
+Engine::Graphics::Screen::~Screen(void)
 {
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Screen::background(const std::shared_ptr<GBuffer> &gbuf) const
+void Engine::Graphics::Screen::background(const std::shared_ptr<GBuffer> &gbuf) const
 {
 	gbuf->setBackgroundState();
 
@@ -53,7 +53,7 @@ void Engine::Screen::background(const std::shared_ptr<GBuffer> &gbuf) const
 	gbuf->clearLight();
 }
 
-void Engine::Screen::display(const std::shared_ptr<Window> &window, const std::shared_ptr<GBuffer> &gbuf, const glm::vec4 &color) const
+void Engine::Graphics::Screen::display(const std::shared_ptr<Window> &window, const std::shared_ptr<GBuffer> &gbuf, const glm::vec4 &color) const
 {
 	window->setState();
 

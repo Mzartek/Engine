@@ -1,16 +1,16 @@
 #include <Engine/Graphics/Texture.hpp>
 
-Engine::Texture::Texture(void)
+Engine::Graphics::Texture::Texture(void)
 	: _idTexture(0)
 {
 }
 
-Engine::Texture::~Texture(void)
+Engine::Graphics::Texture::~Texture(void)
 {
 	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
 }
 
-GLuint Engine::Texture::getId(void) const
+GLuint Engine::Graphics::Texture::getId(void) const
 {
 	return _idTexture;
 }

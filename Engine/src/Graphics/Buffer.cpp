@@ -1,26 +1,26 @@
 #include <Engine/Graphics/Buffer.hpp>
 
-Engine::Buffer::Buffer(void)
+Engine::Graphics::Buffer::Buffer(void)
 	: _target(GL_ARRAY_BUFFER), _idBuffer(0), _size(0)
 {
 }
 
-Engine::Buffer::~Buffer(void)
+Engine::Graphics::Buffer::~Buffer(void)
 {
 	if (glIsBuffer(_idBuffer)) glDeleteBuffers(1, &_idBuffer);
 }
 
-GLenum Engine::Buffer::getTarget(void) const
+GLenum Engine::Graphics::Buffer::getTarget(void) const
 {
 	return _target;
 }
 
-GLuint Engine::Buffer::getId(void) const
+GLuint Engine::Graphics::Buffer::getId(void) const
 {
 	return _idBuffer;
 }
 
-void Engine::Buffer::createStore(GLenum target, const GLvoid *data, GLsizeiptr size, GLenum usage)
+void Engine::Graphics::Buffer::createStore(GLenum target, const GLvoid *data, GLsizeiptr size, GLenum usage)
 {
 	_target = target;
 	_size = size;
@@ -41,14 +41,14 @@ void Engine::Buffer::createStore(GLenum target, const GLvoid *data, GLsizeiptr s
 	glBindBuffer(_target, 0);
 }
 
-void Engine::Buffer::updateStoreSub(const GLvoid *data) const
+void Engine::Graphics::Buffer::updateStoreSub(const GLvoid *data) const
 {
 	glBindBuffer(_target, _idBuffer);
 	glBufferSubData(_target, 0, _size, data);
 	glBindBuffer(_target, 0);
 }
 
-void Engine::Buffer::updateStoreMap(const GLvoid *data) const
+void Engine::Graphics::Buffer::updateStoreMap(const GLvoid *data) const
 {
 	glBindBuffer(_target, _idBuffer);
 	memcpy(glMapBuffer(_target, GL_WRITE_ONLY), data, _size);

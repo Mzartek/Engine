@@ -16,77 +16,80 @@
 
 namespace Engine
 {
-	class DLLAPI Model : public Object
+	namespace Graphics
 	{
-	private:
-		glm::vec3 _position;
-		glm::vec3 _scale;
-		glm::quat _rotation;
-
-		GLboolean _needMatModel;
-		GLboolean _needMatNormal;
-
-		void genMatModel(void);
-		void genMatNormal(void);
-
-	protected:
-		struct
+		class DLLAPI Model : public Object
 		{
-			glm::vec3 ALIGN(16) position;
-			glm::vec3 ALIGN(16) forward;
-			glm::vec3 ALIGN(16) left;
-			glm::vec3 ALIGN(16) up;
-		} _camera;
+		private:
+			glm::vec3 _position;
+			glm::vec3 _scale;
+			glm::quat _rotation;
 
-		GLboolean _isMirror;
+			GLboolean _needMatModel;
+			GLboolean _needMatNormal;
 
-		std::vector<std::shared_ptr<Mesh>> *_tMesh;
+			void genMatModel(void);
+			void genMatNormal(void);
 
-		std::shared_ptr<Buffer> _matrixBuffer;
-		std::shared_ptr<Buffer> _cameraBuffer;
+		protected:
+			struct
+			{
+				glm::vec3 ALIGN(16) position;
+				glm::vec3 ALIGN(16) forward;
+				glm::vec3 ALIGN(16) left;
+				glm::vec3 ALIGN(16) up;
+			} _camera;
 
-		glm::mat4 _modelMatrix;
-		glm::mat4 _normalMatrix;
+			GLboolean _isMirror;
 
-		std::shared_ptr<TextureCube> _cubeTexture;
+			std::vector<std::shared_ptr<Mesh>> *_tMesh;
 
-		std::shared_ptr<ShaderProgram> _gProgram;
-		std::shared_ptr<ShaderProgram> _smProgram;
+			std::shared_ptr<Buffer> _matrixBuffer;
+			std::shared_ptr<Buffer> _cameraBuffer;
 
-		void checkMatrix(void);
+			glm::mat4 _modelMatrix;
+			glm::mat4 _normalMatrix;
 
-	public:
-		Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
-		Model(const std::shared_ptr<Model> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
-		~Model(void);
+			std::shared_ptr<TextureCube> _cubeTexture;
 
-		void addMesh(const std::shared_ptr<Mesh> &mesh);
-		void sortMesh(void);
+			std::shared_ptr<ShaderProgram> _gProgram;
+			std::shared_ptr<ShaderProgram> _smProgram;
 
-		void setPosition(const glm::vec3 &position);
-		void setScale(const glm::vec3 &scale);
-		void setRotation(const glm::vec3 &rotation);
-		void setRotation(const glm::vec3 &axis, GLfloat angle);
+			void checkMatrix(void);
 
-		void addPosition(const glm::vec3 &position);
-		void addScale(const glm::vec3 &scale);
-		void addRotation(const glm::vec3 &rotation);
-		void addRotation(const glm::vec3 &axis, GLfloat angle);
+		public:
+			Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
+			Model(const std::shared_ptr<Model> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
+			~Model(void);
 
-		void setCubeTexture(const std::shared_ptr<TextureCube> &cubeTexture);
+			void addMesh(const std::shared_ptr<Mesh> &mesh);
+			void sortMesh(void);
 
-		const glm::vec3 &getPosition(void) const;
-		const glm::vec3 &getScale(void) const;
-		std::pair<const glm::vec3 &, GLfloat> getAxisAngleRotation(void) const;
+			void setPosition(const glm::vec3 &position);
+			void setScale(const glm::vec3 &scale);
+			void setRotation(const glm::vec3 &rotation);
+			void setRotation(const glm::vec3 &axis, GLfloat angle);
 
-		const std::shared_ptr<Mesh> &getMesh(GLuint num) const;
+			void addPosition(const glm::vec3 &position);
+			void addScale(const glm::vec3 &scale);
+			void addRotation(const glm::vec3 &rotation);
+			void addRotation(const glm::vec3 &axis, GLfloat angle);
 
-		virtual void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;
-		virtual void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;
-		virtual void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam) = 0;
-		virtual void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light) = 0;
-		virtual void displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light) = 0;
-	};
+			void setCubeTexture(const std::shared_ptr<TextureCube> &cubeTexture);
+
+			const glm::vec3 &getPosition(void) const;
+			const glm::vec3 &getScale(void) const;
+			std::pair<const glm::vec3 &, GLfloat> getAxisAngleRotation(void) const;
+
+			const std::shared_ptr<Mesh> &getMesh(GLuint num) const;
+
+			virtual void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;
+			virtual void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) = 0;
+			virtual void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam) = 0;
+			virtual void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light) = 0;
+			virtual void displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light) = 0;
+		};
+	}
 }
 
 

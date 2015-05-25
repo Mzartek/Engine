@@ -3,16 +3,18 @@
 
 #include <Engine/Graphics/StaticModel.hpp>
 
+using namespace Engine;
+
 class Tree
 {
 private:
-	std::shared_ptr<Engine::ShaderProgram> _objectProgram;
-	std::shared_ptr<Engine::ShaderProgram> _depthMapProgram;
-	std::shared_ptr<Engine::StaticModel> _model;
+	std::shared_ptr<Graphics::ShaderProgram> _objectProgram;
+	std::shared_ptr<Graphics::ShaderProgram> _depthMapProgram;
+	std::shared_ptr<Graphics::StaticModel> _model;
 public:
 	Tree(void);
 	~Tree(void);
-	const std::shared_ptr<Engine::StaticModel> &getModel(void) const;
+	const std::shared_ptr<Graphics::StaticModel> &getModel(void) const;
 };
 
 #endif

@@ -13,26 +13,29 @@
 
 namespace Engine
 {
-	class DLLAPI SkyBox : public Object
+	namespace Graphics
 	{
-	private:
-		std::shared_ptr<TextureCube> _cubeTexture;
-		std::shared_ptr<Buffer> _vertexBuffer;
-		std::shared_ptr<Buffer> _indexBuffer;
-		std::shared_ptr<Buffer> _MVPMatrixBuffer;
-		std::shared_ptr<ShaderProgram> _program;
-		GLuint _idVAO;
-		GLuint _numElement;
+		class DLLAPI SkyBox : public Object
+		{
+		private:
+			std::shared_ptr<TextureCube> _cubeTexture;
+			std::shared_ptr<Buffer> _vertexBuffer;
+			std::shared_ptr<Buffer> _indexBuffer;
+			std::shared_ptr<Buffer> _MVPMatrixBuffer;
+			std::shared_ptr<ShaderProgram> _program;
+			GLuint _idVAO;
+			GLuint _numElement;
 
-	public:
-		SkyBox(const std::shared_ptr<ShaderProgram> &program);
-		~SkyBox(void);
-		void load(const GLchar *posx, const GLchar *negx,
-			const GLchar *posy, const GLchar *negy,
-			const GLchar *posz, const GLchar *negz) const;
-		const std::shared_ptr<TextureCube> &getTexture(void) const;
-		void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) const;
-	};
+		public:
+			SkyBox(const std::shared_ptr<ShaderProgram> &program);
+			~SkyBox(void);
+			void load(const GLchar *posx, const GLchar *negx,
+				const GLchar *posy, const GLchar *negy,
+				const GLchar *posz, const GLchar *negz) const;
+			const std::shared_ptr<TextureCube> &getTexture(void) const;
+			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) const;
+		};
+	}
 }
 
 

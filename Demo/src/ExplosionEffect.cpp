@@ -4,7 +4,7 @@ ExplosionEffect::ExplosionEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_physicsProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/explosionParticles/explosionPhysics_v.glsl",
 		NULL,
 		NULL,
@@ -12,17 +12,17 @@ ExplosionEffect::ExplosionEffect(void)
 		NULL,
 		varyings, sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displayProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_displayProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/explosionParticles/explosionVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/explosionParticles/explosionGeom.glsl",
 		"../share/Demo/shader/explosionParticles/explosionFrag.glsl"));
 
-	_manager = std::shared_ptr<Engine::ParticlesManager>(new Engine::ParticlesManager(_physicsProgram, _displayProgram));
+	_manager = std::shared_ptr<Graphics::ParticlesManager>(new Graphics::ParticlesManager(_physicsProgram, _displayProgram));
 	_manager->loadTexture("../share/Demo/resources/textures/fire.png");
 
-	_sound = std::shared_ptr<Engine::Sound>(new Engine::Sound);
+	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 	_sound->setGain(1);
 	_sound->setPitch(1);
 	_sound->setLoop(AL_FALSE);
@@ -37,7 +37,7 @@ ExplosionEffect::~ExplosionEffect(void)
 
 void ExplosionEffect::init(const glm::vec3 &position, GLuint numParticles)
 {
-	std::vector<Engine::Particle> smokeParticles(numParticles);
+	std::vector<Graphics::Particle> smokeParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
 	{
 		smokeParticles[i].position = position;
@@ -58,12 +58,12 @@ void ExplosionEffect::setPosition(const glm::vec3 &pos)
 	_sound->setPosition(pos);
 }
 
-const std::shared_ptr<Engine::ParticlesManager> &ExplosionEffect::getParticlesManager(void) const
+const std::shared_ptr<Graphics::ParticlesManager> &ExplosionEffect::getParticlesManager(void) const
 {
 	return _manager;
 }
 
-const std::shared_ptr<Engine::Sound> &ExplosionEffect::getSound(void) const
+const std::shared_ptr<Audio::Sound> &ExplosionEffect::getSound(void) const
 {
 	return _sound;
 }

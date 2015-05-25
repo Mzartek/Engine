@@ -1,12 +1,12 @@
-#include <Engine/Audio/Audio.hpp>
+#include <Engine/Audio/AudioRenderer.hpp>
 
-Engine::Audio &Engine::Audio::Instance(void)
+Engine::Audio::AudioRenderer &Engine::Audio::AudioRenderer::Instance(void)
 {
-	static Audio instance;
+	static AudioRenderer instance;
 	return instance;
 }
 
-Engine::Audio::Audio(void)
+Engine::Audio::AudioRenderer::AudioRenderer(void)
 {
 	_device = alcOpenDevice(NULL);
 	if (!_device)
@@ -25,14 +25,14 @@ Engine::Audio::Audio(void)
 	alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
 }
 
-Engine::Audio::~Audio(void)
+Engine::Audio::AudioRenderer::~AudioRenderer(void)
 {
 	alcMakeContextCurrent(NULL);
 	alcDestroyContext(_context);
 	alcCloseDevice(_device);
 }
 
-void Engine::Audio::setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up) const
+void Engine::Audio::AudioRenderer::setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up) const
 {
 	ALfloat listenerOri[] = { at.x, at.y, at.z, up.x, up.y, up.z };
 

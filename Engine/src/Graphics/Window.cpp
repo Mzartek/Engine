@@ -1,9 +1,9 @@
 #include <Engine/Graphics/Window.hpp>
 
-Engine::GameLoop::GameLoop(void){}
-Engine::GameLoop::~GameLoop(void){}
+Engine::Graphics::GameLoop::GameLoop(void){}
+Engine::Graphics::GameLoop::~GameLoop(void){}
 
-Engine::Window::Window(const GLchar *title, GLint w, GLint h, GLboolean fullScreen)
+Engine::Graphics::Window::Window(const GLchar *title, GLint w, GLint h, GLboolean fullScreen)
 	: _width(w), _height(h)
 {
 	Uint32 flags;
@@ -21,27 +21,27 @@ Engine::Window::Window(const GLchar *title, GLint w, GLint h, GLboolean fullScre
 	}
 }
 
-Engine::Window::~Window(void)
+Engine::Graphics::Window::~Window(void)
 {
 	SDL_DestroyWindow(_Window);
 }
 
-GLuint Engine::Window::getWidth(void) const
+GLuint Engine::Graphics::Window::getWidth(void) const
 {
 	return _width;
 }
 
-GLuint Engine::Window::getHeight(void) const
+GLuint Engine::Graphics::Window::getHeight(void) const
 {
 	return _height;
 }
 
-SDL_Window *Engine::Window::getWindow(void) const
+SDL_Window *Engine::Graphics::Window::getWindow(void) const
 {
 	return _Window;
 }
 
-void Engine::Window::mainLoop(const std::shared_ptr<GameLoop> &gameLoop)
+void Engine::Graphics::Window::mainLoop(const std::shared_ptr<GameLoop> &gameLoop)
 {
 	SDL_Event event;
 	long long startTime, currentTime, newTime, frameTime;
@@ -93,12 +93,12 @@ void Engine::Window::mainLoop(const std::shared_ptr<GameLoop> &gameLoop)
 	}
 }
 
-void Engine::Window::stopLoop(void)
+void Engine::Graphics::Window::stopLoop(void)
 {
 	_stopLoop = GL_TRUE;
 }
 
-void Engine::Window::setState(void) const
+void Engine::Graphics::Window::setState(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -121,7 +121,7 @@ void Engine::Window::setState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::Window::clear(void) const
+void Engine::Graphics::Window::clear(void) const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

@@ -2,7 +2,7 @@
 
 void Demo::manage_input(void)
 {
-	Engine::Input::Instance().refresh();
-	if (Engine::Input::Instance().getKeyBoardState(SDL_SCANCODE_ESCAPE))
+	Input::InputManager::Instance().refresh();
+	if (Input::InputManager::Instance().getKeyBoardState(SDL_SCANCODE_ESCAPE))
 		window->stopLoop();
 }

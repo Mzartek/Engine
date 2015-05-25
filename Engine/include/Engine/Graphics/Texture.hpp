@@ -5,19 +5,22 @@
 
 namespace Engine
 {
-	enum TextureType { TEXTURE_2D_TYPE, TEXTURE_CUBE_TYPE };
-
-	class DLLAPI Texture : public Object
+	namespace Graphics
 	{
-	protected:
-		GLuint _idTexture;
+		enum TextureType { TEXTURE_2D_TYPE, TEXTURE_CUBE_TYPE };
 
-	public:
-		Texture(void);
-		~Texture(void);
-		GLuint getId(void) const;
-		virtual TextureType getType(void) const = 0;
-	};
+		class DLLAPI Texture : public Object
+		{
+		protected:
+			GLuint _idTexture;
+
+		public:
+			Texture(void);
+			~Texture(void);
+			GLuint getId(void) const;
+			virtual TextureType getType(void) const = 0;
+		};
+	}
 }
 
 #endif

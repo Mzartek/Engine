@@ -1,6 +1,6 @@
 #include <Engine/Graphics/Mesh.hpp>
 
-Engine::Mesh::Mesh(void)
+Engine::Graphics::Mesh::Mesh(void)
 	: _material(NULL), _numElement(0)
 {
 	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
@@ -11,12 +11,12 @@ Engine::Mesh::Mesh(void)
 	memset(_tex, 0, sizeof _tex);
 };
 
-Engine::Mesh::~Mesh(void)
+Engine::Graphics::Mesh::~Mesh(void)
 {
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Mesh::setMaterial(const std::shared_ptr<Material> &material)
+void Engine::Graphics::Mesh::setMaterial(const std::shared_ptr<Material> &material)
 {
 	memset(_tex, 0, sizeof _tex);
 
@@ -53,12 +53,12 @@ void Engine::Mesh::setMaterial(const std::shared_ptr<Material> &material)
 		_tex[9] = _material->getLightMap()->getId();
 }
 
-const std::shared_ptr<Engine::Material> &Engine::Mesh::getMaterial(void) const
+const std::shared_ptr<Engine::Graphics::Material> &Engine::Graphics::Mesh::getMaterial(void) const
 {
      return _material;
 }
 
-void Engine::Mesh::display(void) const
+void Engine::Graphics::Mesh::display(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _tex[0]);
@@ -98,7 +98,7 @@ void Engine::Mesh::display(void) const
 	glBindVertexArray(0);
 }
 
-void Engine::Mesh::display(const std::shared_ptr<TextureCube> &cubeTexture) const
+void Engine::Graphics::Mesh::display(const std::shared_ptr<TextureCube> &cubeTexture) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _tex[0]);
@@ -141,7 +141,7 @@ void Engine::Mesh::display(const std::shared_ptr<TextureCube> &cubeTexture) cons
 	glBindVertexArray(0);
 }
 
-void Engine::Mesh::displayShadow(void) const
+void Engine::Graphics::Mesh::displayShadow(void) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _tex[0]);
@@ -151,7 +151,7 @@ void Engine::Mesh::displayShadow(void) const
 	glBindVertexArray(0);
 }
 
-bool Engine::CompareMesh::operator()(const std::shared_ptr<Mesh> &first, const std::shared_ptr<Mesh> &second)
+bool Engine::Graphics::CompareMesh::operator()(const std::shared_ptr<Mesh> &first, const std::shared_ptr<Mesh> &second)
 {
 	if (first->_material == NULL)
 		return false;

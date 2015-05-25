@@ -5,24 +5,27 @@
 
 namespace Engine
 {
-	class DLLAPI StaticMesh : public Mesh
+	namespace Graphics
 	{
-	public:
-		struct Vertex
+		class DLLAPI StaticMesh : public Mesh
 		{
-			glm::vec3 position;
-			glm::vec2 texCoord;
-			glm::vec3 normal;
-			glm::vec3 tangent;
+		public:
+			struct Vertex
+			{
+				glm::vec3 position;
+				glm::vec2 texCoord;
+				glm::vec3 normal;
+				glm::vec3 tangent;
+			};
+
+			StaticMesh(void);
+			~StaticMesh(void);
+			void load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray);
+			void load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices);
+
+			MeshType getType(void) const;
 		};
-
-		StaticMesh(void);
-		~StaticMesh(void);
-		void load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray);
-		void load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices);
-
-		MeshType getType(void) const;
-	};
+	}
 }
 
 #endif

@@ -12,24 +12,27 @@
 
 namespace Engine
 {
-	class DLLAPI GBuffer : public FrameBuffer
+	namespace Graphics
 	{
-	private:
-		GLuint _idTexture[GBUF_NUM_TEX];
+		class DLLAPI GBuffer : public FrameBuffer
+		{
+		private:
+			GLuint _idTexture[GBUF_NUM_TEX];
 
-	public:
-		GBuffer(void);
-		~GBuffer(void);
-		void config(GLuint width, GLuint height);
-		GLuint getIdTexture(GLuint num) const;
-		void setSkyboxState(void) const;
-		void setGeometryState(void) const;
-		void setLightState(void) const;
-		void setParticlesState(void) const;
-		void setBackgroundState(void) const;
-		void clear(void) const;
-		void clearLight(void) const;
-	};
+		public:
+			GBuffer(void);
+			~GBuffer(void);
+			void config(GLuint width, GLuint height);
+			GLuint getIdTexture(GLuint num) const;
+			void setSkyboxState(void) const;
+			void setGeometryState(void) const;
+			void setLightState(void) const;
+			void setParticlesState(void) const;
+			void setBackgroundState(void) const;
+			void clear(void) const;
+			void clearLight(void) const;
+		};
+	}
 }
 
 #endif

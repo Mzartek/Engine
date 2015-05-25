@@ -3,22 +3,22 @@
 Helicopter::Helicopter()
      : _isMount(true)
 {
-	_objectProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_objectProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/object/objectVert.glsl",
 		NULL,
 		NULL,
 		"../share/Demo/shader/object/objectGeom.glsl",
 		"../share/Demo/shader/object/objectFrag.glsl"));
 
-	_depthMapProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_depthMapProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/depthMap/depthMapVert.glsl",
 		NULL,
 		NULL,
 		NULL,
 		"../share/Demo/shader/depthMap/depthMapFrag.glsl"));
 
-	_corpsModel = std::shared_ptr<Engine::StaticModel>(new Engine::StaticModel(_objectProgram, _depthMapProgram));
-	_rotorModel = std::shared_ptr<Engine::StaticModel>(new Engine::StaticModel(_objectProgram, _depthMapProgram));
+	_corpsModel = std::shared_ptr<Graphics::StaticModel>(new Graphics::StaticModel(_objectProgram, _depthMapProgram));
+	_rotorModel = std::shared_ptr<Graphics::StaticModel>(new Graphics::StaticModel(_objectProgram, _depthMapProgram));
 
 	_corpsModel->loadFromFile("../share/Demo/resources/models/heli/corps.mobj");
 	_corpsModel->sortMesh();
@@ -31,12 +31,12 @@ Helicopter::~Helicopter(void)
 {
 }
 
-const std::shared_ptr<Engine::StaticModel> &Helicopter::getCorpsModel(void) const
+const std::shared_ptr<Graphics::StaticModel> &Helicopter::getCorpsModel(void) const
 {
 	return _corpsModel;
 }
 
-const std::shared_ptr<Engine::StaticModel> &Helicopter::getRotorModel(void) const
+const std::shared_ptr<Graphics::StaticModel> &Helicopter::getRotorModel(void) const
 {
 	return _rotorModel;
 }

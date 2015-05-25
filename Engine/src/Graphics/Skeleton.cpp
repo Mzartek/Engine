@@ -1,23 +1,23 @@
-#include "Skeleton.hpp"
+#include <Engine/Graphics/Skeleton.hpp>
 
-Engine::Skeleton::Skeleton(void)
+Engine::Graphics::Skeleton::Skeleton(void)
 {
 	name = "";
 	parent = NULL;
 }
 
-Engine::Skeleton::Skeleton(const std::string &name)
+Engine::Graphics::Skeleton::Skeleton(const std::string &name)
 {
 	this->name = name;
 }
 
-Engine::Skeleton::~Skeleton(void)
+Engine::Graphics::Skeleton::~Skeleton(void)
 {
 	for (std::vector<Skeleton *>::iterator it = children.begin(); it != children.end(); it++)
 		delete *it;
 }
 
-Engine::Skeleton *Engine::Skeleton::searchByName(const std::string &name)
+Engine::Graphics::Skeleton *Engine::Graphics::Skeleton::searchByName(const std::string &name)
 {
 	if (this->name == name)
 		return this;

@@ -3,15 +3,18 @@
 
 #include <Engine/Graphics/DirLight.hpp>
 
+using namespace Engine;
+
 class MoonLight
 {
 private:
-	std::shared_ptr<Engine::ShaderProgram> _dirLightProgram;
-	std::shared_ptr<Engine::DirLight> _light;
+	std::shared_ptr<Graphics::ShaderProgram> _dirLightProgram;
+	std::shared_ptr<Graphics::DirLight> _light;
+
 public:
 	MoonLight(void);
 	~MoonLight(void);
-	const std::shared_ptr<Engine::DirLight> &getLight(void) const;
+	const std::shared_ptr<Graphics::DirLight> &getLight(void) const;
 };
 
 #endif

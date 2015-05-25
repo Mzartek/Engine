@@ -2,13 +2,13 @@
 
 #include "../Tools/private/AssimpTool.hpp"
 
-Engine::SkeletalModel::SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
+Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
-Engine::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
+Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(model, gProgram, smProgram)
 {
 	_bones = model->_bones;
@@ -16,11 +16,11 @@ Engine::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalModel> &model
 	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
-Engine::SkeletalModel::~SkeletalModel(void)
+Engine::Graphics::SkeletalModel::~SkeletalModel(void)
 {
 }
 
-void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *node_name)
+void Engine::Graphics::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *node_name)
 {
 	if (_isMirror == GL_TRUE)
 	{
@@ -31,7 +31,7 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 	_tMesh->clear();
 
 	Assimp::Importer importer;
-	const aiScene *pScene = AssimpTool::openFile(importer, inFile);
+	const aiScene *pScene = ToolsPrivate::openFile(importer, inFile);
 	if (!pScene->HasAnimations())
 	{
 		std::cerr << "The model is not animated" << std::endl;
@@ -40,7 +40,7 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 
 	try
 	{
-		_skeleton = AssimpTool::loadSkeleton(pScene, node_name);
+		_skeleton = ToolsPrivate::loadSkeleton(pScene, node_name);
 	}
 	catch (std::exception exception)
 	{
@@ -56,11 +56,11 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 	{
 		std::shared_ptr<SkeletalMesh> mesh = std::shared_ptr<SkeletalMesh>(new SkeletalMesh);
 
-		vertices = AssimpTool::loadSkeletalVertices(pScene->mMeshes[i], map_vertex);
-		indices = AssimpTool::loadIndices(pScene->mMeshes[i]);
-		mesh->setMaterial(AssimpTool::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], getDir(inFile)));
+		vertices = ToolsPrivate::loadSkeletalVertices(pScene->mMeshes[i], map_vertex);
+		indices = ToolsPrivate::loadIndices(pScene->mMeshes[i]);
+		mesh->setMaterial(ToolsPrivate::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], Tools::getDir(inFile)));
 
-		std::vector<std::shared_ptr<Engine::Bone>> tmp_vector = AssimpTool::loadBones(pScene->mMeshes[i], _skeleton, bone_index, vertices, map_vertex);
+		std::vector<std::shared_ptr<Engine::Graphics::Bone>> tmp_vector = ToolsPrivate::loadBones(pScene->mMeshes[i], _skeleton, bone_index, vertices, map_vertex);
 		_bones.insert(_bones.end(), tmp_vector.begin(), tmp_vector.end());
 
 		mesh->load(vertices, indices);
@@ -72,7 +72,7 @@ void Engine::SkeletalModel::loadFromFile(const GLchar *inFile, const GLchar *nod
 	}
 }
 
-void Engine::SkeletalModel::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
+void Engine::Graphics::SkeletalModel::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
@@ -105,7 +105,7 @@ void Engine::SkeletalModel::display(const std::shared_ptr<GBuffer> &gbuf, const 
 		}
 }
 
-void Engine::SkeletalModel::displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
+void Engine::Graphics::SkeletalModel::displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	checkMatrix();
 
@@ -138,7 +138,7 @@ void Engine::SkeletalModel::displayTransparent(const std::shared_ptr<GBuffer> &g
 		}
 }
 
-void Engine::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
+void Engine::Graphics::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam)
 {
 	checkMatrix();
 
@@ -159,7 +159,7 @@ void Engine::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &dep
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light)
+void Engine::Graphics::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light)
 {
 	checkMatrix();
 
@@ -180,7 +180,7 @@ void Engine::SkeletalModel::displayDepthMap(const std::shared_ptr<DepthMap> &dep
 			(*_tMesh)[i]->displayShadow();
 }
 
-void Engine::SkeletalModel::displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light)
+void Engine::Graphics::SkeletalModel::displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light)
 {
 	if (depthMaps.size() != CSM_NUM)
 	{

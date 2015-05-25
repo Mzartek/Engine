@@ -13,16 +13,16 @@ void Demo::display(GLfloat state)
 	nightBox->display(gBuffer, camera);
 
 	// Opaque Object
-	for (std::set<Engine::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->display(gBuffer, camera);
 
 	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps[i]->clear();
-	for (std::set<Engine::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMaps(depthMaps, moon_light);
 	moon_light->display(gBuffer, camera, depthMaps);
 
 	depthMaps[0]->clear();
-	for (std::set<Engine::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMap(depthMaps[0], torch_light);
 	torch_light->display(gBuffer, camera, depthMaps[0]);
 	if (_flash) thunder_light->display(gBuffer, camera);
@@ -30,7 +30,7 @@ void Demo::display(GLfloat state)
 	screen_display->background(gBuffer);
 
 	// Transparent Object
-	for (std::set<Engine::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayTransparent(gBuffer, camera);
 	moon_light->display(gBuffer, camera);
 	//torch_light->display(gBuffer, camera);
@@ -222,7 +222,7 @@ void Demo::last_state(void)
 	}
 	if (_flash) thunderLight->generateDirection();
 
-	Engine::Audio::Instance().setListenerPosition(camPosition, camForward, camUp);
+	Audio::AudioRenderer::Instance().setListenerPosition(camPosition, camForward, camUp);
 }
 
 void Demo::reshape(GLuint w, GLuint h)

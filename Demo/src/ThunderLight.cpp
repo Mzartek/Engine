@@ -2,21 +2,21 @@
 
 ThunderLight::ThunderLight(void)
 {
-	_dirLightProgram = std::shared_ptr<Engine::ShaderProgram>(new Engine::ShaderProgram(
+	_dirLightProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/dirLight/dirLightVert.glsl",
 		NULL,
 		NULL,
 		NULL,
 		"../share/Demo/shader/dirLight/dirLightFrag.glsl"));
 
-	_light = std::shared_ptr<Engine::DirLight>(new Engine::DirLight(_dirLightProgram));
+	_light = std::shared_ptr<Graphics::DirLight>(new Graphics::DirLight(_dirLightProgram));
 
 	_light->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_light->setDirection(glm::vec3((GLfloat)rand() / RAND_MAX, -1.0f, (GLfloat)rand() / RAND_MAX));
 
 	for (GLuint i = 0; i < 4; i++)
 	{
-		_sound[i] = std::shared_ptr<Engine::Sound>(new Engine::Sound);
+		_sound[i] = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 		_sound[i]->setGain(1.0f);
 		_sound[i]->setPitch(1.0f);
 		_sound[i]->setLoop(AL_FALSE);
@@ -41,7 +41,7 @@ void ThunderLight::playRandomSound(void)
 	_sound[rand() % 4]->play();
 }
 
-const std::shared_ptr<Engine::DirLight> &ThunderLight::getLight(void) const
+const std::shared_ptr<Graphics::DirLight> &ThunderLight::getLight(void) const
 {
 	return _light;
 }

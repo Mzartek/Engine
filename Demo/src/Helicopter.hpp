@@ -3,13 +3,15 @@
 
 #include <Engine/Graphics/StaticModel.hpp>
 
+using namespace Engine;
+
 class Helicopter
 {
 private:
-     std::shared_ptr<Engine::ShaderProgram> _objectProgram;
-     std::shared_ptr<Engine::ShaderProgram> _depthMapProgram;
-     std::shared_ptr<Engine::StaticModel> _corpsModel;
-     std::shared_ptr<Engine::StaticModel> _rotorModel;
+     std::shared_ptr<Graphics::ShaderProgram> _objectProgram;
+     std::shared_ptr<Graphics::ShaderProgram> _depthMapProgram;
+     std::shared_ptr<Graphics::StaticModel> _corpsModel;
+     std::shared_ptr<Graphics::StaticModel> _rotorModel;
 
      glm::vec3 _rotorOffset;
      bool _isMount;
@@ -17,8 +19,8 @@ private:
 public:
      Helicopter(void);
      ~Helicopter(void);
-     const std::shared_ptr<Engine::StaticModel> &getCorpsModel(void) const;
-     const std::shared_ptr<Engine::StaticModel> &getRotorModel(void) const;
+     const std::shared_ptr<Graphics::StaticModel> &getCorpsModel(void) const;
+     const std::shared_ptr<Graphics::StaticModel> &getRotorModel(void) const;
 
      void setMount(bool isMount);
      

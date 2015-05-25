@@ -63,7 +63,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	return id;
 }
 
-Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
+Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs)
 	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
 {
 	GLchar *log;
@@ -125,7 +125,7 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	}
 }
 
-Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, GLsizei count)
+Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const GLchar *tes, const GLchar *gs, const GLchar *fs, const GLchar **varyings, GLsizei count)
 	: _idProgram(0), _idVertexShader(0), _idTessControlShader(0), _idTessEvaluationShader(0), _idGeometryShader(0), _idFragmentShader(0)
 {
 	GLchar *log;
@@ -189,7 +189,7 @@ Engine::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *tcs, const 
 	}
 }
 
-Engine::ShaderProgram::~ShaderProgram(void)
+Engine::Graphics::ShaderProgram::~ShaderProgram(void)
 {
 	if (glIsProgram(_idProgram)) glDeleteProgram(_idProgram);
 	if (glIsShader(_idVertexShader)) glDeleteShader(_idVertexShader);
@@ -199,7 +199,7 @@ Engine::ShaderProgram::~ShaderProgram(void)
 	if (glIsShader(_idFragmentShader)) glDeleteShader(_idFragmentShader);
 }
 
-GLuint Engine::ShaderProgram::getId(void) const
+GLuint Engine::Graphics::ShaderProgram::getId(void) const
 {
 	return _idProgram;
 }

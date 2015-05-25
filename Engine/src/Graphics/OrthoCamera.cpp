@@ -1,24 +1,24 @@
 #include <Engine/Graphics/OrthoCamera.hpp>
 
-Engine::OrthoCamera::OrthoCamera(void)
+Engine::Graphics::OrthoCamera::OrthoCamera(void)
 {
 }
 
-Engine::OrthoCamera::~OrthoCamera(void)
+Engine::Graphics::OrthoCamera::~OrthoCamera(void)
 {
 }
 
-void Engine::OrthoCamera::setPosition(const glm::vec3 &pos)
+void Engine::Graphics::OrthoCamera::setPosition(const glm::vec3 &pos)
 {
 	_position = pos;
 }
 
-void Engine::OrthoCamera::setDirection(const glm::vec3 &dir)
+void Engine::Graphics::OrthoCamera::setDirection(const glm::vec3 &dir)
 {
 	_direction = dir;
 }
 
-void Engine::OrthoCamera::setOrthogonal(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar)
+void Engine::Graphics::OrthoCamera::setOrthogonal(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar)
 {
 	_projectionMatrix = glm::ortho(left, right, bottom, top, zNear, zFar);
 
@@ -30,7 +30,7 @@ void Engine::OrthoCamera::setOrthogonal(GLfloat left, GLfloat right, GLfloat bot
 	_zFar = zFar;
 }
 
-void Engine::OrthoCamera::updateData(void)
+void Engine::Graphics::OrthoCamera::updateData(void)
 {
 	_viewMatrix = glm::lookAt(_position - _direction, _position, glm::vec3(0.0f, 1.0f, 0.0f));
 	_VPMatrix = _projectionMatrix * _viewMatrix;

@@ -1,6 +1,6 @@
 #include <Engine/Graphics/DirLight.hpp>
 
-Engine::DirLight::DirLight(const std::shared_ptr<ShaderProgram> &program)
+Engine::Graphics::DirLight::DirLight(const std::shared_ptr<ShaderProgram> &program)
 	: Light(program)
 {
 	for (GLuint i = 0; i < CSM_NUM; i++)
@@ -28,47 +28,47 @@ Engine::DirLight::DirLight(const std::shared_ptr<ShaderProgram> &program)
 	glBindVertexArray(0);
 }
 
-Engine::DirLight::~DirLight(void)
+Engine::Graphics::DirLight::~DirLight(void)
 {
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::DirLight::setColor(const glm::vec3 &color)
+void Engine::Graphics::DirLight::setColor(const glm::vec3 &color)
 {
 	_lightInfo.color = color;
 }
 
-void Engine::DirLight::setDirection(const glm::vec3 &dir)
+void Engine::Graphics::DirLight::setDirection(const glm::vec3 &dir)
 {
 	_lightInfo.direction = glm::normalize(dir);
 }
 
-const glm::mat4 &Engine::DirLight::getProjectionMatrix(GLuint num) const
+const glm::mat4 &Engine::Graphics::DirLight::getProjectionMatrix(GLuint num) const
 {
 	return _projectionMatrix[num];
 }
 
-const glm::mat4 &Engine::DirLight::getViewMatrix(GLuint num) const
+const glm::mat4 &Engine::Graphics::DirLight::getViewMatrix(GLuint num) const
 {
 	return _viewMatrix[num];
 }
 
-const glm::mat4 &Engine::DirLight::getVPMatrix(GLuint num) const
+const glm::mat4 &Engine::Graphics::DirLight::getVPMatrix(GLuint num) const
 {
 	return _VPMatrix[num];
 }
 
-const glm::vec3 &Engine::DirLight::getColor(void) const
+const glm::vec3 &Engine::Graphics::DirLight::getColor(void) const
 {
 	return _lightInfo.color;
 }
 
-const glm::vec3 &Engine::DirLight::getDirection(void) const
+const glm::vec3 &Engine::Graphics::DirLight::getDirection(void) const
 {
 	return _lightInfo.direction;
 }
 
-void Engine::DirLight::updateData(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2)
+void Engine::Graphics::DirLight::updateData(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2)
 {
 	GLfloat dim[3] = { dim0, dim1, dim2 };
 
@@ -84,7 +84,7 @@ void Engine::DirLight::updateData(const glm::vec3 &pos, GLfloat dim0, GLfloat di
 	_lightInfo.shadowMatrix[2] = _VPMatrix[2];
 }
 
-void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
+void Engine::Graphics::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam)
 {
 	gbuf->setLightState();
 
@@ -116,7 +116,7 @@ void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::
 	glBindVertexArray(0);
 }
 
-void Engine::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::vector<std::shared_ptr<Engine::DepthMap>> &depthMaps)
+void Engine::Graphics::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::vector<std::shared_ptr<Graphics::DepthMap>> &depthMaps)
 {
 	if (depthMaps.size() != CSM_NUM)
 	{

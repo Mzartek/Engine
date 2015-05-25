@@ -1,6 +1,6 @@
 #include <Engine/Tools/StringManager.hpp>
 
-std::string Engine::getDir(const GLchar *file)
+std::string Engine::Tools::getDir(const GLchar *file)
 {
 	GLuint size, i;
 	std::string path;

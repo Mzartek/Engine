@@ -1,19 +1,19 @@
 #include <Engine/Graphics/FreeCam.hpp>
 
-Engine::FreeCam::FreeCam(void)
+Engine::Graphics::FreeCam::FreeCam(void)
 {
 }
 
-Engine::FreeCam::FreeCam(GLfloat atheta, GLfloat aphi)
+Engine::Graphics::FreeCam::FreeCam(GLfloat atheta, GLfloat aphi)
     : MovableCamera(atheta, aphi)
 {
 }
 
-Engine::FreeCam::~FreeCam(void)
+Engine::Graphics::FreeCam::~FreeCam(void)
 {
 }
 
-void Engine::FreeCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r)
+void Engine::Graphics::FreeCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r)
 {
 	if(f)
 		_pcamera += _vforward * _speed;

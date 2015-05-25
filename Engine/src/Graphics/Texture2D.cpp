@@ -1,19 +1,19 @@
 #include <Engine/Graphics/Texture2D.hpp>
 
-Engine::Texture2D::Texture2D(void)
+Engine::Graphics::Texture2D::Texture2D(void)
 {
 }
 
-Engine::Texture2D::~Texture2D(void)
+Engine::Graphics::Texture2D::~Texture2D(void)
 {
 }
 
-Engine::TextureType Engine::Texture2D::getType(void) const
+Engine::Graphics::TextureType Engine::Graphics::Texture2D::getType(void) const
 {
 	return TEXTURE_2D_TYPE;
 }
 
-void Engine::Texture2D::loadFromFile(const GLchar *path)
+void Engine::Graphics::Texture2D::loadFromFile(const GLchar *path)
 {
 	SDL_Surface *image = IMG_Load(path);
 	if (image == NULL)
@@ -59,7 +59,7 @@ void Engine::Texture2D::loadFromFile(const GLchar *path)
 	SDL_FreeSurface(image);
 }
 
-void Engine::Texture2D::loadFromSDL_Surface(const SDL_Surface *surface)
+void Engine::Graphics::Texture2D::loadFromSDL_Surface(const SDL_Surface *surface)
 {
 	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);
 	glGenTextures(1, &_idTexture);

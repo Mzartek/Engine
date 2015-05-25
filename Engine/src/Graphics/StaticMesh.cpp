@@ -1,14 +1,14 @@
 #include <Engine/Graphics/StaticMesh.hpp>
 
-Engine::StaticMesh::StaticMesh(void)
+Engine::Graphics::StaticMesh::StaticMesh(void)
 {
 }
 
-Engine::StaticMesh::~StaticMesh(void)
+Engine::Graphics::StaticMesh::~StaticMesh(void)
 {
 }
 
-void Engine::StaticMesh::load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray)
+void Engine::Graphics::StaticMesh::load(GLsizei numVertex, const Vertex *vertexArray, GLsizei numIndex, const GLuint *indexArray)
 {
 	unsigned int stride = 11 * sizeof(GLfloat);
 
@@ -31,12 +31,12 @@ void Engine::StaticMesh::load(GLsizei numVertex, const Vertex *vertexArray, GLsi
 	glBindVertexArray(0);
 }
 
-void Engine::StaticMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
+void Engine::Graphics::StaticMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
 {
 	load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
 }
 
-Engine::MeshType Engine::StaticMesh::getType(void) const
+Engine::Graphics::MeshType Engine::Graphics::StaticMesh::getType(void) const
 {
 	return STATIC_MESH;
 }

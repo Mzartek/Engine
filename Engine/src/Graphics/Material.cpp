@@ -1,6 +1,6 @@
 #include <Engine/Graphics/Material.hpp>
 
-Engine::Material::Material(void)
+Engine::Graphics::Material::Material(void)
 	: _diffuseTexture(NULL), _specularTexture(NULL), _ambientTexture(NULL), _emissiveTexture(NULL), _shininessTexture(NULL),
 	_opacityTexture(NULL), _bumpMap(NULL), _normalMap(NULL), _displacementMap(NULL), _lightMap(NULL)
 {
@@ -28,47 +28,47 @@ Engine::Material::Material(void)
 	_stateBuffer->createStore(GL_UNIFORM_BUFFER, &_state, sizeof _state, GL_STATIC_DRAW);
 }
 
-Engine::Material::~Material(void)
+Engine::Graphics::Material::~Material(void)
 {
 }
 
-void Engine::Material::setDiffuse(const glm::vec3 &color)
+void Engine::Graphics::Material::setDiffuse(const glm::vec3 &color)
 {
 	_mat.diffuse = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setSpecular(const glm::vec3 &color)
+void Engine::Graphics::Material::setSpecular(const glm::vec3 &color)
 {
 	_mat.specular = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setAmbient(const glm::vec3 &color)
+void Engine::Graphics::Material::setAmbient(const glm::vec3 &color)
 {
 	_mat.ambient = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setEmissive(const glm::vec3 &color)
+void Engine::Graphics::Material::setEmissive(const glm::vec3 &color)
 {
 	_mat.emissive = color;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setShininess(GLfloat shininess)
+void Engine::Graphics::Material::setShininess(GLfloat shininess)
 {
 	_mat.shininess = shininess;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setOpacity(GLfloat opacity)
+void Engine::Graphics::Material::setOpacity(GLfloat opacity)
 {
 	_mat.opacity = opacity;
 	_matBuffer->updateStoreSub(&_mat);
 }
 
-void Engine::Material::setDiffuseTexture(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setDiffuseTexture(const std::shared_ptr<Texture2D> &tex)
 {
 	_diffuseTexture = tex;
 
@@ -80,7 +80,7 @@ void Engine::Material::setDiffuseTexture(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setSpecularTexture(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setSpecularTexture(const std::shared_ptr<Texture2D> &tex)
 {
 	_specularTexture = tex;
 
@@ -92,7 +92,7 @@ void Engine::Material::setSpecularTexture(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setAmbientTexture(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setAmbientTexture(const std::shared_ptr<Texture2D> &tex)
 {
 	_ambientTexture = tex;
 
@@ -104,7 +104,7 @@ void Engine::Material::setAmbientTexture(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setEmissiveTexture(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setEmissiveTexture(const std::shared_ptr<Texture2D> &tex)
 {
 	_emissiveTexture = tex;
 
@@ -116,7 +116,7 @@ void Engine::Material::setEmissiveTexture(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setShininessTexture(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setShininessTexture(const std::shared_ptr<Texture2D> &tex)
 {
 	_shininessTexture = tex;
 
@@ -128,7 +128,7 @@ void Engine::Material::setShininessTexture(const std::shared_ptr<Texture2D> &tex
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setOpacityTexture(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setOpacityTexture(const std::shared_ptr<Texture2D> &tex)
 {
 	_opacityTexture = tex;
 
@@ -140,7 +140,7 @@ void Engine::Material::setOpacityTexture(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setBumpMap(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setBumpMap(const std::shared_ptr<Texture2D> &tex)
 {
 	_bumpMap = tex;
 
@@ -152,7 +152,7 @@ void Engine::Material::setBumpMap(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setNormalMap(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setNormalMap(const std::shared_ptr<Texture2D> &tex)
 {
 	_normalMap = tex;
 
@@ -164,7 +164,7 @@ void Engine::Material::setNormalMap(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setDisplacementMap(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setDisplacementMap(const std::shared_ptr<Texture2D> &tex)
 {
 	_displacementMap = tex;
 
@@ -176,7 +176,7 @@ void Engine::Material::setDisplacementMap(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-void Engine::Material::setLightMap(const std::shared_ptr<Texture2D> &tex)
+void Engine::Graphics::Material::setLightMap(const std::shared_ptr<Texture2D> &tex)
 {
 	_lightMap = tex;
 
@@ -188,142 +188,142 @@ void Engine::Material::setLightMap(const std::shared_ptr<Texture2D> &tex)
 	_stateBuffer->updateStoreSub(&_state);
 }
 
-const glm::vec3 &Engine::Material::getDiffuse(void) const
+const glm::vec3 &Engine::Graphics::Material::getDiffuse(void) const
 {
 	return _mat.diffuse;
 }
 
-const glm::vec3 &Engine::Material::getSpecular(void) const
+const glm::vec3 &Engine::Graphics::Material::getSpecular(void) const
 {
 	return _mat.specular;
 }
 
-const glm::vec3 &Engine::Material::getAmbient(void) const
+const glm::vec3 &Engine::Graphics::Material::getAmbient(void) const
 {
 	return _mat.ambient;
 }
 
-const glm::vec3 &Engine::Material::getEmissive(void) const
+const glm::vec3 &Engine::Graphics::Material::getEmissive(void) const
 {
 	return _mat.emissive;
 }
 
-GLfloat Engine::Material::getShininess(void) const
+GLfloat Engine::Graphics::Material::getShininess(void) const
 {
 	return _mat.shininess;
 }
 
-GLfloat Engine::Material::getOpacity(void) const
+GLfloat Engine::Graphics::Material::getOpacity(void) const
 {
 	return _mat.opacity;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getDiffuseTexture(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getDiffuseTexture(void) const
 {
 	return _diffuseTexture;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getSpecularTexture(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getSpecularTexture(void) const
 {
 	return _specularTexture;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getAmbientTexture(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getAmbientTexture(void) const
 {
 	return _ambientTexture;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getEmissiveTexture(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getEmissiveTexture(void) const
 {
 	return _emissiveTexture;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getShininessTexture(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getShininessTexture(void) const
 {
 	return _shininessTexture;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getOpacityTexture(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getOpacityTexture(void) const
 {
 	return _opacityTexture;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getBumpMap(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getBumpMap(void) const
 {
 	return _bumpMap;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getNormalMap(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getNormalMap(void) const
 {
 	return _normalMap;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getDisplacementMap(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getDisplacementMap(void) const
 {
 	return _displacementMap;
 }
 
-const std::shared_ptr<Engine::Texture2D> &Engine::Material::getLightMap(void) const
+const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::getLightMap(void) const
 {
 	return _lightMap;
 }
 
-GLboolean Engine::Material::hasDiffuseTexture(void) const
+GLboolean Engine::Graphics::Material::hasDiffuseTexture(void) const
 {
 	return (GLboolean)_state.hasDiffuseTexture;
 }
 
-GLboolean Engine::Material::hasSpecularTexture(void) const
+GLboolean Engine::Graphics::Material::hasSpecularTexture(void) const
 {
 	return (GLboolean)_state.hasSpecularTexture;
 }
 
-GLboolean Engine::Material::hasAmbientTexture(void) const
+GLboolean Engine::Graphics::Material::hasAmbientTexture(void) const
 {
 	return (GLboolean)_state.hasAmbientTexture;
 }
 
-GLboolean Engine::Material::hasEmissiveTexture(void) const
+GLboolean Engine::Graphics::Material::hasEmissiveTexture(void) const
 {
 	return (GLboolean)_state.hasEmissiveTexture;
 }
 
-GLboolean Engine::Material::hasShininessTexture(void) const
+GLboolean Engine::Graphics::Material::hasShininessTexture(void) const
 {
 	return (GLboolean)_state.hasShininessTexture;
 }
 
-GLboolean Engine::Material::hasOpacityTexture(void) const
+GLboolean Engine::Graphics::Material::hasOpacityTexture(void) const
 {
 	return (GLboolean)_state.hasOpacityTexture;
 }
 
-GLboolean Engine::Material::hasBumpMap(void) const
+GLboolean Engine::Graphics::Material::hasBumpMap(void) const
 {
 	return (GLboolean)_state.hasBumpMap;
 }
 
-GLboolean Engine::Material::hasNormalMap(void) const
+GLboolean Engine::Graphics::Material::hasNormalMap(void) const
 {
 	return (GLboolean)_state.hasNormalMap;
 }
 
-GLboolean Engine::Material::hasDisplacementMap(void) const
+GLboolean Engine::Graphics::Material::hasDisplacementMap(void) const
 {
 	return (GLboolean)_state.hasDisplacementMap;
 }
 
-GLboolean Engine::Material::hasLightMap(void) const
+GLboolean Engine::Graphics::Material::hasLightMap(void) const
 {
 	return (GLboolean)_state.hasLightMap;
 }
 
-GLuint Engine::Material::getMatBuffer(void) const
+GLuint Engine::Graphics::Material::getMatBuffer(void) const
 {
 	return _matBuffer->getId();
 }
 
-GLuint Engine::Material::getStateBuffer(void) const
+GLuint Engine::Graphics::Material::getStateBuffer(void) const
 {
 	return _stateBuffer->getId();
 }

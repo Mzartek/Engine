@@ -9,38 +9,41 @@
 
 namespace Engine
 {
-	enum MeshType {STATIC_MESH, SKELETAL_MESH};
-
-	class DLLAPI Mesh : public Object
+	namespace Graphics
 	{
-		friend struct CompareMesh;
+		enum MeshType { STATIC_MESH, SKELETAL_MESH };
 
-	private:
-		std::shared_ptr<Material> _material;
-		GLuint _tex[10];
+		class DLLAPI Mesh : public Object
+		{
+			friend struct CompareMesh;
 
-	protected:
-		std::shared_ptr<Buffer> _vertexBuffer;
-		std::shared_ptr<Buffer> _indexBuffer;
-		GLuint _idVAO;
-		GLsizei _numElement;
+		private:
+			std::shared_ptr<Material> _material;
+			GLuint _tex[10];
 
-	public:
-		Mesh(void);
-		~Mesh(void);
-		void setMaterial(const std::shared_ptr<Material> &material);
-		const std::shared_ptr<Material> &getMaterial(void) const;
-		void display(void) const;
-		void display(const std::shared_ptr<TextureCube> &cubeTexture) const;
-		void displayShadow(void) const;
+		protected:
+			std::shared_ptr<Buffer> _vertexBuffer;
+			std::shared_ptr<Buffer> _indexBuffer;
+			GLuint _idVAO;
+			GLsizei _numElement;
 
-		virtual MeshType getType(void) const = 0;
-	};
+		public:
+			Mesh(void);
+			~Mesh(void);
+			void setMaterial(const std::shared_ptr<Material> &material);
+			const std::shared_ptr<Material> &getMaterial(void) const;
+			void display(void) const;
+			void display(const std::shared_ptr<TextureCube> &cubeTexture) const;
+			void displayShadow(void) const;
 
-	struct CompareMesh
-	{
-		bool operator() (const std::shared_ptr<Mesh> &first, const std::shared_ptr<Mesh> &second);
-	};
+			virtual MeshType getType(void) const = 0;
+		};
+
+		struct CompareMesh
+		{
+			bool operator() (const std::shared_ptr<Mesh> &first, const std::shared_ptr<Mesh> &second);
+		};
+	}
 }
 
 

@@ -5,18 +5,21 @@
 
 namespace Engine
 {
-	class DLLAPI TextureCube : public Texture
+	namespace Graphics
 	{
-	public:
-		TextureCube(void);
-		~TextureCube(void);
-		TextureType getType(void) const;
+		class DLLAPI TextureCube : public Texture
+		{
+		public:
+			TextureCube(void);
+			~TextureCube(void);
+			TextureType getType(void) const;
 
-		void loadFromFiles(
-			const GLchar *posx, const GLchar *negx,
-			const GLchar *posy, const GLchar *negy,
-			const GLchar *posz, const GLchar *negz);
-	};
+			void loadFromFiles(
+				const GLchar *posx, const GLchar *negx,
+				const GLchar *posy, const GLchar *negy,
+				const GLchar *posz, const GLchar *negz);
+		};
+	}
 }
 
 #endif

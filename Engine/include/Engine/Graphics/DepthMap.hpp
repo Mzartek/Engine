@@ -5,19 +5,22 @@
 
 namespace Engine
 {
-	class DLLAPI DepthMap : public FrameBuffer
+	namespace Graphics
 	{
-	private:
-		GLuint _idDepthTexture;
+		class DLLAPI DepthMap : public FrameBuffer
+		{
+		private:
+			GLuint _idDepthTexture;
 
-	public:
-		DepthMap(void);
-		~DepthMap(void);
-		void config(GLuint width, GLuint height);
-		GLuint getIdDepthTexture(void) const;
-		void setState(void) const;
-		void clear(void) const;
-	};
+		public:
+			DepthMap(void);
+			~DepthMap(void);
+			void config(GLuint width, GLuint height);
+			GLuint getIdDepthTexture(void) const;
+			void setState(void) const;
+			void clear(void) const;
+		};
+	}
 }
 
 #endif

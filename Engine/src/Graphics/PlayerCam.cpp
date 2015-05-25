@@ -1,19 +1,19 @@
 #include <Engine/Graphics/PlayerCam.hpp>
 
-Engine::PlayerCam::PlayerCam(void)
+Engine::Graphics::PlayerCam::PlayerCam(void)
 {
 }
 
-Engine::PlayerCam::PlayerCam(GLfloat atheta, GLfloat aphi)
+Engine::Graphics::PlayerCam::PlayerCam(GLfloat atheta, GLfloat aphi)
     : MovableCamera(atheta, aphi)
 {
 }
 
-Engine::PlayerCam::~PlayerCam(void)
+Engine::Graphics::PlayerCam::~PlayerCam(void)
 {
 }
 
-void Engine::PlayerCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r)
+void Engine::Graphics::PlayerCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r)
 {
 	if(f)
 	{

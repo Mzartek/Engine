@@ -1,6 +1,6 @@
 #include <Engine/Graphics/Model.hpp>
 
-void Engine::Model::checkMatrix(void)
+void Engine::Graphics::Model::checkMatrix(void)
 {
 	if (_needMatModel == GL_TRUE)
 	{
@@ -14,7 +14,7 @@ void Engine::Model::checkMatrix(void)
 	}
 }
 
-Engine::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
+Engine::Graphics::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_FALSE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_position = glm::vec3(0, 0, 0);
@@ -43,7 +43,7 @@ Engine::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::
 	glUniform1i(glGetUniformLocation(_smProgram->getId(), "diffuseTex"), 0);
 }
 
-Engine::Model::Model(const std::shared_ptr<Model> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
+Engine::Graphics::Model::Model(const std::shared_ptr<Model> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_position = glm::vec3(0, 0, 0);
@@ -71,12 +71,12 @@ Engine::Model::Model(const std::shared_ptr<Model> &model, const std::shared_ptr<
 	glUniform1i(glGetUniformLocation(_smProgram->getId(), "diffuseTex"), 0);
 }
 
-Engine::Model::~Model(void)
+Engine::Graphics::Model::~Model(void)
 {
 	if (!_isMirror) delete _tMesh;
 }
 
-void Engine::Model::addMesh(const std::shared_ptr<Mesh> &mesh)
+void Engine::Graphics::Model::addMesh(const std::shared_ptr<Mesh> &mesh)
 {
 	if (_isMirror == GL_TRUE)
 	{
@@ -87,86 +87,86 @@ void Engine::Model::addMesh(const std::shared_ptr<Mesh> &mesh)
 	_tMesh->push_back(mesh);
 }
 
-void Engine::Model::sortMesh(void)
+void Engine::Graphics::Model::sortMesh(void)
 {
 	std::sort(_tMesh->begin(), _tMesh->end(), CompareMesh());
 }
 
-void Engine::Model::setPosition(const glm::vec3 &position)
+void Engine::Graphics::Model::setPosition(const glm::vec3 &position)
 {
 	_position = position;
 	_needMatModel = GL_TRUE;
 }
 
-void Engine::Model::setScale(const glm::vec3 &scale)
+void Engine::Graphics::Model::setScale(const glm::vec3 &scale)
 {
 	_scale = scale;
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::setRotation(const glm::vec3 &rotation)
+void Engine::Graphics::Model::setRotation(const glm::vec3 &rotation)
 {
 	_rotation = glm::quat(rotation);
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::setRotation(const glm::vec3 &axis, GLfloat angle)
+void Engine::Graphics::Model::setRotation(const glm::vec3 &axis, GLfloat angle)
 {
 	_rotation = glm::angleAxis(fmodf(angle, glm::pi<GLfloat>() * 2), axis);
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::addPosition(const glm::vec3 &position)
+void Engine::Graphics::Model::addPosition(const glm::vec3 &position)
 {
     _position += position;
 	_needMatModel = GL_TRUE;
 }
 
-void Engine::Model::addScale(const glm::vec3 &scale)
+void Engine::Graphics::Model::addScale(const glm::vec3 &scale)
 {
     _scale += scale;
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::addRotation(const glm::vec3 &rotation)
+void Engine::Graphics::Model::addRotation(const glm::vec3 &rotation)
 {
 	_rotation = glm::quat(rotation) * _rotation;
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::addRotation(const glm::vec3 &axis, GLfloat angle)
+void Engine::Graphics::Model::addRotation(const glm::vec3 &axis, GLfloat angle)
 {
 	_rotation = glm::angleAxis(fmodf(angle, glm::pi<GLfloat>() * 2), axis) * _rotation;
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }
 
-void Engine::Model::setCubeTexture(const std::shared_ptr<TextureCube> &cubeTexture)
+void Engine::Graphics::Model::setCubeTexture(const std::shared_ptr<TextureCube> &cubeTexture)
 {
 	_cubeTexture = cubeTexture;
 }
 
-const glm::vec3 &Engine::Model::getPosition(void) const
+const glm::vec3 &Engine::Graphics::Model::getPosition(void) const
 {
 	return _position;
 }
 
-const glm::vec3 &Engine::Model::getScale(void) const
+const glm::vec3 &Engine::Graphics::Model::getScale(void) const
 {
 	return _scale;
 }
 
-std::pair<const glm::vec3 &, GLfloat> Engine::Model::getAxisAngleRotation(void) const
+std::pair<const glm::vec3 &, GLfloat> Engine::Graphics::Model::getAxisAngleRotation(void) const
 {
 	return std::pair<const glm::vec3 &, GLfloat>(glm::vec3(glm::axis(_rotation)), glm::angle(_rotation));
 }
 
-const std::shared_ptr<Engine::Mesh> &Engine::Model::getMesh(GLuint num) const
+const std::shared_ptr<Engine::Graphics::Mesh> &Engine::Graphics::Model::getMesh(GLuint num) const
 {
 	if (num >= _tMesh->size())
 	{

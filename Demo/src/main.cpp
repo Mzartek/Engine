@@ -9,11 +9,11 @@ int main(int argc, char **argv)
 	srand((unsigned int)time(NULL));
 
 	// We call the instance for init
-	Engine::Renderer::Instance();
-	Engine::Input::Instance();
-	Engine::Audio::Instance();
+	Graphics::GraphicsRenderer::Instance();
+	Audio::AudioRenderer::Instance();
+	Input::InputManager::Instance();
 
-	std::shared_ptr<Engine::Window> window(new Engine::Window("Demo OpenGL", 800, 600, GL_FALSE));
+	std::shared_ptr<Graphics::Window> window(new Graphics::Window("Demo OpenGL", 800, 600, GL_FALSE));
 	std::shared_ptr<Demo> demo(new Demo(window));
 
 	window->mainLoop(demo);
