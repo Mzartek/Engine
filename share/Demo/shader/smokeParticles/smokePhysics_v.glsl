@@ -37,7 +37,7 @@ void main(void)
 		float num1 = (rand(direction.zx) * 2) - 1;
 
 		VertOut.position = origin;
-		VertOut.direction = normalize(vec3(num0, direction.y, num1));
+		VertOut.direction = normalize(vec3(num0, 1.0, num1));
 		VertOut.velocity = velocity;
 		VertOut.life = rand(vec2(num0, num1));
 	}

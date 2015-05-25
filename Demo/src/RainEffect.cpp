@@ -23,7 +23,7 @@ RainEffect::RainEffect(void)
 	_manager->loadTexture("../share/Demo/resources/textures/goutte.png");
 
 	_sound = std::shared_ptr<Engine::Sound>(new Engine::Sound);
-	_sound->setGain(0.10f);
+	_sound->setGain(0.0f);
 	_sound->setPitch(1.0f);
 	_sound->setLoop(AL_TRUE);
 	_sound->loadFromFile("../share/Demo/resources/sound/rain_stereo.wav", 44100, AL_FORMAT_STEREO16);
