@@ -5,69 +5,85 @@ lib_LTLIBRARIES = $(top_builddir)/lib/libEngine.la
 
 __top_builddir__lib_libEngineincludedir = $(includedir)/Engine-GL4-
 __top_builddir__lib_libEngineinclude_HEADERS = \
-	include/Engine/Input.hpp \
-	include/Engine/Light.hpp \
-	include/Engine/Texture.hpp \
-	include/Engine/Texture2D.hpp \
-	include/Engine/TextureCube.hpp \
-	include/Engine/Buffer.hpp \
-	include/Engine/DepthMap.hpp \
-	include/Engine/ParticlesManager.hpp \
-	include/Engine/Camera.hpp \
-	include/Engine/PerspCamera.hpp \
-	include/Engine/OrthoCamera.hpp \
-	include/Engine/Mesh.hpp \
-	include/Engine/DirLight.hpp \
-	include/Engine/Renderer.hpp \
-	include/Engine/MovableCamera.hpp \
-	include/Engine/Model.hpp \
-	include/Engine/SkyBox.hpp \
-	include/Engine/PlayerCam.hpp \
-	include/Engine/FrameBuffer.hpp \
-	include/Engine/GBuffer.hpp \
-	include/Engine/Engine.hpp \
-	include/Engine/Screen.hpp \
-	include/Engine/TextArray.hpp \
-	include/Engine/SpotLight.hpp \
-	include/Engine/FreeCam.hpp \
-	include/Engine/OctreeSystem.hpp \
-	include/Engine/ShaderProgram.hpp \
 	include/Engine/Object.hpp \
-	include/Engine/Material.hpp \
-	include/Engine/Audio.hpp \
-	include/Engine/Sound.hpp
+	include/Engine/Input/InputManager.hpp \
+	include/Engine/Audio/Sound.hpp \
+	include/Engine/Audio/AudioRenderer.hpp \
+	include/Engine/Graphics/DirLight.hpp \
+	include/Engine/Graphics/SkeletalMesh.hpp \
+	include/Engine/Graphics/Window.hpp \
+	include/Engine/Graphics/SpotLight.hpp \
+	include/Engine/Graphics/FreeCam.hpp \
+	include/Engine/Graphics/Material.hpp \
+	include/Engine/Graphics/GraphicsRenderer.hpp \
+	include/Engine/Graphics/Camera.hpp \
+	include/Engine/Graphics/MovableCamera.hpp \
+	include/Engine/Graphics/Skeleton.hpp \
+	include/Engine/Graphics/DepthMap.hpp \
+	include/Engine/Graphics/SkyBox.hpp \
+	include/Engine/Graphics/Mesh.hpp \
+	include/Engine/Graphics/Octree.hpp \
+	include/Engine/Graphics/StaticModel.hpp \
+	include/Engine/Graphics/PerspCamera.hpp \
+	include/Engine/Graphics/Screen.hpp \
+	include/Engine/Graphics/StaticMesh.hpp \
+	include/Engine/Graphics/ParticlesManager.hpp \
+	include/Engine/Graphics/TextArray.hpp \
+	include/Engine/Graphics/SkeletalModel.hpp \
+	include/Engine/Graphics/OrthoCamera.hpp \
+	include/Engine/Graphics/Texture2D.hpp \
+	include/Engine/Graphics/ShaderProgram.hpp \
+	include/Engine/Graphics/Model.hpp \
+	include/Engine/Graphics/Buffer.hpp \
+	include/Engine/Graphics/Light.hpp \
+	include/Engine/Graphics/PlayerCam.hpp \
+	include/Engine/Graphics/Texture.hpp \
+	include/Engine/Graphics/GBuffer.hpp \
+	include/Engine/Graphics/FrameBuffer.hpp \
+	include/Engine/Graphics/TextureCube.hpp \
+	include/Engine/Tools/StringManager.hpp
 
 __top_builddir__lib_libEngine_la_SOURCES = \
-	src/Buffer.cpp \
-	src/DepthMap.cpp \
-	src/Model.cpp \
-	src/Renderer.cpp \
-	src/Mesh.cpp \
-	src/DirLight.cpp \
-	src/GBuffer.cpp \
-	src/Object.cpp \
-	src/Screen.cpp \
-	src/FrameBuffer.cpp \
-	src/MovableCamera.cpp \
-	src/Camera.cpp \
-	src/PerspCamera.cpp \
-	src/OrthoCamera.cpp \
-	src/PlayerCam.cpp \
-	src/ShaderProgram.cpp \
-	src/OctreeSystem.cpp \
-	src/SkyBox.cpp \
-	src/Light.cpp \
-	src/Texture.cpp \
-	src/Texture2D.cpp \
-	src/TextureCube.cpp \
-	src/Input.cpp \
-	src/TextArray.cpp \
-	src/FreeCam.cpp \
-	src/SpotLight.cpp \
-	src/ParticlesManager.cpp \
-	src/Material.cpp \
-	src/Audio.cpp \
-	src/Sound.cpp
+	src/Input/InputManager.cpp \
+	src/Audio/Sound.cpp \
+	src/Audio/AudioRenderer.cpp \
+	src/Graphics/ShaderProgram.cpp \
+	src/Graphics/Octree.cpp \
+	src/Graphics/Screen.cpp \
+	src/Graphics/Material.cpp \
+	src/Graphics/Texture.cpp \
+	src/Graphics/PlayerCam.cpp \
+	src/Graphics/DepthMap.cpp \
+	src/Graphics/MovableCamera.cpp \
+	src/Graphics/TextArray.cpp \
+	src/Graphics/FreeCam.cpp \
+	src/Graphics/Camera.cpp \
+	src/Graphics/Texture2D.cpp \
+	src/Graphics/Window.cpp \
+	src/Graphics/OrthoCamera.cpp \
+	src/Graphics/PerspCamera.cpp \
+	src/Graphics/Skeleton.cpp \
+	src/Graphics/StaticModel.cpp \
+	src/Graphics/SkyBox.cpp
+	src/Graphics/GBuffer.cpp \
+	src/Graphics/SkeletalMesh.cpp \
+	src/Graphics/SpotLight.cpp \
+	src/Graphics/TextureCube.cpp \
+	src/Graphics/Buffer.cpp \
+	src/Graphics/Mesh.cpp \
+	src/Graphics/SkeletalModel.cpp \
+	src/Graphics/StaticMesh.cpp \
+	src/Graphics/DirLight.cpp \
+	src/Graphics/Model.cpp \
+	src/Graphics/GraphicsRenderer.cpp \
+	src/Graphics/Light.cpp \
+	src/Graphics/FrameBuffer.cpp \
+	src/Graphics/ParticlesManager.cpp \
+	src/Tools/StringManager.cpp \
+	src/Tools/private/AssimpTool.cpp \
+	src/Object.cpp
 
 clean-local:
-	rm -f include/Engine/*~ src/*~
+	rm -f *~
+	rm -f src/*~
+	rm -f include/Engine/*~
