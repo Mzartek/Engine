@@ -3,9 +3,11 @@ AM_LDFLAGS =
 
 lib_LTLIBRARIES = $(top_builddir)/lib/libEngine.la
 
-__top_builddir__lib_libEngineincludedir = $(includedir)/Engine-GL4-
+__top_builddir__lib_libEngine_la_LIBADD = $(ENGINE_LIBSFLAGS)
 
-__top_builddir__lib_libEngineinclude_HEADERS = \
+__top_builddir__lib_libEngine_la_includedir = $(includedir)/Engine-GL4-
+
+__top_builddir__lib_libEngine_la_include_HEADERS = \
 	include/Engine/Object.hpp \
 	include/Engine/Input/InputManager.hpp \
 	include/Engine/Audio/Sound.hpp \
@@ -45,7 +47,6 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/Tools/StringManager.hpp
 
 __top_builddir__lib_libEngine_la_SOURCES = \
-	$(__top_builddir__lib_libEngineinclude_HEADERS) \
 	src/Input/InputManager.cpp \
 	src/Audio/Sound.cpp \
 	src/Audio/AudioRenderer.cpp \
@@ -66,7 +67,7 @@ __top_builddir__lib_libEngine_la_SOURCES = \
 	src/Graphics/PerspCamera.cpp \
 	src/Graphics/Skeleton.cpp \
 	src/Graphics/StaticModel.cpp \
-	src/Graphics/SkyBox.cpp
+	src/Graphics/SkyBox.cpp \
 	src/Graphics/GBuffer.cpp \
 	src/Graphics/SkeletalMesh.cpp \
 	src/Graphics/SpotLight.cpp \
