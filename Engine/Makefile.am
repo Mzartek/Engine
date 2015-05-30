@@ -3,15 +3,22 @@ AM_LDFLAGS =
 
 lib_LTLIBRARIES = $(top_builddir)/lib/libEngine.la
 
+__top_builddir__lib_libEngine_la_LDFLAGS = \
+	-version-info $(ENGINE_MAJOR_VERSION):$(ENGINE_MINOR_VERSION):$(ENGINE_MICRO_VERSION)
+
 __top_builddir__lib_libEngine_la_LIBADD = $(ENGINE_LIBSFLAGS)
 
-__top_builddir__lib_libEngine_la_includedir = $(includedir)/Engine-GL4-
+__top_builddir__lib_libEngine_la_audiodir = $(includedir)/Engine/Audio
+__top_builddir__lib_libEngine_la_graphicsdir = $(includedir)/Engine/Graphics
+__top_builddir__lib_libEngine_la_inputdir = $(includedir)/Engine/Input
+__top_builddir__lib_libEngine_la_toolsdir = $(includedir)/Engine/Tools
+__top_builddir__lib_libEngine_la_rootdir = $(includedir)/Engine/
 
-__top_builddir__lib_libEngine_la_include_HEADERS = \
-	include/Engine/Object.hpp \
-	include/Engine/Input/InputManager.hpp \
+__top_builddir__lib_libEngine_la_audio_HEADERS = \
 	include/Engine/Audio/Sound.hpp \
-	include/Engine/Audio/AudioRenderer.hpp \
+	include/Engine/Audio/AudioRenderer.hpp
+
+__top_builddir__lib_libEngine_la_graphics_HEADERS = \
 	include/Engine/Graphics/DirLight.hpp \
 	include/Engine/Graphics/SkeletalMesh.hpp \
 	include/Engine/Graphics/Window.hpp \
@@ -43,8 +50,16 @@ __top_builddir__lib_libEngine_la_include_HEADERS = \
 	include/Engine/Graphics/Texture.hpp \
 	include/Engine/Graphics/GBuffer.hpp \
 	include/Engine/Graphics/FrameBuffer.hpp \
-	include/Engine/Graphics/TextureCube.hpp \
+	include/Engine/Graphics/TextureCube.hpp
+
+__top_builddir__lib_libEngine_la_input_HEADERS = \
+	include/Engine/Input/InputManager.hpp
+
+__top_builddir__lib_libEngine_la_tools_HEADERS = \
 	include/Engine/Tools/StringManager.hpp
+
+__top_builddir__lib_libEngine_la_root_HEADERS = \
+	include/Engine/Object.hpp
 
 __top_builddir__lib_libEngine_la_SOURCES = \
 	src/Input/InputManager.cpp \

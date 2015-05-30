@@ -1,26 +1,11 @@
 AM_CPPFLAGS = -I$(top_builddir)/Engine/include
 AM_LDFLAGS =
 
-bin_PROGRAMS = $(top_builddir)/bin/Demo
+noinst_PROGRAMS = $(top_builddir)/bin/Demo
 
 __top_builddir__bin_Demo_LDADD = $(top_builddir)/lib/libEngine.la
 
 __top_builddir__bin_Demo_SOURCES = \
-	src/TorchLight.hpp \
-	src/SmokeEffect.hpp \
-	src/Helicopter.hpp \
-	src/Demo.hpp \
-	src/ThunderLight.hpp \
-	src/Ground.hpp \
-	src/RainEffect.hpp \
-	src/Tree.hpp \
-	src/ScreenDisplay.hpp \
-	src/MoonLight.hpp \
-	src/AnimModel.hpp \
-	src/NightBox.hpp \
-	src/ExplosionEffect.hpp \
-	src/TextDisplay.hpp \
-	\
 	src/Tree.cpp \
 	src/RainEffect.cpp \
 	src/Ground.cpp \

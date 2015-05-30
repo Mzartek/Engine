@@ -1,4 +1,10 @@
-AC_INIT(Engine-GL4-, 1.0)
+m4_define([engine_major_version], [1])
+m4_define([engine_minor_version], [0])
+m4_define([engine_micro_version], [0])
+m4_define([engine_version],
+          [engine_major_version.engine_minor_version.engine_micro_version])
+	  
+AC_INIT(Engine-GL4-, engine_version)
 AM_INIT_AUTOMAKE(subdir-objects -Wall)
 
 AC_LANG(C++)
@@ -11,11 +17,20 @@ AM_PROG_AR
 
 LT_INIT
 
-CPPFLAGS="-std=c++11 -Wall"
+CXXFLAGS="-std=c++11 -Wall"
 LDFLAGS=
 
-AC_SUBST(ENGINE_LIBSFLAGS)
 ENGINE_LIBSFLAGS=
+ENGINE_MAJOR_VERSION=engine_major_version
+ENGINE_MINOR_VERSION=engine_minor_version
+ENGINE_MICRO_VERSION=engine_micro_version
+ENGINE_VERSION=engine_version
+
+AC_SUBST(ENGINE_LIBSFLAGS)
+AC_SUBST(ENGINE_MAJOR_VERSION)
+AC_SUBST(ENGINE_MINOR_VERSION)
+AC_SUBST(ENGINE_MICRO_VERSION)
+AC_SUBST(ENGINE_VERSION)
 
 AC_CANONICAL_HOST
 case $host_os in

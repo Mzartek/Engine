@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 PROJECT(Engine-GL4-)
 
+set(ENGINE_MAJOR_VERSION 1)
+set(ENGINE_MINOR_VERSION 0)
+set(ENGINE_MICRO_VERSION 0)
+set(ENGINE_VERSION
+  ${ENGINE_MAJOR_VERSION}.${ENGINE_MINOR_VERSION}.${ENGINE_MICRO_VERSION})
+
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
 endif()
@@ -54,8 +60,8 @@ file(GLOB_RECURSE engine_source_files Engine/src/*.hpp Engine/src/*.cpp)
 add_library(Engine SHARED ${engine_header_files} ${engine_source_files})
 set_target_properties(Engine
   PROPERTIES
-  VERSION 1.0.0
-  SOVERSION 1
+  VERSION ${ENGINE_VERSION}
+  SOVERSION ${ENGINE_MAJOR_VERSION}
   )
 target_link_libraries(Engine
   ${OPENGL_LIBRARIES}
