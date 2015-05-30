@@ -1,9 +1,10 @@
 AM_CPPFLAGS = -Iinclude
-AM_LDFLAGS = $(LIBFLAGS)
+AM_LDFLAGS =
 
 lib_LTLIBRARIES = $(top_builddir)/lib/libEngine.la
 
 __top_builddir__lib_libEngineincludedir = $(includedir)/Engine-GL4-
+
 __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/Object.hpp \
 	include/Engine/Input/InputManager.hpp \
@@ -44,6 +45,7 @@ __top_builddir__lib_libEngineinclude_HEADERS = \
 	include/Engine/Tools/StringManager.hpp
 
 __top_builddir__lib_libEngine_la_SOURCES = \
+	$(__top_builddir__lib_libEngineinclude_HEADERS) \
 	src/Input/InputManager.cpp \
 	src/Audio/Sound.cpp \
 	src/Audio/AudioRenderer.cpp \

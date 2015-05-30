@@ -78,4 +78,4 @@ install(TARGETS Engine
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
-install(FILES ${engine_header_files} DESTINATION include/Engine-GL4-)
+install(DIRECTORY ${ENGINE_INCLUDE_DIRS}/Engine DESTINATION include)

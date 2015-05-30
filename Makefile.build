@@ -9,4 +9,4 @@ launch:
 
 clean:
 	rm -rf Makefile Demo/Makefile Engine/Makefile
-	rm -rf aclocal.m4 configure autom4te.cache compile config.guess config.sub depcomp install-sh ltmain.sh missing ar-lib config.status libtool Makefile.in Demo/Makefile.in Engine/Makefile.in
+	rm -rf aclocal.m4 configure autom4te.cache compile config.log config.guess config.sub depcomp install-sh ltmain.sh missing ar-lib config.status libtool INSTALL COPYING Makefile.in Demo/Makefile.in Engine/Makefile.in

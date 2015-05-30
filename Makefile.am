@@ -1,4 +1,4 @@
-SUBDIRS = Engine Demo
+SUBDIRS = Engine
 dist_doc_DATA = README
 
 clean-local:
