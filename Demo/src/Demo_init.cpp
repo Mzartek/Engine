@@ -24,6 +24,7 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	explosionEffect = std::shared_ptr<ExplosionEffect>(new ExplosionEffect);
 	textDisplay = std::shared_ptr<TextDisplay>(new TextDisplay);
 	screenDisplay = std::shared_ptr<ScreenDisplay>(new ScreenDisplay);
+	music = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 
 	// GBuffer config
 	gBuffer->config(window->getWidth(), window->getHeight());
@@ -60,17 +61,17 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	torchLight->getLight()->setMaxDistance(250);
 
 	// Text config
-	textDisplay->getText()->writeScreen(0 + (window->getWidth() - (window->getWidth() / 10)), 0,
-		window->getWidth() / 10, window->getHeight() / 10,
-		window, "test");
-
-	rainEffect->getSound()->play();
-	smokeEffect->getSound()->play();
+	textDisplay->getText()->writeScreen(
+		(window->getWidth() / 2) - ((window->getWidth() / 2) / 2),
+		(window->getHeight() / 2) - ((window->getHeight() / 10) / 2),
+		window->getWidth() / 2, 
+		window->getHeight() / 10,
+		window, "Thank You!");
 
 	_step = 0;
 	_flash = 0;
 	_generateRandomFlash = false;
-	_screenColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	_screenColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	moon_light = moonLight->getLight();
 	thunder_light = thunderLight->getLight();
@@ -83,6 +84,13 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	helicoptercorps_model = helicopter->getCorpsModel();
 	helicoptergrotor_model = helicopter->getRotorModel();
 	tree_model = tree->getModel();
+
+	music->loadFromFile("../share/Demo/resources/sound/music_stereo.wav", 44100, AL_FORMAT_STEREO16);
+
+	music->play();
+	rainEffect->getSound()->play();
+	smokeEffect->getSound()->play();
+	
 }
 
 Demo::~Demo(void)

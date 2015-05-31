@@ -11,7 +11,7 @@ TextDisplay::TextDisplay(void)
 
 	_text = std::shared_ptr<Graphics::TextArray>(new Graphics::TextArray(_textProgram));
 
-	_text->setFont("../share/Demo/resources/font/SIXTY.TTF", 100, 255, 255, 0);
+	_text->setFont("../share/Demo/resources/font/SIXTY.TTF", 200, 255, 255, 255);
 }
 
 TextDisplay::~TextDisplay(void)

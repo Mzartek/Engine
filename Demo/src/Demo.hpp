@@ -53,6 +53,7 @@ private:
 	std::shared_ptr<ExplosionEffect> explosionEffect;
 	std::shared_ptr<TextDisplay> textDisplay;
 	std::shared_ptr<ScreenDisplay> screenDisplay;
+	std::shared_ptr<Audio::Sound> music;
 
 	// Easy access
 	std::shared_ptr<Graphics::DirLight> moon_light;

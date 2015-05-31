@@ -28,7 +28,7 @@ ExplosionEffect::ExplosionEffect(void)
 	_sound->setLoop(AL_FALSE);
 	_sound->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 	_sound->setDistances(1.0f, 500.0f);
-	_sound->loadFromFile("../share/Demo/resources/sound/explosion.wav", 44100, AL_FORMAT_MONO16);
+	_sound->loadFromFile("../share/Demo/resources/sound/explosion_mono.wav", 44100, AL_FORMAT_MONO16);
 }
 
 ExplosionEffect::~ExplosionEffect(void)

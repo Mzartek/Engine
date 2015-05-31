@@ -42,26 +42,21 @@ void Demo::display(GLfloat state)
 	rain_particles->display(gBuffer, camera);
 	smoke_particles->display(gBuffer, camera);
 
-	switch (_step)
-	{
-	case 2:
-		explosion_particles->display(gBuffer, camera);
-		break;
-	}
+	if (_step == 2) explosion_particles->display(gBuffer, camera);
 
 	screen_display->display(window, gBuffer, _screenColor);
 
-	text_display->display(window);
+	if (_step >= 4) text_display->display(window);
 }
 
 void Demo::state(long long time)
 {
-	static GLfloat rotation = 0;
+	static GLfloat rotation = glm::pi<GLfloat>() / 1.25f;
 	static glm::mat4 movement;
 	static glm::vec3 tmp[2];
-	static GLfloat velocity;
+	static GLfloat velocity, music_volume = 1.0f;
 	static long long saveTime = 0;
-	static long long nextTime = saveTime + 55000;
+	static long long nextTime = saveTime + 87000;
 
 	const glm::vec3 &camPosition = camera->getCameraPosition();
 
@@ -80,6 +75,8 @@ void Demo::state(long long time)
 		camera->setPositionAndTarget(glm::vec3(movement[3]), tmp[0]);
 
 		rainEffect->getSound()->setGain((GLfloat)time / nextTime / 10);
+
+		if (_screenColor.x < 1.0) _screenColor += glm::vec4(0.0025f, 0.0025f, 0.0025f, 0);
 
 		if (time > nextTime)
 		{
@@ -162,7 +159,7 @@ void Demo::state(long long time)
 
 			_step++;
 			saveTime = time;
-			nextTime = saveTime + 20000;
+			nextTime = saveTime + 25000;
 		}
 		break;
 
@@ -173,6 +170,11 @@ void Demo::state(long long time)
 		camera->setPositionAndTarget(tmp[1], tmp[0]);
 
 		if (_screenColor.x > 0) _screenColor += glm::vec4(-0.0025f, -0.0025f, -0.0025f, 0);
+		if (music_volume > 0)
+		{
+			music->setGain(music_volume);
+			music_volume -= 0.001f;
+		}
 
 		if (time > nextTime) window->stopLoop();
 		break;

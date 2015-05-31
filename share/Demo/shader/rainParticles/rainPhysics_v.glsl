@@ -44,10 +44,10 @@ void main(void)
 	{
 		vec3 nextPosition = position + vec3(normalize(direction) * velocity);
 		
-		if (check_position (depthMatrix * vec4(nextPosition, 1.0)) < 1.0f) 
+		/*if (check_position (depthMatrix * vec4(nextPosition, 1.0)) < 1.0f) 
 			VertOut.position = position;
-		else 
-			VertOut.position = nextPosition;
+		else*/ 
+		VertOut.position = nextPosition;
 		
 		VertOut.direction = direction;
 		VertOut.velocity = velocity;
