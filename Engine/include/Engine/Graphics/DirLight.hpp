@@ -3,20 +3,24 @@
 
 #include "Light.hpp"
 
-#define CSM_NUM 3
-
 namespace Engine
 {
 	namespace Graphics
 	{
 		class DLLAPI DirLight : public Light
 		{
+		public:
+			enum 
+			{
+				CASCADED_LEVEL = 3
+			};
+
 		private:
 			struct
 			{
 				glm::vec3 ALIGN(16) color;
 				glm::vec3 ALIGN(16) direction;
-				glm::mat4 ALIGN(16) shadowMatrix[CSM_NUM];
+				glm::mat4 ALIGN(16) shadowMatrix[CASCADED_LEVEL];
 			} _lightInfo;
 
 			std::vector<glm::mat4> _projectionMatrix;

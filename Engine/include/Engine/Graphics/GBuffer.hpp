@@ -3,21 +3,25 @@
 
 #include "FrameBuffer.hpp"
 
-#define GBUF_NUM_TEX 5
-#define GBUF_NORMAL 0
-#define GBUF_MATERIAL 1
-#define GBUF_LIGHT 2
-#define GBUF_BACKGROUND 3
-#define GBUF_DEPTH_STENCIL 4
-
 namespace Engine
 {
 	namespace Graphics
 	{
 		class DLLAPI GBuffer : public FrameBuffer
 		{
+		public:
+			enum 
+			{
+				NORMAL_ID = 0,
+				MATERIAL_ID,
+				LIGHT_ID,
+				BACKGROUND_ID,
+				DEPTHSTENCIL_ID,
+				NUM_TEX
+			};
+
 		private:
-			GLuint _idTexture[GBUF_NUM_TEX];
+			GLuint _idTexture[NUM_TEX];
 
 		public:
 			GBuffer(void);

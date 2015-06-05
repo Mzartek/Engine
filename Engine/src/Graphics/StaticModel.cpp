@@ -165,7 +165,7 @@ void Engine::Graphics::StaticModel::displayDepthMap(const std::shared_ptr<DepthM
 
 void Engine::Graphics::StaticModel::displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light)
 {
-	if (depthMaps.size() != CSM_NUM)
+	if (depthMaps.size() != DirLight::CASCADED_LEVEL)
 	{
 		std::cerr << "Wrong vector of depthMap size" << std::endl;
 		abort();
@@ -178,7 +178,7 @@ void Engine::Graphics::StaticModel::displayDepthMaps(const std::vector<std::shar
 	_matrix.model = _modelMatrix;
 	_matrix.normal = _normalMatrix;
 
-	for (GLuint i = 0; i < CSM_NUM; i++)
+	for (GLuint i = 0; i < DirLight::CASCADED_LEVEL; i++)
 	{
 		depthMaps[i]->setState();
 

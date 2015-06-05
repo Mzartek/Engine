@@ -152,7 +152,7 @@ void Engine::Graphics::ParticlesManager::display(const std::shared_ptr<GBuffer> 
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->getId());
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::DEPTHSTENCIL_ID));
 
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer[0]->getId());

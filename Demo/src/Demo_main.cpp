@@ -16,7 +16,7 @@ void Demo::display(GLfloat state)
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->display(gBuffer, camera);
 
-	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps[i]->clear();
+	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->clear();
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMaps(depthMaps, moon_light);
 	moon_light->display(gBuffer, camera, depthMaps);

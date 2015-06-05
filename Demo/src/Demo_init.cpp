@@ -6,7 +6,7 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	Graphics::GraphicsRenderer::Instance().setGLContext(window);
 
 	gBuffer = std::shared_ptr<Graphics::GBuffer>(new Graphics::GBuffer);
-	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
+	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
 	camera = std::shared_ptr<Graphics::PerspCamera>(new Graphics::PerspCamera);
 
 	octree = std::shared_ptr<Graphics::Octree>(new Graphics::Octree(4, glm::vec3(0, 0, 0), 1000));
@@ -28,7 +28,7 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 
 	// GBuffer config
 	gBuffer->config(window->getWidth(), window->getHeight());
-	for (GLuint i = 0; i < CSM_NUM; i++) depthMaps[i]->config(2048, 2048);
+	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->config(2048, 2048);
 
 	// Camera config
 	camera->setPositionAndTarget(glm::vec3(30, 5, 0), glm::vec3(50, 10, 50));

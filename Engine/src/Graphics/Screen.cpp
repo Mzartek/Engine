@@ -41,10 +41,10 @@ void Engine::Graphics::Screen::background(const std::shared_ptr<GBuffer> &gbuf) 
 	glUseProgram(_backgroundProgram->getId());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::MATERIAL_ID));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_LIGHT));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::LIGHT_ID));
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -60,7 +60,7 @@ void Engine::Graphics::Screen::display(const std::shared_ptr<Window> &window, co
 	glUseProgram(_directProgram->getId());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_BACKGROUND));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::BACKGROUND_ID));
 
 	_colorBuffer->updateStoreMap(glm::value_ptr(color));
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer->getId());

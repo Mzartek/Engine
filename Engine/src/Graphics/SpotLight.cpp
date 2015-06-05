@@ -106,13 +106,13 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::NORMAL_ID));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::MATERIAL_ID));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::DEPTHSTENCIL_ID));
 
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
 	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
@@ -138,13 +138,13 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 
 	// GBuffer
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_NORMAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::NORMAL_ID));
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_MATERIAL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::MATERIAL_ID));
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBUF_DEPTH_STENCIL));
+	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::DEPTHSTENCIL_ID));
 
 	// ShadowMap
 	glActiveTexture(GL_TEXTURE3);

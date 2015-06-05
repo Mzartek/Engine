@@ -7,51 +7,51 @@ Engine::Graphics::GBuffer::GBuffer(void)
 
 Engine::Graphics::GBuffer::~GBuffer(void)
 {
-	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
+	if (glIsTexture(_idTexture[0])) glDeleteTextures(NUM_TEX, _idTexture);
 }
 
 void Engine::Graphics::GBuffer::config(GLuint width, GLuint height)
 {
 	FrameBuffer::config(width, height);
 
-	if (glIsTexture(_idTexture[0])) glDeleteTextures(GBUF_NUM_TEX, _idTexture);
-	glGenTextures(GBUF_NUM_TEX, _idTexture);
+	if (glIsTexture(_idTexture[0])) glDeleteTextures(NUM_TEX, _idTexture);
+	glGenTextures(NUM_TEX, _idTexture);
 
 	// Frame Buffer Object
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
 	// Normal Texture
-	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_NORMAL]);
+	glBindTexture(GL_TEXTURE_2D, _idTexture[NORMAL_ID]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _idTexture[GBUF_NORMAL], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _idTexture[NORMAL_ID], 0);
 
 	// Material Texture
-	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL]);
+	glBindTexture(GL_TEXTURE_2D, _idTexture[MATERIAL_ID]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32UI, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _idTexture[GBUF_MATERIAL], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _idTexture[MATERIAL_ID], 0);
 
 	// Light Texture
-	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_LIGHT]);
+	glBindTexture(GL_TEXTURE_2D, _idTexture[LIGHT_ID]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, _idTexture[GBUF_LIGHT], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, _idTexture[LIGHT_ID], 0);
 
 	// Background Texture
-	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_BACKGROUND]);
+	glBindTexture(GL_TEXTURE_2D, _idTexture[BACKGROUND_ID]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, _width, _height);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, _idTexture[GBUF_BACKGROUND], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, _idTexture[BACKGROUND_ID], 0);
 
 	// Depth Stencil Texture
-	glBindTexture(GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL]);
+	glBindTexture(GL_TEXTURE_2D, _idTexture[DEPTHSTENCIL_ID]);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, _width, _height);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _idTexture[GBUF_DEPTH_STENCIL], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _idTexture[DEPTHSTENCIL_ID], 0);
 
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
