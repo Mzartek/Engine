@@ -14,7 +14,6 @@ layout (triangle_strip, max_vertices = 4) out;
 in VertexData
 {
      vec4 particle;
-     vec4 direction;
      float life;
 } GeomIn[];
 
@@ -29,10 +28,7 @@ out VertexData
 void main(void)
 {
      float dim = 1.0 + (GeomIn[0].life / 10);
-     float rot;
-
-     if (GeomIn[0].direction.x > 0.0) rot = (GeomIn[0].life * 2 * M_PI / 100) * 4;
-     else rot = -(GeomIn[0].life * 2 * M_PI / 100) * 4;
+     float rot = (GeomIn[0].life * 2 * M_PI / 100) * 4;
 
      vec4 particle = GeomIn[0].particle;
 

@@ -27,7 +27,7 @@ out VertexData
 
 void main(void)
 {
-     float dim = 1.0 + (GeomIn[0].life / 2.5);
+     float dim = 4.0;
      float rot = (GeomIn[0].life * 2 * M_PI / 100) * 4;
 
      vec4 particle = GeomIn[0].particle;
@@ -41,12 +41,12 @@ void main(void)
 
      finalMatrix = viewMatrix * finalMatrix;
 	 
-     finalMatrix[0][0] = cos(rot);
-     finalMatrix[0][1] = sin(rot);
+     finalMatrix[0][0] = 1;
+     finalMatrix[0][1] = 0;
      finalMatrix[0][2] = 0;
 
-     finalMatrix[1][0] = -sin(rot);
-     finalMatrix[1][1] = cos(rot);
+     finalMatrix[1][0] = 0;
+     finalMatrix[1][1] = 1;
      finalMatrix[1][2] = 0;
 
      finalMatrix[2][0] = 0;

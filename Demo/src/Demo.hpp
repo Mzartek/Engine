@@ -22,6 +22,7 @@
 #include "RainEffect.hpp"
 #include "SmokeEffect.hpp"
 #include "ExplosionEffect.hpp"
+#include "FirefliesEffect.hpp"
 #include "TextDisplay.hpp"
 #include "ScreenDisplay.hpp"
 
@@ -51,6 +52,7 @@ private:
 	std::shared_ptr<RainEffect> rainEffect;
 	std::shared_ptr<SmokeEffect> smokeEffect;
 	std::shared_ptr<ExplosionEffect> explosionEffect;
+	std::shared_ptr<FirefliesEffect> firefliesEffect;
 	std::shared_ptr<TextDisplay> textDisplay;
 	std::shared_ptr<ScreenDisplay> screenDisplay;
 	std::shared_ptr<Audio::Sound> music;
@@ -62,6 +64,7 @@ private:
 	std::shared_ptr<Graphics::ParticlesManager> rain_particles;
 	std::shared_ptr<Graphics::ParticlesManager> smoke_particles;
 	std::shared_ptr<Graphics::ParticlesManager> explosion_particles;
+	std::shared_ptr<Graphics::ParticlesManager> fireflies_particles;
 	std::shared_ptr<Graphics::TextArray> text_display;
 	std::shared_ptr<Graphics::Screen> screen_display;
 	std::shared_ptr<Graphics::StaticModel> helicoptercorps_model;

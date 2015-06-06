@@ -22,6 +22,7 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	rainEffect = std::shared_ptr<RainEffect>(new RainEffect);
 	smokeEffect = std::shared_ptr<SmokeEffect>(new SmokeEffect);
 	explosionEffect = std::shared_ptr<ExplosionEffect>(new ExplosionEffect);
+	firefliesEffect = std::shared_ptr<FirefliesEffect>(new FirefliesEffect);
 	textDisplay = std::shared_ptr<TextDisplay>(new TextDisplay);
 	screenDisplay = std::shared_ptr<ScreenDisplay>(new ScreenDisplay);
 	music = std::shared_ptr<Audio::Sound>(new Audio::Sound);
@@ -47,6 +48,7 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 
 	rainEffect->init(camera->getCameraPosition(), 10000);
 	smokeEffect->init(helicopter->getCorpsModel()->getPosition(), 1000);
+	firefliesEffect->init(glm::vec3(0.0f, 0.0f, 0.0f), 25);
 
 	octree->addModel(ground->getModel().get(), 1000);
 	octree->addModel(tree->getModel().get(), 40);
@@ -78,6 +80,7 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	torch_light = torchLight->getLight();
 	rain_particles = rainEffect->getParticlesManager();
 	smoke_particles = smokeEffect->getParticlesManager();
+	fireflies_particles = firefliesEffect->getParticlesManager();
 	explosion_particles = explosionEffect->getParticlesManager();
 	text_display = textDisplay->getText();
 	screen_display = screenDisplay->getScreen();

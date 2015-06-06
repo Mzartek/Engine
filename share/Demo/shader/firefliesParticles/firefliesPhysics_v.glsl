@@ -19,24 +19,23 @@ out VertexData
 } VertOut;
 
 float rand(vec2 co){
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 void main(void)
 {
 	if(life < 100)
-	{	
+	{
 		VertOut.position = position + vec3(normalize(direction) * velocity);
 		VertOut.direction = direction;
 		VertOut.velocity = velocity;
-		if(life < 50) VertOut.life = life + 2;
-		else VertOut.life = life + 0.25;
+		VertOut.life = life + 0.25;
 	}
 	else
 	{
-		VertOut.position = position;
-		VertOut.direction = direction;
+		VertOut.position = origin;
+		VertOut.direction = vec3(0.0, -1.0, 0.0);
 		VertOut.velocity = velocity;
-		VertOut.life = life;
+		VertOut.life = 0;
 	}
 }
