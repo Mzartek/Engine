@@ -6,7 +6,6 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	Graphics::GraphicsRenderer::Instance().setGLContext(window);
 
 	gBuffer = std::shared_ptr<Graphics::GBuffer>(new Graphics::GBuffer);
-	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
 	camera = std::shared_ptr<Graphics::PerspCamera>(new Graphics::PerspCamera);
 
 	octree = std::shared_ptr<Graphics::Octree>(new Graphics::Octree(4, glm::vec3(0, 0, 0), 1000));
@@ -22,14 +21,17 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	rainEffect = std::shared_ptr<RainEffect>(new RainEffect);
 	smokeEffect = std::shared_ptr<SmokeEffect>(new SmokeEffect);
 	explosionEffect = std::shared_ptr<ExplosionEffect>(new ExplosionEffect);
-	firefliesEffect = std::shared_ptr<FirefliesEffect>(new FirefliesEffect);
 	textDisplay = std::shared_ptr<TextDisplay>(new TextDisplay);
 	screenDisplay = std::shared_ptr<ScreenDisplay>(new ScreenDisplay);
 	music = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 
+	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
+	for (GLuint i = 0; i < 8; i++)
+	{
+	}
+
 	// GBuffer config
 	gBuffer->config(window->getWidth(), window->getHeight());
-	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->config(2048, 2048);
 
 	// Camera config
 	camera->setPositionAndTarget(glm::vec3(30, 5, 0), glm::vec3(50, 10, 50));
@@ -48,7 +50,6 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 
 	rainEffect->init(camera->getCameraPosition(), 10000);
 	smokeEffect->init(helicopter->getCorpsModel()->getPosition(), 1000);
-	firefliesEffect->init(glm::vec3(0.0f, 0.0f, 0.0f), 25);
 
 	octree->addModel(ground->getModel().get(), 1000);
 	octree->addModel(tree->getModel().get(), 40);
@@ -73,6 +74,7 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	_step = 0;
 	_flash = 0;
 	_generateRandomFlash = false;
+	_displayCredits = false;
 	_screenColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	moon_light = moonLight->getLight();
@@ -80,7 +82,6 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	torch_light = torchLight->getLight();
 	rain_particles = rainEffect->getParticlesManager();
 	smoke_particles = smokeEffect->getParticlesManager();
-	fireflies_particles = firefliesEffect->getParticlesManager();
 	explosion_particles = explosionEffect->getParticlesManager();
 	text_display = textDisplay->getText();
 	screen_display = screenDisplay->getScreen();
@@ -88,12 +89,23 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 	helicoptergrotor_model = helicopter->getRotorModel();
 	tree_model = tree->getModel();
 
+	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->config(2048, 2048);
+	for (GLuint i = 0; i < 8; i++)
+	{
+			std::shared_ptr<FirefliesEffect> effect = std::shared_ptr<FirefliesEffect>(new FirefliesEffect);
+			effect->init(glm::vec3(0.0f, 500.0f, 0.0f), 25);
+
+			firefliesEffects.push_back(effect);
+			fireflies_particles.push_back(effect->getParticlesManager());
+
+			_displayFireflies[i] = false;
+	}
+
 	music->loadFromFile("../share/Demo/resources/sound/music_stereo.wav", 44100, AL_FORMAT_STEREO16);
 
 	music->play();
 	rainEffect->getSound()->play();
-	smokeEffect->getSound()->play();
-	
+	smokeEffect->getSound()->play();	
 }
 
 Demo::~Demo(void)

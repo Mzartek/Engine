@@ -20,7 +20,7 @@ FirefliesEffect::FirefliesEffect(void)
 		"../share/Demo/shader/firefliesParticles/firefliesFrag.glsl"));
 
 	_manager = std::shared_ptr<Graphics::ParticlesManager>(new Graphics::ParticlesManager(_physicsProgram, _displayProgram));
-	_manager->loadTexture("../share/Demo/resources/textures/firework.png");
+	_manager->loadTexture("../share/Demo/resources/textures/firework_yellow.png");
 }
 
 FirefliesEffect::~FirefliesEffect(void)

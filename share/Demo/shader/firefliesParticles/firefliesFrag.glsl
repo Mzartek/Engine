@@ -13,7 +13,7 @@ layout(location = 0) out vec4 outColor;
 
 void main(void)
 {
-    vec4 color = texture(colorTexture, FragIn.texCoord);
+  vec4 color = texture(colorTexture, FragIn.texCoord);
 
 	float depth = texelFetch(depthTexture, ivec2(gl_FragCoord.xy), 0).x;
 

@@ -22,7 +22,8 @@ __top_builddir__bin_Demo_SOURCES = \
 	src/Demo_input.cpp \
 	src/Helicopter.cpp \
 	src/NightBox.cpp \
-	src/SmokeEffect.cpp
+	src/SmokeEffect.cpp \
+	src/FirefliesEffect.cpp
 
 clean-local:
 	rm -f *~

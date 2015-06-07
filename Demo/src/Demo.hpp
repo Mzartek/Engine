@@ -35,11 +35,9 @@ private:
 	std::shared_ptr<Graphics::Window> window;
 
 	std::shared_ptr<Graphics::GBuffer> gBuffer;
-	std::vector<std::shared_ptr<Graphics::DepthMap>> depthMaps;
 	std::shared_ptr<Graphics::PerspCamera> camera;
 
 	std::shared_ptr<Graphics::Octree> octree;
-	std::set<Graphics::Model *> object_display;
 
 	std::shared_ptr<NightBox> nightBox;
 	std::shared_ptr<Tree> tree;
@@ -52,7 +50,6 @@ private:
 	std::shared_ptr<RainEffect> rainEffect;
 	std::shared_ptr<SmokeEffect> smokeEffect;
 	std::shared_ptr<ExplosionEffect> explosionEffect;
-	std::shared_ptr<FirefliesEffect> firefliesEffect;
 	std::shared_ptr<TextDisplay> textDisplay;
 	std::shared_ptr<ScreenDisplay> screenDisplay;
 	std::shared_ptr<Audio::Sound> music;
@@ -64,17 +61,24 @@ private:
 	std::shared_ptr<Graphics::ParticlesManager> rain_particles;
 	std::shared_ptr<Graphics::ParticlesManager> smoke_particles;
 	std::shared_ptr<Graphics::ParticlesManager> explosion_particles;
-	std::shared_ptr<Graphics::ParticlesManager> fireflies_particles;
 	std::shared_ptr<Graphics::TextArray> text_display;
 	std::shared_ptr<Graphics::Screen> screen_display;
 	std::shared_ptr<Graphics::StaticModel> helicoptercorps_model;
 	std::shared_ptr<Graphics::StaticModel> helicoptergrotor_model;
 	std::shared_ptr<Graphics::StaticModel> tree_model;
+	
+	std::vector<std::shared_ptr<Graphics::DepthMap>> depthMaps;
+	std::vector<std::shared_ptr<FirefliesEffect>> firefliesEffects;
+	std::vector<std::shared_ptr<Graphics::ParticlesManager>> fireflies_particles;
+
+	std::set<Graphics::Model *> object_display;
 
 	// For the demo
 	GLuint _step;
 	GLuint _flash;
 	bool _generateRandomFlash;
+	bool _displayFireflies[8];
+	bool _displayCredits;
 	glm::vec4 _screenColor;
 
 	void manage_input(void);
