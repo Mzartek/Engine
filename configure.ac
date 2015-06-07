@@ -36,7 +36,7 @@ AC_CANONICAL_HOST
 case $host_os in
     linux*)
         # Linux system
-	AC_CHECK_LIB(GL, main, ENGINE_LIBSFLAGS="-lGL", AC_MSG_ERROR(OpenGL lib not found))
+	AC_CHECK_LIB(GL, main, ENGINE_LIBSFLAGS="$ENGINE_LIBSFLAGS -lGL", AC_MSG_ERROR(OpenGL lib not found))
 	AC_CHECK_HEADER(GL/gl.h, [], AC_MSG_ERROR(OpenGL headers not found))
 
 	AC_CHECK_LIB(openal, main, ENGINE_LIBSFLAGS="$ENGINE_LIBSFLAGS -lopenal", AC_MSG_ERROR(OpenAL lib not found))
@@ -46,7 +46,7 @@ case $host_os in
         # MinGW32 system
 	AC_CHECK_LIB(mingw32, main, [], AC_MSG_ERROR(MinGW32 lib not found))
 
-	AC_CHECK_LIB(glew32, main, ENGINE_LIBSFLAGS="lglew32", AC_MSG_ERROR(GLEW lib not found))
+	AC_CHECK_LIB(glew32, main, ENGINE_LIBSFLAGS="$ENGINE_LIBSFLAGS -lglew32", AC_MSG_ERROR(GLEW lib not found))
 	AC_CHECK_HEADER(GL/glew.h, [], AC_MSG_ERROR(GLEW headers not found))
 
 	AC_CHECK_LIB(opengl32, main, ENGINE_LIBSFLAGS="$ENGINE_LIBSFLAGS -lopengl32", AC_MSG_ERROR(OpenGL lib not found))
