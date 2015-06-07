@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 	Audio::AudioRenderer::Instance();
 	Input::InputManager::Instance();
 
-	std::shared_ptr<Graphics::Window> window(new Graphics::Window("Demo OpenGL", 800, 600, GL_FALSE));
+	std::shared_ptr<Graphics::Window> window(new Graphics::Window("Demo OpenGL", 1280, 1024, GL_TRUE));
 	std::shared_ptr<Demo> demo(new Demo(window));
 
 	window->mainLoop(demo);

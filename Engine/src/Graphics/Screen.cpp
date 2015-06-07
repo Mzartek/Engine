@@ -8,8 +8,15 @@ Engine::Graphics::Screen::Screen(const std::shared_ptr<ShaderProgram> &backgroun
 
 	GLfloat vertex[] = {
 		-1, -1,
+		0, 0,
+
 		1, -1,
+		1, 0,
+
 		-1, 1,
+		0, 1,
+
+		1, 1,
 		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
@@ -25,7 +32,9 @@ Engine::Graphics::Screen::Screen(const std::shared_ptr<ShaderProgram> &backgroun
 	glBindVertexArray(_idVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(0));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(2 * sizeof(GLfloat)));
 	glBindVertexArray(0);
 }
 
