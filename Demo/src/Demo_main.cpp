@@ -120,7 +120,7 @@ void Demo::state(long long time)
 
 				_displayFireflies[2] = true;
 		}
-		if (time > 46000)
+		if (time > 45000)
 		{
 				movFireflies[3] = glm::translate(tmp[1]);
 				movFireflies[3] *= glm::rotate(rotFireflies[3], glm::vec3(0, 1, 0));
@@ -132,7 +132,7 @@ void Demo::state(long long time)
 
 				_displayFireflies[3] = true;
 		}
-		if (time > 56000)
+		if (time > 50000)
 		{
 				movFireflies[4] = glm::translate(tmp[1]);
 				movFireflies[4] *= glm::translate(glm::vec3(15, -5, 15));
@@ -142,7 +142,7 @@ void Demo::state(long long time)
 
 				_displayFireflies[4] = true;
 		}
-		if (time > 66000)
+		if (time > 55000)
 		{
 				movFireflies[5] = glm::translate(tmp[1]);
 				movFireflies[5] *= glm::translate(glm::vec3(15, -5, -15));
@@ -152,7 +152,7 @@ void Demo::state(long long time)
 
 				_displayFireflies[5] = true;
 		}
-		if (time > 76000)
+		if (time > 60000)
 		{
 				movFireflies[6] = glm::translate(tmp[1]);
 				movFireflies[6] *= glm::translate(glm::vec3(-15, -5, 15));
@@ -162,7 +162,7 @@ void Demo::state(long long time)
 
 				_displayFireflies[6] = true;
 		}
-		if (time > 86000)
+		if (time > 65000)
 		{
 				movFireflies[7] = glm::translate(tmp[1]);
 				movFireflies[7] *= glm::translate(glm::vec3(-15, -5, -15));

@@ -14,12 +14,14 @@ layout (triangle_strip, max_vertices = 4) out;
 in VertexData
 {
      vec4 particle;
+     vec3 color;
      float life;
 } GeomIn[];
 
 out VertexData
 {
      vec2 texCoord;
+     vec3 color;
      float life;
 } GeomOut;
 
@@ -57,21 +59,25 @@ void main(void)
 
      gl_Position = finalMatrix * vec4(-dim, -dim, 0, 1);
      GeomOut.texCoord = vec2(1, 1);
+     GeomOut.color = GeomIn[0].color;
      GeomOut.life = GeomIn[0].life;
      EmitVertex();
 
      gl_Position = finalMatrix * vec4(+dim, -dim, 0, 1);
      GeomOut.texCoord = vec2(0, 1);
+     GeomOut.color = GeomIn[0].color;
      GeomOut.life = GeomIn[0].life;
      EmitVertex();
 
      gl_Position = finalMatrix * vec4(-dim, +dim, 0, 1);
      GeomOut.texCoord = vec2(1, 0);
+     GeomOut.color = GeomIn[0].color;
      GeomOut.life = GeomIn[0].life;
      EmitVertex();
 
      gl_Position = finalMatrix * vec4(+dim, +dim, 0, 1);
      GeomOut.texCoord = vec2(0, 0);
+     GeomOut.color = GeomIn[0].color;
      GeomOut.life = GeomIn[0].life;
      EmitVertex();
 
