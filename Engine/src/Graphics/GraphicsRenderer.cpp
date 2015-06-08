@@ -11,13 +11,13 @@ Engine::Graphics::GraphicsRenderer::GraphicsRenderer(void)
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cerr << "Error init SDL: " << SDL_GetError() << std::endl;
-		abort();
+		exit(1);
 	}
 
 	if (TTF_Init() < 0)
 	{
 		std::cerr << "Error init SDL_ttf: " << TTF_GetError() << std::endl;
-		abort();
+		exit(1);
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -52,7 +52,7 @@ void Engine::Graphics::GraphicsRenderer::setGLContext(const std::shared_ptr<Wind
 		if (err != GLEW_OK)
 		{
 			std::cerr << "Error init GLEW: " << glewGetErrorString(err) << std::endl;
-			abort();
+			exit(1);
 		}
 		std::cout << "GLEW version: " << glewGetString(GLEW_VERSION) << std::endl;
 #endif
@@ -69,6 +69,6 @@ void Engine::Graphics::GraphicsRenderer::setGLContext(const std::shared_ptr<Wind
 	else if (SDL_GL_MakeCurrent(window->getWindow(), _GLContext) < 0)
 	{
 		std::cerr << "Error while setting context" << std::endl;
-		abort();
+		exit(1);
 	}
 }

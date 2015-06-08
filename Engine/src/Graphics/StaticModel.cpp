@@ -23,7 +23,7 @@ void Engine::Graphics::StaticModel::loadFromFile(const GLchar *inFile)
 	if (_isMirror == GL_TRUE)
 	{
 		std::cerr << "Error Model configuration" << std::endl;
-		abort();
+		exit(1);
 	}
 
 	_tMesh->clear();
@@ -33,7 +33,7 @@ void Engine::Graphics::StaticModel::loadFromFile(const GLchar *inFile)
 	if (pScene->HasAnimations())
 	{
 		std::cerr << "The model is not static" << std::endl;
-		abort();
+		exit(1);
 	}
 
 	std::vector<StaticMesh::Vertex> vertices;
@@ -168,7 +168,7 @@ void Engine::Graphics::StaticModel::displayDepthMaps(const std::vector<std::shar
 	if (depthMaps.size() != DirLight::CASCADED_LEVEL)
 	{
 		std::cerr << "Wrong vector of depthMap size" << std::endl;
-		abort();
+		exit(1);
 	}
 
 	checkMatrix();

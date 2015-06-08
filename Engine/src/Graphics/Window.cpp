@@ -17,7 +17,7 @@ Engine::Graphics::Window::Window(const GLchar *title, GLint w, GLint h, GLboolea
 	if (_Window == NULL)
 	{
 		std::cerr << "Error while creating Window: " << SDL_GetError() << std::endl;
-		abort();
+		exit(1);
 	}
 }
 
@@ -51,7 +51,7 @@ void Engine::Graphics::Window::mainLoop(const std::shared_ptr<GameLoop> &gameLoo
 	if (gameLoop == NULL)
 	{
 		std::cerr << "Wrong GameLoop" << std::endl;
-		abort();
+		exit(1);
 	}
 
 	_stopLoop = GL_FALSE;
