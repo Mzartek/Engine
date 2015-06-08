@@ -120,7 +120,7 @@ void Demo::state(long long time)
 
 				_displayFireflies[2] = true;
 		}
-		if (time > 45000)
+		if (time > 46000)
 		{
 				movFireflies[3] = glm::translate(tmp[1]);
 				movFireflies[3] *= glm::rotate(rotFireflies[3], glm::vec3(0, 1, 0));
@@ -325,7 +325,7 @@ void Demo::last_state(void)
 	//RandomFlash
 	if (_generateRandomFlash)
 	{
-		if ((GLfloat)rand() / RAND_MAX > 0.999f)
+		if ((GLfloat)rand() / RAND_MAX > 0.998f)
 		{
 			thunderLight->playRandomSound();
 			_flash = 25;
