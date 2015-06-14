@@ -31,10 +31,6 @@ using namespace Engine;
 class Demo : public Graphics::GameLoop
 {
 private:
-		Graphics::GraphicsRenderer &graphicsRenderer;
-		Audio::AudioRenderer &audioRenderer;
-		Input::InputManager &inputManager;
-
 		// System
 		std::shared_ptr<Graphics::Window> window;
 

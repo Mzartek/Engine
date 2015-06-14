@@ -24,7 +24,7 @@ void Demo::display(GLfloat state)
 		(*it)->displayDepthMap(depthMaps[0], torch_light);
 	torch_light->display(gBuffer, camera, depthMaps[0]);
 
-	screen_display->background(gBuffer);
+	screen_display->genGBufferBackground(gBuffer);
 
 	// Transparent Object
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
@@ -32,7 +32,7 @@ void Demo::display(GLfloat state)
 	moon_light->display(gBuffer, camera);
 	torch_light->display(gBuffer, camera);
 
-	screen_display->background(gBuffer);
+	screen_display->genGBufferBackground(gBuffer);
 
 	// Particles
 	rain_particles->display(gBuffer, camera);
@@ -68,7 +68,7 @@ void Demo::last_state(void)
 
 	octree->getModels(camera, object_display);
 
-	audioRenderer.setListenerPosition(camPosition, camForward, camUp);
+	Audio::AudioRenderer::Instance().setListenerPosition(camPosition, camForward, camUp);
 }
 
 void Demo::reshape(GLuint w, GLuint h)

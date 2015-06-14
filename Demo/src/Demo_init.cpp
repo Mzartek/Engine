@@ -1,12 +1,9 @@
 #include "Demo.hpp"
 
 Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
-		:	graphicsRenderer(Graphics::GraphicsRenderer::Instance()),
-		audioRenderer(Audio::AudioRenderer::Instance()),
-		inputManager(Input::InputManager::Instance()),
-		window(w)
+		: window(w)
 {
-		graphicsRenderer.setGLContext(window);
+		Graphics::GraphicsRenderer::Instance().setGLContext(window);
 
 		gBuffer = std::shared_ptr<Graphics::GBuffer>(new Graphics::GBuffer);
 		camera = std::shared_ptr<Graphics::FreeCam>(new Graphics::FreeCam);

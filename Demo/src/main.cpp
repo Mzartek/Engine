@@ -1,5 +1,18 @@
 #include "Demo.hpp"
+
+#include <iostream>
+#include <fstream>
 #include <ctime>
+
+GLuint width, height;
+
+void get_resolution(void)
+{
+		std::ifstream resolution_file("../share/Demo/config/resolution.txt", std::ifstream::in);
+
+		resolution_file >> width;
+		resolution_file >> height;
+}
 
 int main(int argc, char **argv)
 {
@@ -13,7 +26,9 @@ int main(int argc, char **argv)
 		Audio::AudioRenderer::Instance();
 		Input::InputManager::Instance();
 
-		std::shared_ptr<Graphics::Window> window(new Graphics::Window("Demo OpenGL", 800, 600, GL_FALSE));
+		get_resolution();
+
+		std::shared_ptr<Graphics::Window> window(new Graphics::Window("Demo OpenGL", width, height, GL_FALSE));
 		std::shared_ptr<Demo> demo(new Demo(window));
 
 		window->mainLoop(demo);

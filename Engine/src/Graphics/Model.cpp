@@ -81,7 +81,7 @@ void Engine::Graphics::Model::addMesh(const std::shared_ptr<Mesh> &mesh)
 	if (_isMirror == GL_TRUE)
 	{
 		std::cerr << "Error Model configuration" << std::endl;
-		abort();
+		exit(1);
 	}
 
 	_tMesh->push_back(mesh);
@@ -171,7 +171,7 @@ const std::shared_ptr<Engine::Graphics::Mesh> &Engine::Graphics::Model::getMesh(
 	if (num >= _tMesh->size())
 	{
 		std::cerr << "Bad num Mesh" << std::endl;
-		abort();
+		exit(1);
 	}
 	return (*_tMesh)[num];
 }

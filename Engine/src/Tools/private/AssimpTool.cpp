@@ -9,7 +9,7 @@ const aiScene *Engine::ToolsPrivate::openFile(Assimp::Importer &importer, const 
 		error.append(inFile + '\n');
 		error.append(importer.GetErrorString());
 		std::cerr << error << std::endl;
-		abort();
+		exit(1);
 	}
 
 	return pScene;
@@ -249,7 +249,7 @@ std::vector<std::shared_ptr<Engine::Graphics::Bone>> Engine::ToolsPrivate::loadB
 			else
 			{
 				std::cerr << "No more space for bones" << std::endl;
-				abort();
+				exit(1);
 			}
 		}
 

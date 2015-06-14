@@ -2,6 +2,8 @@
 
 void Demo::manage_input(void)
 {
+		static Input::InputManager &inputManager = Input::InputManager::Instance();
+
 		inputManager.refresh();
 
 		if (inputManager.getKeyBoardState(SDL_SCANCODE_ESCAPE))

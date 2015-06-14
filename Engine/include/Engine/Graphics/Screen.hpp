@@ -24,7 +24,8 @@ namespace Engine
 		public:
 			Screen(const std::shared_ptr<ShaderProgram> &backgroundProgram, const std::shared_ptr<ShaderProgram> &directProgram);
 			~Screen(void);
-			void background(const std::shared_ptr<GBuffer> &gbuf) const;
+
+			void genGBufferBackground(const std::shared_ptr<GBuffer> &gbuf) const;
 			void display(const std::shared_ptr<Window> &window, const std::shared_ptr<GBuffer> &gbuf, const glm::vec4 &color) const;
 		};
 	}

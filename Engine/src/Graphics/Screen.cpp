@@ -43,7 +43,7 @@ Engine::Graphics::Screen::~Screen(void)
 	glDeleteVertexArrays(1, &_idVAO);
 }
 
-void Engine::Graphics::Screen::background(const std::shared_ptr<GBuffer> &gbuf) const
+void Engine::Graphics::Screen::genGBufferBackground(const std::shared_ptr<GBuffer> &gbuf) const
 {
 	gbuf->setBackgroundState();
 
