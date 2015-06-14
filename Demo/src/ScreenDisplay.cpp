@@ -9,14 +9,14 @@ ScreenDisplay::ScreenDisplay(void)
 		NULL,
 		"../share/Demo/shader/background/backgroundFrag.glsl"));
 
-	_screenProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_windowProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/window/windowVert.glsl",
 		NULL,
 		NULL,
 		NULL,
 		"../share/Demo/shader/window/windowFrag.glsl"));
 
-	_screen = std::shared_ptr<Graphics::Screen>(new Graphics::Screen(_backgroundProgram, _screenProgram));
+	_screen = std::shared_ptr<Graphics::Screen>(new Graphics::Screen(_backgroundProgram, _windowProgram));
 }
 
 ScreenDisplay::~ScreenDisplay(void)

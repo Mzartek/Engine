@@ -9,7 +9,7 @@ class ScreenDisplay
 {
 private:
 	std::shared_ptr<Graphics::ShaderProgram> _backgroundProgram;
-	std::shared_ptr<Graphics::ShaderProgram> _screenProgram;
+	std::shared_ptr<Graphics::ShaderProgram> _windowProgram;
 	std::shared_ptr<Graphics::Screen> _screen;
 
 public:
