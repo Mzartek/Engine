@@ -24,7 +24,7 @@ void Demo::display(GLfloat state)
 		(*it)->displayDepthMap(depthMaps[0], torch_light);
 	torch_light->display(gBuffer, camera, depthMaps[0]);
 
-	screen_display->genGBufferBackground(gBuffer);
+	gBuffer->background();
 
 	// Transparent Object
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
@@ -32,13 +32,13 @@ void Demo::display(GLfloat state)
 	moon_light->display(gBuffer, camera);
 	torch_light->display(gBuffer, camera);
 
-	screen_display->genGBufferBackground(gBuffer);
+	gBuffer->background();
 
 	// Particles
 	rain_particles->display(gBuffer, camera);
 	smoke_particles->display(gBuffer, camera);
 
-	screen_display->display(window, gBuffer, glm::vec4(1, 1, 1, 1));
+	window->display(gBuffer->getIdTexture(Graphics::GBuffer::BACKGROUND_ID), glm::vec4(1, 1, 1, 1));
 }
 
 void Demo::state(long long time)
@@ -74,4 +74,9 @@ void Demo::last_state(void)
 void Demo::reshape(GLuint w, GLuint h)
 {
 	camera->setPerspective(glm::pi<GLfloat>() / 2, w, h, 0.1f, 1000.0f);
+}
+
+void Demo::launch(void)
+{
+		window->mainLoop(this);
 }

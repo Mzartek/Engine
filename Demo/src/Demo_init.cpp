@@ -1,11 +1,9 @@
 #include "Demo.hpp"
 
-Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
-		: window(w)
+Demo::Demo(const GLchar *title, GLint w, GLint h, GLboolean fullScreen)
 {
-		Graphics::GraphicsRenderer::Instance().setGLContext(window);
+		screenDisplay = std::shared_ptr<ScreenDisplay>(new ScreenDisplay(title, w, h, fullScreen));
 
-		gBuffer = std::shared_ptr<Graphics::GBuffer>(new Graphics::GBuffer);
 		camera = std::shared_ptr<Graphics::FreeCam>(new Graphics::FreeCam);
 
 		octree = std::shared_ptr<Graphics::Octree>(new Graphics::Octree(4, glm::vec3(0, 0, 0), 1000));
@@ -18,13 +16,15 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 		torchLight = std::shared_ptr<TorchLight>(new TorchLight);
 		rainEffect = std::shared_ptr<RainEffect>(new RainEffect);
 		smokeEffect = std::shared_ptr<SmokeEffect>(new SmokeEffect);
-		screenDisplay = std::shared_ptr<ScreenDisplay>(new ScreenDisplay);
 
-		for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
+		for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++)
+		{
+				depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
+				depthMaps[i]->config(2048, 2048);
+		}
 
-		// GBuffer config
-		gBuffer->config(window->getWidth(), window->getHeight());
-
+		Graphics::GraphicsRenderer::Instance().setGLContext(screenDisplay->getWindow());
+		
 		// Camera config
 		camera->setPositionAndTarget(glm::vec3(30, 5, 0), glm::vec3(50, 10, 50));
 
@@ -49,14 +49,13 @@ Demo::Demo(const std::shared_ptr<Graphics::Window> &w)
 		torchLight->getLight()->setSpotCutOff(glm::pi<GLfloat>() / 4);
 		torchLight->getLight()->setMaxDistance(250);
 
+		window = screenDisplay->getWindow();
+		gBuffer = screenDisplay->getGBuffer();
 		moon_light = moonLight->getLight();
 		torch_light = torchLight->getLight();
 		rain_particles = rainEffect->getParticlesManager();
 		smoke_particles = smokeEffect->getParticlesManager();
-		screen_display = screenDisplay->getScreen();
 		tree_model = tree->getModel();
-
-		for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->config(2048, 2048);
 
 		rainEffect->getSound()->play();
 		smokeEffect->getSound()->play();

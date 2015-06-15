@@ -28,10 +28,8 @@ int main(int argc, char **argv)
 
 		get_resolution();
 
-		std::shared_ptr<Graphics::Window> window(new Graphics::Window("Demo OpenGL", width, height, GL_FALSE));
-		std::shared_ptr<Demo> demo(new Demo(window));
-
-		window->mainLoop(demo);
+		std::shared_ptr<Demo> demo(new Demo("Demo OpenGL", width, height, GL_FALSE));
+		demo->launch();
 
 		return 0;
 }
