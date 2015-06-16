@@ -5,32 +5,34 @@
 
 namespace Engine
 {
-	namespace Input
-	{
-		class DLLAPI InputManager
+		namespace Input
 		{
-		private:
-			InputManager(void);
-			~InputManager(void);
+				class DLLAPI InputManager
+				{
+				private:
+						const GLubyte *_keyState;
+						struct MOUSESTATE
+						{
+								GLint x;
+								GLint y;
+								GLuint buttons;
+						} _mouseState;
 
-			const GLubyte *_keyState;
-			struct MOUSESTATE
-			{
-				GLint x;
-				GLint y;
-				GLuint buttons;
-			} _mouseState;
+				public:
+						static InputManager &Instance(void);
 
-		public:
-			static InputManager &Instance(void);
+				private:
+						InputManager(void);
+						~InputManager(void);
 
-			GLboolean getKeyBoardState(GLubyte button) const;
-			GLboolean getMouseState(GLubyte button) const;
-			GLint getMouseRelX(void) const;
-			GLint getMouseRelY(void) const;
-			void refresh(void);
-		};
-	}
+				public:
+						GLboolean getKeyBoardState(GLubyte button) const;
+						GLboolean getMouseState(GLubyte button) const;
+						GLint getMouseRelX(void) const;
+						GLint getMouseRelY(void) const;
+						void refresh(void);
+				};
+		}
 }
 
 #endif

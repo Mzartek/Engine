@@ -5,23 +5,25 @@
 
 namespace Engine
 {
-	namespace Audio
-	{
-		class DLLAPI AudioRenderer
+		namespace Audio
 		{
-		private:
-			AudioRenderer(void);
-			~AudioRenderer(void);
+				class DLLAPI AudioRenderer
+				{
+				private:
+						ALCdevice *_device;
+						ALCcontext *_context;
 
-			ALCdevice *_device;
-			ALCcontext *_context;
+				public:
+						static AudioRenderer &Instance(void);
 
-		public:
-			static AudioRenderer &Instance(void);
+				private:
+						AudioRenderer(void);
+						~AudioRenderer(void);
 
-			void setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up) const;
-		};
-	}
+				public:
+						void setListenerPosition(const glm::vec3 &pos, const glm::vec3 &at, const glm::vec3 &up) const;
+				};
+		}
 }
 
 #endif

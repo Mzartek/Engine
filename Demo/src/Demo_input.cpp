@@ -7,7 +7,7 @@ void Demo::manage_input(void)
 		inputManager.refresh();
 
 		if (inputManager.getKeyBoardState(SDL_SCANCODE_ESCAPE))
-				window->stopLoop();
+				Graphics::GraphicsRenderer::Instance().stopLoop();
 
 		if (inputManager.getKeyBoardState(SDL_SCANCODE_LSHIFT))
 				camera->setSpeed(0.05f);

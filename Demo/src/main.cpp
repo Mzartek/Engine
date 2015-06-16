@@ -21,14 +21,21 @@ int main(int argc, char **argv)
 
 		srand((unsigned int)time(NULL));
 
-		// We call the instance for init
-		Graphics::GraphicsRenderer::Instance();
-		Audio::AudioRenderer::Instance();
-		Input::InputManager::Instance();
-
 		get_resolution();
 
-		std::shared_ptr<Demo> demo(new Demo("Demo OpenGL", width, height, GL_FALSE));
+		// We call the instance for init
+		Graphics::GraphicsRenderer::Instance().initGLWindow("Demo OpenGL", width, height, false);
+		Audio::AudioRenderer::Instance();
+
+		std::shared_ptr<Graphics::ShaderProgram> _windowProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+				"../share/Demo/shader/window/windowVert.glsl",
+				NULL,
+				NULL,
+				NULL,
+				"../share/Demo/shader/window/windowFrag.glsl"));
+		Graphics::GraphicsRenderer::Instance().setShaderProgram(_windowProgram);
+
+		std::shared_ptr<Demo> demo(new Demo);
 		demo->launch();
 
 		return 0;

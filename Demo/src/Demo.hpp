@@ -5,7 +5,6 @@
 #include <Engine/Audio/AudioRenderer.hpp>
 #include <Engine/Input/InputManager.hpp>
 
-#include <Engine/Graphics/Window.hpp>
 #include <Engine/Graphics/GBuffer.hpp>
 #include <Engine/Graphics/DepthMap.hpp>
 #include <Engine/Graphics/FreeCam.hpp>
@@ -50,7 +49,6 @@ private:
 		std::vector<std::shared_ptr<Graphics::DepthMap>> depthMaps;
 
 		// Direct access
-		std::shared_ptr<Graphics::Window> window;
 		std::shared_ptr<Graphics::GBuffer> gBuffer;
 		std::shared_ptr<Graphics::DirLight> moon_light;
 		std::shared_ptr<Graphics::SpotLight> torch_light;
@@ -63,7 +61,7 @@ private:
 		void manage_input(void);
 
 public:
-		Demo(const GLchar *title, GLint w, GLint h, GLboolean fullScreen);
+		Demo(void);
 		~Demo(void);
 		void display(GLfloat state);
 		void state(long long time);

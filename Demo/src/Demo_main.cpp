@@ -4,8 +4,10 @@ void Demo::display(GLfloat state)
 {
 	UNREFERENCED_PARAMETER(state);
 
+	static Graphics::GraphicsRenderer &graphicsRenderer = Graphics::GraphicsRenderer::Instance();
+
 	// Clear Buffers
-	window->clear();
+	graphicsRenderer.clear();
 	gBuffer->clear();
 
 	nightBox->display(gBuffer, camera);
@@ -38,7 +40,7 @@ void Demo::display(GLfloat state)
 	rain_particles->display(gBuffer, camera);
 	smoke_particles->display(gBuffer, camera);
 
-	window->display(gBuffer->getIdTexture(Graphics::GBuffer::BACKGROUND_ID), glm::vec4(1, 1, 1, 1));
+	graphicsRenderer.display(gBuffer->getIdTexture(Graphics::GBuffer::BACKGROUND_ID), glm::vec4(1, 1, 1, 1));
 }
 
 void Demo::state(long long time)
@@ -78,5 +80,5 @@ void Demo::reshape(GLuint w, GLuint h)
 
 void Demo::launch(void)
 {
-		window->mainLoop(this);
+		Graphics::GraphicsRenderer::Instance().mainLoop(this);
 }
