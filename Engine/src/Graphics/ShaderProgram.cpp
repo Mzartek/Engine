@@ -6,7 +6,7 @@ inline GLchar *readText(const GLchar *filename)
 	GLchar *content;
 	GLint size;
 
-	if(!file.is_open())
+	if (!file.is_open())
 	{
 		std::cerr << "Error while opening file: " << filename << std::endl;
 		exit(1);
@@ -33,7 +33,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	GLint status;
 
 	id = glCreateShader(type);
-	if(id == 0)
+	if (id == 0)
 	{
 		std::cerr << "Error while creating shader" << std::endl;
 		exit(1);
@@ -44,7 +44,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	glShaderSource(id, 1, (const GLchar **)&content, NULL);
 	glCompileShader(id);
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
-	if(status != GL_TRUE)
+	if (status != GL_TRUE)
 	{
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logsize);
 

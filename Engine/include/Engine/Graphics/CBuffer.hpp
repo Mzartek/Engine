@@ -5,24 +5,24 @@
 
 namespace Engine
 {
-		namespace Graphics
+	namespace Graphics
+	{
+		class DLLAPI CBuffer : public FrameBuffer
 		{
-				class DLLAPI CBuffer : public FrameBuffer
-				{
-				private:
-						GLuint _idTexture;
+		private:
+			GLuint _idTexture;
 
-				public:
-						CBuffer(void);
-						~CBuffer(void);
-						void config(GLuint width, GLuint height);
-						GLuint getIdTexture(void) const;
-						void setNormalState(void) const;
-						void setAdditiveState(void) const;
-						void setTransparentState(void) const;
-						void clear(void) const;
-				};
-		}
+		public:
+			CBuffer(void);
+			~CBuffer(void);
+			void config(GLuint width, GLuint height);
+			GLuint getIdTexture(void) const;
+			void setNormalState(void) const;
+			void setAdditiveState(void) const;
+			void setTransparentState(void) const;
+			void clear(void) const;
+		};
+	}
 }
 
 #endif

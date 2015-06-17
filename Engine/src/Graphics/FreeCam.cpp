@@ -5,7 +5,7 @@ Engine::Graphics::FreeCam::FreeCam(void)
 }
 
 Engine::Graphics::FreeCam::FreeCam(GLfloat atheta, GLfloat aphi)
-    : MovableCamera(atheta, aphi)
+	: MovableCamera(atheta, aphi)
 {
 }
 
@@ -15,12 +15,12 @@ Engine::Graphics::FreeCam::~FreeCam(void)
 
 void Engine::Graphics::FreeCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r)
 {
-	if(f)
+	if (f)
 		_pcamera += _vforward * _speed;
-	if(b)
+	if (b)
 		_pcamera -= _vforward * _speed;
-	if(l)
+	if (l)
 		_pcamera += _vleft * _speed;
-	if(r)
+	if (r)
 		_pcamera -= _vleft * _speed;
 }

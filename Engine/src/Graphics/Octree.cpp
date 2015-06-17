@@ -137,9 +137,9 @@ bool Engine::Graphics::Octree::addModel(Model *model, GLfloat dim)
 
 	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
 		if ((*it)->addModel(model, dim)) return true;
-	
+
 	_modelContainer.insert(model);
- 	(*_map_model)[model] = this;
+	(*_map_model)[model] = this;
 
 	return true;
 }

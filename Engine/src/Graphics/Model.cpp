@@ -121,13 +121,13 @@ void Engine::Graphics::Model::setRotation(const glm::vec3 &axis, GLfloat angle)
 
 void Engine::Graphics::Model::addPosition(const glm::vec3 &position)
 {
-    _position += position;
+	_position += position;
 	_needMatModel = GL_TRUE;
 }
 
 void Engine::Graphics::Model::addScale(const glm::vec3 &scale)
 {
-    _scale += scale;
+	_scale += scale;
 	_needMatModel = GL_TRUE;
 	_needMatNormal = GL_TRUE;
 }

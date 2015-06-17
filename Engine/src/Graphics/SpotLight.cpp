@@ -10,18 +10,10 @@ Engine::Graphics::SpotLight::SpotLight(const std::shared_ptr<ShaderProgram> &pro
 	glUniform1i(glGetUniformLocation(_program->getId(), "materialTexture"), 1);
 	glUniform1i(glGetUniformLocation(_program->getId(), "depthTexture"), 2);
 	glUniform1i(glGetUniformLocation(_program->getId(), "shadowMap"), 3);
-
-	glGenVertexArrays(1, &_idVAO);
-	glBindVertexArray(_idVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), BUFFER_OFFSET(0));
-	glBindVertexArray(0);
 }
 
 Engine::Graphics::SpotLight::~SpotLight(void)
 {
-	glDeleteVertexArrays(1, &_idVAO);
 }
 
 void Engine::Graphics::SpotLight::setColor(const glm::vec3 &color)
@@ -115,7 +107,6 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindTexture(GL_TEXTURE_2D, gbuf->getIdTexture(GBuffer::DEPTHSTENCIL_ID));
 
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
 	_mainInfo.camPosition = cam->getCameraPosition();
 	_mainInfo.withShadowMapping = GL_FALSE;
 
@@ -125,7 +116,7 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(_idVAO);
+	glBindVertexArray(graphicsRenderer.getScreenVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }
@@ -151,7 +142,6 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindTexture(GL_TEXTURE_2D, depthMap->getIdDepthTexture());
 
 	_mainInfo.IVPMatrix = cam->getIVPMatrix();
-	_mainInfo.screen = glm::uvec2(gbuf->getWidth(), gbuf->getHeight());
 	_mainInfo.camPosition = cam->getCameraPosition();
 	_mainInfo.withShadowMapping = GL_TRUE;
 
@@ -161,7 +151,7 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(_idVAO);
+	glBindVertexArray(graphicsRenderer.getScreenVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }

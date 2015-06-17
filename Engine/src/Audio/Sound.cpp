@@ -50,7 +50,7 @@ void Engine::Audio::Sound::loadFromFile(const ALchar *file, ALsizei frequency, A
 
 	if (alIsBuffer(_buffer)) alDeleteBuffers(1, &_buffer);
 	alGenBuffers(1, &_buffer);
-	
+
 	alBufferData(_buffer, format, sound->abuf, sound->alen, frequency);
 
 	alSourcei(_source, AL_BUFFER, _buffer);

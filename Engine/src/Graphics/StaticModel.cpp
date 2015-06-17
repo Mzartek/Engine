@@ -45,7 +45,7 @@ void Engine::Graphics::StaticModel::loadFromFile(const GLchar *inFile)
 		vertices = ToolsPrivate::loadStaticVertices(pScene->mMeshes[i]);
 		indices = ToolsPrivate::loadIndices(pScene->mMeshes[i]);
 		mesh->setMaterial(ToolsPrivate::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], Tools::getDir(inFile)));
-		
+
 		mesh->load(vertices, indices);
 
 		vertices.clear();

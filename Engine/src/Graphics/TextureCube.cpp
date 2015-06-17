@@ -37,7 +37,7 @@ void Engine::Graphics::TextureCube::loadFromFiles(
 	glGenTextures(1, &_idTexture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _idTexture);
 
-	for (int i = 0; i<6; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		if (image[i] == NULL)
 		{

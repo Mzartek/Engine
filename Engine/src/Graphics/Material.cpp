@@ -9,10 +9,10 @@ Engine::Graphics::Material::Material(void)
 
 	_mat.diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
 	_mat.specular = glm::vec3(0.0f, 0.0f, 0.0f);
-    _mat.ambient = glm::vec3(0.0f, 0.0f, 0.0f);
-    _mat.emissive = glm::vec3(0.0f, 0.0f, 0.0f);
-    _mat.shininess = 1.0f;
-    _mat.opacity = 1.0f;
+	_mat.ambient = glm::vec3(0.0f, 0.0f, 0.0f);
+	_mat.emissive = glm::vec3(0.0f, 0.0f, 0.0f);
+	_mat.shininess = 1.0f;
+	_mat.opacity = 1.0f;
 	_matBuffer->createStore(GL_UNIFORM_BUFFER, &_mat, sizeof _mat, GL_STATIC_DRAW);
 
 	_state.hasDiffuseTexture = GL_FALSE;

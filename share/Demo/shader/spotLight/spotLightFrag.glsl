@@ -13,7 +13,6 @@ uniform sampler2DShadow shadowMap;
 layout(binding = 0) uniform mainInfoBuffer
 {
 	mat4 IVPMatrix;
-	uvec2 screen;
 	vec3 camPosition;
 	bool withShadowMapping;
 };
@@ -28,12 +27,17 @@ layout(binding = 1) uniform lightInfoBuffer
 	mat4 shadowMatrix;
 };
 
+in VertexData
+{
+	vec2 texCoord;
+} FragIn;
+
 layout(location = 0) out vec4 outLight;
 
-vec3 getPosition(vec2 fragCoord)
+vec3 getPosition(void)
 {
-	float depth = texelFetch(depthTexture, ivec2(fragCoord), 0).x * 2.0 - 1.0;
-	vec4 tmp1 = vec4(fragCoord/screen * 2.0 - 1.0, depth, 1.0);
+	float depth = texture(depthTexture, FragIn.texCoord).x * 2.0 - 1.0;
+	vec4 tmp1 = vec4(FragIn.texCoord * 2.0 - 1.0, depth, 1.0);
 	vec4 tmp2 = IVPMatrix * tmp1;
 	return tmp2.xyz / tmp2.w;
 }
@@ -87,7 +91,7 @@ vec4 calcLight(vec4 diffColor, vec4 specColor, vec3 N, vec3 L, vec3 V, float shi
 
 void main(void)
 {
-	vec3 position = getPosition(gl_FragCoord.xy);	
+	vec3 position = getPosition();
 	vec3 L = lightPosition - position;
 	float current_distance = length(L);
 	L = normalize(L);
@@ -96,8 +100,8 @@ void main(void)
 	if (!checkInside(position, current_distance, current_angle))
 		discard;
 	
-	vec4 normal = texelFetch(normalTexture, ivec2(gl_FragCoord.xy), 0);
-	uvec4 material = texelFetch(materialTexture, ivec2(gl_FragCoord.xy), 0);
+	vec4 normal = texture(normalTexture, FragIn.texCoord);
+	uvec4 material = texture(materialTexture, FragIn.texCoord);
 
 	vec4 diffColor = unpackUnorm4x8(material.z) * vec4(lightColor, 1.0);
 	vec4 specColor = unpackUnorm4x8(material.w) * vec4(lightColor, 1.0);

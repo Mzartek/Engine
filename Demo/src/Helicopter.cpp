@@ -1,7 +1,7 @@
 #include "Helicopter.hpp"
 
 Helicopter::Helicopter()
-     : _isMount(true)
+	: _isMount(true)
 {
 	_objectProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
 		"../share/Demo/shader/object/objectVert.glsl",
@@ -43,69 +43,69 @@ const std::shared_ptr<Graphics::StaticModel> &Helicopter::getRotorModel(void) co
 
 void Helicopter::setMount(bool isMount)
 {
-     _isMount = isMount;
+	_isMount = isMount;
 }
 
 void Helicopter::setPosition(const glm::vec3 &position)
 {
-     _corpsModel->setPosition(position);
+	_corpsModel->setPosition(position);
 
-     if (_isMount)
-	  _rotorModel->setPosition(position + _rotorOffset);
+	if (_isMount)
+		_rotorModel->setPosition(position + _rotorOffset);
 }
 
 void Helicopter::setScale(const glm::vec3 &scale)
 {
-     _corpsModel->setScale(scale);
+	_corpsModel->setScale(scale);
 
-     if (_isMount)
-	  _rotorModel->setScale(scale);
+	if (_isMount)
+		_rotorModel->setScale(scale);
 }
 
 void Helicopter::setRotation(const glm::vec3 &rotation)
 {
-     _corpsModel->setRotation(rotation);
+	_corpsModel->setRotation(rotation);
 
-     if (_isMount)
-	  _rotorModel->setRotation(rotation);
+	if (_isMount)
+		_rotorModel->setRotation(rotation);
 }
 
 void Helicopter::setRotation(const glm::vec3 &axis, GLfloat angle)
 {
-     _corpsModel->setRotation(axis, angle);
+	_corpsModel->setRotation(axis, angle);
 
-     if (_isMount)
-	  _rotorModel->setRotation(axis, angle);
+	if (_isMount)
+		_rotorModel->setRotation(axis, angle);
 }
 
 void Helicopter::addPosition(const glm::vec3 &position)
 {
-     _corpsModel->addPosition(position);
+	_corpsModel->addPosition(position);
 
-     if (_isMount)
-	  _rotorModel->addPosition(position + _rotorOffset);
+	if (_isMount)
+		_rotorModel->addPosition(position + _rotorOffset);
 }
 
 void Helicopter::addScale(const glm::vec3 &scale)
 {
-     _corpsModel->addScale(scale);
+	_corpsModel->addScale(scale);
 
-     if (_isMount)
-	  _rotorModel->addScale(scale);
+	if (_isMount)
+		_rotorModel->addScale(scale);
 }
 
 void Helicopter::addRotation(const glm::vec3 &rotation)
 {
-     _corpsModel->addRotation(rotation);
+	_corpsModel->addRotation(rotation);
 
-     if (_isMount)
-	  _rotorModel->addRotation(rotation);
+	if (_isMount)
+		_rotorModel->addRotation(rotation);
 }
 
 void Helicopter::addRotation(const glm::vec3 &axis, GLfloat angle)
 {
-     _corpsModel->addRotation(axis, angle);
+	_corpsModel->addRotation(axis, angle);
 
-     if (_isMount)
-	  _rotorModel->addRotation(axis, angle);
+	if (_isMount)
+		_rotorModel->addRotation(axis, angle);
 }

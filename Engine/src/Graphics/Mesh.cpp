@@ -55,7 +55,7 @@ void Engine::Graphics::Mesh::setMaterial(const std::shared_ptr<Material> &materi
 
 const std::shared_ptr<Engine::Graphics::Material> &Engine::Graphics::Mesh::getMaterial(void) const
 {
-     return _material;
+	return _material;
 }
 
 void Engine::Graphics::Mesh::display(void) const

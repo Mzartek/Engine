@@ -42,8 +42,8 @@ void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles)
 	{
 		smokeParticles[i].position = position;
 		smokeParticles[i].direction = glm::normalize(glm::vec3(
-			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX, 
-			1.0f, 
+			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX,
+			1.0f,
 			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX));
 		smokeParticles[i].velocity = 0.2f;
 		smokeParticles[i].life = (GLfloat)(rand() % 100);

@@ -80,5 +80,5 @@ void Demo::reshape(GLuint w, GLuint h)
 
 void Demo::launch(void)
 {
-		Graphics::GraphicsRenderer::Instance().mainLoop(this);
+	Graphics::GraphicsRenderer::Instance().mainLoop(this);
 }

@@ -1,7 +1,7 @@
 #include <Engine/Graphics/DepthMap.hpp>
 
 Engine::Graphics::DepthMap::DepthMap(void)
-    : _idDepthTexture(0)
+	: _idDepthTexture(0)
 {
 }
 
@@ -36,7 +36,7 @@ void Engine::Graphics::DepthMap::config(GLuint width, GLuint height)
 
 	glDrawBuffer(GL_NONE);
 
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cerr << "Framebuffer not complete" << std::endl;
 }
 

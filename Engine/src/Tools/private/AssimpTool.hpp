@@ -23,7 +23,7 @@ namespace Engine
 		extern std::vector<GLuint> loadIndices(const aiMesh *mesh);
 		extern std::shared_ptr<Graphics::Material> loadMaterial(const aiMaterial *material, const std::string &dir);
 		extern std::shared_ptr<Graphics::Skeleton> loadSkeleton(const aiScene *scene, const GLchar *name);
-		extern std::vector<std::shared_ptr<Graphics::Bone>> loadBones(const aiMesh *mesh, const std::shared_ptr<Graphics::Skeleton> &skeleton, GLuint bone_index, 
+		extern std::vector<std::shared_ptr<Graphics::Bone>> loadBones(const aiMesh *mesh, const std::shared_ptr<Graphics::Skeleton> &skeleton, GLuint bone_index,
 			std::vector<Graphics::SkeletalMesh::Vertex> &vertices, std::map<GLuint, GLuint> &map_vertex);
 	}
 }

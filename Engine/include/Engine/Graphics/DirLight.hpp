@@ -10,7 +10,7 @@ namespace Engine
 		class DLLAPI DirLight : public Light
 		{
 		public:
-			enum 
+			enum
 			{
 				CASCADED_LEVEL = 3
 			};
