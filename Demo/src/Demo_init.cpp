@@ -47,13 +47,6 @@ Demo::Demo(void)
 	torchLight->getLight()->setSpotCutOff(glm::pi<GLfloat>() / 4);
 	torchLight->getLight()->setMaxDistance(250);
 
-	gbuffer = screenDisplay->getGBuffer();
-	moon_light = moonLight->getLight();
-	torch_light = torchLight->getLight();
-	rain_particles = rainEffect->getParticlesHandler();
-	smoke_particles = smokeEffect->getParticlesHandler();
-	tree_model = tree->getModel();
-
 	rainEffect->getSound()->play();
 	smokeEffect->getSound()->play();
 }

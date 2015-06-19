@@ -16,8 +16,6 @@ namespace Engine
 		class DLLAPI Light : public Object
 		{
 		protected:
-			static GraphicsRenderer &graphicsRenderer;
-
 			struct
 			{
 				glm::mat4 IVPMatrix;

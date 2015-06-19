@@ -1,7 +1,5 @@
 #include <Engine/Graphics/GBuffer.hpp>
 
-Engine::Graphics::GraphicsRenderer &Engine::Graphics::GBuffer::graphicsRenderer = GraphicsRenderer::Instance();
-
 Engine::Graphics::GBuffer::GBuffer(const std::shared_ptr<ShaderProgram> &backgroundProgram)
 	: _backgroundProgram(backgroundProgram)
 {
@@ -206,7 +204,7 @@ void Engine::Graphics::GBuffer::background(void) const
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, _idTexture[LIGHT_ID]);
 
-	glBindVertexArray(graphicsRenderer.getScreenVertexArray());
+	glBindVertexArray(Graphics::GraphicsRenderer::Instance().getScreenVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 

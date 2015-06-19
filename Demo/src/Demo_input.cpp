@@ -2,27 +2,25 @@
 
 void Demo::manage_input(void)
 {
-	static Input::InputHandler &inputManager = Input::InputHandler::Instance();
+	Input::InputHandler::Instance().refresh();
 
-	inputManager.refresh();
-
-	if (inputManager.getKeyBoardState(SDL_SCANCODE_ESCAPE))
+	if (Input::InputHandler::Instance().getKeyBoardState(SDL_SCANCODE_ESCAPE))
 		Graphics::GraphicsRenderer::Instance().stopLoop();
 
-	if (inputManager.getKeyBoardState(SDL_SCANCODE_LSHIFT))
+	if (Input::InputHandler::Instance().getKeyBoardState(SDL_SCANCODE_LSHIFT))
 		camera->setSpeed(0.05f);
-	else if (inputManager.getMouseState(SDL_BUTTON_LEFT))
+	else if (Input::InputHandler::Instance().getMouseState(SDL_BUTTON_LEFT))
 		camera->setSpeed(5.0f);
 	else
 		camera->setSpeed(0.25f);
 
 	camera->keyboardMove(
-		inputManager.getKeyBoardState(SDL_SCANCODE_W),
-		inputManager.getKeyBoardState(SDL_SCANCODE_S),
-		inputManager.getKeyBoardState(SDL_SCANCODE_A),
-		inputManager.getKeyBoardState(SDL_SCANCODE_D)
+		Input::InputHandler::Instance().getKeyBoardState(SDL_SCANCODE_W),
+		Input::InputHandler::Instance().getKeyBoardState(SDL_SCANCODE_S),
+		Input::InputHandler::Instance().getKeyBoardState(SDL_SCANCODE_A),
+		Input::InputHandler::Instance().getKeyBoardState(SDL_SCANCODE_D)
 		);
 	camera->mouseMove(
-		inputManager.getMouseRelX(),
-		inputManager.getMouseRelY());
+		Input::InputHandler::Instance().getMouseRelX(),
+		Input::InputHandler::Instance().getMouseRelY());
 }

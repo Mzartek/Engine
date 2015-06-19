@@ -102,7 +102,7 @@ void Engine::Graphics::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, c
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(graphicsRenderer.getScreenVertexArray());
+	glBindVertexArray(Graphics::GraphicsRenderer::Instance().getScreenVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }
@@ -149,7 +149,7 @@ void Engine::Graphics::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, c
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(graphicsRenderer.getScreenVertexArray());
+	glBindVertexArray(Graphics::GraphicsRenderer::Instance().getScreenVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }

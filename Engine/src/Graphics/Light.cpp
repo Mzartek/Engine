@@ -1,7 +1,5 @@
 #include <Engine/Graphics/Light.hpp>
 
-Engine::Graphics::GraphicsRenderer &Engine::Graphics::Light::graphicsRenderer = GraphicsRenderer::Instance();
-
 Engine::Graphics::Light::Light(const std::shared_ptr<ShaderProgram> &program)
 	: _program(program)
 {

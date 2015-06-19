@@ -24,8 +24,6 @@ namespace Engine
 			};
 
 		private:
-			static GraphicsRenderer &graphicsRenderer;
-
 			GLuint _idTexture[NUM_TEX];
 			std::shared_ptr<ShaderProgram> _backgroundProgram;
 
