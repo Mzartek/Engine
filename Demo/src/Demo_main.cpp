@@ -8,39 +8,39 @@ void Demo::display(GLfloat state)
 
 	// Clear Buffers
 	graphicsRenderer.clear();
-	gBuffer->clear();
+	gbuffer->clear();
 
-	nightBox->display(gBuffer, camera);
+	nightBox->display(gbuffer, camera);
 
 	// Opaque Object
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
-		(*it)->display(gBuffer, camera);
+		(*it)->display(gbuffer, camera);
 
 	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->clear();
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMaps(depthMaps, moon_light);
-	moon_light->display(gBuffer, camera, depthMaps);
+	moon_light->display(gbuffer, camera, depthMaps);
 
 	depthMaps[0]->clear();
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMap(depthMaps[0], torch_light);
-	torch_light->display(gBuffer, camera, depthMaps[0]);
+	torch_light->display(gbuffer, camera, depthMaps[0]);
 
-	gBuffer->background();
+	gbuffer->background();
 
 	// Transparent Object
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
-		(*it)->displayTransparent(gBuffer, camera);
-	moon_light->display(gBuffer, camera);
-	torch_light->display(gBuffer, camera);
+		(*it)->displayTransparent(gbuffer, camera);
+	moon_light->display(gbuffer, camera);
+	torch_light->display(gbuffer, camera);
 
-	gBuffer->background();
+	gbuffer->background();
 
 	// Particles
-	rain_particles->display(gBuffer, camera);
-	smoke_particles->display(gBuffer, camera);
+	rain_particles->display(gbuffer, camera);
+	smoke_particles->display(gbuffer, camera);
 
-	graphicsRenderer.display(gBuffer->getIdTexture(Graphics::GBuffer::BACKGROUND_ID), glm::vec4(1, 1, 1, 1));
+	graphicsRenderer.display(gbuffer->getIdTexture(Graphics::GBuffer::BACKGROUND_ID), glm::vec4(1, 1, 1, 1));
 }
 
 void Demo::state(long long time)

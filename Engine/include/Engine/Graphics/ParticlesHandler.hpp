@@ -1,5 +1,5 @@
-#ifndef PARTICLESMANAGER_HEADER
-#define PARTICLESMANAGER_HEADER
+#ifndef PARTICLESHANDLER_HEADER
+#define PARTICLESHANDLER_HEADER
 
 #include "../Object.hpp"
 
@@ -22,7 +22,7 @@ namespace Engine
 			GLfloat life;
 		};
 
-		class DLLAPI ParticlesManager : public Object
+		class DLLAPI ParticlesHandler : public Object
 		{
 		protected:
 			struct
@@ -53,8 +53,8 @@ namespace Engine
 			GLsizei _numElement;
 
 		public:
-			ParticlesManager(const std::shared_ptr<ShaderProgram> &physicsProgram, const std::shared_ptr<ShaderProgram> &displayProgram);
-			~ParticlesManager(void);
+			ParticlesHandler(const std::shared_ptr<ShaderProgram> &physicsProgram, const std::shared_ptr<ShaderProgram> &displayProgram);
+			~ParticlesHandler(void);
 			void loadTexture(const GLchar *path) const;
 			void setParticles(const Particle *particles, GLsizei numParticles);
 			void setPosition(const glm::vec3 &pos);

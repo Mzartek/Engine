@@ -1,5 +1,5 @@
-#ifndef STRINGMANAGER_HEADER
-#define STRINGMANAGER_HEADER
+#ifndef STRINGHANDLER_HEADER
+#define STRINGHANDLER_HEADER
 
 #include "../Object.hpp"
 

@@ -3,7 +3,7 @@
 
 #include <Engine/Graphics/GraphicsRenderer.hpp>
 #include <Engine/Audio/AudioRenderer.hpp>
-#include <Engine/Input/InputManager.hpp>
+#include <Engine/Input/InputHandler.hpp>
 
 #include <Engine/Graphics/GBuffer.hpp>
 #include <Engine/Graphics/DepthMap.hpp>
@@ -49,11 +49,11 @@ private:
 	std::vector<std::shared_ptr<Graphics::DepthMap>> depthMaps;
 
 	// Direct access
-	std::shared_ptr<Graphics::GBuffer> gBuffer;
+	std::shared_ptr<Graphics::GBuffer> gbuffer;
 	std::shared_ptr<Graphics::DirLight> moon_light;
 	std::shared_ptr<Graphics::SpotLight> torch_light;
-	std::shared_ptr<Graphics::ParticlesManager> rain_particles;
-	std::shared_ptr<Graphics::ParticlesManager> smoke_particles;
+	std::shared_ptr<Graphics::ParticlesHandler> rain_particles;
+	std::shared_ptr<Graphics::ParticlesHandler> smoke_particles;
 	std::shared_ptr<Graphics::StaticModel> tree_model;
 
 	std::set<Graphics::Model *> object_display;

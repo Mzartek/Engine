@@ -19,8 +19,8 @@ ExplosionEffect::ExplosionEffect(void)
 		"../share/Demo/shader/explosionParticles/explosionGeom.glsl",
 		"../share/Demo/shader/explosionParticles/explosionFrag.glsl"));
 
-	_manager = std::shared_ptr<Graphics::ParticlesManager>(new Graphics::ParticlesManager(_physicsProgram, _displayProgram));
-	_manager->loadTexture("../share/Demo/resources/textures/fire.png");
+	_particlesManager = std::shared_ptr<Graphics::ParticlesHandler>(new Graphics::ParticlesHandler(_physicsProgram, _displayProgram));
+	_particlesManager->loadTexture("../share/Demo/resources/textures/fire.png");
 
 	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 	_sound->setGain(1);
@@ -48,19 +48,19 @@ void ExplosionEffect::init(const glm::vec3 &position, GLuint numParticles)
 		smokeParticles[i].velocity = ((GLfloat)rand() / RAND_MAX) * 1.8f;
 		smokeParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	_manager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
+	_particlesManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 	this->setPosition(position);
 }
 
 void ExplosionEffect::setPosition(const glm::vec3 &pos)
 {
-	_manager->setPosition(pos);
+	_particlesManager->setPosition(pos);
 	_sound->setPosition(pos);
 }
 
-const std::shared_ptr<Graphics::ParticlesManager> &ExplosionEffect::getParticlesManager(void) const
+const std::shared_ptr<Graphics::ParticlesHandler> &ExplosionEffect::getParticlesHandler(void) const
 {
-	return _manager;
+	return _particlesManager;
 }
 
 const std::shared_ptr<Audio::Sound> &ExplosionEffect::getSound(void) const
@@ -70,5 +70,5 @@ const std::shared_ptr<Audio::Sound> &ExplosionEffect::getSound(void) const
 
 void ExplosionEffect::updateParticles(void) const
 {
-	_manager->updateParticles();
+	_particlesManager->updateParticles();
 }

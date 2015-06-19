@@ -1,5 +1,5 @@
-#ifndef INPUT_HEADER
-#define INPUT_HEADER
+#ifndef INPUTHANDLER_HEADER
+#define INPUTHANDLER_HEADER
 
 #include "../Object.hpp"
 
@@ -7,7 +7,7 @@ namespace Engine
 {
 	namespace Input
 	{
-		class DLLAPI InputManager
+		class DLLAPI InputHandler
 		{
 		private:
 			const GLubyte *_keyState;
@@ -19,11 +19,11 @@ namespace Engine
 			} _mouseState;
 
 		public:
-			static InputManager &Instance(void);
+			static InputHandler &Instance(void);
 
 		private:
-			InputManager(void);
-			~InputManager(void);
+			InputHandler(void);
+			~InputHandler(void);
 
 		public:
 			GLboolean getKeyBoardState(GLubyte button) const;

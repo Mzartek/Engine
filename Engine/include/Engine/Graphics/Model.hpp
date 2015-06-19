@@ -2,7 +2,7 @@
 #define MODEL_HEADER
 
 #include "../Object.hpp"
-#include "../Tools/StringManager.hpp"
+#include "../Tools/StringHandler.hpp"
 
 #include "Mesh.hpp"
 #include "Buffer.hpp"

@@ -19,8 +19,8 @@ FirefliesEffect::FirefliesEffect(void)
 		"../share/Demo/shader/firefliesParticles/firefliesGeom.glsl",
 		"../share/Demo/shader/firefliesParticles/firefliesFrag.glsl"));
 
-	_manager = std::shared_ptr<Graphics::ParticlesManager>(new Graphics::ParticlesManager(_physicsProgram, _displayProgram));
-	_manager->loadTexture("../share/Demo/resources/textures/firework_yellow.png");
+	_particlesManager = std::shared_ptr<Graphics::ParticlesHandler>(new Graphics::ParticlesHandler(_physicsProgram, _displayProgram));
+	_particlesManager->loadTexture("../share/Demo/resources/textures/firework_yellow.png");
 }
 
 FirefliesEffect::~FirefliesEffect(void)
@@ -37,21 +37,21 @@ void FirefliesEffect::init(const glm::vec3 &position, GLuint numParticles)
 		firefliesParticles[i].velocity = 0.05f;
 		firefliesParticles[i].life = (GLfloat)i * 100 / numParticles;
 	}
-	_manager->setParticles(firefliesParticles.data(), (GLsizei)firefliesParticles.size());
+	_particlesManager->setParticles(firefliesParticles.data(), (GLsizei)firefliesParticles.size());
 	this->setPosition(position);
 }
 
 void FirefliesEffect::setPosition(const glm::vec3 &pos)
 {
-	_manager->setPosition(pos);
+	_particlesManager->setPosition(pos);
 }
 
-const std::shared_ptr<Graphics::ParticlesManager> &FirefliesEffect::getParticlesManager(void) const
+const std::shared_ptr<Graphics::ParticlesHandler> &FirefliesEffect::getParticlesHandler(void) const
 {
-	return _manager;
+	return _particlesManager;
 }
 
 void FirefliesEffect::updateParticles(void) const
 {
-	_manager->updateParticles();
+	_particlesManager->updateParticles();
 }

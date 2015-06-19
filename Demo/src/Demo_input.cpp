@@ -2,7 +2,7 @@
 
 void Demo::manage_input(void)
 {
-	static Input::InputManager &inputManager = Input::InputManager::Instance();
+	static Input::InputHandler &inputManager = Input::InputHandler::Instance();
 
 	inputManager.refresh();
 

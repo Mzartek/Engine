@@ -1,4 +1,4 @@
-#include <Engine/Tools/StringManager.hpp>
+#include <Engine/Tools/StringHandler.hpp>
 
 std::string Engine::Tools::getDir(const GLchar *file)
 {

@@ -19,8 +19,8 @@ RainEffect::RainEffect(void)
 		"../share/Demo/shader/rainParticles/rainGeom.glsl",
 		"../share/Demo/shader/rainParticles/rainFrag.glsl"));
 
-	_manager = std::shared_ptr<Graphics::ParticlesManager>(new Graphics::ParticlesManager(_physicsProgram, _displayProgram));
-	_manager->loadTexture("../share/Demo/resources/textures/goutte.png");
+	_particlesManager = std::shared_ptr<Graphics::ParticlesHandler>(new Graphics::ParticlesHandler(_physicsProgram, _displayProgram));
+	_particlesManager->loadTexture("../share/Demo/resources/textures/goutte.png");
 
 	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 	_sound->setGain(0.25f);
@@ -45,18 +45,18 @@ void RainEffect::init(const glm::vec3 &position, GLuint numParticles)
 			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX);
 		rainParticles[i].velocity = 2.0f;
 	}
-	_manager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
+	_particlesManager->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
 	this->setPosition(position);
 }
 
 void RainEffect::setPosition(const glm::vec3 &pos)
 {
-	_manager->setPosition(pos);
+	_particlesManager->setPosition(pos);
 }
 
-const std::shared_ptr<Graphics::ParticlesManager> &RainEffect::getParticlesManager() const
+const std::shared_ptr<Graphics::ParticlesHandler> &RainEffect::getParticlesHandler() const
 {
-	return _manager;
+	return _particlesManager;
 }
 
 const std::shared_ptr<Audio::Sound> &RainEffect::getSound(void) const
@@ -66,5 +66,5 @@ const std::shared_ptr<Audio::Sound> &RainEffect::getSound(void) const
 
 void RainEffect::updateParticles(void) const
 {
-	_manager->updateParticles();
+	_particlesManager->updateParticles();
 }
