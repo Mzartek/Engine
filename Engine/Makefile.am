@@ -21,7 +21,6 @@ __top_builddir__lib_libEngine_la_audio_HEADERS = \
 __top_builddir__lib_libEngine_la_graphics_HEADERS = \
 	include/Engine/Graphics/DirLight.hpp \
 	include/Engine/Graphics/SkeletalMesh.hpp \
-	include/Engine/Graphics/Window.hpp \
 	include/Engine/Graphics/SpotLight.hpp \
 	include/Engine/Graphics/FreeCam.hpp \
 	include/Engine/Graphics/Material.hpp \
@@ -35,9 +34,8 @@ __top_builddir__lib_libEngine_la_graphics_HEADERS = \
 	include/Engine/Graphics/Octree.hpp \
 	include/Engine/Graphics/StaticModel.hpp \
 	include/Engine/Graphics/PerspCamera.hpp \
-	include/Engine/Graphics/Screen.hpp \
 	include/Engine/Graphics/StaticMesh.hpp \
-	include/Engine/Graphics/ParticlesManager.hpp \
+	include/Engine/Graphics/ParticlesHandler.hpp \
 	include/Engine/Graphics/TextArray.hpp \
 	include/Engine/Graphics/SkeletalModel.hpp \
 	include/Engine/Graphics/OrthoCamera.hpp \
@@ -50,24 +48,25 @@ __top_builddir__lib_libEngine_la_graphics_HEADERS = \
 	include/Engine/Graphics/Texture.hpp \
 	include/Engine/Graphics/GBuffer.hpp \
 	include/Engine/Graphics/FrameBuffer.hpp \
-	include/Engine/Graphics/TextureCube.hpp
+	include/Engine/Graphics/TextureCube.hpp \
+	include/Engine/Graphics/PostEffect.hpp \
+	include/Engine/Graphics/CBuffer.hpp
 
 __top_builddir__lib_libEngine_la_input_HEADERS = \
-	include/Engine/Input/InputManager.hpp
+	include/Engine/Input/InputHandler.hpp
 
 __top_builddir__lib_libEngine_la_tools_HEADERS = \
-	include/Engine/Tools/StringManager.hpp
+	include/Engine/Tools/StringHandler.hpp
 
 __top_builddir__lib_libEngine_la_root_HEADERS = \
 	include/Engine/Object.hpp
 
 __top_builddir__lib_libEngine_la_SOURCES = \
-	src/Input/InputManager.cpp \
+	src/Input/InputHandler.cpp \
 	src/Audio/Sound.cpp \
 	src/Audio/AudioRenderer.cpp \
 	src/Graphics/ShaderProgram.cpp \
 	src/Graphics/Octree.cpp \
-	src/Graphics/Screen.cpp \
 	src/Graphics/Material.cpp \
 	src/Graphics/Texture.cpp \
 	src/Graphics/PlayerCam.cpp \
@@ -77,7 +76,6 @@ __top_builddir__lib_libEngine_la_SOURCES = \
 	src/Graphics/FreeCam.cpp \
 	src/Graphics/Camera.cpp \
 	src/Graphics/Texture2D.cpp \
-	src/Graphics/Window.cpp \
 	src/Graphics/OrthoCamera.cpp \
 	src/Graphics/PerspCamera.cpp \
 	src/Graphics/Skeleton.cpp \
@@ -96,8 +94,10 @@ __top_builddir__lib_libEngine_la_SOURCES = \
 	src/Graphics/GraphicsRenderer.cpp \
 	src/Graphics/Light.cpp \
 	src/Graphics/FrameBuffer.cpp \
-	src/Graphics/ParticlesManager.cpp \
-	src/Tools/StringManager.cpp \
+	src/Graphics/ParticlesHandler.cpp \
+	src/Graphics/PostEffect.cpp \
+	src/Graphics/CBuffer.cpp \
+	src/Tools/StringHandler.cpp \
 	src/Tools/private/AssimpTool.cpp \
 	src/Object.cpp
 
