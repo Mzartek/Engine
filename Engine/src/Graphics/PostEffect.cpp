@@ -10,3 +10,17 @@ Engine::Graphics::PostEffect::PostEffect(const std::shared_ptr<ShaderProgram> &e
 Engine::Graphics::PostEffect::~PostEffect(void)
 {
 }
+
+void Engine::Graphics::PostEffect::display(const std::shared_ptr<CBuffer> &cbuf, GLuint idTexture)
+{
+	cbuf->setAdditiveState();
+
+	glUseProgram(_effectProgram->getId());
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, idTexture);
+
+	glBindVertexArray(Graphics::GraphicsRenderer::Instance().getScreenVertexArray());
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
+}

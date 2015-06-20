@@ -4,6 +4,7 @@
 #include "../Object.hpp"
 #include "GraphicsRenderer.hpp"
 #include "ShaderProgram.hpp"
+#include "CBuffer.hpp"
 
 namespace Engine
 {
@@ -17,6 +18,8 @@ namespace Engine
 		public:
 			PostEffect(const std::shared_ptr<ShaderProgram> &effectProgram);
 			~PostEffect(void);
+
+			void display(const std::shared_ptr<CBuffer> &cbuf, GLuint idTexture);
 		};
 	}
 }
