@@ -28,11 +28,11 @@ int main(int argc, char **argv)
 	Audio::AudioRenderer::Instance();
 
 	std::shared_ptr<Graphics::ShaderProgram> _windowProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
-		"../share/Demo/shader/window/windowVert.glsl",
+		"../share/Demo/shader/screen/screenVert.glsl",
 		NULL,
 		NULL,
 		NULL,
-		"../share/Demo/shader/window/windowFrag.glsl"));
+		"../share/Demo/shader/screen/windowFrag.glsl"));
 	Graphics::GraphicsRenderer::Instance().setShaderProgram(_windowProgram);
 
 	std::shared_ptr<Demo> demo(new Demo);

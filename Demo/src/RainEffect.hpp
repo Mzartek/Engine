@@ -11,7 +11,7 @@ class RainEffect
 private:
 	std::shared_ptr<Graphics::ShaderProgram> _physicsProgram;
 	std::shared_ptr<Graphics::ShaderProgram> _displayProgram;
-	std::shared_ptr<Graphics::ParticlesHandler> _particlesManager;
+	std::shared_ptr<Graphics::ParticlesHandler> _particlesHandler;
 	std::shared_ptr<Audio::Sound> _sound;
 
 public:

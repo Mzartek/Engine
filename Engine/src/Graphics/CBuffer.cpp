@@ -48,7 +48,7 @@ void Engine::Graphics::CBuffer::setNormalState(void) const
 	glDepthMask(GL_FALSE);
 
 	glDisable(GL_STENCIL_TEST);
-
+	
 	glDisable(GL_BLEND);
 
 	glEnable(GL_CULL_FACE);
@@ -71,7 +71,7 @@ void Engine::Graphics::CBuffer::setAdditiveState(void) const
 	glDepthMask(GL_FALSE);
 
 	glDisable(GL_STENCIL_TEST);
-
+	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glBlendEquation(GL_FUNC_ADD);

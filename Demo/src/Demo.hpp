@@ -24,6 +24,7 @@
 #include "FirefliesEffect.hpp"
 #include "TextDisplay.hpp"
 #include "ScreenDisplay.hpp"
+#include "BloomPost.hpp"
 
 using namespace Engine;
 
@@ -45,6 +46,7 @@ private:
 	std::shared_ptr<TorchLight> torchLight;
 	std::shared_ptr<RainEffect> rainEffect;
 	std::shared_ptr<SmokeEffect> smokeEffect;
+	std::shared_ptr<BloomPost> bloomPost;
 
 	std::vector<std::shared_ptr<Graphics::DepthMap>> depthMaps;
 

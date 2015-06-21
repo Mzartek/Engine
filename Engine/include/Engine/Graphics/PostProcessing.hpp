@@ -10,16 +10,18 @@ namespace Engine
 {
 	namespace Graphics
 	{
-		class DLLAPI PostEffect : public Object
+		class DLLAPI PostProcessing : public Object
 		{
 		private:
 			std::shared_ptr<ShaderProgram> _effectProgram;
 
 		public:
-			PostEffect(const std::shared_ptr<ShaderProgram> &effectProgram);
-			~PostEffect(void);
+			PostProcessing(const std::shared_ptr<ShaderProgram> &effectProgram);
+			~PostProcessing(void);
 
 			void display(const std::shared_ptr<CBuffer> &cbuf, GLuint idTexture);
+			void displayAdditive(const std::shared_ptr<CBuffer> &cbuf, GLuint idTexture);
+			void displayTransparent(const std::shared_ptr<CBuffer> &cbuf, GLuint idTexture);
 		};
 	}
 }

@@ -16,6 +16,7 @@ Demo::Demo(void)
 	torchLight = std::shared_ptr<TorchLight>(new TorchLight);
 	rainEffect = std::shared_ptr<RainEffect>(new RainEffect);
 	smokeEffect = std::shared_ptr<SmokeEffect>(new SmokeEffect);
+	bloomPost = std::shared_ptr<BloomPost>(new BloomPost(screenDisplay->getGBuffer()->getWidth(), screenDisplay->getGBuffer()->getHeight()));
 
 	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++)
 	{

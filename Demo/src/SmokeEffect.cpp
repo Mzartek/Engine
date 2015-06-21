@@ -19,8 +19,8 @@ SmokeEffect::SmokeEffect(void)
 		"../share/Demo/shader/smokeParticles/smokeGeom.glsl",
 		"../share/Demo/shader/smokeParticles/smokeFrag.glsl"));
 
-	_particlesManager = std::shared_ptr<Graphics::ParticlesHandler>(new Graphics::ParticlesHandler(_physicsProgram, _displayProgram));
-	_particlesManager->loadTexture("../share/Demo/resources/textures/smoke.png");
+	_particlesHandler = std::shared_ptr<Graphics::ParticlesHandler>(new Graphics::ParticlesHandler(_physicsProgram, _displayProgram));
+	_particlesHandler->loadTexture("../share/Demo/resources/textures/smoke.png");
 
 	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
 	_sound->setGain(0.75f);
@@ -48,19 +48,19 @@ void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles)
 		smokeParticles[i].velocity = 0.2f;
 		smokeParticles[i].life = (GLfloat)(rand() % 100);
 	}
-	_particlesManager->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
+	_particlesHandler->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
 	this->setPosition(position);
 }
 
 void SmokeEffect::setPosition(const glm::vec3 &pos)
 {
-	_particlesManager->setPosition(pos);
+	_particlesHandler->setPosition(pos);
 	_sound->setPosition(pos);
 }
 
 const std::shared_ptr<Graphics::ParticlesHandler> &SmokeEffect::getParticlesHandler(void) const
 {
-	return _particlesManager;
+	return _particlesHandler;
 }
 
 const std::shared_ptr<Audio::Sound> &SmokeEffect::getSound(void) const
@@ -70,5 +70,5 @@ const std::shared_ptr<Audio::Sound> &SmokeEffect::getSound(void) const
 
 void SmokeEffect::updateParticles(void) const
 {
-	_particlesManager->updateParticles();
+	_particlesHandler->updateParticles();
 }

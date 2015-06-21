@@ -38,7 +38,9 @@ void Demo::display(GLfloat state)
 	rainEffect->getParticlesHandler()->display(screenDisplay->getGBuffer(), camera);
 	smokeEffect->getParticlesHandler()->display(screenDisplay->getGBuffer(), camera);
 
-	Graphics::GraphicsRenderer::Instance().display(screenDisplay->getGBuffer()->getIdTexture(Graphics::GBuffer::BACKGROUND_ID), glm::vec4(1, 1, 1, 1));
+	bloomPost->applyFilter(screenDisplay->getGBuffer());
+
+	Graphics::GraphicsRenderer::Instance().display(bloomPost->getTextureId(), glm::vec4(1, 1, 1, 1));
 }
 
 void Demo::state(long long time)
