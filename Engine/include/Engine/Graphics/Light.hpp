@@ -3,6 +3,7 @@
 
 #include "../Object.hpp"
 
+#include "Screen.hpp"
 #include "Buffer.hpp"
 #include "DepthMap.hpp"
 #include "ShaderProgram.hpp"

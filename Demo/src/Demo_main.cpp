@@ -6,41 +6,41 @@ void Demo::display(GLfloat state)
 
 	// Clear Buffers
 	Graphics::GraphicsRenderer::Instance().clear();
-	screenDisplay->getGBuffer()->clear();
+	gbuffer->clear();
 
-	nightBox->display(screenDisplay->getGBuffer(), camera);
+	nightBox->display(gbuffer, camera);
 
 	// Opaque Object
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
-		(*it)->display(screenDisplay->getGBuffer(), camera);
+		(*it)->display(gbuffer, camera);
 
 	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->clear();
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMaps(depthMaps, moonLight->getLight());
-	moonLight->getLight()->display(screenDisplay->getGBuffer(), camera, depthMaps);
+	moonLight->getLight()->display(gbuffer, camera, depthMaps);
 
 	depthMaps[0]->clear();
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
 		(*it)->displayDepthMap(depthMaps[0], torchLight->getLight());
-	torchLight->getLight()->display(screenDisplay->getGBuffer(), camera, depthMaps[0]);
+	torchLight->getLight()->display(gbuffer, camera, depthMaps[0]);
 
-	screenDisplay->getGBuffer()->background();
+	Graphics::Screen::Instance().displayGBufferBackground(gbuffer, backgroundProgram);
 
 	// Transparent Object
 	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
-		(*it)->displayTransparent(screenDisplay->getGBuffer(), camera);
-	moonLight->getLight()->display(screenDisplay->getGBuffer(), camera);
-	torchLight->getLight()->display(screenDisplay->getGBuffer(), camera);
+		(*it)->displayTransparent(gbuffer, camera);
+	moonLight->getLight()->display(gbuffer, camera);
+	torchLight->getLight()->display(gbuffer, camera);
 
-	screenDisplay->getGBuffer()->background();
+	Graphics::Screen::Instance().displayGBufferBackground(gbuffer, backgroundProgram);
 
 	// Particles
-	rainEffect->getParticlesHandler()->display(screenDisplay->getGBuffer(), camera);
-	smokeEffect->getParticlesHandler()->display(screenDisplay->getGBuffer(), camera);
+	rainEffect->getParticlesHandler()->display(gbuffer, camera);
+	smokeEffect->getParticlesHandler()->display(gbuffer, camera);
 
-	bloomPost->applyFilter(screenDisplay->getGBuffer());
+	bloomPost->applyFilter(gbuffer);
 
-	Graphics::GraphicsRenderer::Instance().display(bloomPost->getTextureId(), glm::vec4(1, 1, 1, 1));
+	Graphics::Screen::Instance().displayOnScreen(bloomPost->getCBuffer(), glm::vec4(1, 1, 1, 1), windowProgram);
 }
 
 void Demo::state(long long time)

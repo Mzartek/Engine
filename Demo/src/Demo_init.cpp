@@ -2,7 +2,24 @@
 
 Demo::Demo(void)
 {
-	screenDisplay = std::shared_ptr<ScreenDisplay>(new ScreenDisplay);
+	backgroundProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+		"../share/Demo/shader/background/backgroundVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/background/backgroundFrag.glsl"));
+
+	windowProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+		"../share/Demo/shader/screen/screenVert.glsl",
+		NULL,
+		NULL,
+		NULL,
+		"../share/Demo/shader/screen/windowFrag.glsl"));
+	
+	gbuffer = std::shared_ptr<Graphics::GBuffer>(new Graphics::GBuffer);
+	gbuffer->config(
+		Graphics::GraphicsRenderer::Instance().getWidth(),
+		Graphics::GraphicsRenderer::Instance().getHeight());
 
 	camera = std::shared_ptr<Graphics::FreeCam>(new Graphics::FreeCam);
 
@@ -16,7 +33,9 @@ Demo::Demo(void)
 	torchLight = std::shared_ptr<TorchLight>(new TorchLight);
 	rainEffect = std::shared_ptr<RainEffect>(new RainEffect);
 	smokeEffect = std::shared_ptr<SmokeEffect>(new SmokeEffect);
-	bloomPost = std::shared_ptr<BloomPost>(new BloomPost(screenDisplay->getGBuffer()->getWidth(), screenDisplay->getGBuffer()->getHeight()));
+	bloomPost = std::shared_ptr<BloomPost>(new BloomPost(
+		Graphics::GraphicsRenderer::Instance().getWidth(),
+		Graphics::GraphicsRenderer::Instance().getHeight()));
 
 	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++)
 	{

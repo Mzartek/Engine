@@ -10,7 +10,7 @@ Engine::Graphics::GraphicsRenderer &Engine::Graphics::GraphicsRenderer::Instance
 }
 
 Engine::Graphics::GraphicsRenderer::GraphicsRenderer(void)
-	: _Window(NULL), _GLContext(NULL), _idVAO(0)
+	: _Window(NULL), _GLContext(NULL)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -38,7 +38,6 @@ Engine::Graphics::GraphicsRenderer::GraphicsRenderer(void)
 
 Engine::Graphics::GraphicsRenderer::~GraphicsRenderer(void)
 {
-	if (_idVAO) glDeleteVertexArrays(1, &_idVAO);
 	if (_GLContext) SDL_GL_DeleteContext(_GLContext);
 	if (_Window) SDL_DestroyWindow(_Window);
 	TTF_Quit();
@@ -49,7 +48,6 @@ void Engine::Graphics::GraphicsRenderer::initGLWindow(const GLchar *title, GLint
 {
 	Uint32 flags;
 
-	if (_idVAO) glDeleteVertexArrays(1, &_idVAO);
 	if (_GLContext) SDL_GL_DeleteContext(_GLContext);
 	if (_Window) SDL_DestroyWindow(_Window);
 
@@ -86,42 +84,29 @@ void Engine::Graphics::GraphicsRenderer::initGLWindow(const GLchar *title, GLint
 #endif
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-
-	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_colorBuffer = std::shared_ptr<Buffer>(new Buffer);
-
-	GLfloat vertex[] = {
-		-1, -1,
-		0, 0,
-
-		1, -1,
-		1, 0,
-
-		-1, 1,
-		0, 1,
-
-		1, 1,
-		1, 1,
-	};
-	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
-	_colorBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
-
-	glGenVertexArrays(1, &_idVAO);
-	glBindVertexArray(_idVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(2 * sizeof(GLfloat)));
-	glBindVertexArray(0);
 }
 
-void Engine::Graphics::GraphicsRenderer::setShaderProgram(const std::shared_ptr<ShaderProgram> &windowProgram)
+void Engine::Graphics::GraphicsRenderer::setState(void) const
 {
-	_windowProgram = windowProgram;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	glUseProgram(_windowProgram->getId());
-	glUniform1i(glGetUniformLocation(_windowProgram->getId(), "inputTexture"), 0);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
+
+	glDisable(GL_STENCIL_TEST);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquation(GL_FUNC_ADD);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+
+	glViewport(0, 0, _width, _height);
+	glDepthRange(0.0, 1.0);
 }
 
 GLuint Engine::Graphics::GraphicsRenderer::getWidth(void) const
@@ -132,11 +117,6 @@ GLuint Engine::Graphics::GraphicsRenderer::getWidth(void) const
 GLuint Engine::Graphics::GraphicsRenderer::getHeight(void) const
 {
 	return _height;
-}
-
-GLuint Engine::Graphics::GraphicsRenderer::getScreenVertexArray(void) const
-{
-	return _idVAO;
 }
 
 void Engine::Graphics::GraphicsRenderer::mainLoop(GameLoop *gameLoop)
@@ -194,43 +174,6 @@ void Engine::Graphics::GraphicsRenderer::mainLoop(GameLoop *gameLoop)
 void Engine::Graphics::GraphicsRenderer::stopLoop(void)
 {
 	_stopLoop = true;
-}
-
-void Engine::Graphics::GraphicsRenderer::display(GLuint idTexture, const glm::vec4 &color) const
-{
-	// State
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
-
-	glDisable(GL_STENCIL_TEST);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBlendEquation(GL_FUNC_ADD);
-
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-
-	glViewport(0, 0, _width, _height);
-	glDepthRange(0.0, 1.0);
-
-	// Draw
-	glUseProgram(_windowProgram->getId());
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, idTexture);
-
-	_colorBuffer->updateStoreMap(glm::value_ptr(color));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer->getId());
-
-	glBindVertexArray(_idVAO);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
 }
 
 void Engine::Graphics::GraphicsRenderer::clear(void) const

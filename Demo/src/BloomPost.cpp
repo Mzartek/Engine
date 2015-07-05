@@ -25,10 +25,6 @@ BloomPost::BloomPost(GLuint width, GLuint height)
 		NULL,
 		"../share/Demo/shader/screen/gaussianFrag.glsl"));
 
-	_copyProcessing = std::shared_ptr<Graphics::PostProcessing>(new Graphics::PostProcessing(_copyProgram));
-	_brightpassProcessing = std::shared_ptr<Graphics::PostProcessing>(new Graphics::PostProcessing(_brightpassProgram));
-	_gaussianProcessing = std::shared_ptr<Graphics::PostProcessing>(new Graphics::PostProcessing(_gaussianProgram));
-
 	_cbuffer[0]->config(width, height);
 	_cbuffer[1]->config(width, height);
 
@@ -51,26 +47,26 @@ void BloomPost::applyFilter(const std::shared_ptr<Graphics::GBuffer> &gbuf)
 {
 	for (GLuint i = 0; i < NUM_CBUFFER; i++) _cbuffer[i]->clear();
 
-	_copyProcessing->display(_cbuffer[0], gbuf->getIdTexture(Graphics::GBuffer::BACKGROUND_ID));
-	_brightpassProcessing->display(_cbuffer[1], gbuf->getIdTexture(Graphics::GBuffer::BACKGROUND_ID));
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[0], gbuf, _copyProgram);
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[1], gbuf, _brightpassProgram);
 
-	_copyProcessing->display(_cbuffer[2], _cbuffer[1]->getIdTexture());
-	_copyProcessing->display(_cbuffer[3], _cbuffer[1]->getIdTexture());
-	_copyProcessing->display(_cbuffer[4], _cbuffer[1]->getIdTexture());
-	_copyProcessing->display(_cbuffer[5], _cbuffer[1]->getIdTexture());
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[2], _cbuffer[1], _copyProgram);
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[3], _cbuffer[1], _copyProgram);
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[4], _cbuffer[1], _copyProgram);
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[5], _cbuffer[1], _copyProgram);
 
-	_gaussianProcessing->display(_cbuffer[6], _cbuffer[2]->getIdTexture());
-	_gaussianProcessing->display(_cbuffer[7], _cbuffer[3]->getIdTexture());
-	_gaussianProcessing->display(_cbuffer[8], _cbuffer[4]->getIdTexture());
-	_gaussianProcessing->display(_cbuffer[9], _cbuffer[5]->getIdTexture());
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[6], _cbuffer[2], _gaussianProgram);
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[7], _cbuffer[3], _gaussianProgram);
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[8], _cbuffer[4], _gaussianProgram);
+	Graphics::Screen::Instance().displayOnCBuffer(_cbuffer[9], _cbuffer[5], _gaussianProgram);
 
-	_copyProcessing->displayAdditive(_cbuffer[0], _cbuffer[6]->getIdTexture());
-	_copyProcessing->displayAdditive(_cbuffer[0], _cbuffer[7]->getIdTexture());
-	_copyProcessing->displayAdditive(_cbuffer[0], _cbuffer[8]->getIdTexture());
-	_copyProcessing->displayAdditive(_cbuffer[0], _cbuffer[9]->getIdTexture());
+	Graphics::Screen::Instance().displayOnCBufferAdditive(_cbuffer[0], _cbuffer[6], _copyProgram);
+	Graphics::Screen::Instance().displayOnCBufferAdditive(_cbuffer[0], _cbuffer[7], _copyProgram);
+	Graphics::Screen::Instance().displayOnCBufferAdditive(_cbuffer[0], _cbuffer[8], _copyProgram);
+	Graphics::Screen::Instance().displayOnCBufferAdditive(_cbuffer[0], _cbuffer[9], _copyProgram);
 }
 
-GLuint BloomPost::getTextureId(void)
+const std::shared_ptr<Graphics::CBuffer> &BloomPost::getCBuffer(void)
 {
-	return _cbuffer[0]->getIdTexture();
+	return _cbuffer[0];
 }

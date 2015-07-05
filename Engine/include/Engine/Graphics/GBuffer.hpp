@@ -1,7 +1,6 @@
 #ifndef GBUFFER_HEADER
 #define GBUFFER_HEADER
 
-#include "GraphicsRenderer.hpp"
 #include "FrameBuffer.hpp"
 #include "Buffer.hpp"
 #include "ShaderProgram.hpp"
@@ -25,10 +24,9 @@ namespace Engine
 
 		private:
 			GLuint _idTexture[NUM_TEX];
-			std::shared_ptr<ShaderProgram> _backgroundProgram;
 
 		public:
-			GBuffer(const std::shared_ptr<ShaderProgram> &backgroundProgram);
+			GBuffer(void);
 			~GBuffer(void);
 			void config(GLuint width, GLuint height);
 			GLuint getIdTexture(GLuint num) const;
@@ -36,8 +34,9 @@ namespace Engine
 			void setGeometryState(void) const;
 			void setLightState(void) const;
 			void setParticlesState(void) const;
-			void background(void) const;
+			void setBackgroundState(void) const;
 			void clear(void) const;
+			void clearLight(void) const;
 		};
 	}
 }

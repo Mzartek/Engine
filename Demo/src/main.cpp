@@ -27,14 +27,6 @@ int main(int argc, char **argv)
 	Graphics::GraphicsRenderer::Instance().initGLWindow("Demo OpenGL", width, height, false);
 	Audio::AudioRenderer::Instance();
 
-	std::shared_ptr<Graphics::ShaderProgram> _windowProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
-		"../share/Demo/shader/screen/screenVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/screen/windowFrag.glsl"));
-	Graphics::GraphicsRenderer::Instance().setShaderProgram(_windowProgram);
-
 	std::shared_ptr<Demo> demo(new Demo);
 	demo->launch();
 

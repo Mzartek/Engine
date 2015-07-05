@@ -3,9 +3,6 @@
 
 #include "../Object.hpp"
 
-#include "Engine/Graphics/Buffer.hpp"
-#include "Engine/Graphics/ShaderProgram.hpp"
-
 namespace Engine
 {
 	namespace Graphics
@@ -31,12 +28,6 @@ namespace Engine
 			GLuint _width;
 			GLuint _height;
 
-			std::shared_ptr<Buffer> _vertexBuffer;
-			std::shared_ptr<Buffer> _colorBuffer;
-			GLuint _idVAO;
-
-			std::shared_ptr<ShaderProgram> _windowProgram;
-
 		public:
 			static GraphicsRenderer &Instance(void);
 
@@ -46,15 +37,14 @@ namespace Engine
 
 		public:
 			void initGLWindow(const GLchar *title, GLint width, GLint height, bool fullScreen);
-			void setShaderProgram(const std::shared_ptr<ShaderProgram> &windowProgram);
+
+			void setState(void) const;
 
 			GLuint getWidth(void) const;
 			GLuint getHeight(void) const;
-			GLuint getScreenVertexArray(void) const;
 
 			void mainLoop(GameLoop *gameLoop);
 			void stopLoop(void);
-			void display(GLuint idTexture, const glm::vec4 &color) const;
 			void clear(void) const;
 		};
 	}

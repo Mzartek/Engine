@@ -23,7 +23,6 @@
 #include "ExplosionEffect.hpp"
 #include "FirefliesEffect.hpp"
 #include "TextDisplay.hpp"
-#include "ScreenDisplay.hpp"
 #include "BloomPost.hpp"
 
 using namespace Engine;
@@ -31,8 +30,10 @@ using namespace Engine;
 class Demo : public Graphics::GameLoop
 {
 private:
-	// System
-	std::shared_ptr<ScreenDisplay> screenDisplay;
+	std::shared_ptr<Graphics::ShaderProgram> backgroundProgram;
+	std::shared_ptr<Graphics::ShaderProgram> windowProgram;
+
+	std::shared_ptr<Graphics::GBuffer> gbuffer;
 
 	std::shared_ptr<Graphics::FreeCam> camera;
 

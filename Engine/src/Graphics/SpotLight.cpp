@@ -116,7 +116,7 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(Graphics::GraphicsRenderer::Instance().getScreenVertexArray());
+	glBindVertexArray(Graphics::Screen::Instance().getVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }
@@ -151,7 +151,7 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(Graphics::GraphicsRenderer::Instance().getScreenVertexArray());
+	glBindVertexArray(Graphics::Screen::Instance().getVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }

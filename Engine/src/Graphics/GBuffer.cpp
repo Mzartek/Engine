@@ -1,13 +1,8 @@
 #include <Engine/Graphics/GBuffer.hpp>
 
-Engine::Graphics::GBuffer::GBuffer(const std::shared_ptr<ShaderProgram> &backgroundProgram)
-	: _backgroundProgram(backgroundProgram)
+Engine::Graphics::GBuffer::GBuffer(void)
 {
 	memset(_idTexture, 0, sizeof _idTexture);
-
-	glUseProgram(_backgroundProgram->getId());
-	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "materialTexture"), 0);
-	glUniform1i(glGetUniformLocation(_backgroundProgram->getId(), "lightTexture"), 1);
 }
 
 Engine::Graphics::GBuffer::~GBuffer(void)
@@ -169,9 +164,8 @@ void Engine::Graphics::GBuffer::setParticlesState(void) const
 	glDepthRange(0.0, 1.0);
 }
 
-void Engine::Graphics::GBuffer::background(void) const
+void Engine::Graphics::GBuffer::setBackgroundState(void) const
 {
-	// State
 	glBindFramebuffer(GL_FRAMEBUFFER, _idFBO);
 
 	glDrawBuffer(GL_COLOR_ATTACHMENT3);
@@ -194,28 +188,6 @@ void Engine::Graphics::GBuffer::background(void) const
 
 	glViewport(0, 0, _width, _height);
 	glDepthRange(0.0, 1.0);
-
-	// Draw
-	glUseProgram(_backgroundProgram->getId());
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _idTexture[MATERIAL_ID]);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _idTexture[LIGHT_ID]);
-
-	glBindVertexArray(Graphics::GraphicsRenderer::Instance().getScreenVertexArray());
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-
-	// Clear
-	glDrawBuffer(GL_COLOR_ATTACHMENT2);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Engine::Graphics::GBuffer::clear(void) const
@@ -225,9 +197,9 @@ void Engine::Graphics::GBuffer::clear(void) const
 	const GLenum colorAttachment[]
 	{
 		GL_COLOR_ATTACHMENT0,
-			GL_COLOR_ATTACHMENT1,
-			GL_COLOR_ATTACHMENT2,
-			GL_COLOR_ATTACHMENT3,
+		GL_COLOR_ATTACHMENT1,
+		GL_COLOR_ATTACHMENT2,
+		GL_COLOR_ATTACHMENT3,
 	};
 	glDrawBuffers(4, colorAttachment);
 
@@ -240,4 +212,15 @@ void Engine::Graphics::GBuffer::clear(void) const
 	glStencilMask(0xFF);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+void Engine::Graphics::GBuffer::clearLight(void) const
+{
+	glDrawBuffer(GL_COLOR_ATTACHMENT2);
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+	glClear(GL_COLOR_BUFFER_BIT);
 }
