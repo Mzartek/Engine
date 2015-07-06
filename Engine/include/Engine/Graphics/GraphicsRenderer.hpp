@@ -36,7 +36,7 @@ namespace Engine
 			~GraphicsRenderer(void);
 
 		public:
-			void initGLWindow(const GLchar *title, GLint width, GLint height, bool fullScreen);
+			void init(const GLchar *title, GLint width, GLint height, bool fullScreen);
 
 			void setState(void) const;
 

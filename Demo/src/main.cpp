@@ -24,9 +24,9 @@ int main(int argc, char **argv)
 	get_resolution();
 
 	// We call the instance for init
-	Graphics::GraphicsRenderer::Instance().initGLWindow("Demo OpenGL", width, height, false);
+	Graphics::GraphicsRenderer::Instance().init("Demo OpenGL", width, height, false);
 	Audio::AudioRenderer::Instance();
-
+	
 	std::shared_ptr<Demo> demo(new Demo);
 	demo->launch();
 

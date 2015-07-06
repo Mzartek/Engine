@@ -31,8 +31,8 @@ Engine::Graphics::GraphicsRenderer::GraphicsRenderer(void)
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 }
 
@@ -44,7 +44,7 @@ Engine::Graphics::GraphicsRenderer::~GraphicsRenderer(void)
 	SDL_Quit();
 }
 
-void Engine::Graphics::GraphicsRenderer::initGLWindow(const GLchar *title, GLint width, GLint height, bool fullScreen)
+void Engine::Graphics::GraphicsRenderer::init(const GLchar *title, GLint width, GLint height, bool fullScreen)
 {
 	Uint32 flags;
 
