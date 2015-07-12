@@ -13,7 +13,7 @@ namespace Engine
 		class DLLAPI Material : public Object
 		{
 		private:
-			struct mat
+			struct
 			{
 				glm::vec3 ALIGN(16) diffuse;
 				glm::vec3 ALIGN(16) specular;
@@ -23,7 +23,7 @@ namespace Engine
 				GLfloat ALIGN(16) opacity;
 			} _mat;
 
-			struct state
+			struct
 			{
 				GLint ALIGN(16) hasDiffuseTexture;
 				GLint hasSpecularTexture;

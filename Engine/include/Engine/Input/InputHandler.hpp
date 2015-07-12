@@ -11,7 +11,7 @@ namespace Engine
 		{
 		private:
 			const GLubyte *_keyState;
-			struct MOUSESTATE
+			struct
 			{
 				GLint x;
 				GLint y;
