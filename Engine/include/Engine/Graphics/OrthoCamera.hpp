@@ -10,8 +10,12 @@ namespace Engine
 		class DLLAPI OrthoCamera : public Camera
 		{
 		protected:
-			glm::vec3 _position;
-			glm::vec3 _direction;
+			struct
+			{
+				glm::vec3 ALIGN(16) position;
+				glm::vec3 ALIGN(16) direction;
+			} _cameraInfo;
+
 			GLfloat _left;
 			GLfloat _right;
 			GLfloat _bottom;
@@ -22,9 +26,11 @@ namespace Engine
 		public:
 			OrthoCamera(void);
 			~OrthoCamera(void);
+
 			void setPosition(const glm::vec3 &pos);
 			void setDirection(const glm::vec3 &dir);
 			void setOrthogonal(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar);
+
 			void updateData(void);
 		};
 	}

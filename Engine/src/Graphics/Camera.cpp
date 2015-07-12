@@ -2,6 +2,7 @@
 
 Engine::Graphics::Camera::Camera(void)
 {
+	_cameraInfoBuffer = std::shared_ptr<Buffer>(new Buffer);
 }
 
 Engine::Graphics::Camera::~Camera(void)
@@ -26,4 +27,9 @@ const glm::mat4 &Engine::Graphics::Camera::getVPMatrix(void) const
 const glm::mat4 &Engine::Graphics::Camera::getIVPMatrix(void) const
 {
 	return _IVPMatrix;
+}
+
+const std::shared_ptr<Engine::Graphics::Buffer> &Engine::Graphics::Camera::getCameraInfoBuffer(void) const
+{
+	return _cameraInfoBuffer;
 }

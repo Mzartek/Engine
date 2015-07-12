@@ -2,10 +2,12 @@
 
 Engine::Graphics::PerspCamera::PerspCamera(void)
 {
-	_pcamera = glm::vec3(0, 0, 0);
-	_vforward = glm::vec3(0, 0, 1);
-	_vleft = glm::normalize(glm::vec3(_vforward.z, 0.0f, -_vforward.x));
-	_vup = glm::cross(_vforward, _vleft);
+	_cameraInfo.position = glm::vec3(0, 0, 0);
+	_cameraInfo.forward = glm::vec3(0, 0, 1);
+	_cameraInfo.left = glm::normalize(glm::vec3(_cameraInfo.forward.z, 0.0f, -_cameraInfo.forward.x));
+	_cameraInfo.up = glm::cross(_cameraInfo.forward, _cameraInfo.left);
+
+	_cameraInfoBuffer->createStore(GL_UNIFORM_BUFFER, &_cameraInfo, sizeof _cameraInfo, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::PerspCamera::~PerspCamera(void)
@@ -14,23 +16,23 @@ Engine::Graphics::PerspCamera::~PerspCamera(void)
 
 void Engine::Graphics::PerspCamera::setCameraPosition(const glm::vec3 &pos)
 {
-	_pcamera = pos;
+	_cameraInfo.position = pos;
 }
 
 void Engine::Graphics::PerspCamera::setAngle(GLfloat atheta, GLfloat aphi)
 {
 	GLfloat tmp = cosf(aphi);
-	_vforward = glm::vec3(tmp * sinf(atheta), sinf(aphi), tmp * cosf(atheta));
-	_vleft = glm::normalize(glm::vec3(_vforward.z, 0.0f, -_vforward.x));
-	_vup = glm::cross(_vforward, _vleft);
+	_cameraInfo.forward = glm::vec3(tmp * sinf(atheta), sinf(aphi), tmp * cosf(atheta));
+	_cameraInfo.left = glm::normalize(glm::vec3(_cameraInfo.forward.z, 0.0f, -_cameraInfo.forward.x));
+	_cameraInfo.up = glm::cross(_cameraInfo.forward, _cameraInfo.left);
 }
 
 void Engine::Graphics::PerspCamera::setPositionAndTarget(const glm::vec3 &pos, const glm::vec3 &tar)
 {
-	_pcamera = pos;
-	_vforward = glm::normalize(tar - pos);
-	_vleft = glm::normalize(glm::vec3(_vforward.z, 0.0f, -_vforward.x));
-	_vup = glm::cross(_vforward, _vleft);
+	_cameraInfo.position = pos;
+	_cameraInfo.forward = glm::normalize(tar - pos);
+	_cameraInfo.left = glm::normalize(glm::vec3(_cameraInfo.forward.z, 0.0f, -_cameraInfo.forward.x));
+	_cameraInfo.up = glm::cross(_cameraInfo.forward, _cameraInfo.left);
 }
 
 void Engine::Graphics::PerspCamera::setPerspective(GLfloat fov, GLuint width, GLuint height, GLfloat n, GLfloat f)
@@ -50,22 +52,22 @@ void Engine::Graphics::PerspCamera::setPerspective(GLfloat fov, GLuint width, GL
 
 const glm::vec3 &Engine::Graphics::PerspCamera::getCameraPosition(void) const
 {
-	return _pcamera;
+	return _cameraInfo.position;
 }
 
 const glm::vec3 &Engine::Graphics::PerspCamera::getForwardVector(void) const
 {
-	return _vforward;
+	return _cameraInfo.forward;
 }
 
 const glm::vec3 &Engine::Graphics::PerspCamera::getLeftVector(void) const
 {
-	return _vleft;
+	return _cameraInfo.left;
 }
 
 const glm::vec3 &Engine::Graphics::PerspCamera::getUpVector(void) const
 {
-	return _vup;
+	return _cameraInfo.up;
 }
 
 GLfloat Engine::Graphics::PerspCamera::getNear(void) const
@@ -100,9 +102,11 @@ const glm::vec3 &Engine::Graphics::PerspCamera::getFrusSpherePosition(void) cons
 
 void Engine::Graphics::PerspCamera::updateData(void)
 {
-	_frusSpherePosition = _vforward * _frusSphereDistance;
+	_frusSpherePosition = _cameraInfo.forward * _frusSphereDistance;
 
-	_viewMatrix = glm::lookAt(_pcamera, _pcamera + _vforward, _vup);
+	_viewMatrix = glm::lookAt(_cameraInfo.position, _cameraInfo.position + _cameraInfo.forward, _cameraInfo.up);
 	_VPMatrix = _projectionMatrix * _viewMatrix;
 	_IVPMatrix = glm::inverse(_VPMatrix);
+
+	_cameraInfoBuffer->updateStoreMap(&_cameraInfo);
 }

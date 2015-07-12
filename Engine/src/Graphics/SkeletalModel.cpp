@@ -87,13 +87,7 @@ void Engine::Graphics::SkeletalModel::display(const std::shared_ptr<GBuffer> &gb
 	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
-
-	_camera.position = cam->getCameraPosition();
-	_camera.forward = cam->getForwardVector();
-	_camera.left = cam->getLeftVector();
-	_camera.up = cam->getUpVector();
-	_cameraBuffer->updateStoreMap(&_camera);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, cam->getCameraInfoBuffer()->getId());
 
 	for (GLuint i = 0; i < _tMesh->size(); i++)
 		if ((*_tMesh)[i]->getMaterial()->getOpacity() == 1.0f)
@@ -120,13 +114,7 @@ void Engine::Graphics::SkeletalModel::displayTransparent(const std::shared_ptr<G
 	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
-
-	_camera.position = cam->getCameraPosition();
-	_camera.forward = cam->getForwardVector();
-	_camera.left = cam->getLeftVector();
-	_camera.up = cam->getUpVector();
-	_cameraBuffer->updateStoreMap(&_camera);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _cameraBuffer->getId());
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, cam->getCameraInfoBuffer()->getId());
 
 	for (GLuint i = 0; i < _tMesh->size(); i++)
 		if ((*_tMesh)[i]->getMaterial()->getOpacity() < 1.0f)

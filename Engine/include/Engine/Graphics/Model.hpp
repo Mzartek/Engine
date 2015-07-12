@@ -32,20 +32,11 @@ namespace Engine
 			void genMatNormal(void);
 
 		protected:
-			struct
-			{
-				glm::vec3 ALIGN(16) position;
-				glm::vec3 ALIGN(16) forward;
-				glm::vec3 ALIGN(16) left;
-				glm::vec3 ALIGN(16) up;
-			} _camera;
-
 			GLboolean _isMirror;
 
 			std::vector<std::shared_ptr<Mesh>> *_tMesh;
 
 			std::shared_ptr<Buffer> _matrixBuffer;
-			std::shared_ptr<Buffer> _cameraBuffer;
 
 			glm::mat4 _modelMatrix;
 			glm::mat4 _normalMatrix;

@@ -23,9 +23,6 @@ Engine::Graphics::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, c
 
 	_tMesh = new std::vector < std::shared_ptr<Mesh> > ;
 	_matrixBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_cameraBuffer = std::shared_ptr<Buffer>(new Buffer);
-
-	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "diffuseTex"), 0);
@@ -52,9 +49,6 @@ Engine::Graphics::Model::Model(const std::shared_ptr<Model> &model, const std::s
 
 	_tMesh = model->_tMesh;
 	_matrixBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_cameraBuffer = std::shared_ptr<Buffer>(new Buffer);
-
-	_cameraBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _camera, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "diffuseTex"), 0);

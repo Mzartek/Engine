@@ -17,16 +17,16 @@ void Engine::Graphics::PlayerCam::keyboardMove(GLboolean f, GLboolean b, GLboole
 {
 	if (f)
 	{
-		_pcamera.x -= _vleft.z * _speed;
-		_pcamera.z += _vleft.x * _speed;
+		_cameraInfo.position.x -= _cameraInfo.left.z * _speed;
+		_cameraInfo.position.z += _cameraInfo.left.x * _speed;
 	}
 	if (b)
 	{
-		_pcamera.x += _vleft.z * _speed;
-		_pcamera.z -= _vleft.x * _speed;
+		_cameraInfo.position.x += _cameraInfo.left.z * _speed;
+		_cameraInfo.position.z -= _cameraInfo.left.x * _speed;
 	}
 	if (l)
-		_pcamera += _vleft * _speed;
+		_cameraInfo.position += _cameraInfo.left * _speed;
 	if (r)
-		_pcamera -= _vleft * _speed;
+		_cameraInfo.position -= _cameraInfo.left * _speed;
 }

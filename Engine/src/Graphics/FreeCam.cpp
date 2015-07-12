@@ -16,11 +16,11 @@ Engine::Graphics::FreeCam::~FreeCam(void)
 void Engine::Graphics::FreeCam::keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r)
 {
 	if (f)
-		_pcamera += _vforward * _speed;
+		_cameraInfo.position += _cameraInfo.forward * _speed;
 	if (b)
-		_pcamera -= _vforward * _speed;
+		_cameraInfo.position -= _cameraInfo.forward * _speed;
 	if (l)
-		_pcamera += _vleft * _speed;
+		_cameraInfo.position += _cameraInfo.left * _speed;
 	if (r)
-		_pcamera -= _vleft * _speed;
+		_cameraInfo.position -= _cameraInfo.left * _speed;
 }

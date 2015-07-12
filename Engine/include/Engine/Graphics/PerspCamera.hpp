@@ -10,10 +10,13 @@ namespace Engine
 		class DLLAPI PerspCamera : public Camera
 		{
 		protected:
-			glm::vec3 _pcamera;
-			glm::vec3 _vforward;
-			glm::vec3 _vleft;
-			glm::vec3 _vup;
+			struct
+			{
+				glm::vec3 ALIGN(16) position;
+				glm::vec3 ALIGN(16) forward;
+				glm::vec3 ALIGN(16) left;
+				glm::vec3 ALIGN(16) up;
+			} _cameraInfo;
 
 			GLfloat _near;
 			GLfloat _far;
