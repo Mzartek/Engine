@@ -32,8 +32,7 @@ void Engine::Graphics::TextArray::setFont(const GLchar *font, GLuint size, GLuby
 	_font = TTF_OpenFont(font, size);
 	if (_font == NULL)
 	{
-		std::cerr << "Error while loading fontFile: " << font << std::endl;
-		exit(1);
+		throw std::exception(std::string("Error while loading fontFile: " + std::string(font)).c_str());
 	}
 
 	_color.r = b;

@@ -8,8 +8,7 @@ const aiScene *Engine::ToolsPrivate::openFile(Assimp::Importer &importer, const 
 		std::string error = "Failed to load model File: ";
 		error.append(inFile + '\n');
 		error.append(importer.GetErrorString());
-		std::cerr << error << std::endl;
-		exit(1);
+		throw std::exception(error.c_str());
 	}
 
 	return pScene;
@@ -248,8 +247,7 @@ std::vector<std::shared_ptr<Engine::Graphics::Bone>> Engine::ToolsPrivate::loadB
 			}
 			else
 			{
-				std::cerr << "No more space for bones" << std::endl;
-				exit(1);
+				throw std::exception("No more space for bones");
 			}
 		}
 

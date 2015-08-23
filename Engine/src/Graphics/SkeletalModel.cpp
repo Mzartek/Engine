@@ -24,8 +24,7 @@ void Engine::Graphics::SkeletalModel::loadFromFile(const GLchar *inFile, const G
 {
 	if (_isMirror == GL_TRUE)
 	{
-		std::cerr << "Error Model configuration" << std::endl;
-		exit(1);
+		throw std::exception("Error Model configuration");
 	}
 
 	_tMesh->clear();
@@ -34,8 +33,7 @@ void Engine::Graphics::SkeletalModel::loadFromFile(const GLchar *inFile, const G
 	const aiScene *pScene = ToolsPrivate::openFile(importer, inFile);
 	if (!pScene->HasAnimations())
 	{
-		std::cerr << "The model is not animated" << std::endl;
-		exit(1);
+		throw std::exception("The model is not animated");
 	}
 
 	try
@@ -44,8 +42,7 @@ void Engine::Graphics::SkeletalModel::loadFromFile(const GLchar *inFile, const G
 	}
 	catch (std::exception exception)
 	{
-		std::cerr << inFile << " No node " << node_name << std::endl;
-		exit(1);
+		throw std::exception(std::string(inFile + std::string(" No node ") + node_name).c_str());
 	}
 
 	GLuint bone_index = 0;
@@ -172,8 +169,7 @@ void Engine::Graphics::SkeletalModel::displayDepthMaps(const std::vector<std::sh
 {
 	if (depthMaps.size() != DirLight::CASCADED_LEVEL)
 	{
-		std::cerr << "Wrong vector of depthMap size" << std::endl;
-		exit(1);
+		throw std::invalid_argument("Wrong vector of depthMap size");
 	}
 
 	checkMatrix();

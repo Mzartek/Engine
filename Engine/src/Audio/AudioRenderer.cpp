@@ -11,15 +11,13 @@ Engine::Audio::AudioRenderer::AudioRenderer(void)
 	_device = alcOpenDevice(NULL);
 	if (!_device)
 	{
-		std::cerr << "Error init OpenAL device: " << alGetError() << std::endl;
-		exit(1);
+		throw std::exception("Error init OpenAL device");
 	}
 
 	_context = alcCreateContext(_device, NULL);
 	if (!alcMakeContextCurrent(_context))
 	{
-		std::cerr << "Error init OpenAL context: " << alGetError() << std::endl;
-		exit(1);
+		throw std::exception("Error init OpenAL context");
 	}
 
 	alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);

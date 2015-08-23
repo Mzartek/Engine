@@ -14,14 +14,12 @@ Engine::Graphics::GraphicsRenderer::GraphicsRenderer(void)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		std::cerr << "Error init SDL: " << SDL_GetError() << std::endl;
-		exit(1);
+		throw std::exception(SDL_GetError());
 	}
 
 	if (TTF_Init() < 0)
 	{
-		std::cerr << "Error init SDL_ttf: " << TTF_GetError() << std::endl;
-		exit(1);
+		throw std::exception(TTF_GetError());
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -62,8 +60,7 @@ void Engine::Graphics::GraphicsRenderer::init(const GLchar *title, GLint width, 
 	_Window = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
 	if (_Window == NULL)
 	{
-		std::cerr << "Error while creating Window: " << SDL_GetError() << std::endl;
-		exit(1);
+		throw std::exception(SDL_GetError());
 	}
 	_GLContext = SDL_GL_CreateContext(_Window);
 
@@ -77,8 +74,7 @@ void Engine::Graphics::GraphicsRenderer::init(const GLchar *title, GLint width, 
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
 	{
-		std::cerr << "Error init GLEW: " << glewGetErrorString(err) << std::endl;
-		exit(1);
+		throw std::exception(reinterpret_cast<const char *>(glewGetErrorString(err)));
 	}
 	std::cout << "GLEW version: " << glewGetString(GLEW_VERSION) << std::endl;
 #endif
@@ -121,16 +117,15 @@ GLuint Engine::Graphics::GraphicsRenderer::getHeight(void) const
 
 void Engine::Graphics::GraphicsRenderer::mainLoop(GameLoop *gameLoop)
 {
+	if (gameLoop == NULL)
+	{
+		throw std::invalid_argument("Wrong GameLoop");
+	}
+
 	SDL_Event event;
 	long long startTime, currentTime, newTime, frameTime;
 	long long accumulator = 0;
 	long long dt = 16;
-
-	if (gameLoop == NULL)
-	{
-		std::cerr << "Wrong GameLoop" << std::endl;
-		exit(1);
-	}
 
 	_stopLoop = false;
 

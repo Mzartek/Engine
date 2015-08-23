@@ -29,8 +29,7 @@ void Engine::Graphics::Buffer::createStore(GLenum target, const GLvoid *data, GL
 	{
 		if ((size % 16) != 0)
 		{
-			std::cerr << "Need a power of 16 for Uniform Buffer" << std::endl;
-			exit(1);
+			throw std::invalid_argument("Need a power of 16 for Uniform Buffer");
 		}
 	}
 

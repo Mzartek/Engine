@@ -8,8 +8,7 @@ inline GLchar *readText(const GLchar *filename)
 
 	if (!file.is_open())
 	{
-		std::cerr << "Error while opening file: " << filename << std::endl;
-		exit(1);
+		std::exception(std::string("Error while opening file: " + std::string(filename)).c_str());
 	}
 	// Lenght of the file
 	file.seekg(0, std::ifstream::end);
@@ -35,8 +34,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	id = glCreateShader(type);
 	if (id == 0)
 	{
-		std::cerr << "Error while creating shader" << std::endl;
-		exit(1);
+		throw std::exception("Error while creating shader");
 	}
 
 	content = readText(filename);
@@ -52,11 +50,12 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 		log[logsize] = '\0';
 
 		glGetShaderInfoLog(id, logsize, &logsize, log);
-		std::cerr << "Error while compiling shader: " << filename << std::endl << log << std::endl;
+		std::string errorMessage("Error while compiling shader: " + std::string(filename) + "\n" + log);
 
 		glDeleteShader(id);
 		delete[] log;
-		exit(1);
+
+		throw std::exception(errorMessage.c_str());
 	}
 
 	delete[] content;
@@ -73,8 +72,7 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 	_idProgram = glCreateProgram();
 	if (_idProgram == 0)
 	{
-		std::cerr << "Error while creating program" << std::endl;
-		exit(1);
+		throw std::exception("Error while creating program");
 	}
 
 	if (vs != NULL)
@@ -118,10 +116,11 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 		log[logsize] = '\0';
 
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
-		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
+		std::string errorMessage("Error while linking program: " + std::to_string(_idProgram) + "\n" + log);
 
 		delete[] log;
-		exit(1);
+
+		throw std::exception(errorMessage.c_str());
 	}
 }
 
@@ -135,8 +134,7 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 	_idProgram = glCreateProgram();
 	if (_idProgram == 0)
 	{
-		std::cerr << "Error while creating program" << std::endl;
-		exit(1);
+		throw std::exception("Error while creating program");
 	}
 
 	if (vs != NULL)
@@ -182,10 +180,11 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 		log[logsize] = '\0';
 
 		glGetProgramInfoLog(_idProgram, logsize, &logsize, log);
-		std::cerr << "Error while linking program: " << _idProgram << std::endl << log << std::endl;
+		std::string errorMessage("Error while linking program: " + std::to_string(_idProgram) + "\n" + log);
 
 		delete[] log;
-		exit(1);
+
+		throw std::exception(errorMessage.c_str());
 	}
 }
 
