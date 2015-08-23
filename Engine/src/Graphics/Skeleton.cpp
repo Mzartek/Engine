@@ -17,14 +17,14 @@ Engine::Graphics::Skeleton::~Skeleton(void)
 		delete *it;
 }
 
-Engine::Graphics::Skeleton *Engine::Graphics::Skeleton::searchByName(const std::string &name)
+Engine::Graphics::Skeleton *Engine::Graphics::Skeleton::searchByName(const std::string &searchName)
 {
-	if (this->name == name)
+	if (searchName == name)
 		return this;
 
 	for (std::vector<Skeleton *>::iterator it = children.begin(); it != children.end(); it++)
 	{
-		Skeleton *tmp_skeleton = (*it)->searchByName(name);
+		Skeleton *tmp_skeleton = (*it)->searchByName(searchName);
 		if (tmp_skeleton != NULL) return tmp_skeleton;
 	}
 

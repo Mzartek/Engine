@@ -19,7 +19,7 @@ namespace Engine
 			Skeleton(const std::string &name);
 			~Skeleton(void);
 
-			Skeleton *searchByName(const std::string &name);
+			Skeleton *searchByName(const std::string &searchName);
 		};
 
 		struct Bone
