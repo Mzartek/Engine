@@ -3,10 +3,12 @@
 
 #include "../Object.hpp"
 
-#include "Texture2D.hpp"
-#include "Buffer.hpp"
+#include "Buffer/Buffer.hpp"
+#include "Buffer/CBuffer.hpp"
+
+#include "Texture/Texture2D.hpp"
+
 #include "ShaderProgram.hpp"
-#include "CBuffer.hpp"
 
 namespace Engine
 {

@@ -3,12 +3,15 @@
 
 #include "../Object.hpp"
 
+#include "Buffer/Buffer.hpp"
+#include "Buffer/DepthMap.hpp"
+#include "Buffer/GBuffer.hpp"
+
+#include "Camera/Camera.hpp"
+
+#include "Texture/Texture2D.hpp"
+
 #include "ShaderProgram.hpp"
-#include "Texture2D.hpp"
-#include "Buffer.hpp"
-#include "GBuffer.hpp"
-#include "Camera.hpp"
-#include "DepthMap.hpp"
 
 namespace Engine
 {

@@ -1,29 +1,31 @@
 #ifndef DEMO_HEADER
 #define DEMO_HEADER
 
-#include <Engine/Graphics/GraphicsRenderer.hpp>
 #include <Engine/Audio/AudioRenderer.hpp>
+#include <Engine/Graphics/GraphicsRenderer.hpp>
 #include <Engine/Input/InputHandler.hpp>
 
-#include <Engine/Graphics/GBuffer.hpp>
-#include <Engine/Graphics/DepthMap.hpp>
-#include <Engine/Graphics/FreeCam.hpp>
+#include <Engine/Graphics/Buffer/DepthMap.hpp>
+#include <Engine/Graphics/Buffer/GBuffer.hpp>
+
+#include <Engine/Graphics/Camera/FreeCam.hpp>
+
 #include <Engine/Graphics/Octree.hpp>
 
-#include "NightBox.hpp"
-#include "Tree.hpp"
 #include "AnimModel.hpp"
-#include "Helicopter.hpp"
-#include "Ground.hpp"
-#include "MoonLight.hpp"
-#include "ThunderLight.hpp"
-#include "TorchLight.hpp"
-#include "RainEffect.hpp"
-#include "SmokeEffect.hpp"
+#include "BloomPost.hpp"
 #include "ExplosionEffect.hpp"
 #include "FirefliesEffect.hpp"
+#include "Ground.hpp"
+#include "Helicopter.hpp"
+#include "MoonLight.hpp"
+#include "RainEffect.hpp"
+#include "NightBox.hpp"
+#include "SmokeEffect.hpp"
 #include "TextDisplay.hpp"
-#include "BloomPost.hpp"
+#include "ThunderLight.hpp"
+#include "TorchLight.hpp"
+#include "Tree.hpp"
 
 using namespace Engine;
 

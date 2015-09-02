@@ -3,11 +3,14 @@
 
 #include <Engine/Object.hpp>
 
-#include <Engine/Graphics/StaticMesh.hpp>
-#include <Engine/Graphics/SkeletalMesh.hpp>
-#include <Engine/Graphics/Material.hpp>
-#include <Engine/Graphics/Texture2D.hpp>
-#include <Engine/Graphics/Skeleton.hpp>
+#include <Engine/Graphics/Model/Material.hpp>
+
+#include <Engine/Graphics/Model/Skeletal/SkeletalMesh.hpp>
+#include <Engine/Graphics/Model/Skeletal/Skeleton.hpp>
+
+#include <Engine/Graphics/Model/Static/StaticMesh.hpp>
+
+#include <Engine/Graphics/Texture/Texture2D.hpp>
 
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 PROJECT(KetrazmEngine)
 
+include(${CMAKE_SOURCE_DIR}/CMakeModules/source_group_by_dir.cmake)
+
 set(ENGINE_MAJOR_VERSION 1)
 set(ENGINE_MINOR_VERSION 0)
 set(ENGINE_MICRO_VERSION 0)
@@ -61,36 +63,9 @@ include_directories(${ENGINE_INCLUDE_DIRS}
   )
 
 # Engine
-file(GLOB engine_audio_header_files			${ENGINE_INCLUDE_DIRS}/Engine/Audio/*.hpp)
-file(GLOB	engine_graphics_header_files 	${ENGINE_INCLUDE_DIRS}/Engine/Graphics/*.hpp)
-file(GLOB engine_input_header_files 		${ENGINE_INCLUDE_DIRS}/Engine/Input/*.hpp)
-file(GLOB engine_tools_header_files 		${ENGINE_INCLUDE_DIRS}/Engine/Tools/*.hpp)
-file(GLOB	engine_root_header_files 			${ENGINE_INCLUDE_DIRS}/Engine/*.hpp)
-
-file(GLOB engine_audio_source_files 		${ENGINE_SRC_DIR}/Audio/*.hpp 		${ENGINE_SRC_DIR}/Audio/*.cpp)
-file(GLOB engine_graphics_source_files 	${ENGINE_SRC_DIR}/Graphics/*.hpp 	${ENGINE_SRC_DIR}/Graphics/*.cpp)
-file(GLOB engine_input_source_files 		${ENGINE_SRC_DIR}/Input/*.hpp 		${ENGINE_SRC_DIR}/Input/*.cpp)
-file(GLOB engine_tools_source_files 		${ENGINE_SRC_DIR}/Tools/*.hpp 		${ENGINE_SRC_DIR}/Tools/*.cpp)
-file(GLOB	engine_root_source_files 			${ENGINE_SRC_DIR}/*.hpp 					${ENGINE_SRC_DIR}/*.cpp)
-
-add_library(Engine SHARED	${engine_audio_header_files} 		${engine_audio_source_files}
-													${engine_graphics_header_files} ${engine_graphics_source_files}
-													${engine_input_header_files} 		${engine_input_source_files}
-													${engine_tools_header_files} 		${engine_tools_source_files}
-													${engine_root_header_files} 		${engine_root_source_files})
-													
-source_group("include\\Audio" 		FILES ${engine_audio_header_files})
-source_group("include\\Graphics" 	FILES ${engine_graphics_header_files})
-source_group("include\\Input" 		FILES ${engine_input_header_files})
-source_group("include\\Tools" 		FILES ${engine_tools_header_files})
-source_group("include" 						FILES ${engine_root_header_files})
-
-source_group("src\\Audio" 		FILES ${engine_audio_source_files})
-source_group("src\\Graphics" 	FILES ${engine_graphics_source_files})
-source_group("src\\Input" 		FILES ${engine_input_source_files})
-source_group("src\\Tools" 		FILES ${engine_tools_source_files})
-source_group("src" 						FILES ${engine_root_source_files})
-
+file(GLOB_RECURSE	engine_source_files ${ENGINE_INCLUDE_DIRS}/*.hpp ${ENGINE_SRC_DIR}/*.hpp ${ENGINE_SRC_DIR}/*.cpp)
+add_library(Engine SHARED	${engine_source_files})
+source_group_by_dir(engine_source_files)
 set_target_properties(Engine
   PROPERTIES
   VERSION ${ENGINE_VERSION}
@@ -110,6 +85,7 @@ target_link_libraries(Engine
 # Demo
 file(GLOB_RECURSE demo_source_files ${DEMO_SRC_DIR}/*.hpp ${DEMO_SRC_DIR}/*.cpp)
 add_executable(Demo ${demo_source_files})
+source_group_by_dir(demo_source_files)
 target_link_libraries(Demo Engine)
 
 # Install

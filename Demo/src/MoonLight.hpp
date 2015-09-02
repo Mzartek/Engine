@@ -1,7 +1,7 @@
 #ifndef MOONLIGHT_HEADER
 #define MOONLIGHT_HEADER
 
-#include <Engine/Graphics/DirLight.hpp>
+#include <Engine/Graphics/Light/DirLight.hpp>
 
 using namespace Engine;
 

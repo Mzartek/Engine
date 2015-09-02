@@ -1,7 +1,7 @@
 #ifndef TORCHLIGHT_HEADER
 #define TORCHLIGHT_HEADER
 
-#include <Engine/Graphics/SpotLight.hpp>
+#include <Engine/Graphics/Light/SpotLight.hpp>
 
 using namespace Engine;
 

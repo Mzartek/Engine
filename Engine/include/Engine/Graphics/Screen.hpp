@@ -1,11 +1,12 @@
 #ifndef SCREEN_HEADER
 #define SCREEN_HEADER
 
-#include "Engine/Graphics/GraphicsRenderer.hpp"
-#include "Engine/Graphics/ShaderProgram.hpp"
-#include "Engine/Graphics/Buffer.hpp"
-#include "Engine/Graphics/GBuffer.hpp"
-#include "Engine/Graphics/CBuffer.hpp"
+#include "Buffer/Buffer.hpp"
+#include "Buffer/CBuffer.hpp"
+#include "Buffer/GBuffer.hpp"
+
+#include "GraphicsRenderer.hpp"
+#include "ShaderProgram.hpp"
 
 namespace Engine
 {

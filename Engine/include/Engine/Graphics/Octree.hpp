@@ -3,7 +3,7 @@
 
 #include "../Object.hpp"
 
-#include "Model.hpp"
+#include "Model/Model.hpp"
 
 namespace Engine
 {

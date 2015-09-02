@@ -1,10 +1,11 @@
 #ifndef BLOOMPOST_HEADER
 #define BLOOMPOST_HEADER
 
-#include <Engine/Graphics/GBuffer.hpp>
-#include <Engine/Graphics/CBuffer.hpp>
-#include <Engine/Graphics/ShaderProgram.hpp>
+#include <Engine/Graphics/Buffer/CBuffer.hpp>
+#include <Engine/Graphics/Buffer/GBuffer.hpp>
+
 #include <Engine/Graphics/Screen.hpp>
+#include <Engine/Graphics/ShaderProgram.hpp>
 
 #define NUM_CBUFFER 10
 

@@ -5,11 +5,14 @@
 
 #include "../Object.hpp"
 
-#include "TextureCube.hpp"
-#include "Buffer.hpp"
+#include "Camera/PerspCamera.hpp"
+
+#include "Buffer/Buffer.hpp"
+#include "Buffer/GBuffer.hpp"
+
+#include "Texture/TextureCube.hpp"
+
 #include "ShaderProgram.hpp"
-#include "GBuffer.hpp"
-#include "PerspCamera.hpp"
 
 namespace Engine
 {

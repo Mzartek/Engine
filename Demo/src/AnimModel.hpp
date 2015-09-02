@@ -1,7 +1,7 @@
 #ifndef ARMYSOLDIER_HEADER
 #define ARMYSOLDIER_HEADER
 
-#include <Engine/Graphics/SkeletalModel.hpp>
+#include <Engine/Graphics/Model/Skeletal/SkeletalModel.hpp>
 
 using namespace Engine;
 

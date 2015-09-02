@@ -1,7 +1,7 @@
 #ifndef TREE_HEADER
 #define TREE_HEADER
 
-#include <Engine/Graphics/StaticModel.hpp>
+#include <Engine/Graphics/Model/Static/StaticModel.hpp>
 
 using namespace Engine;
 

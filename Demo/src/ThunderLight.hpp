@@ -2,7 +2,8 @@
 #define THUNDERLIGHT_HEADER
 
 #include <Engine/Audio/Sound.hpp>
-#include <Engine/Graphics/DirLight.hpp>
+
+#include <Engine/Graphics/Light/DirLight.hpp>
 
 using namespace Engine;
 
