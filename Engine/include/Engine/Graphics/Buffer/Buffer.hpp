@@ -9,7 +9,6 @@ namespace Engine
 	{
 		class DLLAPI Buffer : public Object
 		{
-		private:
 			GLenum _target;
 			GLuint _idBuffer;
 			GLsizeiptr _size;

@@ -1,5 +1,7 @@
 #include "Demo.hpp"
 
+#include <Engine/Graphics/Screen.hpp>
+
 void Demo::display(GLfloat state)
 {
 	UNREFERENCED_PARAMETER(state);
@@ -11,23 +13,24 @@ void Demo::display(GLfloat state)
 	nightBox->display(gbuffer, camera);
 
 	// Opaque Object
-	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); ++it)
 		(*it)->display(gbuffer, camera);
 
-	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++) depthMaps[i]->clear();
-	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++)
+		depthMaps[i]->clear();
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); ++it)
 		(*it)->displayDepthMaps(depthMaps, moonLight->getLight());
 	moonLight->getLight()->display(gbuffer, camera, depthMaps);
 
 	depthMaps[0]->clear();
-	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); ++it)
 		(*it)->displayDepthMap(depthMaps[0], torchLight->getLight());
 	torchLight->getLight()->display(gbuffer, camera, depthMaps[0]);
 
 	Graphics::Screen::Instance().displayGBufferBackground(gbuffer, backgroundProgram);
 
 	// Transparent Object
-	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); it++)
+	for (std::set<Graphics::Model *>::iterator it = object_display.begin(); it != object_display.end(); ++it)
 		(*it)->displayTransparent(gbuffer, camera);
 	moonLight->getLight()->display(gbuffer, camera);
 	torchLight->getLight()->display(gbuffer, camera);
@@ -45,6 +48,8 @@ void Demo::display(GLfloat state)
 
 void Demo::state(long long time)
 {
+	UNREFERENCED_PARAMETER(time);
+
 	const glm::vec3 &camPosition = camera->getCameraPosition();
 
 	this->manage_input();

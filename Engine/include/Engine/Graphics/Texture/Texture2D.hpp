@@ -12,7 +12,7 @@ namespace Engine
 		public:
 			Texture2D(void);
 			~Texture2D(void);
-			TextureType getType(void) const;
+			TextureType getType(void) const override;
 
 			void loadFromFile(const GLchar *path);
 			void loadFromSDL_Surface(const SDL_Surface *surface);

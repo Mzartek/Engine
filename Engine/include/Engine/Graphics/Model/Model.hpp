@@ -3,8 +3,6 @@
 
 #include "../../Object.hpp"
 
-#include "../../Tools/StringHandler.hpp"
-
 #include "../Buffer/Buffer.hpp"
 #include "../Buffer/DepthMap.hpp"
 #include "../Buffer/GBuffer.hpp"
@@ -26,7 +24,6 @@ namespace Engine
 	{
 		class DLLAPI Model : public Object
 		{
-		private:
 			glm::vec3 _position;
 			glm::vec3 _scale;
 			glm::quat _rotation;
@@ -34,13 +31,10 @@ namespace Engine
 			GLboolean _needMatModel;
 			GLboolean _needMatNormal;
 
-			void genMatModel(void);
-			void genMatNormal(void);
-
 		protected:
 			GLboolean _isMirror;
 
-			std::vector<std::shared_ptr<Mesh>> *_tMesh;
+			std::shared_ptr<std::vector<std::shared_ptr<Mesh>>> _tMesh;
 
 			std::shared_ptr<Buffer> _matrixBuffer;
 

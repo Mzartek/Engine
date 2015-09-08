@@ -2,14 +2,14 @@
 
 TorchLight::TorchLight(void)
 {
-	_spotLightProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_spotLightProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/spotLight/spotLightVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/spotLight/spotLightFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/spotLight/spotLightFrag.glsl");
 
-	_light = std::shared_ptr<Graphics::SpotLight>(new Graphics::SpotLight(_spotLightProgram));
+	_light = std::make_shared<Graphics::SpotLight>(_spotLightProgram);
 }
 
 TorchLight::~TorchLight(void)

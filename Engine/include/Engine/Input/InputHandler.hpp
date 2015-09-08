@@ -9,7 +9,6 @@ namespace Engine
 	{
 		class DLLAPI InputHandler
 		{
-		private:
 			const GLubyte *_keyState;
 			struct
 			{

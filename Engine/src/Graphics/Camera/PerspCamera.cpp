@@ -1,6 +1,7 @@
 #include <Engine/Graphics/Camera/PerspCamera.hpp>
 
 Engine::Graphics::PerspCamera::PerspCamera(void)
+	: _near(0.0f), _far(0.0f), _fov(0.0f), _frusSphereDistance(0.0f), _frusSphereRadius(0.0f)
 {
 	_cameraInfo.position = glm::vec3(0, 0, 0);
 	_cameraInfo.forward = glm::vec3(0, 0, 1);
@@ -37,7 +38,7 @@ void Engine::Graphics::PerspCamera::setPositionAndTarget(const glm::vec3 &pos, c
 
 void Engine::Graphics::PerspCamera::setPerspective(GLfloat fov, GLuint width, GLuint height, GLfloat n, GLfloat f)
 {
-	GLfloat ratio = (GLfloat)width / height;
+	GLfloat ratio = static_cast<GLfloat>(width) / height;
 	GLfloat yfar = tanf(fov * 0.5f) * f;
 	GLfloat xfar = yfar * ratio;
 

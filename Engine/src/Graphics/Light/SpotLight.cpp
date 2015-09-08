@@ -1,9 +1,11 @@
 #include <Engine/Graphics/Light/SpotLight.hpp>
 
+#include <Engine/Graphics/Screen.hpp>
+
 Engine::Graphics::SpotLight::SpotLight(const std::shared_ptr<ShaderProgram> &program)
 	: Light(program)
 {
-	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
+	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "normalTexture"), 0);
@@ -83,7 +85,7 @@ GLfloat Engine::Graphics::SpotLight::getMaxDistance(void) const
 
 void Engine::Graphics::SpotLight::updateData(const std::shared_ptr<DepthMap> &depthMap)
 {
-	_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, (GLfloat)depthMap->getWidth() / depthMap->getHeight(), 0.1f, _lightInfo.maxDistance);
+	_projectionMatrix = glm::perspective(_lightInfo.spotCutOff * 2, static_cast<GLfloat>(depthMap->getWidth()) / depthMap->getHeight(), 0.1f, _lightInfo.maxDistance);
 	_viewMatrix = glm::lookAt(_lightInfo.position, _lightInfo.position + _lightInfo.direction, glm::vec3(0.0f, 1.0f, 0.0f));
 	_VPMatrix = _projectionMatrix * _viewMatrix;
 
@@ -116,7 +118,7 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(Graphics::Screen::Instance().getVertexArray());
+	glBindVertexArray(Screen::Instance().getVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }
@@ -151,7 +153,7 @@ void Engine::Graphics::SpotLight::display(const std::shared_ptr<GBuffer> &gbuf, 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(Graphics::Screen::Instance().getVertexArray());
+	glBindVertexArray(Screen::Instance().getVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }

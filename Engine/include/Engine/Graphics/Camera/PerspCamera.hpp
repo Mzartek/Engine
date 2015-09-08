@@ -46,7 +46,7 @@ namespace Engine
 			GLfloat getFrusSphereRadius(void) const;
 			const glm::vec3 &getFrusSpherePosition(void) const;
 
-			void updateData(void);
+			void updateData(void) override;
 		};
 	}
 }

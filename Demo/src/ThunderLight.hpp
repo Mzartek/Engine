@@ -9,7 +9,6 @@ using namespace Engine;
 
 class ThunderLight
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _dirLightProgram;
 	std::shared_ptr<Graphics::DirLight> _light;
 	std::shared_ptr<Audio::Sound> _sound[4];

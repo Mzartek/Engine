@@ -1,33 +1,19 @@
 #include "Demo.hpp"
 
-#include <iostream>
-#include <fstream>
 #include <ctime>
-
-GLuint width, height;
-
-void get_resolution(void)
-{
-	std::ifstream resolution_file("../share/Demo/config/resolution.txt", std::ifstream::in);
-
-	resolution_file >> width;
-	resolution_file >> height;
-}
 
 int main(int argc, char **argv)
 {
 	UNREFERENCED_PARAMETER(argc);
 	UNREFERENCED_PARAMETER(argv);
 
-	srand((unsigned int)time(NULL));
-
-	get_resolution();
+	srand(static_cast<unsigned int>(time(nullptr)));
 
 	// We call the instance for init
-	Graphics::GraphicsRenderer::Instance().init("Demo OpenGL", width, height, false);
+	Graphics::GraphicsRenderer::Instance().init("Demo OpenGL", 600, 380, true);
 	Audio::AudioRenderer::Instance();
 	
-	std::shared_ptr<Demo> demo(new Demo);
+	std::shared_ptr<Demo> demo = std::make_shared<Demo>();
 	demo->launch();
 
 	return 0;

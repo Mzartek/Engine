@@ -12,7 +12,7 @@ namespace Engine
 		public:
 			TextureCube(void);
 			~TextureCube(void);
-			TextureType getType(void) const;
+			TextureType getType(void) const override;
 
 			void loadFromFiles(
 				const GLchar *posx, const GLchar *negx,

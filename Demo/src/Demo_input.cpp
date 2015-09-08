@@ -1,5 +1,7 @@
 #include "Demo.hpp"
 
+#include <Engine/Input/InputHandler.hpp>
+
 void Demo::manage_input(void)
 {
 	Input::InputHandler::Instance().refresh();

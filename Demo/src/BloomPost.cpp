@@ -1,29 +1,31 @@
 #include "BloomPost.hpp"
 
+#include <Engine/Graphics/Screen.hpp>
+
 BloomPost::BloomPost(GLuint width, GLuint height)
 {
-	for (GLuint i = 0; i < NUM_CBUFFER; i++) _cbuffer[i] = std::shared_ptr<Graphics::CBuffer>(new Graphics::CBuffer);
+	for (GLuint i = 0; i < NUM_CBUFFER; i++) _cbuffer[i] = std::make_shared<Graphics::CBuffer>();
 	
-	_copyProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_copyProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/screen/screenVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/screen/copyFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/screen/copyFrag.glsl");
 
-	_brightpassProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_brightpassProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/screen/screenVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/screen/brightpassFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/screen/brightpassFrag.glsl");
 
-	_gaussianProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_gaussianProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/screen/screenVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/screen/gaussianFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/screen/gaussianFrag.glsl");
 
 	_cbuffer[0]->config(width, height);
 	_cbuffer[1]->config(width, height);

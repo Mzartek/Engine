@@ -3,10 +3,10 @@
 Engine::Graphics::SkyBox::SkyBox(const std::shared_ptr<ShaderProgram> &program)
 	: _program(program)
 {
-	_cubeTexture = std::shared_ptr<TextureCube>(new TextureCube);
-	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_indexBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_MVPMatrixBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_cubeTexture = std::make_shared<TextureCube>();
+	_vertexBuffer = std::make_shared<Buffer>();
+	_indexBuffer = std::make_shared<Buffer>();
+	_MVPMatrixBuffer = std::make_shared<Buffer>();
 
 	GLfloat vertexArray[] =
 	{
@@ -31,7 +31,7 @@ Engine::Graphics::SkyBox::SkyBox(const std::shared_ptr<ShaderProgram> &program)
 	_numElement = sizeof indexArray / sizeof(GLuint);
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertexArray, sizeof vertexArray, GL_STATIC_DRAW);
 	_indexBuffer->createStore(GL_ELEMENT_ARRAY_BUFFER, indexArray, sizeof indexArray, GL_STATIC_DRAW);
-	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
+	_MVPMatrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof(glm::mat4), GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "cubeMap"), 0);
@@ -77,6 +77,6 @@ void Engine::Graphics::SkyBox::display(const std::shared_ptr<GBuffer> &gbuf, con
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeTexture->getId());
 
 	glBindVertexArray(_idVAO);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }

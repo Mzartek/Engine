@@ -4,25 +4,25 @@ RainEffect::RainEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_physicsProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/rainParticles/rainPhysics_v.glsl",
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		"../share/Demo/shader/rainParticles/rainPhysics_g.glsl",
-		NULL,
-		varyings, sizeof(varyings) / sizeof(GLfloat *)));
+		nullptr,
+		varyings, static_cast<GLsizei>(sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displayProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_displayProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/rainParticles/rainVert.glsl",
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		"../share/Demo/shader/rainParticles/rainGeom.glsl",
-		"../share/Demo/shader/rainParticles/rainFrag.glsl"));
+		"../share/Demo/shader/rainParticles/rainFrag.glsl");
 
-	_particlesHandler = std::shared_ptr<Graphics::ParticlesHandler>(new Graphics::ParticlesHandler(_physicsProgram, _displayProgram));
+	_particlesHandler = std::make_shared<Graphics::ParticlesHandler>(_physicsProgram, _displayProgram);
 	_particlesHandler->loadTexture("../share/Demo/resources/textures/goutte.png");
 
-	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
+	_sound = std::make_shared<Audio::Sound>();
 	_sound->setGain(0.25f);
 	_sound->setPitch(1.0f);
 	_sound->setLoop(AL_TRUE);
@@ -38,14 +38,14 @@ void RainEffect::init(const glm::vec3 &position, GLuint numParticles)
 	std::vector<Graphics::Particle> rainParticles(numParticles);
 	for (unsigned int i = 0; i < numParticles; i++)
 	{
-		rainParticles[i].life = (GLfloat)(rand() % 100);
+		rainParticles[i].life = static_cast<GLfloat>(rand() % 100);
 		rainParticles[i].position = glm::vec3(position.x + (rand() % 200 - 100), position.y + (100 - rainParticles[i].life), position.z + (rand() % 200 - 100));
-		rainParticles[i].direction = glm::vec3((GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX,
+		rainParticles[i].direction = glm::vec3(static_cast<GLfloat>(rand() - RAND_MAX / 2) / RAND_MAX,
 			-2.0f,
-			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX);
+			static_cast<GLfloat>(rand() - (RAND_MAX / 2)) / RAND_MAX);
 		rainParticles[i].velocity = 2.0f;
 	}
-	_particlesHandler->setParticles(rainParticles.data(), (GLsizei)rainParticles.size());
+	_particlesHandler->setParticles(rainParticles.data(), static_cast<GLsizei>(rainParticles.size()));
 	this->setPosition(position);
 }
 

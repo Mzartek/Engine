@@ -13,7 +13,7 @@ namespace Engine
 			PlayerCam(void);
 			PlayerCam(GLfloat atheta, GLfloat aphi);
 			~PlayerCam(void);
-			void keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r);
+			void keyboardMove(GLboolean f, GLboolean b, GLboolean l, GLboolean r) override;
 		};
 	}
 }

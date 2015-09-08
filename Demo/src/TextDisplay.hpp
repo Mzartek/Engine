@@ -7,7 +7,6 @@ using namespace Engine;
 
 class TextDisplay
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _textProgram;
 	std::shared_ptr<Graphics::TextArray> _text;
 

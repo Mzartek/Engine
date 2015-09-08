@@ -7,7 +7,6 @@ using namespace Engine;
 
 class TorchLight
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _spotLightProgram;
 	std::shared_ptr<Graphics::SpotLight> _light;
 public:

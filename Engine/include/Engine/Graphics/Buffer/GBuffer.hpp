@@ -3,7 +3,6 @@
 
 #include "../ShaderProgram.hpp"
 
-#include "Buffer.hpp"
 #include "FrameBuffer.hpp"
 
 namespace Engine
@@ -29,14 +28,14 @@ namespace Engine
 		public:
 			GBuffer(void);
 			~GBuffer(void);
-			void config(GLuint width, GLuint height);
+			void config(GLuint width, GLuint height) override;
 			GLuint getIdTexture(GLuint num) const;
 			void setSkyboxState(void) const;
 			void setGeometryState(void) const;
 			void setLightState(void) const;
 			void setParticlesState(void) const;
 			void setBackgroundState(void) const;
-			void clear(void) const;
+			void clear(void) const override;
 			void clearLight(void) const;
 		};
 	}

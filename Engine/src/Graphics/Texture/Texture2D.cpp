@@ -16,7 +16,7 @@ Engine::Graphics::TextureType Engine::Graphics::Texture2D::getType(void) const
 void Engine::Graphics::Texture2D::loadFromFile(const GLchar *path)
 {
 	SDL_Surface *image = IMG_Load(path);
-	if (image == NULL)
+	if (image == nullptr)
 	{
 		throw std::exception(std::string("Error while loading image: " + std::string(path) + "\n" + IMG_GetError()).c_str());
 	}

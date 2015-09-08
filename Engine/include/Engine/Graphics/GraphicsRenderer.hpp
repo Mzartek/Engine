@@ -20,7 +20,6 @@ namespace Engine
 
 		class DLLAPI GraphicsRenderer
 		{
-		private:
 			SDL_Window *_Window;
 			SDL_GLContext _GLContext;
 

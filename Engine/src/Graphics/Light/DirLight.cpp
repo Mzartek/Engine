@@ -1,5 +1,7 @@
 #include <Engine/Graphics/Light/DirLight.hpp>
 
+#include <Engine/Graphics/Screen.hpp>
+
 Engine::Graphics::DirLight::DirLight(const std::shared_ptr<ShaderProgram> &program)
 	: Light(program)
 {
@@ -10,7 +12,7 @@ Engine::Graphics::DirLight::DirLight(const std::shared_ptr<ShaderProgram> &progr
 		_VPMatrix.push_back(glm::mat4());
 	}
 
-	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _lightInfo, GL_DYNAMIC_DRAW);
+	_lightInfoBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _lightInfo, GL_DYNAMIC_DRAW);
 
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "normalTexture"), 0);
@@ -102,7 +104,7 @@ void Engine::Graphics::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, c
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(Graphics::Screen::Instance().getVertexArray());
+	glBindVertexArray(Screen::Instance().getVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }
@@ -148,7 +150,7 @@ void Engine::Graphics::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, c
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _mainInfoBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightInfoBuffer->getId());
 
-	glBindVertexArray(Graphics::Screen::Instance().getVertexArray());
+	glBindVertexArray(Screen::Instance().getVertexArray());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }

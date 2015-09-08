@@ -9,7 +9,6 @@ namespace Engine
 	{
 		class DLLAPI Sound : public Object
 		{
-		private:
 			ALuint _source;
 			ALuint _buffer;
 

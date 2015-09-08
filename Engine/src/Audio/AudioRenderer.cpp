@@ -8,13 +8,13 @@ Engine::Audio::AudioRenderer &Engine::Audio::AudioRenderer::Instance(void)
 
 Engine::Audio::AudioRenderer::AudioRenderer(void)
 {
-	_device = alcOpenDevice(NULL);
+	_device = alcOpenDevice(nullptr);
 	if (!_device)
 	{
 		throw std::exception("Error init OpenAL device");
 	}
 
-	_context = alcCreateContext(_device, NULL);
+	_context = alcCreateContext(_device, nullptr);
 	if (!alcMakeContextCurrent(_context))
 	{
 		throw std::exception("Error init OpenAL context");
@@ -25,7 +25,7 @@ Engine::Audio::AudioRenderer::AudioRenderer(void)
 
 Engine::Audio::AudioRenderer::~AudioRenderer(void)
 {
-	alcMakeContextCurrent(NULL);
+	alcMakeContextCurrent(nullptr);
 	alcDestroyContext(_context);
 	alcCloseDevice(_device);
 }

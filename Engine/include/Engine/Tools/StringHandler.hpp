@@ -7,7 +7,7 @@ namespace Engine
 {
 	namespace Tools
 	{
-		extern DLLAPI std::string getDir(const GLchar *file);
+		extern DLLAPI std::string getDir(const char *file);
 	}
 }
 

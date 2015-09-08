@@ -1,6 +1,7 @@
 #include <Engine/Graphics/Buffer/FrameBuffer.hpp>
 
 Engine::Graphics::FrameBuffer::FrameBuffer(void)
+	: _width(0), _height(0)
 {
 	glGenFramebuffers(1, &_idFBO);
 }

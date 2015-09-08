@@ -4,7 +4,6 @@
 #include <Engine/Graphics/Buffer/CBuffer.hpp>
 #include <Engine/Graphics/Buffer/GBuffer.hpp>
 
-#include <Engine/Graphics/Screen.hpp>
 #include <Engine/Graphics/ShaderProgram.hpp>
 
 #define NUM_CBUFFER 10
@@ -13,7 +12,6 @@ using namespace Engine;
 
 class BloomPost
 {
-private:
 	std::shared_ptr<Graphics::CBuffer> _cbuffer[NUM_CBUFFER];
 	std::shared_ptr<Graphics::ShaderProgram> _copyProgram;
 	std::shared_ptr<Graphics::ShaderProgram> _brightpassProgram;

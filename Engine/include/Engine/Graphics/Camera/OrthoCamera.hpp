@@ -31,7 +31,7 @@ namespace Engine
 			void setDirection(const glm::vec3 &dir);
 			void setOrthogonal(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar);
 
-			void updateData(void);
+			void updateData(void) override;
 		};
 	}
 }

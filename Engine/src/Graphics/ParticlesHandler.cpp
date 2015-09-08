@@ -3,16 +3,16 @@
 Engine::Graphics::ParticlesHandler::ParticlesHandler(const std::shared_ptr<ShaderProgram> &physicsProgram, const std::shared_ptr<ShaderProgram> &displayProgram)
 	: _physicsProgram(physicsProgram), _displayProgram(displayProgram), _numElement(0)
 {
-	_colorTexture = std::shared_ptr<Texture2D>(new Texture2D);
-	_positionBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_depthBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_matrixBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_vertexBuffer[0] = std::shared_ptr<Buffer>(new Buffer);
-	_vertexBuffer[1] = std::shared_ptr<Buffer>(new Buffer);
+	_colorTexture = std::make_shared<Texture2D>();
+	_positionBuffer = std::make_shared<Buffer>();
+	_depthBuffer = std::make_shared<Buffer>();
+	_matrixBuffer = std::make_shared<Buffer>();
+	_vertexBuffer[0] = std::make_shared<Buffer>();
+	_vertexBuffer[1] = std::make_shared<Buffer>();
 
-	_positionBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _position, GL_DYNAMIC_DRAW);
-	_depthBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _depth, GL_DYNAMIC_DRAW);
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_positionBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _position, GL_DYNAMIC_DRAW);
+	_depthBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _depth, GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
 
 	glUseProgram(physicsProgram->getId());
 	glUniform1i(glGetUniformLocation(displayProgram->getId(), "depthMap"), 0);
@@ -40,7 +40,7 @@ void Engine::Graphics::ParticlesHandler::setParticles(const Particle *particles,
 	_numElement = numParticles;
 
 	_vertexBuffer[0]->createStore(GL_ARRAY_BUFFER, particles, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
-	_vertexBuffer[1]->createStore(GL_ARRAY_BUFFER, NULL, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
+	_vertexBuffer[1]->createStore(GL_ARRAY_BUFFER, nullptr, numParticles * sizeof *particles, GL_DYNAMIC_DRAW);
 }
 
 void Engine::Graphics::ParticlesHandler::setPosition(const glm::vec3 &pos)

@@ -1,11 +1,11 @@
 #include <Engine/Graphics/Model/Material.hpp>
 
 Engine::Graphics::Material::Material(void)
-	: _diffuseTexture(NULL), _specularTexture(NULL), _ambientTexture(NULL), _emissiveTexture(NULL), _shininessTexture(NULL),
-	_opacityTexture(NULL), _bumpMap(NULL), _normalMap(NULL), _displacementMap(NULL), _lightMap(NULL)
+	: _diffuseTexture(nullptr), _specularTexture(nullptr), _ambientTexture(nullptr), _emissiveTexture(nullptr), _shininessTexture(nullptr),
+	_opacityTexture(nullptr), _bumpMap(nullptr), _normalMap(nullptr), _displacementMap(nullptr), _lightMap(nullptr)
 {
-	_matBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_stateBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_matBuffer = std::make_shared<Buffer>();
+	_stateBuffer = std::make_shared<Buffer>();
 
 	_mat.diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
 	_mat.specular = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -270,52 +270,52 @@ const std::shared_ptr<Engine::Graphics::Texture2D> &Engine::Graphics::Material::
 
 GLboolean Engine::Graphics::Material::hasDiffuseTexture(void) const
 {
-	return (GLboolean)_state.hasDiffuseTexture;
+	return static_cast<GLboolean>(_state.hasDiffuseTexture);
 }
 
 GLboolean Engine::Graphics::Material::hasSpecularTexture(void) const
 {
-	return (GLboolean)_state.hasSpecularTexture;
+	return static_cast<GLboolean>(_state.hasSpecularTexture);
 }
 
 GLboolean Engine::Graphics::Material::hasAmbientTexture(void) const
 {
-	return (GLboolean)_state.hasAmbientTexture;
+	return static_cast<GLboolean>(_state.hasAmbientTexture);
 }
 
 GLboolean Engine::Graphics::Material::hasEmissiveTexture(void) const
 {
-	return (GLboolean)_state.hasEmissiveTexture;
+	return static_cast<GLboolean>(_state.hasEmissiveTexture);
 }
 
 GLboolean Engine::Graphics::Material::hasShininessTexture(void) const
 {
-	return (GLboolean)_state.hasShininessTexture;
+	return static_cast<GLboolean>(_state.hasShininessTexture);
 }
 
 GLboolean Engine::Graphics::Material::hasOpacityTexture(void) const
 {
-	return (GLboolean)_state.hasOpacityTexture;
+	return static_cast<GLboolean>(_state.hasOpacityTexture);
 }
 
 GLboolean Engine::Graphics::Material::hasBumpMap(void) const
 {
-	return (GLboolean)_state.hasBumpMap;
+	return static_cast<GLboolean>(_state.hasBumpMap);
 }
 
 GLboolean Engine::Graphics::Material::hasNormalMap(void) const
 {
-	return (GLboolean)_state.hasNormalMap;
+	return static_cast<GLboolean>(_state.hasNormalMap);
 }
 
 GLboolean Engine::Graphics::Material::hasDisplacementMap(void) const
 {
-	return (GLboolean)_state.hasDisplacementMap;
+	return static_cast<GLboolean>(_state.hasDisplacementMap);
 }
 
 GLboolean Engine::Graphics::Material::hasLightMap(void) const
 {
-	return (GLboolean)_state.hasLightMap;
+	return static_cast<GLboolean>(_state.hasLightMap);
 }
 
 GLuint Engine::Graphics::Material::getMatBuffer(void) const

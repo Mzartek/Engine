@@ -9,7 +9,6 @@ namespace Engine
 	{
 		class DLLAPI AudioRenderer
 		{
-		private:
 			ALCdevice *_device;
 			ALCcontext *_context;
 

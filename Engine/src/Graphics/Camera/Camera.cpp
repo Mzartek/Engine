@@ -2,7 +2,7 @@
 
 Engine::Graphics::Camera::Camera(void)
 {
-	_cameraInfoBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_cameraInfoBuffer = std::make_shared<Buffer>();
 }
 
 Engine::Graphics::Camera::~Camera(void)

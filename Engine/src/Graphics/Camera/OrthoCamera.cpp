@@ -1,6 +1,7 @@
 #include <Engine/Graphics/Camera/OrthoCamera.hpp>
 
 Engine::Graphics::OrthoCamera::OrthoCamera(void)
+	: _left(0.0f), _right(0.0f), _bottom(0.0f), _top(0.0f), _zNear(0.0f), _zFar(0.0f)
 {
 	_cameraInfo.position = glm::vec3(0, 0, 0);
 	_cameraInfo.direction = glm::vec3(1, 0, 0);

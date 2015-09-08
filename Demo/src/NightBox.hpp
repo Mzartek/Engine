@@ -7,7 +7,6 @@ using namespace Engine;
 
 class NightBox
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _skyboxProgram;
 	std::shared_ptr<Graphics::SkyBox> _skybox;
 

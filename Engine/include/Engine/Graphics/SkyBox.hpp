@@ -20,7 +20,6 @@ namespace Engine
 	{
 		class DLLAPI SkyBox : public Object
 		{
-		private:
 			std::shared_ptr<TextureCube> _cubeTexture;
 			std::shared_ptr<Buffer> _vertexBuffer;
 			std::shared_ptr<Buffer> _indexBuffer;

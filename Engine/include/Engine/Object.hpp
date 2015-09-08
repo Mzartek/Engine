@@ -2,28 +2,31 @@
 #define OBJECT_HEADER
 
 #ifdef _WIN32
-#ifdef Engine_EXPORTS
-#define DLLAPI __declspec(dllexport)
+#	ifdef Engine_EXPORTS
+#		define DLLAPI __declspec(dllexport)
+#	else
+#		define DLLAPI __declspec(dllimport)
+#	endif
+#	ifdef __GNUC__
+#		define ALIGN(X) __attribute__((aligned(X)))
+#	else
+#		define ALIGN(X) __declspec(align(X))
+#		pragma warning(disable:4324)
+#		pragma warning(disable:4201)
+#		pragma warning(disable:4251)
+#	endif
+#	include <Windows.h>
+#	include <GL/glew.h>
 #else
-#define DLLAPI __declspec(dllimport)
+#	define DLLAPI
+#	define UNREFERENCED_PARAMETER(P) ((void)P)
+#	define ALIGN(X) __attribute__((aligned(X)))
+#	define GL_GLEXT_PROTOTYPES
+#	include <GL/gl.h>
 #endif
-#ifdef __GNUC__
-#define ALIGN(X) __attribute__((aligned(X)))
-#else
-#define ALIGN(X) __declspec(align(X))
-#pragma warning(disable:4324)
-#pragma warning(disable:4201)
-#pragma warning(disable:4251)
-#endif
-#include <Windows.h>
-#include <GL/glew.h>
-#else
-#define DLLAPI
-#define UNREFERENCED_PARAMETER(P) ((void)P)
-#define ALIGN(X) __attribute__((aligned(X)))
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#endif
+
+#include <AL/alc.h>
+#include <AL/al.h>
 
 #include <iostream>
 #include <fstream>
@@ -54,10 +57,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <AL/al.h>
-#include <AL/alc.h>
-
-#define BUFFER_OFFSET(i) ((GLbyte *)NULL + (i))
+#define BUFFER_OFFSET(i) (reinterpret_cast<char *>(nullptr) + (i))
 
 namespace Engine
 {

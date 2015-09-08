@@ -12,7 +12,7 @@ inline GLchar *readText(const GLchar *filename)
 	}
 	// Lenght of the file
 	file.seekg(0, std::ifstream::end);
-	size = (GLint)file.tellg();
+	size = static_cast<GLint>(file.tellg());
 	file.seekg(0, std::ifstream::beg);
 
 	// Add content
@@ -39,7 +39,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 
 	content = readText(filename);
 
-	glShaderSource(id, 1, (const GLchar **)&content, NULL);
+	glShaderSource(id, 1, const_cast<const GLchar **>(&content), nullptr);
 	glCompileShader(id);
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE)
@@ -75,31 +75,31 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 		throw std::exception("Error while creating program");
 	}
 
-	if (vs != NULL)
+	if (vs != nullptr)
 	{
 		_idVertexShader = loadShader(vs, GL_VERTEX_SHADER);
 		glAttachShader(_idProgram, _idVertexShader);
 	}
 
-	if (tcs != NULL)
+	if (tcs != nullptr)
 	{
 		_idTessControlShader = loadShader(tcs, GL_TESS_CONTROL_SHADER);
 		glAttachShader(_idProgram, _idTessControlShader);
 	}
 
-	if (tes != NULL)
+	if (tes != nullptr)
 	{
 		_idTessEvaluationShader = loadShader(tes, GL_TESS_EVALUATION_SHADER);
 		glAttachShader(_idProgram, _idTessEvaluationShader);
 	}
 
-	if (gs != NULL)
+	if (gs != nullptr)
 	{
 		_idGeometryShader = loadShader(gs, GL_GEOMETRY_SHADER);
 		glAttachShader(_idProgram, _idGeometryShader);
 	}
 
-	if (fs != NULL)
+	if (fs != nullptr)
 	{
 		_idFragmentShader = loadShader(fs, GL_FRAGMENT_SHADER);
 		glAttachShader(_idProgram, _idFragmentShader);
@@ -137,31 +137,31 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 		throw std::exception("Error while creating program");
 	}
 
-	if (vs != NULL)
+	if (vs != nullptr)
 	{
 		_idVertexShader = loadShader(vs, GL_VERTEX_SHADER);
 		glAttachShader(_idProgram, _idVertexShader);
 	}
 
-	if (tcs != NULL)
+	if (tcs != nullptr)
 	{
 		_idTessControlShader = loadShader(tcs, GL_TESS_CONTROL_SHADER);
 		glAttachShader(_idProgram, _idTessControlShader);
 	}
 
-	if (tes != NULL)
+	if (tes != nullptr)
 	{
 		_idTessEvaluationShader = loadShader(tes, GL_TESS_EVALUATION_SHADER);
 		glAttachShader(_idProgram, _idTessEvaluationShader);
 	}
 
-	if (gs != NULL)
+	if (gs != nullptr)
 	{
 		_idGeometryShader = loadShader(gs, GL_GEOMETRY_SHADER);
 		glAttachShader(_idProgram, _idGeometryShader);
 	}
 
-	if (fs != NULL)
+	if (fs != nullptr)
 	{
 		_idFragmentShader = loadShader(fs, GL_FRAGMENT_SHADER);
 		glAttachShader(_idProgram, _idFragmentShader);

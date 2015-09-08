@@ -1,17 +1,19 @@
 #include <Engine/Graphics/Model/Static/StaticModel.hpp>
 
+#include <Engine/Tools/StringHandler.hpp>
+
 #include "../../../Tools/AssimpTool.hpp"
 
 Engine::Graphics::StaticModel::StaticModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::StaticModel::StaticModel(const std::shared_ptr<StaticModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(model, gProgram, smProgram)
 {
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::StaticModel::~StaticModel(void)
@@ -38,7 +40,7 @@ void Engine::Graphics::StaticModel::loadFromFile(const GLchar *inFile)
 	std::vector<GLuint> indices;
 	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
 	{
-		std::shared_ptr<StaticMesh> mesh = std::shared_ptr<StaticMesh>(new StaticMesh);
+		std::shared_ptr<StaticMesh> mesh = std::make_shared<StaticMesh>();
 
 		vertices = ToolsPrivate::loadStaticVertices(pScene->mMeshes[i]);
 		indices = ToolsPrivate::loadIndices(pScene->mMeshes[i]);

@@ -19,7 +19,6 @@ namespace Engine
 		{
 			friend struct CompareMesh;
 
-		private:
 			std::shared_ptr<Material> _material;
 			GLuint _tex[10];
 

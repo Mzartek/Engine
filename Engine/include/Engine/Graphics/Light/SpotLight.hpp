@@ -1,6 +1,8 @@
 #ifndef SPOTLIGHT_HEADER
 #define SPOTLIGHT_HEADER
 
+#include <Engine/Graphics/Buffer/DepthMap.hpp>
+
 #include "Light.hpp"
 
 namespace Engine
@@ -9,7 +11,6 @@ namespace Engine
 	{
 		class DLLAPI SpotLight : public Light
 		{
-		private:
 			struct
 			{
 				glm::vec3 ALIGN(16) color;
@@ -41,7 +42,7 @@ namespace Engine
 			GLfloat getSpotCutOff(void) const;
 			GLfloat getMaxDistance(void) const;
 			void updateData(const std::shared_ptr<DepthMap> &depthMap);
-			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
+			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) override;
 			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::shared_ptr<DepthMap> &depthMap);
 		};
 	}

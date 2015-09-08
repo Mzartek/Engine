@@ -5,8 +5,6 @@
 
 #include "../Model.hpp"
 
-#include "SkeletalMesh.hpp"
-
 namespace Engine
 {
 	namespace Graphics
@@ -16,7 +14,6 @@ namespace Engine
 
 		class DLLAPI SkeletalModel : public Model
 		{
-		private:
 			struct
 			{
 				glm::mat4 MVP;
@@ -34,13 +31,13 @@ namespace Engine
 			SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
 			SkeletalModel(const std::shared_ptr<SkeletalModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
 			~SkeletalModel(void);
-			void loadFromFile(const GLchar *inFile, const GLchar *node_name = NULL);
+			void loadFromFile(const GLchar *inFile, const GLchar *node_name = nullptr);
 
-			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
-			void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
-			void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam);
-			void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light);
-			void displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light);
+			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) override;
+			void displayTransparent(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) override;
+			void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<Camera> &cam) override;
+			void displayDepthMap(const std::shared_ptr<DepthMap> &depthMap, const std::shared_ptr<SpotLight> &light) override;
+			void displayDepthMaps(const std::vector<std::shared_ptr<DepthMap>> &depthMaps, const std::shared_ptr<DirLight> &light) override;
 		};
 	}
 }

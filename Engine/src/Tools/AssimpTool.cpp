@@ -1,5 +1,7 @@
 #include "AssimpTool.hpp"
 
+#include <Assimp/postprocess.h>
+
 const aiScene *Engine::ToolsPrivate::openFile(Assimp::Importer &importer, const GLchar *inFile)
 {
 	const aiScene *pScene = importer.ReadFile(inFile, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes);
@@ -83,7 +85,7 @@ std::vector<GLuint> Engine::ToolsPrivate::loadIndices(const aiMesh *mesh)
 
 std::shared_ptr<Engine::Graphics::Material> Engine::ToolsPrivate::loadMaterial(const aiMaterial *material, const std::string &dir)
 {
-	std::shared_ptr<Graphics::Material> newMaterial = std::shared_ptr<Graphics::Material>(new Graphics::Material);
+	std::shared_ptr<Graphics::Material> newMaterial = std::make_shared<Graphics::Material>();
 
 	const aiTextureType _textureType[] = {
 		aiTextureType_DIFFUSE, aiTextureType_SPECULAR,
@@ -97,10 +99,10 @@ std::shared_ptr<Engine::Graphics::Material> Engine::ToolsPrivate::loadMaterial(c
 	for (GLuint i = 0; i < (sizeof _textureType / sizeof *_textureType); i++)
 	{
 		aiString path;
-		if (material->GetTexture(_textureType[i], 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		if (material->GetTexture(_textureType[i], 0, &path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS)
 		{
 			std::string filePath = dir + path.C_Str();
-			std::shared_ptr<Graphics::Texture2D> newTexture = std::shared_ptr<Graphics::Texture2D>(new Graphics::Texture2D);
+			std::shared_ptr<Graphics::Texture2D> newTexture = std::make_shared<Graphics::Texture2D>();
 
 			newTexture->loadFromFile(filePath.c_str());
 
@@ -172,14 +174,14 @@ std::shared_ptr<Engine::Graphics::Skeleton> Engine::ToolsPrivate::loadSkeleton(c
 	Graphics::Skeleton *tmp_skeleton0, *tmp_skeleton1;
 	aiMatrix4x4 tmp_matrix;
 
-	if (name != NULL)
+	if (name != nullptr)
 		root_node = scene->mRootNode->FindNode(name);
 	else
 		root_node = scene->mRootNode;
 
-	if (root_node == NULL) throw std::exception();
+	if (root_node == nullptr) throw std::exception();
 
-	root_skeleton = std::shared_ptr<Graphics::Skeleton>(new Graphics::Skeleton(std::string(root_node->mName.C_Str())));
+	root_skeleton = std::make_shared<Graphics::Skeleton>(std::string(root_node->mName.C_Str()));
 
 	std::queue<aiNode *> queue0;
 	std::queue<Graphics::Skeleton *> queue1;
@@ -223,7 +225,7 @@ std::vector<std::shared_ptr<Engine::Graphics::Bone>> Engine::ToolsPrivate::loadB
 	{
 		aiMatrix4x4 tmp_matrix = mesh->mBones[i]->mOffsetMatrix.Transpose();
 
-		std::shared_ptr<Graphics::Bone> tmp_bone = std::shared_ptr<Graphics::Bone>(new Graphics::Bone);
+		std::shared_ptr<Graphics::Bone> tmp_bone = std::make_shared<Graphics::Bone>();
 
 		memcpy(&tmp_bone->offsetMatrix, &tmp_matrix, sizeof(glm::mat4));
 		tmp_bone->ptr_in_skeleton = skeleton->searchByName(std::string(mesh->mBones[i]->mName.C_Str()));

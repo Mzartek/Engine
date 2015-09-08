@@ -1,4 +1,5 @@
 #include <Engine/Graphics/Screen.hpp>
+#include <Engine/Graphics/GraphicsRenderer.hpp>
 
 Engine::Graphics::Screen &Engine::Graphics::Screen::Instance(void)
 {
@@ -8,8 +9,8 @@ Engine::Graphics::Screen &Engine::Graphics::Screen::Instance(void)
 
 Engine::Graphics::Screen::Screen(void)
 {
-	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_colorBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_vertexBuffer = std::make_shared<Buffer>();
+	_colorBuffer = std::make_shared<Buffer>();
 
 	GLfloat vertex[] = {
 		-1, -1,
@@ -25,7 +26,7 @@ Engine::Graphics::Screen::Screen(void)
 		1, 1,
 	};
 	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
-	_colorBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
+	_colorBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
 
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);

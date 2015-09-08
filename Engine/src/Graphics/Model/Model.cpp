@@ -15,14 +15,14 @@ void Engine::Graphics::Model::checkMatrix(void)
 }
 
 Engine::Graphics::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
-	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_FALSE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
+	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_FALSE), _cubeTexture(nullptr), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_position = glm::vec3(0, 0, 0);
 	_scale = glm::vec3(1, 1, 1);
 	_rotation = glm::quat();
 
-	_tMesh = new std::vector < std::shared_ptr<Mesh> > ;
-	_matrixBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_tMesh = std::make_shared<std::vector<std::shared_ptr<Mesh>>>();
+	_matrixBuffer = std::make_shared<Buffer>();
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "diffuseTex"), 0);
@@ -41,14 +41,14 @@ Engine::Graphics::Model::Model(const std::shared_ptr<ShaderProgram> &gProgram, c
 }
 
 Engine::Graphics::Model::Model(const std::shared_ptr<Model> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
-	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_TRUE), _cubeTexture(NULL), _gProgram(gProgram), _smProgram(smProgram)
+	: _needMatModel(GL_TRUE), _needMatNormal(GL_TRUE), _isMirror(GL_TRUE), _cubeTexture(nullptr), _gProgram(gProgram), _smProgram(smProgram)
 {
 	_position = glm::vec3(0, 0, 0);
 	_scale = glm::vec3(1, 1, 1);
 	_rotation = glm::quat();
 
 	_tMesh = model->_tMesh;
-	_matrixBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_matrixBuffer = std::make_shared<Buffer>();
 
 	glUseProgram(_gProgram->getId());
 	glUniform1i(glGetUniformLocation(_gProgram->getId(), "diffuseTex"), 0);
@@ -67,7 +67,6 @@ Engine::Graphics::Model::Model(const std::shared_ptr<Model> &model, const std::s
 
 Engine::Graphics::Model::~Model(void)
 {
-	if (!_isMirror) delete _tMesh;
 }
 
 void Engine::Graphics::Model::addMesh(const std::shared_ptr<Mesh> &mesh)

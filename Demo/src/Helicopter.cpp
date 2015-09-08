@@ -3,22 +3,22 @@
 Helicopter::Helicopter()
 	: _isMount(true)
 {
-	_objectProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_objectProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/object/objectVert.glsl",
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		"../share/Demo/shader/object/objectGeom.glsl",
-		"../share/Demo/shader/object/objectFrag.glsl"));
+		"../share/Demo/shader/object/objectFrag.glsl");
 
-	_depthMapProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_depthMapProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/depthMap/depthMapVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/depthMap/depthMapFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
 
-	_corpsModel = std::shared_ptr<Graphics::StaticModel>(new Graphics::StaticModel(_objectProgram, _depthMapProgram));
-	_rotorModel = std::shared_ptr<Graphics::StaticModel>(new Graphics::StaticModel(_objectProgram, _depthMapProgram));
+	_corpsModel = std::make_shared<Graphics::StaticModel>(_objectProgram, _depthMapProgram);
+	_rotorModel = std::make_shared<Graphics::StaticModel>(_objectProgram, _depthMapProgram);
 
 	_corpsModel->loadFromFile("../share/Demo/resources/models/heli/corps.mobj");
 	_corpsModel->sortMesh();

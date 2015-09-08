@@ -41,7 +41,7 @@ void Engine::Graphics::SkeletalMesh::load(GLsizei numVertex, const Vertex *verte
 
 void Engine::Graphics::SkeletalMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
 {
-	load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
+	load(static_cast<GLsizei>(vertices.size()), vertices.data(), static_cast<GLsizei>(indices.size()), indices.data());
 }
 
 Engine::Graphics::MeshType Engine::Graphics::SkeletalMesh::getType(void) const

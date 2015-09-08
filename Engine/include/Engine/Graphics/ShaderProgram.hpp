@@ -9,7 +9,6 @@ namespace Engine
 	{
 		class DLLAPI ShaderProgram : public Object
 		{
-		private:
 			GLuint _idProgram;
 			GLuint _idVertexShader;
 			GLuint _idTessControlShader;

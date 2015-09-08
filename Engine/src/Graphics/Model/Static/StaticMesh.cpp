@@ -33,7 +33,7 @@ void Engine::Graphics::StaticMesh::load(GLsizei numVertex, const Vertex *vertexA
 
 void Engine::Graphics::StaticMesh::load(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices)
 {
-	load((GLsizei)vertices.size(), vertices.data(), (GLsizei)indices.size(), indices.data());
+	load(static_cast<GLsizei>(vertices.size()), vertices.data(), static_cast<GLsizei>(indices.size()), indices.data());
 }
 
 Engine::Graphics::MeshType Engine::Graphics::StaticMesh::getType(void) const

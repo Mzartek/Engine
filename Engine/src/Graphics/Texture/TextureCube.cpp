@@ -39,7 +39,7 @@ void Engine::Graphics::TextureCube::loadFromFiles(
 
 	for (int i = 0; i < 6; i++)
 	{
-		if (image[i] == NULL)
+		if (image[i] == nullptr)
 		{
 			throw std::exception(std::string("Error while loading image: " + std::string(tex[i]) + "\n" + IMG_GetError()).c_str());
 		}

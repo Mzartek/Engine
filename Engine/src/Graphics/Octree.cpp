@@ -119,7 +119,7 @@ Engine::Graphics::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloa
 Engine::Graphics::Octree::~Octree(void)
 {
 	if (_isRoot) delete _map_model;
-	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
+	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); ++it)
 		delete *it;
 }
 
@@ -135,7 +135,7 @@ bool Engine::Graphics::Octree::addModel(Model *model, GLfloat dim)
 		model_pos.z < (_position.z - _dim_2) || model_pos.z >= (_position.z + _dim_2))
 		return false;
 
-	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
+	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); ++it)
 		if ((*it)->addModel(model, dim)) return true;
 
 	_modelContainer.insert(model);
@@ -161,6 +161,6 @@ void Engine::Graphics::Octree::getModels(const std::shared_ptr<PerspCamera> &cam
 
 	set_model.insert(_modelContainer.begin(), _modelContainer.end());
 
-	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); it++)
+	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); ++it)
 		(*it)->getModels(cam, set_model);
 }

@@ -13,7 +13,6 @@ namespace Engine
 	{
 		class DLLAPI Material : public Object
 		{
-		private:
 			struct
 			{
 				glm::vec3 ALIGN(16) diffuse;

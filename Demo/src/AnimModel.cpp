@@ -2,21 +2,21 @@
 
 AnimModel::AnimModel()
 {
-	_objectProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_objectProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/skeletalObject/objectVert.glsl",
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		"../share/Demo/shader/skeletalObject/objectGeom.glsl",
-		"../share/Demo/shader/skeletalObject/objectFrag.glsl"));
+		"../share/Demo/shader/skeletalObject/objectFrag.glsl");
 
-	_depthMapProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_depthMapProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/skeletalDepthMap/depthMapVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/skeletalDepthMap/depthMapFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/skeletalDepthMap/depthMapFrag.glsl");
 
-	_model = std::shared_ptr<Graphics::SkeletalModel>(new Graphics::SkeletalModel(_objectProgram, _depthMapProgram));
+	_model = std::make_shared<Graphics::SkeletalModel>(_objectProgram, _depthMapProgram);
 
 	_model->loadFromFile("../share/Demo/resources/models/anim_model/nightwing_anim.dae", "Armature");
 	_model->sortMesh();

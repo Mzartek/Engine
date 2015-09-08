@@ -3,12 +3,13 @@
 Engine::Graphics::Skeleton::Skeleton(void)
 {
 	name = "";
-	parent = NULL;
+	parent = nullptr;
 }
 
 Engine::Graphics::Skeleton::Skeleton(const std::string &name)
 {
 	this->name = name;
+	parent = nullptr;
 }
 
 Engine::Graphics::Skeleton::~Skeleton(void)
@@ -25,8 +26,8 @@ Engine::Graphics::Skeleton *Engine::Graphics::Skeleton::searchByName(const std::
 	for (std::vector<Skeleton *>::iterator it = children.begin(); it != children.end(); it++)
 	{
 		Skeleton *tmp_skeleton = (*it)->searchByName(searchName);
-		if (tmp_skeleton != NULL) return tmp_skeleton;
+		if (tmp_skeleton != nullptr) return tmp_skeleton;
 	}
 
-	return NULL;
+	return nullptr;
 }

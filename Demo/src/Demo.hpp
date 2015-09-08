@@ -3,7 +3,6 @@
 
 #include <Engine/Audio/AudioRenderer.hpp>
 #include <Engine/Graphics/GraphicsRenderer.hpp>
-#include <Engine/Input/InputHandler.hpp>
 
 #include <Engine/Graphics/Buffer/DepthMap.hpp>
 #include <Engine/Graphics/Buffer/GBuffer.hpp>
@@ -14,16 +13,11 @@
 
 #include "AnimModel.hpp"
 #include "BloomPost.hpp"
-#include "ExplosionEffect.hpp"
-#include "FirefliesEffect.hpp"
 #include "Ground.hpp"
-#include "Helicopter.hpp"
 #include "MoonLight.hpp"
 #include "RainEffect.hpp"
 #include "NightBox.hpp"
 #include "SmokeEffect.hpp"
-#include "TextDisplay.hpp"
-#include "ThunderLight.hpp"
 #include "TorchLight.hpp"
 #include "Tree.hpp"
 
@@ -31,7 +25,6 @@ using namespace Engine;
 
 class Demo : public Graphics::GameLoop
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> backgroundProgram;
 	std::shared_ptr<Graphics::ShaderProgram> windowProgram;
 
@@ -60,10 +53,10 @@ private:
 public:
 	Demo(void);
 	~Demo(void);
-	void display(GLfloat state);
-	void state(long long time);
-	void last_state(void);
-	void reshape(GLuint w, GLuint h);
+	void display(GLfloat state) override;
+	void state(long long time) override;
+	void last_state(void) override;
+	void reshape(GLuint w, GLuint h) override;
 	void launch(void);
 };
 

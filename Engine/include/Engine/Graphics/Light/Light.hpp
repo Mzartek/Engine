@@ -5,11 +5,9 @@
 
 #include "../Buffer/Buffer.hpp"
 #include "../Buffer/GBuffer.hpp"
-#include "../Buffer/DepthMap.hpp"
 
 #include "../Camera/PerspCamera.hpp"
 
-#include "../Screen.hpp"
 #include "../ShaderProgram.hpp"
 
 namespace Engine

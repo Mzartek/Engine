@@ -9,18 +9,17 @@ namespace Engine
 	{
 		class DLLAPI CBuffer : public FrameBuffer
 		{
-		private:
 			GLuint _idTexture;
 
 		public:
 			CBuffer(void);
 			~CBuffer(void);
-			void config(GLuint width, GLuint height);
+			void config(GLuint width, GLuint height) override;
 			GLuint getIdTexture(void) const;
 			void setNormalState(void) const;
 			void setAdditiveState(void) const;
 			void setTransparentState(void) const;
-			void clear(void) const;
+			void clear(void) const override;
 		};
 	}
 }

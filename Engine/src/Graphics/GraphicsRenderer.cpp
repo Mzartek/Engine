@@ -10,7 +10,7 @@ Engine::Graphics::GraphicsRenderer &Engine::Graphics::GraphicsRenderer::Instance
 }
 
 Engine::Graphics::GraphicsRenderer::GraphicsRenderer(void)
-	: _Window(NULL), _GLContext(NULL)
+	: _Window(nullptr), _GLContext(nullptr), _stopLoop(false), _width(0), _height(0)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -58,7 +58,7 @@ void Engine::Graphics::GraphicsRenderer::init(const GLchar *title, GLint width, 
 		flags = SDL_WINDOW_OPENGL;
 
 	_Window = SDL_CreateWindow(&title[0], SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
-	if (_Window == NULL)
+	if (_Window == nullptr)
 	{
 		throw std::exception(SDL_GetError());
 	}
@@ -117,7 +117,7 @@ GLuint Engine::Graphics::GraphicsRenderer::getHeight(void) const
 
 void Engine::Graphics::GraphicsRenderer::mainLoop(GameLoop *gameLoop)
 {
-	if (gameLoop == NULL)
+	if (gameLoop == nullptr)
 	{
 		throw std::invalid_argument("Wrong GameLoop");
 	}
@@ -161,7 +161,7 @@ void Engine::Graphics::GraphicsRenderer::mainLoop(GameLoop *gameLoop)
 			gameLoop->last_state();
 		}
 
-		gameLoop->display((GLfloat)accumulator / dt);
+		gameLoop->display(static_cast<GLfloat>(accumulator) / dt);
 		SDL_GL_SwapWindow(_Window);
 	}
 }

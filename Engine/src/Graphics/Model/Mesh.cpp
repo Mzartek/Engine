@@ -1,10 +1,10 @@
 #include <Engine/Graphics/Model/Mesh.hpp>
 
 Engine::Graphics::Mesh::Mesh(void)
-	: _material(NULL), _numElement(0)
+	: _material(nullptr), _numElement(0)
 {
-	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
-	_indexBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_vertexBuffer = std::make_shared<Buffer>();
+	_indexBuffer = std::make_shared<Buffer>();
 
 	glGenVertexArrays(1, &_idVAO);
 
@@ -94,7 +94,7 @@ void Engine::Graphics::Mesh::display(void) const
 	glBindBufferBase(GL_UNIFORM_BUFFER, 3, _material->getStateBuffer());
 
 	glBindVertexArray(_idVAO);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
@@ -137,7 +137,7 @@ void Engine::Graphics::Mesh::display(const std::shared_ptr<TextureCube> &cubeTex
 	glBindBufferBase(GL_UNIFORM_BUFFER, 3, _material->getStateBuffer());
 
 	glBindVertexArray(_idVAO);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
@@ -147,13 +147,13 @@ void Engine::Graphics::Mesh::displayShadow(void) const
 	glBindTexture(GL_TEXTURE_2D, _tex[0]);
 
 	glBindVertexArray(_idVAO);
-	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, _numElement, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
 bool Engine::Graphics::CompareMesh::operator()(const std::shared_ptr<Mesh> &first, const std::shared_ptr<Mesh> &second)
 {
-	if (first->_material == NULL)
+	if (first->_material == nullptr)
 		return false;
 	if (first->_material->getOpacity() < second->_material->getOpacity())
 		return true;

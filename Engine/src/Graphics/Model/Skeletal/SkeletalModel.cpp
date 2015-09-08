@@ -1,11 +1,13 @@
 #include <Engine/Graphics/Model/Skeletal/SkeletalModel.hpp>
 
+#include <Engine/Tools/StringHandler.hpp>
+
 #include "../../../Tools/AssimpTool.hpp"
 
 Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
@@ -13,7 +15,7 @@ Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalMod
 {
 	_bones = model->_bones;
 
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, NULL, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::SkeletalModel::~SkeletalModel(void)
@@ -51,13 +53,13 @@ void Engine::Graphics::SkeletalModel::loadFromFile(const GLchar *inFile, const G
 	std::vector<GLuint> indices;
 	for (GLuint i = 0; i < pScene->mNumMeshes; i++)
 	{
-		std::shared_ptr<SkeletalMesh> mesh = std::shared_ptr<SkeletalMesh>(new SkeletalMesh);
+		std::shared_ptr<SkeletalMesh> mesh = std::make_shared<SkeletalMesh>();
 
 		vertices = ToolsPrivate::loadSkeletalVertices(pScene->mMeshes[i], map_vertex);
 		indices = ToolsPrivate::loadIndices(pScene->mMeshes[i]);
 		mesh->setMaterial(ToolsPrivate::loadMaterial(pScene->mMaterials[pScene->mMeshes[i]->mMaterialIndex], Tools::getDir(inFile)));
 
-		std::vector<std::shared_ptr<Engine::Graphics::Bone>> tmp_vector = ToolsPrivate::loadBones(pScene->mMeshes[i], _skeleton, bone_index, vertices, map_vertex);
+		std::vector<std::shared_ptr<Bone>> tmp_vector = ToolsPrivate::loadBones(pScene->mMeshes[i], _skeleton, bone_index, vertices, map_vertex);
 		_bones.insert(_bones.end(), tmp_vector.begin(), tmp_vector.end());
 
 		mesh->load(vertices, indices);

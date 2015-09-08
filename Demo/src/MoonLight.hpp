@@ -7,7 +7,6 @@ using namespace Engine;
 
 class MoonLight
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _dirLightProgram;
 	std::shared_ptr<Graphics::DirLight> _light;
 

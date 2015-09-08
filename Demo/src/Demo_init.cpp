@@ -2,44 +2,44 @@
 
 Demo::Demo(void)
 {
-	backgroundProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	backgroundProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/background/backgroundVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/background/backgroundFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/background/backgroundFrag.glsl");
 
-	windowProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	windowProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/screen/screenVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/screen/windowFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/screen/windowFrag.glsl");
 	
-	gbuffer = std::shared_ptr<Graphics::GBuffer>(new Graphics::GBuffer);
+	gbuffer = std::make_shared<Graphics::GBuffer>();
 	gbuffer->config(
 		Graphics::GraphicsRenderer::Instance().getWidth(),
 		Graphics::GraphicsRenderer::Instance().getHeight());
 
-	camera = std::shared_ptr<Graphics::FreeCam>(new Graphics::FreeCam);
+	camera = std::make_shared<Graphics::FreeCam>();
 
-	octree = std::shared_ptr<Graphics::Octree>(new Graphics::Octree(4, glm::vec3(0, 0, 0), 1000));
+	octree = std::make_shared<Graphics::Octree>(4, glm::vec3(0, 0, 0), 1000.0f);
 
-	nightBox = std::shared_ptr<NightBox>(new NightBox);
-	tree = std::shared_ptr<Tree>(new Tree);
-	animModel = std::shared_ptr<AnimModel>(new AnimModel);
-	ground = std::shared_ptr<Ground>(new Ground);
-	moonLight = std::shared_ptr<MoonLight>(new MoonLight);
-	torchLight = std::shared_ptr<TorchLight>(new TorchLight);
-	rainEffect = std::shared_ptr<RainEffect>(new RainEffect);
-	smokeEffect = std::shared_ptr<SmokeEffect>(new SmokeEffect);
-	bloomPost = std::shared_ptr<BloomPost>(new BloomPost(
+	nightBox = std::make_shared<NightBox>();
+	tree = std::make_shared<Tree>();
+	animModel = std::make_shared<AnimModel>();
+	ground = std::make_shared<Ground>();
+	moonLight = std::make_shared<MoonLight>();
+	torchLight = std::make_shared<TorchLight>();
+	rainEffect = std::make_shared<RainEffect>();
+	smokeEffect = std::make_shared<SmokeEffect>();
+	bloomPost = std::make_shared<BloomPost>(
 		Graphics::GraphicsRenderer::Instance().getWidth(),
-		Graphics::GraphicsRenderer::Instance().getHeight()));
+		Graphics::GraphicsRenderer::Instance().getHeight());
 
 	for (GLuint i = 0; i < Graphics::DirLight::CASCADED_LEVEL; i++)
 	{
-		depthMaps.push_back(std::shared_ptr<Graphics::DepthMap>(new Graphics::DepthMap));
+		depthMaps.push_back(std::make_shared<Graphics::DepthMap>());
 		depthMaps[i]->config(2048, 2048);
 	}
 

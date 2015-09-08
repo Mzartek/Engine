@@ -7,6 +7,7 @@ Engine::Input::InputHandler &Engine::Input::InputHandler::Instance(void)
 }
 
 Engine::Input::InputHandler::InputHandler(void)
+	: _keyState(nullptr)
 {
 }
 
@@ -38,6 +39,6 @@ GLint Engine::Input::InputHandler::getMouseRelY(void) const
 
 void Engine::Input::InputHandler::refresh(void)
 {
-	_keyState = SDL_GetKeyboardState(NULL);
-	_mouseState.buttons = (GLuint)SDL_GetRelativeMouseState(&_mouseState.x, &_mouseState.y);
+	_keyState = SDL_GetKeyboardState(nullptr);
+	_mouseState.buttons = static_cast<GLuint>(SDL_GetRelativeMouseState(&_mouseState.x, &_mouseState.y));
 }

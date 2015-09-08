@@ -21,8 +21,8 @@ void Engine::Graphics::MovableCamera::setSpeed(GLfloat v)
 
 void Engine::Graphics::MovableCamera::mouseMove(GLint xrel, GLint yrel)
 {
-	_atheta -= (GLfloat)xrel * glm::pi<GLfloat>() / 180;
-	_aphi -= (GLfloat)yrel * glm::pi<GLfloat>() / 180;
+	_atheta -= static_cast<GLfloat>(xrel) * glm::pi<GLfloat>() / 180;
+	_aphi -= static_cast<GLfloat>(yrel) * glm::pi<GLfloat>() / 180;
 
 	if (_aphi >= glm::pi<GLfloat>() / 2) _aphi = 89.0f * glm::pi<GLfloat>() / 180;
 	else if (_aphi <= -glm::pi<GLfloat>() / 2) _aphi = -89.0f * glm::pi<GLfloat>() / 180;

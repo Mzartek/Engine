@@ -2,12 +2,12 @@
 #define GROUND_HEADER
 
 #include <Engine/Graphics/Model/Static/StaticModel.hpp>
+#include <Engine/Graphics/Model/Static/StaticMesh.hpp>
 
 using namespace Engine;
 
 class Ground
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _objectProgram;
 	std::shared_ptr<Graphics::ShaderProgram> _depthMapProgram;
 	std::shared_ptr<Graphics::Texture2D> _texture;

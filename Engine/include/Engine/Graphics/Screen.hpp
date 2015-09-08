@@ -5,7 +5,6 @@
 #include "Buffer/CBuffer.hpp"
 #include "Buffer/GBuffer.hpp"
 
-#include "GraphicsRenderer.hpp"
 #include "ShaderProgram.hpp"
 
 namespace Engine
@@ -14,7 +13,6 @@ namespace Engine
 	{
 		class DLLAPI Screen : public Object
 		{
-		private:
 			std::shared_ptr<Buffer> _vertexBuffer;
 			std::shared_ptr<Buffer> _colorBuffer;
 			GLuint _idVAO;

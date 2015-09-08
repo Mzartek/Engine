@@ -7,7 +7,6 @@ using namespace Engine;
 
 class Tree
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _objectProgram;
 	std::shared_ptr<Graphics::ShaderProgram> _depthMapProgram;
 	std::shared_ptr<Graphics::StaticModel> _model;

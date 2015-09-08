@@ -1,12 +1,12 @@
 #include <Engine/Graphics/TextArray.hpp>
 
 Engine::Graphics::TextArray::TextArray(const std::shared_ptr<ShaderProgram> &program)
-	: _font(NULL), _program(program)
+	: _font(nullptr), _program(program)
 {
-	_texture = std::shared_ptr<Texture2D>(new Texture2D);
-	_vertexBuffer = std::shared_ptr<Buffer>(new Buffer);
+	_texture = std::make_shared<Texture2D>();
+	_vertexBuffer = std::make_shared<Buffer>();
 
-	_vertexBuffer->createStore(GL_ARRAY_BUFFER, NULL, 64, GL_STATIC_DRAW);
+	_vertexBuffer->createStore(GL_ARRAY_BUFFER, nullptr, 64, GL_STATIC_DRAW);
 
 	glUseProgram(_program->getId());
 	glUniform1i(glGetUniformLocation(_program->getId(), "textTexture"), 0);
@@ -30,7 +30,7 @@ void Engine::Graphics::TextArray::setFont(const GLchar *font, GLuint size, GLuby
 {
 	if (_font) TTF_CloseFont(_font);
 	_font = TTF_OpenFont(font, size);
-	if (_font == NULL)
+	if (_font == nullptr)
 	{
 		throw std::exception(std::string("Error while loading fontFile: " + std::string(font)).c_str());
 	}
@@ -51,13 +51,13 @@ void Engine::Graphics::TextArray::writeScreen(GLuint x, GLuint y, GLuint w, GLui
 
 	GLfloat vertexArray[] =
 	{
-		(GLfloat)x, (GLfloat)y,
+		static_cast<GLfloat>(x), static_cast<GLfloat>(y),
 		0, 0,
-		(GLfloat)x + w, (GLfloat)y,
+		static_cast<GLfloat>(x) + w, static_cast<GLfloat>(y),
 		1, 0,
-		(GLfloat)x, (GLfloat)y + h,
+		static_cast<GLfloat>(x), static_cast<GLfloat>(y) + h,
 		0, 1,
-		(GLfloat)x + w, (GLfloat)y + h,
+		static_cast<GLfloat>(x) + w, static_cast<GLfloat>(y) + h,
 		1, 1,
 	};
 	_vertexBuffer->updateStoreSub(vertexArray);

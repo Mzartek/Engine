@@ -40,7 +40,7 @@ void Engine::Audio::Sound::loadFromFile(const ALchar *file, ALsizei frequency, A
 
 	Mix_Chunk *sound = Mix_LoadWAV(file);
 
-	if (sound == NULL)
+	if (sound == nullptr)
 	{
 		throw std::exception(std::string("Failed to read the file: " + std::string(file) + Mix_GetError()).c_str());
 	}

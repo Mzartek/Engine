@@ -1,6 +1,8 @@
 #ifndef DIRLIGHT_HEADER
 #define DIRLIGHT_HEADER
 
+#include <Engine/Graphics/Buffer/DepthMap.hpp>
+
 #include "Light.hpp"
 
 namespace Engine
@@ -38,8 +40,8 @@ namespace Engine
 			const glm::vec3 &getColor(void) const;
 			const glm::vec3 &getDirection(void) const;
 			void updateData(const glm::vec3 &pos, GLfloat dim0, GLfloat dim1, GLfloat dim2);
-			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam);
-			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::vector<std::shared_ptr<Graphics::DepthMap>> &depthMaps);
+			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam) override;
+			void display(const std::shared_ptr<GBuffer> &gbuf, const std::shared_ptr<PerspCamera> &cam, const std::vector<std::shared_ptr<DepthMap>> &depthMaps);
 		};
 	}
 }

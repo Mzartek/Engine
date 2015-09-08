@@ -4,25 +4,25 @@ SmokeEffect::SmokeEffect(void)
 {
 	const GLchar *varyings[] = { "outPosition", "outDirection", "outVelocity", "outLife" };
 
-	_physicsProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_physicsProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/smokeParticles/smokePhysics_v.glsl",
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		"../share/Demo/shader/smokeParticles/smokePhysics_g.glsl",
-		NULL,
-		varyings, sizeof(varyings) / sizeof(GLfloat *)));
+		nullptr,
+		varyings, static_cast<GLsizei>(sizeof(varyings) / sizeof(GLfloat *)));
 
-	_displayProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_displayProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/smokeParticles/smokeVert.glsl",
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		"../share/Demo/shader/smokeParticles/smokeGeom.glsl",
-		"../share/Demo/shader/smokeParticles/smokeFrag.glsl"));
+		"../share/Demo/shader/smokeParticles/smokeFrag.glsl");
 
-	_particlesHandler = std::shared_ptr<Graphics::ParticlesHandler>(new Graphics::ParticlesHandler(_physicsProgram, _displayProgram));
+	_particlesHandler = std::make_shared<Graphics::ParticlesHandler>(_physicsProgram, _displayProgram);
 	_particlesHandler->loadTexture("../share/Demo/resources/textures/smoke.png");
 
-	_sound = std::shared_ptr<Audio::Sound>(new Audio::Sound);
+	_sound = std::make_shared<Audio::Sound>();
 	_sound->setGain(0.75f);
 	_sound->setPitch(0.75f);
 	_sound->setLoop(AL_TRUE);
@@ -42,13 +42,13 @@ void SmokeEffect::init(const glm::vec3 &position, GLuint numParticles)
 	{
 		smokeParticles[i].position = position;
 		smokeParticles[i].direction = glm::normalize(glm::vec3(
-			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX,
+			static_cast<GLfloat>(rand() - (RAND_MAX / 2)) / RAND_MAX,
 			1.0f,
-			(GLfloat)(rand() - (RAND_MAX / 2)) / RAND_MAX));
+			static_cast<GLfloat>(rand() - (RAND_MAX / 2)) / RAND_MAX));
 		smokeParticles[i].velocity = 0.2f;
-		smokeParticles[i].life = (GLfloat)(rand() % 100);
+		smokeParticles[i].life = static_cast<GLfloat>(rand() % 100);
 	}
-	_particlesHandler->setParticles(smokeParticles.data(), (GLsizei)smokeParticles.size());
+	_particlesHandler->setParticles(smokeParticles.data(), static_cast<GLsizei>(smokeParticles.size()));
 	this->setPosition(position);
 }
 

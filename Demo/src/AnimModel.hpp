@@ -7,7 +7,6 @@ using namespace Engine;
 
 class AnimModel
 {
-private:
 	std::shared_ptr<Graphics::ShaderProgram> _objectProgram;
 	std::shared_ptr<Graphics::ShaderProgram> _depthMapProgram;
 	std::shared_ptr<Graphics::SkeletalModel> _model;

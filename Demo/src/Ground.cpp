@@ -2,24 +2,24 @@
 
 Ground::Ground(void)
 {
-	_objectProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_objectProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/object/objectVert.glsl",
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		"../share/Demo/shader/object/objectGeom.glsl",
-		"../share/Demo/shader/object/objectFrag.glsl"));
+		"../share/Demo/shader/object/objectFrag.glsl");
 
-	_depthMapProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_depthMapProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/depthMap/depthMapVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/depthMap/depthMapFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/depthMap/depthMapFrag.glsl");
 
-	_texture = std::shared_ptr<Graphics::Texture2D>(new Graphics::Texture2D);
-	_material = std::shared_ptr<Graphics::Material>(new Graphics::Material);
-	_mesh = std::shared_ptr<Graphics::StaticMesh>(new Graphics::StaticMesh);
-	_model = std::shared_ptr<Graphics::StaticModel>(new Graphics::StaticModel(_objectProgram, _depthMapProgram));
+	_texture = std::make_shared<Graphics::Texture2D>();
+	_material = std::make_shared<Graphics::Material>();
+	_mesh = std::make_shared<Graphics::StaticMesh>();
+	_model = std::make_shared<Graphics::StaticModel>(_objectProgram, _depthMapProgram);
 
 	_texture->loadFromFile("../share/Demo/resources/textures/feuilles.png");
 	_material->setDiffuseTexture(_texture);

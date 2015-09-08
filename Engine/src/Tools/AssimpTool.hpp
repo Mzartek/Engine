@@ -10,9 +10,6 @@
 
 #include <Engine/Graphics/Model/Static/StaticMesh.hpp>
 
-#include <Engine/Graphics/Texture/Texture2D.hpp>
-
-#include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 

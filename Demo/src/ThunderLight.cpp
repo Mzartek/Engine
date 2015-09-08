@@ -2,21 +2,21 @@
 
 ThunderLight::ThunderLight(void)
 {
-	_dirLightProgram = std::shared_ptr<Graphics::ShaderProgram>(new Graphics::ShaderProgram(
+	_dirLightProgram = std::make_shared<Graphics::ShaderProgram>(
 		"../share/Demo/shader/dirLight/dirLightVert.glsl",
-		NULL,
-		NULL,
-		NULL,
-		"../share/Demo/shader/dirLight/dirLightFrag.glsl"));
+		nullptr,
+		nullptr,
+		nullptr,
+		"../share/Demo/shader/dirLight/dirLightFrag.glsl");
 
-	_light = std::shared_ptr<Graphics::DirLight>(new Graphics::DirLight(_dirLightProgram));
+	_light = std::make_shared<Graphics::DirLight>(_dirLightProgram);
 
 	_light->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	_light->setDirection(glm::vec3((GLfloat)rand() / RAND_MAX, -1.0f, (GLfloat)rand() / RAND_MAX));
+	_light->setDirection(glm::vec3(static_cast<GLfloat>(rand()) / RAND_MAX, -1.0f, static_cast<GLfloat>(rand()) / RAND_MAX));
 
 	for (GLuint i = 0; i < 4; i++)
 	{
-		_sound[i] = std::shared_ptr<Audio::Sound>(new Audio::Sound);
+		_sound[i] = std::make_shared<Audio::Sound>();
 		_sound[i]->setGain(1.0f);
 		_sound[i]->setPitch(1.0f);
 		_sound[i]->setLoop(AL_FALSE);
@@ -33,7 +33,7 @@ ThunderLight::~ThunderLight(void)
 
 void ThunderLight::generateDirection(void)
 {
-	_light->setDirection(glm::normalize(glm::vec3((GLfloat)rand() / RAND_MAX, -1.0f, (GLfloat)rand() / RAND_MAX)));
+	_light->setDirection(glm::normalize(glm::vec3(static_cast<GLfloat>(rand()) / RAND_MAX, -1.0f, static_cast<GLfloat>(rand()) / RAND_MAX)));
 }
 
 void ThunderLight::playRandomSound(void)

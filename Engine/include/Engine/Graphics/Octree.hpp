@@ -9,9 +9,8 @@ namespace Engine
 {
 	namespace Graphics
 	{
-		struct DLLAPI Octree : public Object
+		class DLLAPI Octree : public Object
 		{
-		private:
 			GLboolean _isRoot;
 			std::map<Model *, Octree *> *_map_model;
 
@@ -25,9 +24,9 @@ namespace Engine
 			std::set<Model *> _modelContainer;
 			std::vector<Octree *> _children;
 
-			bool checkCamInCube(const std::shared_ptr<Graphics::PerspCamera> &cam) const;
-			bool checkCamInSphere(const std::shared_ptr<Graphics::PerspCamera> &cam) const;
-			bool checkInCamFrus(const std::shared_ptr<Graphics::PerspCamera> &cam) const;
+			bool checkCamInCube(const std::shared_ptr<PerspCamera> &cam) const;
+			bool checkCamInSphere(const std::shared_ptr<PerspCamera> &cam) const;
+			bool checkInCamFrus(const std::shared_ptr<PerspCamera> &cam) const;
 
 			Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std::map<Model *, Octree *> *map_model);
 

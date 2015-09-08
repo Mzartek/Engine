@@ -16,7 +16,6 @@ namespace Engine
 	{
 		class DLLAPI TextArray : public Object
 		{
-		private:
 			TTF_Font *_font;
 			std::shared_ptr<Texture2D> _texture;
 			std::shared_ptr<Buffer> _vertexBuffer;
