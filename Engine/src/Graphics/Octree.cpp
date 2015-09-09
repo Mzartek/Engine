@@ -42,45 +42,8 @@ inline bool Engine::Graphics::Octree::checkInCamFrus(const std::shared_ptr<Graph
 	return false;
 }
 
-Engine::Graphics::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim, std::map<Model *, Octree *> *map_model)
-	: _isRoot(GL_FALSE), _map_model(map_model), _position(position)
-{
-	GLfloat newDim = dim / 2;
-	GLfloat newDim_2 = newDim / 2;
-
-	_dim = dim;
-	_dim_2 = newDim;
-	_radius = glm::length(glm::vec3(_dim));
-
-	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y - _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y - _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y + _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x - _dim, _position.y + _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y - _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y - _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y + _dim, _position.z - _dim) * glm::vec3(2, 2, 2));
-	_vertex.push_back(glm::vec3(_position.x + _dim, _position.y + _dim, _position.z + _dim) * glm::vec3(2, 2, 2));
-
-	if (depth > 0)
-	{
-		glm::vec3 newPositions[] = {
-			glm::vec3(_position.x - newDim_2, _position.y - newDim_2, _position.z - newDim_2),
-			glm::vec3(_position.x - newDim_2, _position.y - newDim_2, _position.z + newDim_2),
-			glm::vec3(_position.x - newDim_2, _position.y + newDim_2, _position.z - newDim_2),
-			glm::vec3(_position.x - newDim_2, _position.y + newDim_2, _position.z + newDim_2),
-			glm::vec3(_position.x + newDim_2, _position.y - newDim_2, _position.z - newDim_2),
-			glm::vec3(_position.x + newDim_2, _position.y - newDim_2, _position.z + newDim_2),
-			glm::vec3(_position.x + newDim_2, _position.y + newDim_2, _position.z - newDim_2),
-			glm::vec3(_position.x + newDim_2, _position.y + newDim_2, _position.z + newDim_2),
-		};
-
-		for (GLuint i = 0; i < 8; i++)
-			_children.push_back(new Octree(depth - 1, newPositions[i], newDim, _map_model));
-	}
-}
-
 Engine::Graphics::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloat dim)
-	: _isRoot(GL_TRUE), _map_model(new std::map<Model *, Octree *>), _position(position)
+	: _position(position)
 {
 	GLfloat newDim = dim / 2;
 	GLfloat newDim_2 = newDim / 2;
@@ -112,13 +75,12 @@ Engine::Graphics::Octree::Octree(GLuint depth, const glm::vec3 &position, GLfloa
 		};
 
 		for (GLuint i = 0; i < 8; i++)
-			_children.push_back(new Octree(depth - 1, newPositions[i], newDim, _map_model));
+			_children.push_back(new Octree(depth - 1, newPositions[i], newDim));
 	}
 }
 
 Engine::Graphics::Octree::~Octree(void)
 {
-	if (_isRoot) delete _map_model;
 	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); ++it)
 		delete *it;
 }
@@ -139,16 +101,24 @@ bool Engine::Graphics::Octree::addModel(Model *model, GLfloat dim)
 		if ((*it)->addModel(model, dim)) return true;
 
 	_modelContainer.insert(model);
-	(*_map_model)[model] = this;
 
 	return true;
 }
 
-void Engine::Graphics::Octree::removeModel(Model *model)
+bool Engine::Graphics::Octree::removeModel(Model *model)
 {
-	std::map<Model *, Octree *>::iterator map_it = _map_model->find(model);
+	std::set<Model *>::iterator elements = _modelContainer.find(model);
+	if (elements != _modelContainer.end())
+	{
+		_modelContainer.erase(elements, _modelContainer.end());
 
-	if (map_it != _map_model->end()) map_it->second->_modelContainer.erase(model);
+		return true;
+	}
+
+	for (std::vector<Octree *>::iterator it = _children.begin(); it != _children.end(); ++it)
+		if ((*it)->removeModel(model)) return true;
+
+	return false;
 }
 
 void Engine::Graphics::Octree::getModels(const std::shared_ptr<PerspCamera> &cam, std::set<Model *> &set_model)

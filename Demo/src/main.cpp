@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	// We call the instance for init
-	Graphics::GraphicsRenderer::Instance().init("Demo OpenGL", 600, 380, true);
+	Graphics::GraphicsRenderer::Instance().init("Demo OpenGL", 800, 600, false);
 	Audio::AudioRenderer::Instance();
 	
 	std::shared_ptr<Demo> demo = std::make_shared<Demo>();

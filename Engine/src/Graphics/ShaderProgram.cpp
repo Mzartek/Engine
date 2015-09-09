@@ -1,28 +1,6 @@
 #include <Engine/Graphics/ShaderProgram.hpp>
 
-inline GLchar *readText(const GLchar *filename)
-{
-	std::ifstream file(filename, std::ifstream::in | std::ifstream::binary);
-	GLchar *content;
-	GLint size;
-
-	if (!file.is_open())
-	{
-		std::exception(std::string("Error while opening file: " + std::string(filename)).c_str());
-	}
-	// Lenght of the file
-	file.seekg(0, std::ifstream::end);
-	size = static_cast<GLint>(file.tellg());
-	file.seekg(0, std::ifstream::beg);
-
-	// Add content
-	content = new GLchar[size + 1];
-	file.read(content, size);
-	content[size] = '\0';
-
-	file.close();
-	return content;
-}
+#include <Engine/Tools/StringHandler.hpp>
 
 inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 {
@@ -37,7 +15,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 		throw std::exception("Error while creating shader");
 	}
 
-	content = readText(filename);
+	content = Engine::Tools::readText(filename);
 
 	glShaderSource(id, 1, const_cast<const GLchar **>(&content), nullptr);
 	glCompileShader(id);

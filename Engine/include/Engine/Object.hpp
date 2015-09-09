@@ -57,7 +57,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#define BUFFER_OFFSET(i) (reinterpret_cast<char *>(nullptr) + (i))
+#define BUFFER_OFFSET(i) (static_cast<char *>(nullptr) + (i))
 
 namespace Engine
 {
