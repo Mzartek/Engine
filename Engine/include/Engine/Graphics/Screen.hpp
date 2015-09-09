@@ -13,8 +13,8 @@ namespace Engine
 	{
 		class DLLAPI Screen : public Object
 		{
-			std::shared_ptr<Buffer> _vertexBuffer;
-			std::shared_ptr<Buffer> _colorBuffer;
+			Buffer _vertexBuffer;
+			Buffer _colorBuffer;
 			GLuint _idVAO;
 
 		public:

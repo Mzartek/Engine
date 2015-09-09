@@ -9,9 +9,6 @@ Engine::Graphics::Screen &Engine::Graphics::Screen::Instance(void)
 
 Engine::Graphics::Screen::Screen(void)
 {
-	_vertexBuffer = std::make_shared<Buffer>();
-	_colorBuffer = std::make_shared<Buffer>();
-
 	GLfloat vertex[] = {
 		-1, -1,
 		0, 0,
@@ -25,12 +22,12 @@ Engine::Graphics::Screen::Screen(void)
 		1, 1,
 		1, 1,
 	};
-	_vertexBuffer->createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
-	_colorBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
+	_vertexBuffer.createStore(GL_ARRAY_BUFFER, vertex, sizeof vertex, GL_STATIC_DRAW);
+	_colorBuffer.createStore(GL_UNIFORM_BUFFER, nullptr, sizeof(glm::vec4), GL_DYNAMIC_DRAW);
 
 	glGenVertexArrays(1, &_idVAO);
 	glBindVertexArray(_idVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer->getId());
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer.getId());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), BUFFER_OFFSET(0));
@@ -58,8 +55,8 @@ void Engine::Graphics::Screen::displayOnScreen(const std::shared_ptr<GBuffer> &g
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gbuffer->getIdTexture(GBuffer::BACKGROUND_ID));
 
-	_colorBuffer->updateStoreMap(glm::value_ptr(color));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer->getId());
+	_colorBuffer.updateStoreMap(glm::value_ptr(color));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer.getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -76,8 +73,8 @@ void Engine::Graphics::Screen::displayOnScreen(const std::shared_ptr<CBuffer> &c
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cbuffer->getIdTexture());
 
-	_colorBuffer->updateStoreMap(glm::value_ptr(color));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer->getId());
+	_colorBuffer.updateStoreMap(glm::value_ptr(color));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _colorBuffer.getId());
 
 	glBindVertexArray(_idVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
