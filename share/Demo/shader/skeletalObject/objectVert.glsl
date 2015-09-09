@@ -9,13 +9,17 @@ layout (binding = 0) uniform matrixBuffer
 	mat4 viewMatrix;
 	mat4 modelMatrix;
 	mat4 normalMatrix;
+};
+
+layout (binding = 4) uniform bonesBuffer
+{
 	mat4 bones[SKELETAL_MODEL_MAX_BONES];
 };
 
 layout (binding = 1) uniform cameraBuffer
 {
-    vec3 camPosition;
-    vec3 camForward;
+	vec3 camPosition;
+	vec3 camForward;
 	vec3 camLeft;
 	vec3 camUp;
 };
@@ -39,7 +43,7 @@ out VertexData
 
 void main(void)
 {
-    mat4 boneTransform = 
+	mat4 boneTransform = 
 		bones[index0[0]] * weight0[0] + 
 		bones[index0[1]] * weight0[1] + 
 		bones[index0[2]] * weight0[2] + 

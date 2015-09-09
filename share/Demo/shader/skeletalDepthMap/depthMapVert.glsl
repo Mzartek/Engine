@@ -9,6 +9,10 @@ layout (binding = 0) uniform matrixBuffer
 	mat4 viewMatrix;
 	mat4 modelMatrix;
 	mat4 normalMatrix;
+};
+
+layout (binding = 4) uniform bonesBuffer
+{
 	mat4 bones[SKELETAL_MODEL_MAX_BONES];
 };
 

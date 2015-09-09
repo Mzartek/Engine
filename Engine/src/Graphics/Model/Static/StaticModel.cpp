@@ -7,13 +7,11 @@
 Engine::Graphics::StaticModel::StaticModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::StaticModel::StaticModel(const std::shared_ptr<StaticModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(model, gProgram, smProgram)
 {
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::StaticModel::~StaticModel(void)
@@ -63,11 +61,9 @@ void Engine::Graphics::StaticModel::display(const std::shared_ptr<GBuffer> &gbuf
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_matrix.MVP = cam->getVPMatrix() * _matrix.model;
 	_matrix.projection = cam->getProjectionMatrix();
 	_matrix.view = cam->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, cam->getCameraInfoBuffer()->getId());
@@ -90,11 +86,9 @@ void Engine::Graphics::StaticModel::displayTransparent(const std::shared_ptr<GBu
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_matrix.MVP = cam->getVPMatrix() * _matrix.model;
 	_matrix.projection = cam->getProjectionMatrix();
 	_matrix.view = cam->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, cam->getCameraInfoBuffer()->getId());
@@ -117,11 +111,9 @@ void Engine::Graphics::StaticModel::displayDepthMap(const std::shared_ptr<DepthM
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_matrix.MVP = cam->getVPMatrix() * _matrix.model;
 	_matrix.projection = cam->getProjectionMatrix();
 	_matrix.view = cam->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -138,11 +130,9 @@ void Engine::Graphics::StaticModel::displayDepthMap(const std::shared_ptr<DepthM
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = light->getVPMatrix() * _modelMatrix;
+	_matrix.MVP = light->getVPMatrix() * _matrix.model;
 	_matrix.projection = light->getProjectionMatrix();
 	_matrix.view = light->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -162,17 +152,13 @@ void Engine::Graphics::StaticModel::displayDepthMaps(const std::vector<std::shar
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
-
 	for (GLuint i = 0; i < DirLight::CASCADED_LEVEL; i++)
 	{
 		depthMaps[i]->setState();
 
-		_matrix.MVP = light->getVPMatrix(i) * _modelMatrix;
+		_matrix.MVP = light->getVPMatrix(i) * _matrix.model;
 		_matrix.projection = light->getProjectionMatrix(i);
 		_matrix.view = light->getViewMatrix(i);
-
 		_matrixBuffer->updateStoreMap(&_matrix);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 

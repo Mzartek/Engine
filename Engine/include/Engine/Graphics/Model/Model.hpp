@@ -28,18 +28,23 @@ namespace Engine
 			glm::vec3 _scale;
 			glm::quat _rotation;
 
-			GLboolean _needMatModel;
-			GLboolean _needMatNormal;
+			GLboolean _needMatrix;
 
 		protected:
+			struct
+			{
+				glm::mat4 MVP;
+				glm::mat4 projection;
+				glm::mat4 view;
+				glm::mat4 model;
+				glm::mat4 normal;
+			} _matrix;
+
 			GLboolean _isMirror;
 
 			std::shared_ptr<std::vector<std::shared_ptr<Mesh>>> _tMesh;
 
 			std::shared_ptr<Buffer> _matrixBuffer;
-
-			glm::mat4 _modelMatrix;
-			glm::mat4 _normalMatrix;
 
 			std::shared_ptr<TextureCube> _cubeTexture;
 

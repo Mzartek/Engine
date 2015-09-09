@@ -9,15 +9,6 @@ namespace Engine
 	{
 		class DLLAPI StaticModel : public Model
 		{
-			struct
-			{
-				glm::mat4 MVP;
-				glm::mat4 projection;
-				glm::mat4 view;
-				glm::mat4 model;
-				glm::mat4 normal;
-			} _matrix;
-
 		public:
 			StaticModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);
 			StaticModel(const std::shared_ptr<StaticModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram);

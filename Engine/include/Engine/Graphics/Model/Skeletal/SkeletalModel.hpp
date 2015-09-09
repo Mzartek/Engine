@@ -16,13 +16,10 @@ namespace Engine
 		{
 			struct
 			{
-				glm::mat4 MVP;
-				glm::mat4 projection;
-				glm::mat4 view;
-				glm::mat4 model;
-				glm::mat4 normal;
 				glm::mat4 bones[SKELETAL_MODEL_MAX_BONES];
-			} _matrix;
+			} _bonesTest;
+
+			std::shared_ptr<Buffer> _bonesBuffer;
 
 			std::shared_ptr<Skeleton> _skeleton;
 			std::vector<std::shared_ptr<Bone>> _bones;

@@ -7,7 +7,8 @@
 Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
 	: Model(gProgram, smProgram)
 {
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_bonesBuffer = std::make_shared<Buffer>();
+	_bonesBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _bonesTest, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalModel> &model, const std::shared_ptr<ShaderProgram> &gProgram, const std::shared_ptr<ShaderProgram> &smProgram)
@@ -15,7 +16,8 @@ Engine::Graphics::SkeletalModel::SkeletalModel(const std::shared_ptr<SkeletalMod
 {
 	_bones = model->_bones;
 
-	_matrixBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _matrix, GL_DYNAMIC_DRAW);
+	_bonesBuffer = std::make_shared<Buffer>();
+	_bonesBuffer->createStore(GL_UNIFORM_BUFFER, nullptr, sizeof _bonesTest, GL_DYNAMIC_DRAW);
 }
 
 Engine::Graphics::SkeletalModel::~SkeletalModel(void)
@@ -79,11 +81,12 @@ void Engine::Graphics::SkeletalModel::display(const std::shared_ptr<GBuffer> &gb
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_bonesBuffer->updateStoreMap(&_bonesTest);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 4, _bonesBuffer->getId());
+
+	_matrix.MVP = cam->getVPMatrix() * _matrix.model;
 	_matrix.projection = cam->getProjectionMatrix();
 	_matrix.view = cam->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, cam->getCameraInfoBuffer()->getId());
@@ -106,11 +109,12 @@ void Engine::Graphics::SkeletalModel::displayTransparent(const std::shared_ptr<G
 
 	glUseProgram(_gProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_bonesBuffer->updateStoreMap(&_bonesTest);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 4, _bonesBuffer->getId());
+
+	_matrix.MVP = cam->getVPMatrix() * _matrix.model;
 	_matrix.projection = cam->getProjectionMatrix();
 	_matrix.view = cam->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, cam->getCameraInfoBuffer()->getId());
@@ -133,11 +137,12 @@ void Engine::Graphics::SkeletalModel::displayDepthMap(const std::shared_ptr<Dept
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = cam->getVPMatrix() * _modelMatrix;
+	_bonesBuffer->updateStoreMap(&_bonesTest);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 4, _bonesBuffer->getId());
+
+	_matrix.MVP = cam->getVPMatrix() * _matrix.model;
 	_matrix.projection = cam->getProjectionMatrix();
 	_matrix.view = cam->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -154,11 +159,12 @@ void Engine::Graphics::SkeletalModel::displayDepthMap(const std::shared_ptr<Dept
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.MVP = light->getVPMatrix() * _modelMatrix;
+	_bonesBuffer->updateStoreMap(&_bonesTest);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 4, _bonesBuffer->getId());
+
+	_matrix.MVP = light->getVPMatrix() * _matrix.model;
 	_matrix.projection = light->getProjectionMatrix();
 	_matrix.view = light->getViewMatrix();
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
 	_matrixBuffer->updateStoreMap(&_matrix);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
@@ -178,17 +184,16 @@ void Engine::Graphics::SkeletalModel::displayDepthMaps(const std::vector<std::sh
 
 	glUseProgram(_smProgram->getId());
 
-	_matrix.model = _modelMatrix;
-	_matrix.normal = _normalMatrix;
+	_bonesBuffer->updateStoreMap(&_bonesTest);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 4, _bonesBuffer->getId());
 
 	for (GLuint i = 0; i < DirLight::CASCADED_LEVEL; i++)
 	{
 		depthMaps[i]->setState();
 
-		_matrix.MVP = light->getVPMatrix(i) * _modelMatrix;
+		_matrix.MVP = light->getVPMatrix(i) * _matrix.model;
 		_matrix.projection = light->getProjectionMatrix(i);
 		_matrix.view = light->getViewMatrix(i);
-
 		_matrixBuffer->updateStoreMap(&_matrix);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _matrixBuffer->getId());
 
