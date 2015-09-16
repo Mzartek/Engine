@@ -1,6 +1,6 @@
 #include "AssimpTool.hpp"
 
-#include <Assimp/postprocess.h>
+#include <assimp/postprocess.h>
 
 const aiScene *Engine::ToolsPrivate::openFile(Assimp::Importer &importer, const GLchar *inFile)
 {
@@ -10,7 +10,7 @@ const aiScene *Engine::ToolsPrivate::openFile(Assimp::Importer &importer, const 
 		std::string error = "Failed to load model File: ";
 		error.append(inFile + '\n');
 		error.append(importer.GetErrorString());
-		throw std::exception(error.c_str());
+		throw std::runtime_error(error);
 	}
 
 	return pScene;
@@ -179,7 +179,7 @@ std::shared_ptr<Engine::Graphics::Skeleton> Engine::ToolsPrivate::loadSkeleton(c
 	else
 		root_node = scene->mRootNode;
 
-	if (root_node == nullptr) throw std::exception();
+	if (root_node == nullptr) throw std::runtime_error("The root node of a skeleton cannot be null");
 
 	root_skeleton = std::make_shared<Graphics::Skeleton>(std::string(root_node->mName.C_Str()));
 
@@ -249,7 +249,7 @@ std::vector<std::shared_ptr<Engine::Graphics::Bone>> Engine::ToolsPrivate::loadB
 			}
 			else
 			{
-				throw std::exception("No more space for bones");
+				throw std::runtime_error("No more space for bones");
 			}
 		}
 

@@ -28,7 +28,7 @@ void Engine::Graphics::SkeletalModel::loadFromFile(const GLchar *inFile, const G
 {
 	if (_isMirror == GL_TRUE)
 	{
-		throw std::exception("Error Model configuration");
+		throw std::runtime_error("Error Model configuration");
 	}
 
 	_tMesh->clear();
@@ -37,16 +37,16 @@ void Engine::Graphics::SkeletalModel::loadFromFile(const GLchar *inFile, const G
 	const aiScene *pScene = ToolsPrivate::openFile(importer, inFile);
 	if (!pScene->HasAnimations())
 	{
-		throw std::exception("The model is not animated");
+		throw std::runtime_error("The model is not animated");
 	}
 
 	try
 	{
 		_skeleton = ToolsPrivate::loadSkeleton(pScene, node_name);
 	}
-	catch (std::exception exception)
+	catch (std::runtime_error runtime_error)
 	{
-		throw std::exception(std::string(inFile + std::string(" No node ") + node_name).c_str());
+		throw std::runtime_error(std::string(inFile + std::string(" No node ") + node_name));
 	}
 
 	GLuint bone_index = 0;

@@ -113,7 +113,7 @@ void Engine::Graphics::DirLight::display(const std::shared_ptr<GBuffer> &gbuf, c
 {
 	if (depthMaps.size() != CASCADED_LEVEL)
 	{
-		throw std::exception("Wrong vector of depthMap size");
+		throw std::runtime_error("Wrong vector of depthMap size");
 	}
 
 	gbuf->setLightState();

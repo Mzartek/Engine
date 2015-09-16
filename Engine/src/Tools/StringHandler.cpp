@@ -22,7 +22,7 @@ char* Engine::Tools::readText(const char *filePath)
 
 	if (!file.is_open())
 	{
-		std::exception(std::string("Error while opening file: " + std::string(filePath)).c_str());
+		throw std::runtime_error("Error while opening file: " + std::string(filePath));
 	}
 	// Lenght of the file
 	file.seekg(0, std::ifstream::end);

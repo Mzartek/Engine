@@ -12,7 +12,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 	id = glCreateShader(type);
 	if (id == 0)
 	{
-		throw std::exception("Error while creating shader");
+		throw std::runtime_error("Error while creating shader");
 	}
 
 	content = Engine::Tools::readText(filename);
@@ -33,7 +33,7 @@ inline GLuint loadShader(const GLchar *filename, const GLenum &type)
 		glDeleteShader(id);
 		delete[] log;
 
-		throw std::exception(errorMessage.c_str());
+		throw std::runtime_error(errorMessage);
 	}
 
 	delete[] content;
@@ -50,7 +50,7 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 	_idProgram = glCreateProgram();
 	if (_idProgram == 0)
 	{
-		throw std::exception("Error while creating program");
+		throw std::runtime_error("Error while creating program");
 	}
 
 	if (vs != nullptr)
@@ -98,7 +98,7 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 
 		delete[] log;
 
-		throw std::exception(errorMessage.c_str());
+		throw std::runtime_error(errorMessage);
 	}
 }
 
@@ -112,7 +112,7 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 	_idProgram = glCreateProgram();
 	if (_idProgram == 0)
 	{
-		throw std::exception("Error while creating program");
+		throw std::runtime_error("Error while creating program");
 	}
 
 	if (vs != nullptr)
@@ -162,7 +162,7 @@ Engine::Graphics::ShaderProgram::ShaderProgram(const GLchar *vs, const GLchar *t
 
 		delete[] log;
 
-		throw std::exception(errorMessage.c_str());
+		throw std::runtime_error(errorMessage);
 	}
 }
 

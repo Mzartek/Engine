@@ -18,7 +18,7 @@ void Engine::Graphics::Texture2D::loadFromFile(const GLchar *path)
 	SDL_Surface *image = IMG_Load(path);
 	if (image == nullptr)
 	{
-		throw std::exception(std::string("Error while loading image: " + std::string(path) + "\n" + IMG_GetError()).c_str());
+		throw std::runtime_error(std::string("Error while loading image: " + std::string(path) + "\n" + IMG_GetError()));
 	}
 
 	if (glIsTexture(_idTexture)) glDeleteTextures(1, &_idTexture);

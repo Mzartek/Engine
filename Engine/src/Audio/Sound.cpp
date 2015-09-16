@@ -35,14 +35,14 @@ void Engine::Audio::Sound::loadFromFile(const ALchar *file, ALsizei frequency, A
 
 	if (state == -1)
 	{
-		throw std::exception(Mix_GetError());
+		throw std::runtime_error(Mix_GetError());
 	}
 
 	Mix_Chunk *sound = Mix_LoadWAV(file);
 
 	if (sound == nullptr)
 	{
-		throw std::exception(std::string("Failed to read the file: " + std::string(file) + Mix_GetError()).c_str());
+		throw std::runtime_error(std::string("Failed to read the file: " + std::string(file) + Mix_GetError()));
 	}
 
 	if (alIsBuffer(_buffer)) alDeleteBuffers(1, &_buffer);
