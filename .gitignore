@@ -51,6 +51,7 @@
 *.opensdf
 *.codelite
 *.cache
+*.kdev4
 
 bin
 lib
