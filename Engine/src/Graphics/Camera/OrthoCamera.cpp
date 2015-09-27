@@ -40,4 +40,6 @@ void Engine::Graphics::OrthoCamera::updateData(void)
 	_viewMatrix = glm::lookAt(_cameraInfo.position - _cameraInfo.direction, _cameraInfo.position, glm::vec3(0.0f, 1.0f, 0.0f));
 	_VPMatrix = _projectionMatrix * _viewMatrix;
 	_IVPMatrix = glm::inverse(_VPMatrix);
+
+	_cameraInfoBuffer->updateStoreMap(&_cameraInfo);
 }
