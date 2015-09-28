@@ -41,7 +41,7 @@ void Engine::Graphics::Texture2D::loadFromFile(const GLchar *path)
 		break;
 	case 372645892:
 		glTexStorage2D(GL_TEXTURE_2D, 9, GL_RGBA8, image->w, image->h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->w, image->h, GL_BGRA, GL_UNSIGNED_BYTE, image->pixels);
 		break;
 	default:
 		std::cerr << "Format " << image->format->format << " unknown" << std::endl;
@@ -79,7 +79,7 @@ void Engine::Graphics::Texture2D::loadFromSDL_Surface(const SDL_Surface *surface
 		break;
 	case 372645892:
 		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, surface->w, surface->h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, surface->w, surface->h, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, surface->w, surface->h, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
 		break;
 	default:
 		std::cerr << "Format " << surface->format->format << " unknown" << std::endl;

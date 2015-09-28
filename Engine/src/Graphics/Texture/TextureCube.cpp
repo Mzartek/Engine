@@ -56,7 +56,7 @@ void Engine::Graphics::TextureCube::loadFromFiles(
 			glTexImage2D(cube_map_target[i], 0, GL_RGBA8, image[i]->w, image[i]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		case 372645892:
-			glTexImage2D(cube_map_target[i], 0, GL_RGBA8, image[i]->w, image[i]->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]->pixels);
+			glTexImage2D(cube_map_target[i], 0, GL_RGBA8, image[i]->w, image[i]->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, image[i]->pixels);
 			break;
 		default:
 			std::cerr << "Format " << image[i]->format->format << " unknown" << std::endl;
